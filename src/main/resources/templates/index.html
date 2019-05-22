@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/static/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+    <script th:src="@{/static/jquery.js}" type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+    $(function () {
+        $("#show").html("jquery文件加载成功！");
+        $("#btn").click(function () {
+            var cmd=$("#btn").val();
+            console.log("value",cmd);
+            if (cmd=='1'){
+                $("#btn").val("2")
+            }else {
+                $("#btn").val("1")
+            }
+            $.get("/switch",{"cmd":$("#btn").val()},function (result) {
+                console.log("result",result);
+            })
+        })
+    })
+</script>
+<body>
+<h1>Welcome come to Spring Boot world!</h1>
+<p id="show"></p>
+<button id="btn" value="1">测试</button>
+<button id="btn1" value="1">测试1</button>
+</body>
+</html>

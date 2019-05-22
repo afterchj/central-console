@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+</head>
+<body>
+<div>
+    <label>IP:</label><label id="ip1">192.168.16.103</label><br/>
+    <!--<label>IP:</label><label id="ip1">127.0.0.1</label><br/>-->
+    <button id="btn1">开</button>
+    <label id="msg1"></label>&nbsp;&nbsp;<label id="msg12"></label>
+</div>
+
+<div>
+    <label>IP:</label><label id="ip2">192.168.16.70</label><br/>
+    <!--<label>IP:</label><label id="ip2">127.0.0.1</label><br/>-->
+    <button id="btn2">开</button>
+    <label id="msg2"></label>&nbsp;&nbsp;<label id="msg22"></label>
+</div>
+<div>
+    <label>IP:</label><label id="ip3">192.168.16.103</label><br/>
+    <!--<label>IP:</label><label id="ip3">127.0.0.1</label><br/>-->
+    <!--<label>IP:</label><label id="ip4">127.0.0.1</label><br/>-->
+    <label>IP:</label><label id="ip4">192.168.16.70</label><br/>
+    <button id="btn3">开</button>
+    <label id="msg3"></label>&nbsp;&nbsp;<label id="msg32"></label>
+</div>
+<script src="/static/jquery.min.js"></script>
+<script>
+
+    $(function () {
+
+                var socket;
+                if (typeof (WebSocket) == "undefined") {
+                    console.log("遗憾：您的浏览器不支持WebSocket");
+//                    var shuaxin1 = setInterval(function () {
+//                        shuaxin()
+//                    }, 1000);
+//
+//                    function shuaxin() {
+//                        $.ajax({
+//                            url: "/getMemcacheAddress",
+//                            data: "address=" + $("#ip1").text(),
+//                            dataType: "json",
+//                            type: "POST",
+//                            success: function (data) {
+//                                var value = data.value;
+//                                if (value == "0") {
+//                                    $("#msg1").text("连接成功");
+//                                } else if (value == "1"){
+//                                    $("#msg1").text("连接失败");
+//                                }
+//                            }
+//                        });
+//                    }
+                } else {
+                    console.log("恭喜：您的浏览器支持WebSocket");
+                    //实现化WebSocket对象
+                    //指定要连接的服务器地址与端口建立连接
+                    //注意ws、wss使用不同的端口。我使用自签名的证书测试，
+                    //无法使用wss，浏览器打开WebSocket时报错
+                    //ws对应http、wss对应https。
+                    socket = new WebSocket("ws://192.168.16.56:8080/ws/webSocket");
+//                    socket = new WebSocket("ws://127.0.0.1:8080/ws/webSocket");
+                    //连接打开事件
+                    socket.onopen = function () {
+                        console.log("Socket 已打开");
+//                        socket.send("消息发送测试(From Client)");
+                    };
+                    //收到消息事件
+                    socket.onmessage = function (msg) {
+//                        console.log(msg.data);
+                        var value = msg.data;
+                        var valueArr = value.split(":");
+                        var valueIp1 = valueArr[0];
+                        var valueIp2 = valueArr[1];
+//                        console.log("valueIp1: "+valueIp1+" valueIp2: "+valueIp2);
+                        if (valueIp1 == "0") {
+                            $("#msg1").text("连接成功");
+                        } else if (valueIp1 == "1"){
+                            $("#msg1").text("连接失败");
+                        }
+                        if (valueIp2 == "0") {
+                            $("#msg2").text("连接成功");
+                        } else if (valueIp2 == "1"){
+                            $("#msg2").text("连接失败");
+                        }
+                    }
+                    ;
+                    //连接关闭事件
+                    socket.onclose = function () {
+                        console.log("Socket已关闭");
+                    };
+                    //发生了错误事件
+                    socket.onerror = function () {
+                        alert("Socket发生了错误");
+                    }
+
+                    //窗口关闭时，关闭连接
+                    window.unload = function () {
+                        socket.close();
+                    };
+                }
+
+                $("#btn1").click(function () {
+                    var btn1Value = $("#btn1").text();
+                    if ($("#msg1").text() == "连接失败") {
+                        alert("连接失败");
+                    } else {
+                        $("#msg12").text("");
+                        $.ajax({
+                            type: "POST",
+                            url: "/sendSocket",
+                            data: "host=" + $("#ip1").text() + "&command=" + btn1Value,
+                            dataType: "json",
+                            success: function (msg) {
+                                var success = msg.success;
+                                if (success == "success") {
+                                    if (btn1Value == "开") {
+                                        $("#btn1").text("关");
+                                    } else if (btn1Value == "关") {
+                                        $("#btn1").text("开");
+                                    }
+                                } else {
+                                    $("#msg12").text("开关失败");
+                                }
+                            }
+                        });
+                    }
+
+                });
+                $("#btn2").click(function () {
+                    var btn2Value = $("#btn2").text();
+                    if ($("#msg2").text() == "连接失败") {
+                        alert("连接失败");
+                    } else {
+                        $("#msg22").text("");
+                        $.ajax({
+                            type: "POST",
+                            url: "/sendSocket",
+                            data: "host=" + $("#ip2").text() + "&command=" + btn2Value,
+                            dataType: "json",
+                            success: function (msg) {
+                                var success = msg.success;
+                                if (success == "success") {
+                                    if (btn2Value == "开") {
+                                        $("#btn2").text("关");
+                                    } else if (btn2Value == "关") {
+                                        $("#btn2").text("开");
+                                    }
+                                }else {
+                                    $("#msg22").text("开关失败");
+                                }
+                            }
+                        });
+                    }
+                });
+
+                $("#btn3").click(function () {
+                   $("#msg32").text("");
+                    var btn1Value = $("#btn3").text();
+                    var ip3Value = $("#ip3").text();
+                    var ip4Value = $("#ip4").text();
+                    $.ajax({
+                        type: "POST",
+                        url: "/sendSocket2",
+                        data: "host1=" + ip3Value + "&host2=" + ip4Value + "&command=" + btn1Value,
+                        dataType: "json",
+                        success: function (msg) {
+                            var success1 = msg.success1;
+                            var success2 = msg.success2;
+                            if (success1=="error"&&success2=="error"){
+                                $("#msg32").text("开关失败");
+                            }else {
+                                if (btn1Value == "开") {
+                                    $("#btn3").text("关");
+                                } else if (btn1Value == "关") {
+                                    $("#btn3").text("开");
+                                }
+                            }
+                        }
+                    });
+                });
+
+            }
+    );
+</script>
+</body>
+</html>
