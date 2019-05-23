@@ -1,5 +1,6 @@
 package com.example.blt;
 
+import com.example.blt.entity.IP;
 import com.whalin.MemCached.MemCachedClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,5 +38,10 @@ public class CentralControllerApplicationTests {
 //		memCachedClient.delete(address);
 		System.out.println("value: "+value);
 	}
+
+	@Test
+	public void test3(){
+        System.out.println(IP.IP1.getValue());
+    }
 
 }

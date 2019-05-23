@@ -1,5 +1,6 @@
 package com.example.blt.config;
 
+import com.example.blt.entity.IP;
 import com.whalin.MemCached.MemCachedClient;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +20,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class WebSocket {
     //每个客户端都会有相应的session,服务端可以发送相关消息
     private Session session;
-    private final static String IP1 = "192.168.16.103";
-    private final static String IP2 = "192.168.16.70";
+//    private final static String IP1 = "192.168.16.103";
+//    private final static String IP2 = "192.168.16.70";
     private MemCachedClient memCachedClient;
     //J.U.C包下线程安全的类，主要用来存放每个客户端对应的webSocket连接
     private static CopyOnWriteArraySet<WebSocket> copyOnWriteArraySet = new CopyOnWriteArraySet<WebSocket>();
@@ -38,6 +39,8 @@ public class WebSocket {
         this.session = session;
         copyOnWriteArraySet.add(this);
         System.out.println("websocket有新的连接, 总数:"+ copyOnWriteArraySet.size());
+        String IP1 = IP.IP103.getValue();
+        String IP2 = IP.IP70.getValue();
         String addressIp1 = "central-console"+IP1;
         String addressIp2 = "central-console"+IP2;
         memCachedClient = new MemCachedClient();

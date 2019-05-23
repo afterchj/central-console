@@ -1,5 +1,6 @@
 package com.example.blt.config;
 
+import com.example.blt.entity.IP;
 import com.whalin.MemCached.MemCachedClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebSocketTask {
 
-    private final static String IP1 = "192.168.16.103";
-    private final static String IP2 = "192.168.16.70";
+//    private final static String IP1 = "192.168.16.103";
+//    private final static String IP2 = "192.168.16.70";
     private MemCachedClient memCachedClient;
     private WebSocket webSocket = new WebSocket();
 //    private String valueIp1 = "";
@@ -25,6 +26,8 @@ public class WebSocketTask {
      */
     @Scheduled(cron = "0/1 * * * * *")
     public void backSearch() {
+        String IP1 = IP.IP103.getValue();
+        String IP2 = IP.IP70.getValue();
         String addressIp1 = "central-console" + IP1;
         String addressIp2 = "central-console" + IP2;
         memCachedClient = new MemCachedClient();

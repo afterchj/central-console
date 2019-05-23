@@ -43,7 +43,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         break;
                     }
                 } else {
-                    ch.writeAndFlush(address1);
+                    ch.writeAndFlush(arg1);
                     logger.info("[" + channel.remoteAddress() + "]: " + arg1);
                 }
             }
@@ -89,5 +89,4 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         logger.info("[" + ctx.channel().remoteAddress() + "]" + cause.getMessage());
         ctx.close().sync();
     }
-
 }
