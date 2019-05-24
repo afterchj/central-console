@@ -1,8 +1,8 @@
 package com.example.blt.config;
 
 import com.example.blt.entity.IP;
-import com.whalin.MemCached.MemCachedClient;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -22,7 +22,7 @@ public class WebSocket {
     private Session session;
 //    private final static String IP1 = "192.168.16.103";
 //    private final static String IP2 = "192.168.16.70";
-    private MemCachedClient memCachedClient;
+//    private MemCachedClient memCachedClient;
     //J.U.C包下线程安全的类，主要用来存放每个客户端对应的webSocket连接
     private static CopyOnWriteArraySet<WebSocket> copyOnWriteArraySet = new CopyOnWriteArraySet<WebSocket>();
 
@@ -43,9 +43,13 @@ public class WebSocket {
         String IP2 = IP.IP70.getValue();
         String addressIp1 = "central-console"+IP1;
         String addressIp2 = "central-console"+IP2;
-        memCachedClient = new MemCachedClient();
-        String valueIp1 = (String) memCachedClient.get(addressIp1);
-        String valueIp2 = (String) memCachedClient.get(addressIp2);
+//        memCachedClient = new MemCachedClient();
+//        String valueIp1 = (String) memCachedClient.get(addressIp1);
+//        String valueIp2 = (String) memCachedClient.get(addressIp2);
+        Jedis jedis = new Jedis("127.0.0.1",6379);
+        jedis.auth("Tp123456");
+        String valueIp1 = jedis.get(addressIp1);
+        String valueIp2 = jedis.get(addressIp2);
         if (valueIp1 == null) {
             valueIp1 = "1";
         } else {
