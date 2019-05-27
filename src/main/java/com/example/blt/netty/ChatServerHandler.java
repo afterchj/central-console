@@ -29,20 +29,22 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = arg0.channel();
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
-            SocketAddress address = ch.remoteAddress() == null ? channel.remoteAddress() : ch.remoteAddress();
-            String str = address.toString();
-            String ip = str.substring(1, str.indexOf(":"));
-            try {
-                JSONObject jsonObject = JSON.parseObject(arg1);
-                String cmd = jsonObject.getString("cmd");
-                String to = jsonObject.getString("to");
-                if (to.equals(ip)) {
-                    ch.writeAndFlush(cmd);
+            SocketAddress address = ch.remoteAddress();
+            if (address != null) {
+                String str = address.toString();
+                String ip = str.substring(1, str.indexOf(":"));
+                try {
+                    JSONObject jsonObject = JSON.parseObject(arg1);
+                    String cmd = jsonObject.getString("cmd");
+                    String to = jsonObject.getString("to");
+                    if (to.equals(ip)) {
+                        ch.writeAndFlush(cmd);
+                        logger.info("[" + str + "]: " + arg1);
+                    }
+                } catch (Exception e) {
+                    ch.writeAndFlush(arg1);
                     logger.info("[" + str + "]: " + arg1);
                 }
-            } catch (Exception e) {
-                ch.writeAndFlush(arg1);
-                logger.info("[" + str + "]: " + arg1);
             }
         }
     }
