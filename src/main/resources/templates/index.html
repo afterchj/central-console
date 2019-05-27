@@ -10,15 +10,27 @@
 <script type="text/javascript">
     $(function () {
         $("#show").html("jquery文件加载成功！");
-        $("#btn").click(function () {
-            var cmd=$("#btn").val();
+        $("#btn1").click(function () {
+            var cmd=$("#btn1").val();
             console.log("value",cmd);
             if (cmd=='1'){
-                $("#btn").val("2")
+                $("#btn1").val("2")
             }else {
-                $("#btn").val("1")
+                $("#btn1").val("1")
             }
-            $.get("/switch",{"cmd":$("#btn").val()},function (result) {
+            $.get("/switch",{"cmd":$("#btn1").val(),"to":"127.0.0.1"},function (result) {
+                console.log("result",result);
+            })
+        });
+        $("#btn2").click(function () {
+            var cmd=$("#btn2").val();
+            console.log("value",cmd);
+            if (cmd=='1'){
+                $("#btn2").val("2")
+            }else {
+                $("#btn2").val("1")
+            }
+            $.get("/switch",{"cmd":$("#btn2").val(),"to":"192.168.56.1"},function (result) {
                 console.log("result",result);
             })
         })
@@ -27,7 +39,7 @@
 <body>
 <h1>Welcome come to Spring Boot world!</h1>
 <p id="show"></p>
-<button id="btn" value="1">测试</button>
 <button id="btn1" value="1">测试1</button>
+<button id="btn2" value="1">测试2</button>
 </body>
 </html>

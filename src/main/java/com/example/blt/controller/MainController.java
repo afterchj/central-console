@@ -1,5 +1,6 @@
 package com.example.blt.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.example.blt.utils.SocketUtil;
 import com.whalin.MemCached.MemCachedClient;
 import org.slf4j.Logger;
@@ -26,9 +27,13 @@ public class MainController {
 
 
     @RequestMapping("/switch")
-    public String console(String cmd) {
-        logger.info("cmd=" + cmd);
-        SocketUtil.sendCmd(cmd);
+    public String console(String cmd, String to) {
+        Map map = new HashMap();
+        map.put("cmd", cmd);
+        map.put("to", to);
+        String info = JSON.toJSONString(map);
+        SocketUtil.sendCmd(info);
+        logger.info("json=" + info);
         return "ok";
     }
 
@@ -57,7 +62,7 @@ public class MainController {
         } else if ("关".equals(command)) {
             command = "2";
         }
-        String cmd = host+":"+command;
+        String cmd = host + ":" + command;
         logger.info("cmd=" + command);
         String code = SocketUtil.sendCmd2(host, cmd);
         if ("1".equals(code)) {
@@ -80,8 +85,8 @@ public class MainController {
             command = "2";
         }
         logger.info("cmd=" + command);
-        String cmd1 = host1+":"+command;
-        String cmd2 = host2+":"+command;
+        String cmd1 = host1 + ":" + command;
+        String cmd2 = host2 + ":" + command;
         String code1 = SocketUtil.sendCmd2(host1, cmd1);
         String code2 = SocketUtil.sendCmd2(host2, cmd2);
         if ("1".equals(code1)) {

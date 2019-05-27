@@ -41,7 +41,7 @@ public class CentralControllerApplicationTests {
 
 	@Test
 	public void test3(){
-        System.out.println(IP.IP1.getValue());
+        System.out.println(IP.IP70.getValue());
     }
 
 }
