@@ -14,7 +14,6 @@ public class CentralConsoleApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CentralConsoleApplication.class, args);
-		new ServerMain().run(8001);
 	}
 
 	/**

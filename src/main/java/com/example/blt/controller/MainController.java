@@ -33,7 +33,7 @@ public class MainController {
         map.put("to", to);
         String info = JSON.toJSONString(map);
         SocketUtil.sendCmd(info);
-        logger.info("json=" + info);
+        logger.info("info=" + info);
         return "ok";
     }
 

@@ -1,7 +1,5 @@
 package com.example.blt.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.blt.netty.ClientInitialHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -58,7 +56,7 @@ public class SocketUtil {
             SocketAddress socketAddress = new InetSocketAddress(8001);
             client.connect(socketAddress);
 //            pw = new PrintWriter(client.getOutputStream(), true);
-            pw.write(cmd);
+//            pw.write(cmd);
             client.getOutputStream().write(cmd.getBytes());
 //            client.close();
             code = "0";
