@@ -1,6 +1,7 @@
 package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.blt.entity.ConsoleInfo;
 import com.example.blt.utils.SocketUtil;
 import com.whalin.MemCached.MemCachedClient;
 import org.slf4j.Logger;
@@ -27,11 +28,8 @@ public class MainController {
 
 
     @RequestMapping("/switch")
-    public String console(String cmd, String to) {
-        Map map = new HashMap();
-        map.put("cmd", cmd);
-        map.put("to", to);
-        String info = JSON.toJSONString(map);
+    public String console(ConsoleInfo consoleInfo) {
+        String info = JSON.toJSONString(consoleInfo);
         SocketUtil.sendCmd(info);
         logger.info("info=" + info);
         return "ok";
