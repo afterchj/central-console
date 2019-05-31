@@ -26,7 +26,6 @@ public class MainController {
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
-
     @RequestMapping("/switch")
     public String console(ConsoleInfo consoleInfo) {
         String info = JSON.toJSONString(consoleInfo);
