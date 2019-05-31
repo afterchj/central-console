@@ -7,10 +7,12 @@
     <title>场景</title>
     <style>
         .container {
-            width: 650px;
+            width: 660px;
             margin: 30px auto;
             border: 1px solid #bbb;
-            padding: 20px;
+            padding: 30px 20px;
+            color: #333;
+            font-size: 14.5px;
         }
 
         .clearfix::after {
@@ -23,7 +25,7 @@
 
         h2 {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 30px;
         }
 
         .clearfix {
@@ -39,7 +41,7 @@
         }
 
         .part {
-            width: 150px;
+            width: 155px;
             border: 1px solid #bbb;
             margin: 30px;
         }
@@ -52,7 +54,7 @@
         }
 
         .scene-content {
-            height: 100px;
+            height: 130px;
             vertical-align: bottom;
         }
 
@@ -67,16 +69,17 @@
         .scene-content select {
             left: 0;
             bottom: 0;
-            width: 64px;
+            width: 135px;
             height: 30px;
             margin: 15px 10px;
         }
 
         .scene-content button {
-            right: 0;
-            bottom: 0;
-
-            margin: 15px 10px;
+            right: 50%;
+            margin: 5px -30px 10px 0;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
 
         }
 
@@ -98,13 +101,57 @@
         }
 
         .nav {
-            margin-bottom: 40px;
+            margin: 0 0 15px 30px;
         }
 
         button.off {
             background-color: #bbb;
             border: 1px solid #bbb;
         }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-right: 10px solid transparent;
+            border-left: 10px solid transparent;
+            border-top: 10px solid #bbb;
+            margin: auto;
+            cursor: pointer;
+        }
+        .bottom-input{
+            width: 705px;
+            margin: 0 auto;
+        }
+        .bottom-input .hr{
+            background-color: #bbb;
+            height: 1px;
+        }
+        .content-input{
+            width: 705px;
+            margin: 20px auto;
+            color: #333;
+            font-size: 14.5px;
+            display: none;
+        }
+        .content-input.active{
+            display: block;
+        }
+        .content-input label{
+            display: inline-block;
+            width: 80px;
+        }
+        .content-input input{
+            border: 1px solid #bbb;
+            width: 200px;
+            height: 25px;
+        }
+        .content-input>div{
+            margin-bottom: 15px;
+        }
+        .content-input button{
+            vertical-align: middle;
+            margin-left: 15px;
+        }
+
     </style>
 </head>
 <body>
@@ -119,7 +166,7 @@
         <div class="f-l part">
             <div class="scene-nav">茶室</div>
             <div class="clearfix scene-content p-r">
-                <select name="" id="" class="p-a">
+                <select name=""  class="p-a">
                     <option value="场景一">场景一</option>
                     <option value="场景二">场景二</option>
                     <option value="场景三">场景三</option>
@@ -148,7 +195,6 @@
                 </select>
                 <input type="hidden" id="hds" value="192.168.1.5">
                 <button type="button" class="p-a">ON</button>
-
             </div>
         </div>
         <div class="f-l part">
@@ -166,7 +212,6 @@
                 </select>
                 <input type="hidden" id="cct" value="192.168.1.6">
                 <button type="button" class="p-a">ON</button>
-
             </div>
         </div>
         <div class="f-l part">
@@ -184,7 +229,6 @@
                 </select>
                 <input type="hidden" id="dgdt" value="192.168.1.8">
                 <button type="button" class="p-a">ON</button>
-
             </div>
         </div>
         <div class="f-l part">
@@ -202,12 +246,49 @@
                 </select>
                 <input type="hidden" id="qts" value="192.168.1.7">
                 <button type="button" class="p-a">ON</button>
-
             </div>
         </div>
     </div>
 </div>
-<script src="/static/jquery.min.js"></script>
+<div class="bottom-input">
+    <div class="hr"></div>
+    <div class="triangle"></div>
+</div>
+<div class="content-input">
+    <div>
+        <label for="">全展厅：</label>
+        <input type="text">
+        <button type="button">发送</button>
+    </div>
+    <div>
+        <label for="">茶室：</label>
+        <input type="text">
+        <button type="button">发送</button>
+    </div>
+    <div>
+        <label for="">活动室：</label>
+        <input type="text">
+        <button type="button">发送</button>
+    </div>
+    <div>
+        <label for="">客餐厅：</label>
+        <input type="text">
+        <button type="button">发送</button>
+    </div>
+    <div>
+        <label for="">办公大厅：</label>
+        <input type="text">
+        <button type="button">发送</button>
+    </div>
+    <div>
+        <label for="">洽谈室：</label>
+        <input type="text">
+        <button type="button">发送</button>
+    </div>
+</div>
+
+
+<script src="/static/jquery-1.10.2.min.js"></script>
 <script>
 
     $(function () {
@@ -228,8 +309,6 @@
             });
 
         });
-
-
         $("select").change(function () {
             var command = $.trim($(this).val());
             var host = $.trim($(this).next().val());
@@ -237,6 +316,9 @@
 
             })
         });
+        $('.triangle').on('click',function(){
+            $('.content-input').toggleClass('active');
+        })
     })
 
 
