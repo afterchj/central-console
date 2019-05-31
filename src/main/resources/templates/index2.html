@@ -159,8 +159,9 @@
 <div class="container">
     <div class="nav">
         <label>全展厅： </label>
-        <button type="button">ON</button>
         <input type="hidden" id="all" value="all">
+        <button type="button" class="p-a">ON</button>
+
     </div>
     <div class="content clearfix">
         <div class="f-l part">
@@ -258,32 +259,38 @@
     <div>
         <label for="">全展厅：</label>
         <input type="text">
-        <button type="button">发送</button>
+        <button type="button" class="send">发送</button>
+        <input type="hidden" id="all2" value="all">
     </div>
     <div>
         <label for="">茶室：</label>
         <input type="text">
-        <button type="button">发送</button>
+        <button type="button" class="send">发送</button>
+        <input type="hidden" id="cs2" value="192.168.1.4">
     </div>
     <div>
         <label for="">活动室：</label>
         <input type="text">
-        <button type="button">发送</button>
+        <button type="button" class="send">发送</button>
+        <input type="hidden" id="hds2" value="192.168.1.5">
     </div>
     <div>
         <label for="">客餐厅：</label>
         <input type="text">
-        <button type="button">发送</button>
+        <button type="button" class="send">发送</button>
+        <input type="hidden" id="cct2" value="192.168.1.6">
     </div>
     <div>
         <label for="">办公大厅：</label>
         <input type="text">
-        <button type="button">发送</button>
+        <button type="button" class="send">发送</button>
+        <input type="hidden" id="dgdt2" value="192.168.1.8">
     </div>
     <div>
         <label for="">洽谈室：</label>
         <input type="text">
-        <button type="button">发送</button>
+        <button type="button" class="send">发送</button>
+        <input type="hidden" id="qts2" value="192.168.1.7">
     </div>
 </div>
 
@@ -292,7 +299,15 @@
 <script>
 
     $(function () {
-        $('button').click(function () {
+        $('.send').click(function () {
+            var host = $.trim($(this).next().val());
+            var command = $.trim($(this).prev().val());
+            alert(host+":"+command);
+            $.post("/sendSocket4", {"command": command, "host": host}, function (msg) {});
+        });
+
+
+        $("button[class='p-a']").click(function () {
             $(this).toggleClass('off');
             var command = $.trim($(this).text());
             var button = $(this);
