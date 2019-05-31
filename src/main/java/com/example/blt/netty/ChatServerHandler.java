@@ -10,7 +10,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
+
 /**
  * 服务器主要的业务逻辑
  */
@@ -44,22 +44,22 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     }
                 } else {
                     ch.writeAndFlush(arg1);
-                    logger.info("[" + channel.remoteAddress() + "]: " + arg1);
                 }
             }
         }
-        if ("0".equals(arg1)) {
-            String address = String.valueOf(channel.remoteAddress());
-            address = address.substring(1, address.lastIndexOf(":"));
-            address = "central-console" + address;
-            Jedis jedis = new Jedis("127.0.0.1",6379);
-            jedis.auth("Tp123456");
-            jedis.setex(address,21,arg1);
+        logger.info("[" + channel.remoteAddress() + "]: " + arg1);
+//        if ("0".equals(arg1)) {
+//            String address = String.valueOf(channel.remoteAddress());
+//            address = address.substring(1, address.lastIndexOf(":"));
+//            address = "central-console" + address;
+//            Jedis jedis = new Jedis("127.0.0.1",6379);
+//            jedis.auth("Tp123456");
+//            jedis.setex(address,21,arg1);
 //            System.out.println(jedis.get(address));
-//            redisTemplate.opsForValue().set(address,arg1,210000, TimeUnit.MILLISECONDS);
-//            System.out.println(redisTemplate.opsForValue().get(address));
-//            memCachedClient.set(address, arg1, new Date(21000));
-        }
+////            redisTemplate.opsForValue().set(address,arg1,210000, TimeUnit.MILLISECONDS);
+////            System.out.println(redisTemplate.opsForValue().get(address));
+////            memCachedClient.set(address, arg1, new Date(21000));
+//        }
     }
 
     @Override

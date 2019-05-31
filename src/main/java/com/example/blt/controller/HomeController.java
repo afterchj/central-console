@@ -1,12 +1,7 @@
 package com.example.blt.controller;
 
-import com.example.blt.config.WebSocket;
-import com.whalin.MemCached.MemCachedClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.annotation.Resource;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
@@ -15,13 +10,13 @@ import javax.annotation.Resource;
 @Controller
 public class HomeController {
 
-    @Autowired
-    private MemCachedClient memCachedClient;
+//    @Autowired
+//    private MemCachedClient memCachedClient;
 
-    @Resource
-    private WebSocket webSocket;
+//    @Resource
+//    private WebSocket webSocket;
 
-    private final static String IP1 = "192.168.16.103";
+//    private final static String IP1 = "192.168.16.103";
 
     @RequestMapping("/")
     public String index() {
@@ -30,15 +25,12 @@ public class HomeController {
 
     @RequestMapping("/welcome")
     public String welcome(){
-//        String address = "central-console"+IP1;
-//        String value = (String) memCachedClient.get(address);
-//        if (value == null) {
-//            value = "1";
-//        } else {
-//            value = "0";
-//        }
-//        webSocket.sendMessage(value);
         return "welcome";
+    }
+
+    @RequestMapping("/index2")
+    public String index2(){
+        return "index2";
     }
 
 }

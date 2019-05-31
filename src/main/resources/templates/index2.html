@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>场景</title>
+    <style>
+        .container {
+            width: 650px;
+            margin: 30px auto;
+            border: 1px solid #bbb;
+            padding: 20px;
+        }
+
+        .clearfix::after {
+            display: block;
+            content: '';
+            height: 0;
+            clear: both;
+            visibility: hidden
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .clearfix {
+            zoom: 1
+        }
+
+        .f-l {
+            float: left
+        }
+
+        .f-r {
+            float: right
+        }
+
+        .part {
+            width: 150px;
+            border: 1px solid #bbb;
+            margin: 30px;
+        }
+
+        .scene-nav {
+            height: 40px;
+            line-height: 40px;
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        .scene-content {
+            height: 100px;
+            vertical-align: bottom;
+        }
+
+        .p-r {
+            position: relative
+        }
+
+        .p-a {
+            position: absolute
+        }
+
+        .scene-content select {
+            left: 0;
+            bottom: 0;
+            width: 64px;
+            height: 30px;
+            margin: 15px 10px;
+        }
+
+        .scene-content button {
+            right: 0;
+            bottom: 0;
+
+            margin: 15px 10px;
+
+        }
+
+        .scene-content label {
+            right: 0;
+            bottom: 0;
+
+            margin: 15px;
+        }
+
+        button {
+            width: 55px;
+            height: 30px;
+            background-color: #3598db;
+            border: 1px solid #3598db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .nav {
+            margin-bottom: 40px;
+        }
+
+        button.off {
+            background-color: #bbb;
+            border: 1px solid #bbb;
+        }
+    </style>
+</head>
+<body>
+<h2>智能照明展厅控制系统</h2>
+<div class="container">
+    <div class="nav">
+        <label>全展厅： </label>
+        <button type="button">ON</button>
+        <input type="hidden" id="all" value="all">
+    </div>
+    <div class="content clearfix">
+        <div class="f-l part">
+            <div class="scene-nav">茶室</div>
+            <div class="clearfix scene-content p-r">
+                <select name="" id="" class="p-a">
+                    <option value="场景一">场景一</option>
+                    <option value="场景二">场景二</option>
+                    <option value="场景三">场景三</option>
+                    <option value="场景四">场景四</option>
+                    <option value="场景五">场景五</option>
+                    <option value="场景六">场景六</option>
+                    <option value="场景七">场景七</option>
+                    <option value="场景八">场景八</option>
+                </select>
+                <input type="hidden" id="cs" value="192.168.1.4">
+                <button type="button" class="p-a">ON</button>
+            </div>
+        </div>
+        <div class="f-l part">
+            <div class="scene-nav">活动室</div>
+            <div class="clearfix scene-content p-r">
+                <select name="" id="" class="p-a">
+                    <option value="场景一">场景一</option>
+                    <option value="场景二">场景二</option>
+                    <option value="场景三">场景三</option>
+                    <option value="场景四">场景四</option>
+                    <option value="场景五">场景五</option>
+                    <option value="场景六">场景六</option>
+                    <option value="场景七">场景七</option>
+                    <option value="场景八">场景八</option>
+                </select>
+                <input type="hidden" id="hds" value="192.168.1.5">
+                <button type="button" class="p-a">ON</button>
+
+            </div>
+        </div>
+        <div class="f-l part">
+            <div class="scene-nav">客餐厅</div>
+            <div class="clearfix scene-content p-r">
+                <select name="" id="" class="p-a">
+                    <option value="场景一">场景一</option>
+                    <option value="场景二">场景二</option>
+                    <option value="场景三">场景三</option>
+                    <option value="场景四">场景四</option>
+                    <option value="场景五">场景五</option>
+                    <option value="场景六">场景六</option>
+                    <option value="场景七">场景七</option>
+                    <option value="场景八">场景八</option>
+                </select>
+                <input type="hidden" id="cct" value="192.168.1.6">
+                <button type="button" class="p-a">ON</button>
+
+            </div>
+        </div>
+        <div class="f-l part">
+            <div class="scene-nav">办公大厅</div>
+            <div class="clearfix scene-content p-r">
+                <select name="" id="" class="p-a">
+                    <option value="场景一">场景一</option>
+                    <option value="场景二">场景二</option>
+                    <option value="场景三">场景三</option>
+                    <option value="场景四">场景四</option>
+                    <option value="场景五">场景五</option>
+                    <option value="场景六">场景六</option>
+                    <option value="场景七">场景七</option>
+                    <option value="场景八">场景八</option>
+                </select>
+                <input type="hidden" id="dgdt" value="192.168.1.8">
+                <button type="button" class="p-a">ON</button>
+
+            </div>
+        </div>
+        <div class="f-l part">
+            <div class="scene-nav">洽谈室</div>
+            <div class="clearfix scene-content p-r">
+                <select name="" id="" class="p-a">
+                    <option value="场景一">场景一</option>
+                    <option value="场景二">场景二</option>
+                    <option value="场景三">场景三</option>
+                    <option value="场景四">场景四</option>
+                    <option value="场景五">场景五</option>
+                    <option value="场景六">场景六</option>
+                    <option value="场景七">场景七</option>
+                    <option value="场景八">场景八</option>
+                </select>
+                <input type="hidden" id="qts" value="192.168.1.7">
+                <button type="button" class="p-a">ON</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/jquery.min.js"></script>
+<script>
+
+    $(function () {
+        $('button').click(function () {
+            $(this).toggleClass('off');
+            var command = $.trim($(this).text());
+            var button = $(this);
+            var host = $.trim($(this).prev().val());
+            $.post("/sendSocket4", {"command": command, "host": host}, function (msg) {
+                var success = msg.success;
+                if (success) {
+                    if (command == 'ON') {
+                        button.text('OFF');
+                    } else {
+                        button.text('ON');
+                    }
+                }
+            });
+
+        });
+
+
+        $("select").change(function () {
+            var command = $.trim($(this).val());
+            var host = $.trim($(this).next().val());
+            $.post("/sendSocket5", {"command": command, "host": host}, function () {
+
+            })
+        });
+    })
+
+
+</script>
+</body>
+</html>

@@ -9,10 +9,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
  */
+@Component
 public class ServerMain {
 
 
