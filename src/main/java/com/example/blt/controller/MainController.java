@@ -1,13 +1,16 @@
 package com.example.blt.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.blt.service.CacheableService;
 import com.example.blt.utils.SocketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cache.Cache;
+import org.springframework.cache.guava.GuavaCacheManager;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -180,6 +183,58 @@ public class MainController {
         String cmd= host+":"+command;
         SocketUtil.sendCmd2(host, cmd);
         map.put("success", success);
+        return map;
+    }
+
+//    private static Cache<String, String> cache;
+//    static {
+//         cache = CacheBuilder.newBuilder()
+//                .maximumSize(100) // 设置缓存的最大容量
+//                .concurrencyLevel(10) // 设置并发级别为10
+//                .recordStats() // 开启缓存统计
+//                .build();
+//    }
+
+    @Resource
+    private CacheableService cacheableService;
+
+    @Resource
+    private GuavaCacheManager guavaCacheManager;
+
+    @RequestMapping(value = "/getMsgByMF", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> getMsgByMF( @RequestBody String params){
+
+        Map<String,String> map = new HashMap<>();
+        map.put("result","success");
+        System.out.println(params);
+        JSONObject jsonObject = JSONObject.parseObject(params);
+        String msg = jsonObject.getString("msg");
+        String type = jsonObject.getString("type");
+        Cache cache = guavaCacheManager.getCache("msg");
+        cache.put(type,msg);
+        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("msg").get(type);
+        System.out.println(new Date()+" : "+valueWrapper.get());
+        return map;
+    }
+
+    @RequestMapping(value = "/getMsgByMF2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> getMsgByMF2( @RequestBody String params){
+
+        Map<String,String> map = new HashMap<>();
+        map.put("result","success");
+        System.out.println(params);
+        JSONObject jsonObject = JSONObject.parseObject(params);
+        String msg = jsonObject.getString("msg");
+        String type = jsonObject.getString("type");
+        cacheableService.setCache(type,msg );
+//        System.out.println(new Date()+" : "+msg);
+//        Cache cache = guavaCacheManager.getCache("msg");
+//        cache.put(type,msg);
+        msg = cacheableService.getCache(type);
+        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("msg").get(type);
+        System.out.println(new Date()+" : "+msg);
         return map;
     }
 

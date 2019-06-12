@@ -29,6 +29,12 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 //        MemCachedClient memCachedClient = new MemCachedClient();
 //        redisTemplate= new RedisTemplate<>();
         Channel channel = arg0.channel();
+        String clientAddress=null ;
+        if ("0".equals(arg1)){
+            //获取接收数据为0的地址
+            clientAddress = String.valueOf(channel.remoteAddress());
+            clientAddress = clientAddress.substring(1,clientAddress.lastIndexOf(":"));
+        }
 //        //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             if (ch.remoteAddress() != null) {
@@ -42,8 +48,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         System.out.println("发送成功");
                         break;
                     }
-                } else {
-                    ch.writeAndFlush(arg1);
+                }else if ("0".equals(arg1)){
+                    if (clientAddress!=null&&clientAddress.equals(address1)){
+                        //只发送接收数据为0的消息
+                        ch.writeAndFlush(arg1);
+                    }
                 }
             }
         }
