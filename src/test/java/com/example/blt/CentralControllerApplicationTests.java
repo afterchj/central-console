@@ -1,72 +1,72 @@
-package com.example.blt;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.Cache;
-import org.springframework.cache.guava.GuavaCacheManager;
-import org.springframework.test.context.junit4.SpringRunner;
-import redis.clients.jedis.Jedis;
-
-import javax.annotation.Resource;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//随机生成一个端口号
-public class CentralControllerApplicationTests {
-
-//	@Autowired
-//	public MemCachedClient memCachedClient;
-
+//package com.example.blt;
+//
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.cache.guava.GuavaCacheManager;
+//import org.springframework.test.context.junit4.SpringRunner;
+//import redis.clients.jedis.Jedis;
+//
+//import javax.annotation.Resource;
+//
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//随机生成一个端口号
+//public class CentralControllerApplicationTests {
+//
+////	@Autowired
+////	public MemCachedClient memCachedClient;
+//
+////	@Resource
+////	private RedisTemplate<String,String> redisTemplate;
+//	@Test
+//	public void contextLoads() {
+//	}
+//
+//	@Test
+//	public void test(){
+//		String value = "50738";
+//		if (value.contains(":")){
+//			value = value.substring(0,value.lastIndexOf(":"));
+//			System.out.println("value: "+value);
+//		}else {
+//			System.out.println("error");
+//		}
+//
+//	}
+//
+//	@Test
+//	public void test2(){
+//		String address = "central-console192.168.16.103";
+////		memCachedClient.set(address,"0",new Date(100000));
+////		Object value = memCachedClient.get(address);
+////		memCachedClient.delete(address);
+////		System.out.println("value: "+value);
+//	}
+//
+//	@Test
+//	public void test3(){
+////        System.out.println(IP.IP1.getValue());
+////		redisTemplate.opsForValue().set("test","test",100000, TimeUnit.MILLISECONDS);
+////		String key = redisTemplate.opsForValue().get("test");
+////		System.out.println("key: "+key);
+//
+//		Jedis jedis = new Jedis("127.0.0.1",6379);
+//		jedis.auth("Tp123456");
+////		jedis.setex("test",10,"test");
+//		System.out.println(jedis.get("test"));
+//	}
+//
 //	@Resource
-//	private RedisTemplate<String,String> redisTemplate;
-	@Test
-	public void contextLoads() {
-	}
-
-	@Test
-	public void test(){
-		String value = "50738";
-		if (value.contains(":")){
-			value = value.substring(0,value.lastIndexOf(":"));
-			System.out.println("value: "+value);
-		}else {
-			System.out.println("error");
-		}
-
-	}
-
-	@Test
-	public void test2(){
-		String address = "central-console192.168.16.103";
-//		memCachedClient.set(address,"0",new Date(100000));
-//		Object value = memCachedClient.get(address);
-//		memCachedClient.delete(address);
-//		System.out.println("value: "+value);
-	}
-
-	@Test
-	public void test3(){
-//        System.out.println(IP.IP1.getValue());
-//		redisTemplate.opsForValue().set("test","test",100000, TimeUnit.MILLISECONDS);
-//		String key = redisTemplate.opsForValue().get("test");
-//		System.out.println("key: "+key);
-
-		Jedis jedis = new Jedis("127.0.0.1",6379);
-		jedis.auth("Tp123456");
-//		jedis.setex("test",10,"test");
-		System.out.println(jedis.get("test"));
-	}
-
-	@Resource
-	private GuavaCacheManager guavaCacheManager;
-
-	@Test
-	public void test4(){
-        // 通过CacheBuilder构建一个缓存实例
-        Cache test = guavaCacheManager.getCache("test");
-        for (int i=0;i<10000;i++){
-            test.put(i,i);
-        }
-    }
-
-}
+//	private GuavaCacheManager guavaCacheManager;
+//
+//	@Test
+//	public void test4(){
+//		byte[] allocation1, allocation2,allocation3,allocation4,allocation5;
+//		allocation1 = new byte[32000*1024];
+//		allocation2 = new byte[1000*1024];
+//		allocation3 = new byte[1000*1024];
+//		allocation4 = new byte[1000*1024];
+//		allocation5 = new byte[1000*1024];
+//    }
+//
+//}

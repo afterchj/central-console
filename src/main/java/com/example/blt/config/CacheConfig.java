@@ -27,4 +27,5 @@ public class CacheConfig {
         guavaCacheManager.setCacheNames(guavaCacheNames);
         return guavaCacheManager;
     }
+
 }
