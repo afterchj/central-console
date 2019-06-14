@@ -1,9 +1,12 @@
 package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.dao.LightListDao;
+import com.example.blt.entity.LightDemo;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +31,8 @@ public class HomeController {
 //    @Resource
 //    private WebSocket webSocket;
 
-//    private final static String IP1 = "192.168.16.103";
+    @Resource
+    private LightListDao lightListDao;
 
     @RequestMapping("/")
     public String index() {
@@ -42,6 +47,19 @@ public class HomeController {
     @RequestMapping("/index2")
     public String index2(){
         return "index2";
+    }
+
+    @RequestMapping("/monitor")
+    public String monitor(Model model){
+        List<Map<String,Object>> centerLNumList = lightListDao.getCenterLNum();
+        List<LightDemo> placeLNumList = lightListDao.getPlaceLNum();
+        model.addAttribute("centerLState","");//每个楼层灯的总开关状态
+        model.addAttribute("placeLState","");//每个区域灯的总开关状态
+        model.addAttribute("centerLNumList",centerLNumList);//每个楼层灯总个数
+        model.addAttribute("placeLNumList",placeLNumList);//每个区域的灯个数
+        model.addAttribute("lightState","");//所有灯的状态
+
+        return "monitor";
     }
 
     @Resource
