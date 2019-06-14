@@ -1,5 +1,7 @@
 package com.example.blt.netty;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,6 +12,8 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.net.SocketAddress;
 
 /**
  * 服务器主要的业务逻辑
@@ -29,34 +33,40 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 //        MemCachedClient memCachedClient = new MemCachedClient();
 //        redisTemplate= new RedisTemplate<>();
         Channel channel = arg0.channel();
-        String clientAddress=null ;
-        if ("0".equals(arg1)){
-            //获取接收数据为0的地址
-            clientAddress = String.valueOf(channel.remoteAddress());
-            clientAddress = clientAddress.substring(1,clientAddress.lastIndexOf(":"));
-        }
-//        //当有用户发送消息的时候，对其他用户发送信息
+        //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
-            if (ch.remoteAddress() != null) {
-                String address1 = String.valueOf(ch.remoteAddress());
-                address1 = address1.substring(1, address1.lastIndexOf(":"));
-                if (arg1.contains(":")) {
-                    String address = arg1.substring(0, arg1.lastIndexOf(":"));
-                    String value = arg1.substring(arg1.lastIndexOf(":") + 1);
-                    if (address.equals(address1)) {
-                        ch.writeAndFlush(value);
-                        System.out.println("发送成功");
-                        break;
+            SocketAddress address = ch.remoteAddress();
+            if (address != null) {
+                String str = address.toString();
+                String ip = str.substring(1, str.indexOf(":"));
+                try {
+                    JSONObject jsonObject = JSON.parseObject(arg1);
+                    String cmd = jsonObject.getString("cmd");
+                    String to = jsonObject.getString("to");
+                    logger.info("[" + ip + "/" + channel.id() + "] cmd: " + arg1);
+                    if (to.equals(ip)) {
+                        ch.writeAndFlush(cmd);
+                    } else {
+                        ch.writeAndFlush(cmd);
                     }
-                }else if ("0".equals(arg1)){
-                    if (clientAddress!=null&&clientAddress.equals(address1)){
-                        //只发送接收数据为0的消息
+                } catch (Exception e) {
+                    int index = arg1.indexOf(":");
+                    if (index != -1) {
+                        logger.info("[" + ip + "/" + channel.id() + "] receive cmd:" + arg1);
+                        String to = arg1.substring(0, index);
+                        String cmd = arg1.substring(index + 1);
+                        if (ip.equals(to)) {
+                            ch.writeAndFlush(cmd);
+                        } else {
+                            ch.writeAndFlush(cmd);
+                        }
+                    } else {
+                        logger.info("[" + ip + "/" + channel.id() + "] receive cmd:" + arg1);
                         ch.writeAndFlush(arg1);
                     }
                 }
             }
         }
-        logger.info("[" + channel.remoteAddress() + "]: " + arg1);
 //        if ("0".equals(arg1)) {
 //            String address = String.valueOf(channel.remoteAddress());
 //            address = address.substring(1, address.lastIndexOf(":"));

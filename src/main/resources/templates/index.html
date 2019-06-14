@@ -13,13 +13,13 @@
     });
     function sendCmd(id) {
         console.log("id", id);
-        var cmd = $("#" + id).val();
-        console.log("value", cmd);
-        if (cmd == '1') {
-            $("#" + id).val("2");
+        var status = $("#" + id).text();
+        console.log("value", status);
+        if (status == '开') {
+            $("#" + id).val("77010315373766");
             $("#" + id).text("关")
         } else {
-            $("#" + id).val("1");
+            $("#" + id).val("77010315323266");
             $("#" + id).text("开")
         }
         $.get("/switch", {"cmd": $("#"+id).val(), "to": "all"}, function (result) {
@@ -31,12 +31,8 @@
 <h1>Welcome come to Spring Boot world!</h1>
 <p id="show"></p>
 <p>
-    <label for="btn1">模拟控制1：</label>
-    <button id="btn1" value="1" onclick="sendCmd(this.id)">开</button>
-</p>
-<p>
-    <label for="btn2">模拟控制2：</label>
-    <button id="btn2" value="1" onclick="sendCmd(this.id)">开</button>
+    <label for="btn1">一键控制：</label>
+    <button id="btn1" value="" onclick="sendCmd(this.id)">开</button>
 </p>
 </body>
 </html>

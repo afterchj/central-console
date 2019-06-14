@@ -1,7 +1,11 @@
 package com.example.blt.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.entity.ConsoleInfo;
+import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
+import com.example.blt.task.ControlTask;
 import com.example.blt.utils.SocketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +28,14 @@ public class MainController {
 //    private MemCachedClient memCachedClient;
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
-
+    private ClientMain clientMain = new ClientMain();
 
     @RequestMapping("/switch")
-    public String console(String cmd) {
-        logger.info("cmd=" + cmd);
-        SocketUtil.sendCmd(cmd);
-        return "ok";
+    public String console(ConsoleInfo consoleInfo) {
+        String info = JSON.toJSONString(consoleInfo);
+        ControlTask task = new ControlTask(clientMain, info, true);
+        String result = task.executeTask();
+        return result;
     }
 
 //    @RequestMapping("/getMemcacheAddress")
