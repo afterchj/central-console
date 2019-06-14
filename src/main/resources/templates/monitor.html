@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>实验室互联网状态监察Demo</title>
+    <style>
+        abbr,
+        address,
+        article,
+        aside,
+        audio,
+        b,
+        blockquote,
+        body,
+        canvas,
+        caption,
+        cite,
+        code,
+        dd,
+        del,
+        details,
+        dfn,
+        div,
+        dl,
+        dt,
+        em,
+        fieldset,
+        figcaption,
+        figure,
+        footer,
+        form,
+        header,
+        hgroup,
+        html,
+        i,
+        iframe,
+        img,
+        ins,
+        kbd,
+        label,
+        legend,
+        li,
+        mark,
+        menu,
+        nav,
+        object,
+        ol,
+        p,
+        pre,
+        q,
+        samp,
+        section,
+        small,
+        span,
+        strong,
+        sub,
+        summary,
+        sup,
+        table,
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        time,
+        tr,
+        ul,
+        var,
+        video {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            outline-style: none;
+            border: 0;
+            vertical-align: baseline;
+            font-size: 100%
+        }
+
+        table {
+            border-collapse: unset;
+            border-spacing: 0
+        }
+
+        body {
+            width: 100%;
+            background: #fff;
+            color: #323232;
+            font: 14px Helvetica Neue, Helvetica, PingFang SC, \5FAE\8F6F\96c5\9ED1, Tahoma, Arial, sans-serif;
+            line-height: 24px;
+            zoom: 1
+        }
+
+        a {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            color: #3598db;
+            vertical-align: baseline;
+            text-decoration: none;
+            font-size: 100%
+        }
+
+        a.k-link:focus,
+        a.k-link:hover {
+            outline-style: none;
+            border-bottom: 1px solid #003e68;
+            color: #003e68;
+            text-decoration: none
+        }
+
+        .p-r {
+            position: relative
+        }
+
+        .p-a {
+            position: absolute
+        }
+
+        .clearfix:after {
+            clear: both;
+            display: block;
+            visibility: hidden;
+            height: 0;
+            content: ''
+        }
+
+        ul li {
+            list-style-type: none
+        }
+
+        .clearfix {
+            zoom: 1
+        }
+
+        .f-l {
+            float: left
+        }
+
+        .f-r {
+            float: right
+        }
+
+        .container {
+            margin: 30px auto;
+            width: 96%;
+            max-width: 975pt;
+            text-align: center
+        }
+
+        .floor {
+            margin-bottom: 20px;
+            border: 1px solid #bbb
+        }
+
+        /* .five-floor.pff,.four-floor.pff,.one-floor.pff,.three-floor.off,.two-floor.off {
+                background-color: #ccc
+            } */
+
+        .light {
+            margin: 10px 0;
+            width: 24.4%;
+            border: 1px solid #bbb;
+            border-right: 0;
+            background-color: #fff
+        }
+
+        .light.warning {
+            background-color: red
+        }
+
+        .light:last-child {
+            margin-right: 10px;
+            border-right: 1px solid #bbb
+        }
+
+        .light p {
+            padding: 10px 10px 0
+        }
+
+        .light-list {
+            width: 85%
+        }
+
+        .floor-name {
+            width: 15%
+        }
+
+        .group {
+            margin: 10px;
+            padding: 5px;
+            max-height: 24px;
+            min-height: 20px;
+            border: 1px solid #bbb
+        }
+
+        .group,
+        .light-foot {
+            background-color: #fff
+        }
+
+        .light-foot {
+            margin-top: 10px;
+            padding: 2px 10px;
+            border-top: 1px solid #bbb
+        }
+
+        .group img {
+            margin: auto;
+            width: 65%;
+            max-width: 18px
+        }
+
+        .group span {
+            display: inline-block
+        }
+
+        .group>span:first-child {
+            width: 26%;
+            height: 24px;
+            text-align: left;
+            line-height: 24px
+        }
+
+        .group>span:last-child {
+            width: 74%
+        }
+
+        .group>span:last-child>span {
+            width: 21.5%;
+            text-align: right
+        }
+
+        .floor-name p {
+            min-height: 75pt;
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 75pt
+        }
+
+        .status {
+            display: inline-block;
+            width: 50%;
+            height: 26px;
+            text-align: left;
+            line-height: 26px
+        }
+
+        .status img {
+            width: 35%;
+            max-width: 25px;
+            vertical-align: text-bottom
+        }
+
+        .num {
+            height: 26px;
+            line-height: 26px
+        }
+
+        .floor-name img {
+            width: 30%
+        }
+
+        .page {
+            bottom: 10px;
+            width: 15%
+        }
+
+        .light-status-explain label {
+            display: inline-block;
+            margin-top: 4%;
+            width: 75pt;
+            text-align: center;
+            font-weight: 600;
+            font-size: 15px
+        }
+
+        .light-status-explain span {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle
+        }
+
+        .line>span:first-child {
+            width: 50px;
+            text-align: center
+        }
+
+        .line>span:first-child img.bulb {
+            width: 45%
+        }
+
+        .line>span:first-child img.exclamation {
+            width: 65%
+        }
+
+        .line {
+            margin-bottom: 15px;
+            text-align: left
+        }
+
+        .group .abnormal {
+            width: 100%;
+            max-width: 25px;
+            border-radius: 50%
+        }
+        .floor:nth-of-type(odd){
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>实验室互联网状态监察Demo</h3>
+        <div class="five-floor floor clearfix p-r" id="five-center">
+            <div class="floor-name f-l">
+                <p>五楼</p>
+                <div>
+                    <!-- <img src="img/2.png" alt=""> -->
+                </div>
+                <div class="page p-a">
+                    <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='5楼'}"
+                          th:text="${centerLNum.centerLNum}">
+                    </span><span>/
+                </span><span>48</span>
+                </div>
+            </div>
+            <div class="clearfix f-r light-list">
+                <div class="light f-l ">
+                    <p>区域1</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组1</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="1"></span>
+                            <span><img src="img/4.png" alt="2"></span>
+                            <span><img src="img/4.png" alt="3"></span>
+                            <span><img src="img/4.png" alt="4"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组2</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="5"></span>
+                            <span><img src="img/4.png" alt="6"></span>
+                            <span><img src="img/4.png" alt="7"></span>
+                            <span><img src="img/4.png" alt="8"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组3</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="9"></span>
+                            <span><img src="img/4.png" alt="10"></span>
+                            <span><img src="img/4.png" alt="11"></span>
+                            <span><img src="img/4.png" alt="12"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r" >12/12</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域2</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组4</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="13"></span>
+                            <span><img src="img/4.png" alt="14"></span>
+                            <span><img src="img/4.png" alt="15"></span>
+                            <span><img src="img/4.png" alt="16"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组5</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="17"></span>
+                            <span><img src="img/4.png" alt="18"></span>
+                            <span><img src="img/4.png" alt="19"></span>
+                            <span><img src="img/4.png" alt="20"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组6</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="21"></span>
+                            <span><img src="img/4.png" alt="22"></span>
+                            <span><img src="img/4.png" alt="23"></span>
+                            <span><img src="img/4.png" alt="24"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域3</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组7</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="25"></span>
+                            <span><img src="img/4.png" alt="26"></span>
+                            <span><img src="img/4.png" alt="27"></span>
+                            <span><img src="img/4.png" alt="28"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组8</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="29"></span>
+                            <span><img src="img/4.png" alt="30"></span>
+                            <span><img src="img/4.png" alt="31"></span>
+                            <span><img src="img/4.png" alt="32"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组9</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="33"></span>
+                            <span><img src="img/4.png" alt="34"></span>
+                            <span><img src="img/4.png" alt="35"></span>
+                            <span><img src="img/4.png" alt="36"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light  f-l">
+                    <p>区域4</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组10</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="37"></span>
+                            <span><img src="img/4.png" alt="38"></span>
+                            <span><img src="img/4.png" alt="39"></span>
+                            <span><img src="img/4.png" alt="40"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组11</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="41"></span>
+                            <span><img src="img/4.png" alt="42"></span>
+                            <span><img src="img/4.png" alt="43"></span>
+                            <span><img src="img/4.png" alt="44"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组12</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="45"></span>
+                            <span><img src="img/4.png" alt="46"></span>
+                            <span><img src="img/4.png" alt="47"></span>
+                            <span><img src="img/4.png" alt="48"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="four-floor floor clearfix p-r" id="four-center">
+            <div class="floor-name f-l">
+                <p>四楼</p>
+                <div>
+                    <!-- <img src="img/2.png" alt=""> -->
+                </div>
+                <div class="page p-a">
+                    <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='4楼'}"
+                          th:text="${centerLNum.centerLNum}">
+                    </span><span>/</span><span>48</span>
+                </div>
+            </div>
+            <div class="clearfix f-r light-list">
+                <div class="light f-l ">
+                    <p>区域1</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组1</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="1"></span>
+                            <span><img src="img/4.png" alt="2"></span>
+                            <span><img src="img/4.png" alt="3"></span>
+                            <span><img src="img/4.png" alt="4"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组2</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="5"></span>
+                            <span><img src="img/4.png" alt="6"></span>
+                            <span><img src="img/4.png" alt="7"></span>
+                            <span><img src="img/4.png" alt="8"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组3</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="9"></span>
+                            <span><img src="img/4.png" alt="10"></span>
+                            <span><img src="img/4.png" alt="11"></span>
+                            <span><img src="img/4.png" alt="12"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light  f-l">
+                    <p>区域2</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组4</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="13"></span>
+                            <span><img src="img/4.png" alt="14"></span>
+                            <span><img src="img/4.png" alt="15"></span>
+                            <span><img src="img/4.png" alt="16"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组5</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="17"></span>
+                            <span><img src="img/4.png" alt="18"></span>
+                            <span><img src="img/4.png" alt="19"></span>
+                            <span><img src="img/4.png" alt="20"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组6</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="21"></span>
+                            <span><img src="img/4.png" alt="22"></span>
+                            <span><img src="img/4.png" alt="23"></span>
+                            <span><img src="img/4.png" alt="24"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域3</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组7</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="25"></span>
+                            <span><img src="img/4.png" alt="26"></span>
+                            <span><img src="img/4.png" alt="27"></span>
+                            <span><img src="img/4.png" alt="28"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组8</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="29"></span>
+                            <span><img src="img/4.png" alt="30"></span>
+                            <span><img src="img/4.png" alt="31"></span>
+                            <span><img src="img/4.png" alt="32"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组9</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="33"></span>
+                            <span><img src="img/4.png" alt="34"></span>
+                            <span><img src="img/4.png" alt="35"></span>
+                            <span><img src="img/4.png" alt="36"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light  f-l">
+                    <p>区域4</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组10</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="37"></span>
+                            <span><img src="img/4.png" alt="38"></span>
+                            <span><img src="img/4.png" alt="39"></span>
+                            <span><img src="img/4.png" alt="40"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组11</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="41"></span>
+                            <span><img src="img/4.png" alt="42"></span>
+                            <span><img src="img/4.png" alt="43"></span>
+                            <span><img src="img/4.png" alt="44"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组12</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="45"></span>
+                            <span><img src="img/4.png" alt="46"></span>
+                            <span><img src="img/4.png" alt="47"></span>
+                            <span><img src="img/4.png" alt="48"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="three-floor floor clearfix p-r" id="third-center">
+            <div class="floor-name f-l ">
+                <p>三楼</p>
+                <div class="page p-a">
+                    <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='3楼'}"
+                          th:text="${centerLNum.centerLNum}">
+                    </span><span>/</span><span>47</span>
+                </div>
+            </div>
+            <div class="clearfix f-r light-list">
+                <div class="light f-l ">
+                    <p>区域1</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组1</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="1"></span>
+                            <span><img src="img/4.png" alt="2"></span>
+                            <span><img src="img/4.png" alt="3"></span>
+                            <span><img src="img/4.png" alt="4"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组2</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="5"></span>
+                            <span><img src="img/4.png" alt="6"></span>
+                            <span><img src="img/4.png" alt="7"></span>
+                            <span><img src="img/4.png" alt="8"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组3</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="9"></span>
+                            <span><img src="img/4.png" alt="10"></span>
+                            <span><img src="img/4.png" alt="11"></span>
+                            <span><img src="img/4.png" alt="12"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域2</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组4</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="13"></span>
+                            <span><img src="img/4.png" alt="14"></span>
+                            <span><img src="img/4.png" alt="15"></span>
+                            <span><img src="img/4.png" alt="16"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组5</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="17"></span>
+                            <span><img src="img/4.png" alt="18"></span>
+                            <span><img src="img/4.png" alt="19"></span>
+                            <span><img src="img/4.png" alt="20"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组6</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="21"></span>
+                            <span><img src="img/4.png" alt="22"></span>
+                            <span><img src="img/4.png" alt="23"></span>
+                            <span><img src="img/4.png" alt="24"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域3</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组7</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="25"></span>
+                            <span><img src="img/4.png" alt="26"></span>
+                            <span><img src="img/4.png" alt="27"></span>
+                            <span><img src="img/4.png" alt="28"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组8</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="29"></span>
+                            <span><img src="img/4.png" alt="30"></span>
+                            <span><img src="img/4.png" alt="31"></span>
+                            <span><img src="img/4.png" alt="32"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组9</span>
+                        <span class="f-r">
+                            <span>
+                                <!-- <img src="img/3.png" alt=""> -->
+                            </span>
+                            <span><img src="img/4.png" alt="34"></span>
+                            <span><img src="img/4.png" alt="35"></span>
+                            <span><img src="img/4.png" alt="36"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/11</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域4</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组10</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="37"></span>
+                            <span><img src="img/4.png" alt="38"></span>
+                            <span><img src="img/4.png" alt="39"></span>
+                            <span><img src="img/4.png" alt="40"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组11</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="41"></span>
+                            <span><img src="img/4.png" alt="42"></span>
+                            <span><img src="img/4.png" alt="43"></span>
+                            <span><img src="img/4.png" alt="44"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组12</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="45"></span>
+                            <span><img src="img/4.png" alt="46"></span>
+                            <span><img src="img/4.png" alt="47"></span>
+                            <span><img src="img/4.png" alt="48"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="two-floor floor clearfix p-r off" id="tow-center">
+            <div class="floor-name f-l ">
+                <p>二楼</p>
+                <div>
+                    <!-- <img src="img/1.png" alt=""> -->
+                </div>
+                <div class="page p-a">
+                    <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='2楼'}"
+                          th:text="${centerLNum.centerLNum}">
+                    </span><span>/</span><span>45</span>
+                </div>
+            </div>
+            <div class="clearfix f-r light-list">
+                <div class="light f-l ">
+                    <p>区域1</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组1</span>
+                        <span class="f-r">
+                            <span>
+                                <!-- <img src="img/4.png" alt=""> -->
+                            </span>
+                            <span><img src="img/4.png" alt="2"></span>
+                            <span><img src="img/4.png" alt="3"></span>
+                            <span><img src="img/4.png" alt="4"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组2</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="5"></span>
+                            <span><img src="img/4.png" alt="6"></span>
+                            <span><img src="img/4.png" alt="7"></span>
+                            <span><img src="img/4.png" alt="8"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组3</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="9"></span>
+                            <span><img src="img/4.png" alt="10"></span>
+                            <span><img src="img/4.png" alt="11"></span>
+                            <span>
+                                <!-- <img src="img/3.png" alt=""> -->
+                            </span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/10</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域2</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组4</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="13"></span>
+                            <span><img src="img/4.png" alt="14"></span>
+                            <span><img src="img/4.png" alt="15"></span>
+                            <span><img src="img/4.png" alt="16"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组5</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="17"></span>
+                            <span><img src="img/4.png" alt="18"></span>
+                            <span><img src="img/4.png" alt="19"></span>
+                            <span>
+                                <!-- <img src="img/3.png" alt=""> -->
+                            </span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组6</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="21"></span>
+                            <span><img src="img/4.png" alt="22"></span>
+                            <span><img src="img/4.png" alt="23"></span>
+                            <span><img src="img/4.png" alt="24"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/11</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域3</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组7</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="25"></span>
+                            <span><img src="img/4.png" alt="26"></span>
+                            <span><img src="img/4.png" alt="27"></span>
+                            <span><img src="img/4.png" alt="28"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组8</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="29"></span>
+                            <span><img src="img/4.png" alt="30"></span>
+                            <span><img src="img/4.png" alt="31"></span>
+                            <span><img src="img/4.png" alt="32"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组9</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="33"></span>
+                            <span><img src="img/4.png" alt="34"></span>
+                            <span><img src="img/4.png" alt="35"></span>
+                            <span><img src="img/4.png" alt="36"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域4</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组10</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="37"></span>
+                            <span><img src="img/4.png" alt="38"></span>
+                            <span><img src="img/4.png" alt="39"></span>
+                            <span><img src="img/4.png" alt="40"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组11</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="41"></span>
+                            <span><img src="img/4.png" alt="42"></span>
+                            <span><img src="img/4.png" alt="43"></span>
+                            <span><img src="img/4.png" alt="44"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组12</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="45"></span>
+                            <span><img src="img/4.png" alt="46"></span>
+                            <span><img src="img/4.png" alt="47"></span>
+                            <span><img src="img/4.png" alt="48"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="one-floor floor clearfix p-r" id="one-center">
+            <div class="floor-name f-l">
+                <p>一楼</p>
+                <div>
+                    <!-- <img src="img/2.png" alt=""> -->
+                </div>
+                <div class="page p-a">
+                   <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='1楼'}"
+                         th:text="${centerLNum.centerLNum}">
+                    </span><span>/</span><span>48</span>
+                </div>
+            </div>
+            <div class="clearfix f-r light-list">
+                <div class="light f-l ">
+                    <p>区域1</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组1</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="1"></span>
+                            <span><img src="img/4.png" alt="2"></span>
+                            <span><img src="img/4.png" alt="3"></span>
+                            <span><img src="img/4.png" alt="4"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组2</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="5"></span>
+                            <span><img src="img/4.png" alt="6"></span>
+                            <span><img src="img/4.png" alt="7"></span>
+                            <span><img src="img/4.png" alt="8"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组3</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="9"></span>
+                            <span><img src="img/4.png" alt="10"></span>
+                            <span><img src="img/4.png" alt="11"></span>
+                            <span><img src="img/4.png" alt="12"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light  f-l">
+                    <p>区域2</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组4</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="13"></span>
+                            <span><img src="img/4.png" alt="14"></span>
+                            <span><img src="img/4.png" alt="15"></span>
+                            <span><img src="img/4.png" alt="16"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组5</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="17"></span>
+                            <span><img src="img/4.png" alt="18"></span>
+                            <span><img src="img/4.png" alt="19"></span>
+                            <span><img src="img/4.png" alt="20"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组6</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="21"></span>
+                            <span><img src="img/4.png" alt="22"></span>
+                            <span><img src="img/4.png" alt="23"></span>
+                            <span><img src="img/4.png" alt="24"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light f-l">
+                    <p>区域3</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组7</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="25"></span>
+                            <span><img src="img/4.png" alt="26"></span>
+                            <span><img src="img/4.png" alt="27"></span>
+                            <span><img src="img/4.png" alt="28"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组8</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="29"></span>
+                            <span><img src="img/4.png" alt="30"></span>
+                            <span><img src="img/4.png" alt="31"></span>
+                            <span><img src="img/4.png" alt="32"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组9</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="33"></span>
+                            <span><img src="img/4.png" alt="34"></span>
+                            <span><img src="img/4.png" alt="35"></span>
+                            <span><img src="img/4.png" alt="36"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON</span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+                <div class="light  f-l">
+                    <p>区域4</p>
+                    <div class="clearfix group">
+                        <span class="f-l">组10</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="37"></span>
+                            <span><img src="img/4.png" alt="38"></span>
+                            <span><img src="img/4.png" alt="39"></span>
+                            <span><img src="img/4.png" alt="40"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组11</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="41"></span>
+                            <span><img src="img/4.png" alt="42"></span>
+                            <span><img src="img/4.png" alt="43"></span>
+                            <span><img src="img/4.png" alt="44"></span>
+                        </span>
+                    </div>
+                    <div class="clearfix group">
+                        <span class="f-l">组12</span>
+                        <span class="f-r">
+                            <span><img src="img/4.png" alt="45"></span>
+                            <span><img src="img/4.png" alt="46"></span>
+                            <span><img src="img/4.png" alt="47"></span>
+                            <span><img src="img/4.png" alt="48"></span>
+                        </span>
+                    </div>
+
+                    <div class="light-foot clearfix">
+                        <span class="status f-l">ON
+                            <!-- <img src="img/2.png" alt=""> -->
+                        </span>
+                        <span class="num f-r">12/12</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="status-explain">
+            <div class="light-status-explain clearfix">
+                <label for="" class="f-l">灯的状态</label>
+                <div class="f-l">
+                    <div class="line">
+                        <span>
+                            <img src="img/3.PNG" alt="" class="bulb">
+                        </span>
+                        <span>
+                            表示灯正常，且亮着
+                        </span>
+                    </div>
+                    <div class="line">
+                        <span>
+                            <img src="img/4.PNG" alt="" class="bulb">
+                        </span>
+                        <span>
+                            表示灯正常，且关着
+                        </span>
+                    </div>
+                    <div class="line">
+                        <span>
+                            <img src="img/5.PNG" alt="" class="bulb abnormal">
+                        </span>
+                        <span>
+                            表示灯连接异常
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <hr style="border:1px dashed #bbb;height:0">
+            <div class="light-status-explain clearfix">
+                <label for="" class="f-l">区域状态</label>
+                <div class="f-l">
+                    <div class="line">
+                        <span>
+                            <!-- <img src="img/3.PNG" alt=""> -->ON
+                        </span>
+                        <span>
+                            表示区域内的灯全部打开
+                        </span>
+                    </div>
+                    <div class="line">
+                        <span>
+                            <!-- <img src="img/4.PNG" alt=""> -->OFF
+                        </span>
+                        <span>
+                            表示区域内的灯全部打开
+                        </span>
+                    </div>
+                    <div class="line">
+                        <span>
+                            <img src="/static/img/1.png" alt="" class="exclamation">
+                        </span>
+                        <span>
+                            表示区域内的灯开关状态不一致
+                        </span>
+                    </div>
+                    <div class="line">
+                        <span>
+                            <img src="img/2.PNG" alt="" class="exclamation">
+                        </span>
+                        <span>
+                            表示区域内有灯处于异常连接状态
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <hr style="border:1px dashed #bbb;height:0">
+            <div class="light-status-explain clearfix">
+                <label for="" class="f-l">楼层状态</label>
+                <div class="f-l">
+                    <div class="line">
+                        <span>
+                            <img src="img/1.PNG" alt="" class="exclamation">
+                        </span>
+                        <span>
+                            表示楼层内的灯开关状态不一致
+                        </span>
+                    </div>
+                    <div class="line">
+                        <span>
+                            <img src="img/2.PNG" alt="" class="exclamation">
+                        </span>
+                        <span>
+                            表示楼层内有灯处于异常连接状态
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/jquery-1.10.2.min.js"></script>
+    <script>
+        $(function () {
+
+                            var socket;
+                            if (typeof (WebSocket) == "undefined") {
+                                console.log("遗憾：您的浏览器不支持WebSocket");
+            //                    var shuaxin1 = setInterval(function () {
+            //                        shuaxin()
+            //                    }, 1000);
+            //
+            //                    function shuaxin() {
+            //                        $.ajax({
+            //                            url: "/getMemcacheAddress",
+            //                            data: "address=" + $("#ip1").text(),
+            //                            dataType: "json",
+            //                            type: "POST",
+            //                            success: function (data) {
+            //                                var value = data.value;
+            //                                if (value == "0") {
+            //                                    $("#msg1").text("连接成功");
+            //                                } else if (value == "1"){
+            //                                    $("#msg1").text("连接失败");
+            //                                }
+            //                            }
+            //                        });
+            //                    }
+                            } else {
+                                console.log("恭喜：您的浏览器支持WebSocket");
+                                //实现化WebSocket对象
+                                //指定要连接的服务器地址与端口建立连接
+                                //注意ws、wss使用不同的端口。我使用自签名的证书测试，
+                                //无法使用wss，浏览器打开WebSocket时报错
+                                //ws对应http、wss对应https。
+//                                socket = new WebSocket("ws://192.168.16.60:8080/ws/webSocket");
+                                socket = new WebSocket("ws://127.0.0.1:8080/ws/webSocket");
+                                //连接打开事件
+                                socket.onopen = function () {
+                                    console.log("Socket 已打开");
+            //                        socket.send("消息发送测试(From Client)");
+                                };
+                                //收到消息事件
+                                socket.onmessage = function (msg) {
+                                    console.log("total: "+JSON.parse(msg.data));
+                                    console.log("centerLNumList: "+JSON.parse(msg.data).centerLNumList);//每个楼层灯总个数
+                                    console.log("centerLState :"+JSON.parse(msg.data).centerLState);//每个楼层灯的总开关状态
+                                    console.log("lightState :"+JSON.parse(msg.data).lightState);//所有灯的状态
+                                    console.log("placeLNumList :"+JSON.parse(msg.data).placeLNumList);//每个区域的灯个数
+                                    console.log("placeLState :"+JSON.parse(msg.data).placeLState);//每个区域灯的总开关状态
+                                }
+                                ;
+                                //连接关闭事件
+                                socket.onclose = function () {
+                                    console.log("Socket已关闭");
+                                };
+                                //发生了错误事件
+                                socket.onerror = function () {
+                                    alert("Socket发生了错误");
+                                }
+
+                                //窗口关闭时，关闭连接
+                                window.unload = function () {
+                                    socket.close();
+                                };
+                            }
+        });
+    </script>
+</body>
+
+</html>
