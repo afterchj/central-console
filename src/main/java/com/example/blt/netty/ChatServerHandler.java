@@ -1,7 +1,5 @@
 package com.example.blt.netty;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,52 +9,66 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.SocketAddress;
+import org.springframework.stereotype.Component;
 
 /**
  * 服务器主要的业务逻辑
  */
+@Component
 @ChannelHandler.Sharable
 public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     private static Logger logger = LoggerFactory.getLogger(ChatServerHandler.class);
     //保存所有活动的用户
     public static final ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+//    @Resource
+//    private RedisTemplate<String,String> redisTemplate;
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
-//        Channel channel = arg0.channel();
-//        logger.info("[" + channel.remoteAddress() + "]: " + arg1);
-        //当有用户发送消息的时候，对其他用户发送信息
+//        MemCachedClient memCachedClient = new MemCachedClient();
+//        redisTemplate= new RedisTemplate<>();
+        Channel channel = arg0.channel();
+        String clientAddress=null ;
+        if ("0".equals(arg1)){
+            //获取接收数据为0的地址
+            clientAddress = String.valueOf(channel.remoteAddress());
+            clientAddress = clientAddress.substring(1,clientAddress.lastIndexOf(":"));
+        }
+//        //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
-            SocketAddress address = ch.remoteAddress();
-            if (address != null) {
-                String str = address.toString();
-                String ip = str.substring(1, str.indexOf(":"));
-                try {
-                    logger.info("[" + str + "]: " + arg1);
-                    JSONObject jsonObject = JSON.parseObject(arg1);
-                    String cmd = jsonObject.getString("cmd");
-                    String to = jsonObject.getString("to");
-                    if (to.equals(ip)) {
-                        ch.writeAndFlush(cmd);
-                    } else {
-                        ch.writeAndFlush(cmd);
+            if (ch.remoteAddress() != null) {
+                String address1 = String.valueOf(ch.remoteAddress());
+                address1 = address1.substring(1, address1.lastIndexOf(":"));
+                if (arg1.contains(":")) {
+                    String address = arg1.substring(0, arg1.lastIndexOf(":"));
+                    String value = arg1.substring(arg1.lastIndexOf(":") + 1);
+                    if (address.equals(address1)) {
+                        ch.writeAndFlush(value);
+                        System.out.println("发送成功");
+                        break;
                     }
-                } catch (Exception e) {
-                    int index = arg1.lastIndexOf(":");
-                    if (index != -1) {
-                        String cmd = arg1.substring(index + 1);
-                        logger.info("[" + str + "]: " + cmd);
-                        ch.writeAndFlush(cmd);
-                    } else {
+                }else if ("0".equals(arg1)){
+                    if (clientAddress!=null&&clientAddress.equals(address1)){
+                        //只发送接收数据为0的消息
                         ch.writeAndFlush(arg1);
-                        logger.info("[" + str + "]: " + arg1);
                     }
                 }
             }
         }
+        logger.info("[" + channel.remoteAddress() + "]: " + arg1);
+//        if ("0".equals(arg1)) {
+//            String address = String.valueOf(channel.remoteAddress());
+//            address = address.substring(1, address.lastIndexOf(":"));
+//            address = "central-console" + address;
+//            Jedis jedis = new Jedis("127.0.0.1",6379);
+//            jedis.auth("Tp123456");
+//            jedis.setex(address,21,arg1);
+//            System.out.println(jedis.get(address));
+////            redisTemplate.opsForValue().set(address,arg1,210000, TimeUnit.MILLISECONDS);
+////            System.out.println(redisTemplate.opsForValue().get(address));
+////            memCachedClient.set(address, arg1, new Date(21000));
+//        }
     }
 
     @Override
@@ -88,7 +100,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.info("[" + ctx.channel().remoteAddress() + "]" + "exit the room");
-        logger.info("[" + ctx.channel().remoteAddress() + "]" + cause.getMessage());
+        logger.info("[" + ctx.channel().remoteAddress() + "]" + cause.toString());
         ctx.close().sync();
     }
 }

@@ -1,17 +1,16 @@
 package com.example.blt.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.example.blt.entity.ConsoleInfo;
+import com.alibaba.fastjson.JSONObject;
+import com.example.blt.service.CacheableService;
 import com.example.blt.utils.SocketUtil;
-import com.whalin.MemCached.MemCachedClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cache.Cache;
+import org.springframework.cache.guava.GuavaCacheManager;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,33 +20,33 @@ import java.util.Map;
 
 @RestController
 public class MainController {
-    @Autowired
-    private MemCachedClient memCachedClient;
+//    @Autowired
+//    private MemCachedClient memCachedClient;
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
+
     @RequestMapping("/switch")
-    public String console(ConsoleInfo consoleInfo) {
-        String info = JSON.toJSONString(consoleInfo);
-        SocketUtil.sendCmd(info);
-        logger.info("info=" + info);
+    public String console(String cmd) {
+        logger.info("cmd=" + cmd);
+        SocketUtil.sendCmd(cmd);
         return "ok";
     }
 
-    @RequestMapping("/getMemcacheAddress")
-    public Map<String, String> getMemcacheAddress(String address) {
-        address = "central-console" + address;
-        String value = (String) memCachedClient.get(address);
-//        System.out.println("value: " + value);
-        Map<String, String> map = new HashMap<>();
-        if (value == null) {
-            value = "1";
-        } else {
-            value = "0";
-        }
-        map.put("value", value);
-        return map;
-    }
+//    @RequestMapping("/getMemcacheAddress")
+//    public Map<String, String> getMemcacheAddress(String address) {
+//        address = "central-console" + address;
+//        String value = (String) memCachedClient.get(address);
+////        System.out.println("value: " + value);
+//        Map<String, String> map = new HashMap<>();
+//        if (value == null) {
+//            value = "1";
+//        } else {
+//            value = "0";
+//        }
+//        map.put("value", value);
+//        return map;
+//    }
 
     @RequestMapping(value = "/sendSocket", method = RequestMethod.POST)
     @ResponseBody
@@ -59,7 +58,7 @@ public class MainController {
         } else if ("关".equals(command)) {
             command = "2";
         }
-        String cmd = host + ":" + command;
+        String cmd = host+":"+command;
         logger.info("cmd=" + command);
         String code = SocketUtil.sendCmd2(host, cmd);
         if ("1".equals(code)) {
@@ -82,8 +81,8 @@ public class MainController {
             command = "2";
         }
         logger.info("cmd=" + command);
-        String cmd1 = host1 + ":" + command;
-        String cmd2 = host2 + ":" + command;
+        String cmd1 = host1+":"+command;
+        String cmd2 = host2+":"+command;
         String code1 = SocketUtil.sendCmd2(host1, cmd1);
         String code2 = SocketUtil.sendCmd2(host2, cmd2);
         if ("1".equals(code1)) {
@@ -98,5 +97,146 @@ public class MainController {
         map.put("success2", success2);
         return map;
     }
+
+    @RequestMapping(value = "/sendSocket3", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> sendSocket3(String host, String command) {
+        Map<String, String> map = new HashMap<>();
+        String success = "success";
+        String cmd = host+":"+command;
+        logger.info("cmd=" + command);
+        String code = SocketUtil.sendCmd2(host, cmd);
+        if ("1".equals(code)) {
+//            失败
+            success = "error";
+        }
+        map.put("success", success);
+        return map;
+    }
+
+    @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> sendSocket4(String host, String command){
+        Map<String, String> map = new HashMap<>();
+        String success = "success";
+        String host1 = "192.168.1.4";//茶室
+        String host2 = "192.168.1.5";//活动室
+        String host3 = "192.168.1.6";//客餐厅
+        String host4 = "192.168.1.7";//洽谈室
+        String host5 = "192.168.1.8";//办公大厅
+        if (command.equalsIgnoreCase("ON")){
+            //开
+            command="77010315373766";
+        }else if (command.equalsIgnoreCase("OFF")){
+            //关
+            command="77010315323266";
+        }
+        if (host.equals("all")){
+            //向所有地址发信息
+            String cmd1= host1+":"+command;
+            String cmd2 = host2+":"+command;
+            String cmd3 = host3+":"+command;
+            String cmd4 = host4+":"+command;
+            String cmd5 = host5+":"+command;
+            String code1 = SocketUtil.sendCmd2(host1, cmd1);
+            String code2 = SocketUtil.sendCmd2(host2, cmd2);
+            String code3 = SocketUtil.sendCmd2(host3, cmd3);
+            String code4 = SocketUtil.sendCmd2(host4, cmd4);
+            String code5 = SocketUtil.sendCmd2(host5, cmd5);
+            if ("1".equals(code1)||"1".equals(code2)||"1".equals(code3)||"1".equals(code4)||"1".equals(code5)){
+                //            失败
+                success = "error";
+            }
+        }else {
+            String cmd= host+":"+command;
+            String code = SocketUtil.sendCmd2(host, cmd);
+            if ("1".equals(code)){
+                success = "error";
+            }
+        }
+        map.put("success", success);
+        return map;
+    }
+
+    @RequestMapping(value = "/sendSocket5", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> sendSocket5(String host, String command){
+        Map<String, String> map = new HashMap<>();
+        String success = "success";
+        if (command.equals("场景一")){
+            command="7701021901";
+        }else if (command.equals("场景二")){
+            command="7701021902";
+        }else if (command.equals("场景三")){
+            command="7701021903";
+        }else if (command.equals("场景四")){
+            command="7701021904";
+        }else if (command.equals("场景五")){
+            command="7701021905";
+        }else if (command.equals("场景六")){
+            command="7701021906";
+        }else if (command.equals("场景七")){
+            command="7701021907";
+        }else if (command.equals("场景八")){
+            command="7701021908";
+        }
+        String cmd= host+":"+command;
+        SocketUtil.sendCmd2(host, cmd);
+        map.put("success", success);
+        return map;
+    }
+
+//    private static Cache<String, String> cache;
+//    static {
+//         cache = CacheBuilder.newBuilder()
+//                .maximumSize(100) // 设置缓存的最大容量
+//                .concurrencyLevel(10) // 设置并发级别为10
+//                .recordStats() // 开启缓存统计
+//                .build();
+//    }
+
+    @Resource
+    private CacheableService cacheableService;
+
+    @Resource
+    private GuavaCacheManager guavaCacheManager;
+
+    @RequestMapping(value = "/getMsgByMF", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> getMsgByMF( @RequestBody String params){
+
+        Map<String,String> map = new HashMap<>();
+        map.put("result","success");
+        System.out.println(params);
+        JSONObject jsonObject = JSONObject.parseObject(params);
+        String msg = jsonObject.getString("msg");
+        String type = jsonObject.getString("type");
+        Cache cache = guavaCacheManager.getCache("msg");
+        cache.put(type,msg);
+        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("msg").get(type);
+        System.out.println(new Date()+" : "+valueWrapper.get());
+        return map;
+    }
+
+    @RequestMapping(value = "/getMsgByMF2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> getMsgByMF2( @RequestBody String params){
+
+        Map<String,String> map = new HashMap<>();
+        map.put("result","success");
+        System.out.println(params);
+        JSONObject jsonObject = JSONObject.parseObject(params);
+        String msg = jsonObject.getString("msg");
+        String type = jsonObject.getString("type");
+        cacheableService.setCache(type,msg );
+//        System.out.println(new Date()+" : "+msg);
+//        Cache cache = guavaCacheManager.getCache("msg");
+//        cache.put(type,msg);
+        msg = cacheableService.getCache(type);
+        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("msg").get(type);
+        System.out.println(new Date()+" : "+msg);
+        return map;
+    }
+
 
 }

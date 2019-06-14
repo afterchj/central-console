@@ -1,12 +1,18 @@
 package com.example.blt.controller;
 
-import com.example.blt.config.WebSocket;
-import com.whalin.MemCached.MemCachedClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.cache.Cache;
+import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
@@ -15,13 +21,13 @@ import javax.annotation.Resource;
 @Controller
 public class HomeController {
 
-    @Autowired
-    private MemCachedClient memCachedClient;
+//    @Autowired
+//    private MemCachedClient memCachedClient;
 
-    @Resource
-    private WebSocket webSocket;
+//    @Resource
+//    private WebSocket webSocket;
 
-    private final static String IP1 = "192.168.16.103";
+//    private final static String IP1 = "192.168.16.103";
 
     @RequestMapping("/")
     public String index() {
@@ -30,15 +36,32 @@ public class HomeController {
 
     @RequestMapping("/welcome")
     public String welcome(){
-//        String address = "central-console"+IP1;
-//        String value = (String) memCachedClient.get(address);
-//        if (value == null) {
-//            value = "1";
-//        } else {
-//            value = "0";
-//        }
-//        webSocket.sendMessage(value);
         return "welcome";
+    }
+
+    @RequestMapping("/index2")
+    public String index2(){
+        return "index2";
+    }
+
+    @Resource
+    private GuavaCacheManager guavaCacheManager;
+
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> get(@RequestBody String params){
+        JSONObject jsonObject = JSONObject.parseObject(params);
+        String type = jsonObject.getString("type");
+        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("test").get(type);
+        if (valueWrapper!=null){
+            System.out.println(new Date()+" : "+valueWrapper.get());
+        }else {
+            System.out.println(new Date()+" : NULL");
+        }
+
+        Map<String,String> map = new HashMap<>();
+        map.put("result","success");
+        return map;
     }
 
 }
