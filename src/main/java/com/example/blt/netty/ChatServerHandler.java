@@ -105,7 +105,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         HostInfo info = new HostInfo();
         info.setIp(ip);
         info.setStatus(channel.isActive());
-        ConsoleUtil.saveHostInfo(info);
+//        ConsoleUtil.saveHostInfo(info);
         logger.info("[" + ip + "] " + "online");
     }
 
@@ -115,7 +115,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String str = channel.remoteAddress().toString();
         String ip = str.substring(1, str.indexOf(":"));
-        ConsoleUtil.updateHost(ip, false);
+//        ConsoleUtil.updateHost(ip, false);
         logger.info("[" + channel.remoteAddress() + "] " + "offline");
     }
 

@@ -16,7 +16,7 @@ public interface HostDao extends JpaRepository<HostInfo, Integer> {
     @Transactional()
     @Modifying
     @Query("update HostInfo set status=?2 where ip=?1")
-    void updateByIp(String ip,boolean status);
+    void updateByIp(String ip, boolean status);
 
     @Transactional()
     @Modifying

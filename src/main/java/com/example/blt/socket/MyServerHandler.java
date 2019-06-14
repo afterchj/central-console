@@ -40,7 +40,7 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
             ConsoleInfo info=new ConsoleInfo();
             info.setIp(ip);
             info.setCmd(msg);
-            ConsoleUtil.saveConsole(info);
+//            ConsoleUtil.saveConsole(info);
         } catch (UnsupportedEncodingException e) {
             logger.error("UnsupportedEncodingException：" + e.getMessage());
             return null;
