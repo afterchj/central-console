@@ -10,7 +10,7 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name = "host_info")
+@Table(name = "t_host_info")
 public class HostInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,7 @@ public class HostInfo implements Serializable {
     @Column(length = 64)
     private String ip;
     private boolean status;
+    private String other;
     private Date create_date;
     private Date log_date;
 

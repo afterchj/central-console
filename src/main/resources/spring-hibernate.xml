@@ -68,7 +68,11 @@
         <property name="maxActive" value="${spring.datasource.max-active}" />
         <property name="minIdle" value="${spring.datasource.min-idle}" />
     </bean>
-
+    <!-- 事务入口 -->
+    <aop:config>
+        <aop:pointcut id="allServiceMethod" expression="execution(* com.example.blt.*.*(..))" />
+        <aop:advisor pointcut-ref="allServiceMethod" advice-ref="txAdvice" />
+    </aop:config>
     <!-- 事务 -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
@@ -82,10 +86,5 @@
             <tx:method name="insert*" propagation="REQUIRED" />
         </tx:attributes>
     </tx:advice>
-    <!-- 事务入口 -->
-    <aop:config>
-        <aop:pointcut id="allServiceMethod" expression="execution(* com.example.blt.*.*(..))" />
-        <aop:advisor pointcut-ref="allServiceMethod" advice-ref="txAdvice" />
-    </aop:config>
 
 </beans>

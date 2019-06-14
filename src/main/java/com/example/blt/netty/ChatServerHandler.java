@@ -44,7 +44,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 try {
                     JSONObject jsonObject = JSON.parseObject(arg1);
                     String cmd = jsonObject.getString("cmd");
-                    String to = jsonObject.getString("to");
+                    String to = jsonObject.getString("ip");
                     logger.info("[" + ip + "/" + channel.id() + "] cmd: " + arg1);
                     if (to.equals(ip)) {
                         ch.writeAndFlush(cmd);

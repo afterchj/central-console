@@ -20,4 +20,7 @@ public class SpringUtil {
         return (EntityManagerFactory) ctx.getBean("entityManagerFactory");
     }
 
+    public static Object getBean(Class clazz) {
+        return ctx.getBean(clazz);
+    }
 }
