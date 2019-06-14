@@ -1,6 +1,7 @@
 package com.example.blt;
 
 import com.example.blt.netty.ServerMain;
+import com.example.blt.socket.NettyServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -13,11 +14,9 @@ public class CentralConsoleApplication {
 
 
 	public static void main(String[] args) {
-//		ApplicationContext ac = new AnnotationConfigApplicationContext(CentralConsoleApplication.class);
 		SpringApplication.run(CentralConsoleApplication.class, args);
+		new NettyServer().start(8000);
 		new ServerMain().run(8001);
-		new ServerMain().run(8000);
-//		ac.getBean(ServerMain.class).run(8001);
 	}
 
 	/**

@@ -26,7 +26,7 @@ public class ControlTask implements Callable<String> {
     public String call() {
         String result;
         try {
-            clientMain.sendCron(val, flag);
+            clientMain.sendCron(8000,val, flag);
             result = "ok";
         } catch (Exception e) {
             result = "fail";

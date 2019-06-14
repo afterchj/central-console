@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "host_info")
 public class HostInfo implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(length = 64)
     private String ip;

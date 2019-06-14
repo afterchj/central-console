@@ -17,8 +17,10 @@ import java.net.SocketAddress;
 
 /**
  * 服务器主要的业务逻辑
+ *
+ * @author hongjian.chen
+ * @version time：2018/2/28.
  */
-@Component
 @ChannelHandler.Sharable
 public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
@@ -61,7 +63,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             ch.writeAndFlush(cmd);
                         }
                     } else {
-                        logger.info("[" + ip + "/" + channel.id() + "] receive cmd:" + arg1);
+                        logger.info("[" + ip + "/" + channel.id() + "] receive heartbeat:" + arg1);
                         ch.writeAndFlush(arg1);
                     }
                 }

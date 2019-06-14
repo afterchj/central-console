@@ -27,11 +27,11 @@ public class ClientMain {
 //		new ClientMain("122.112.229.195", 8001).run();
 //		new ClientMain("119.3.49.192", 8001).run();
 //        new ClientMain("127.0.0.1", 8001).run();
-        new ClientMain().run();
+        new ClientMain().run(8001);
     }
 
-    public void run() throws IOException {
-        Channel channel = getChannel();
+    public void run(int port) throws IOException {
+        Channel channel = getChannel(port);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         logger.warn("请输入指令：");
         while (true) {
@@ -45,8 +45,8 @@ public class ClientMain {
         }
     }
 
-    public void sendCron(String str, boolean flag) {
-        Channel channel = getChannel();
+    public void sendCron(int port,String str, boolean flag) {
+        Channel channel = getChannel(port);
         //向服务端发送内容
         channel.writeAndFlush(str);
         if (flag) {
@@ -58,7 +58,7 @@ public class ClientMain {
         }
     }
 
-    public Channel getChannel() {
+    public Channel getChannel(int port) {
         if (channel != null) {
             return channel;
         }

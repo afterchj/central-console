@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
  * Created by hongjian.chen on 2019/5/17.
  */
 @Service
-@EnableScheduling
 public class NettyService implements ApplicationListener<ContextRefreshedEvent> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -21,7 +20,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/30 * * * * ?")
     public void cronTest() {
-        clientMain.sendCron("ok", false);
+        clientMain.sendCron(8000,"ok", false);
     }
 
     @Override
