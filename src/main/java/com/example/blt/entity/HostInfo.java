@@ -17,10 +17,10 @@ public class HostInfo implements Serializable {
     private int id;
     @Column(length = 64)
     private String ip;
-    private boolean status;
+    private boolean status=true;
     private String other;
-    private Date create_date;
-    private Date log_date;
+    private Date create_date=new Date();
+    private Date log_date=new Date();
 
     public int getId() {
         return id;
@@ -38,7 +38,7 @@ public class HostInfo implements Serializable {
         this.ip = ip;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -60,5 +60,13 @@ public class HostInfo implements Serializable {
 
     public void setLog_date(Date log_date) {
         this.log_date = log_date;
+    }
+
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
     }
 }

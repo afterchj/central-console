@@ -2,6 +2,8 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.entity.HostInfo;
+import com.example.blt.utils.ConsoleUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,7 +13,6 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.net.SocketAddress;
 
@@ -99,20 +100,32 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        logger.info("[" + channel.remoteAddress() + "] " + "online");
+        String str = channel.remoteAddress().toString();
+        String ip = str.substring(1, str.indexOf(":"));
+        HostInfo info = new HostInfo();
+        info.setIp(ip);
+        info.setStatus(channel.isActive());
+        ConsoleUtil.saveHostInfo(info);
+        logger.info("[" + ip + "] " + "online");
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
+        String str = channel.remoteAddress().toString();
+        String ip = str.substring(1, str.indexOf(":"));
+        ConsoleUtil.updateHost(ip, false);
         logger.info("[" + channel.remoteAddress() + "] " + "offline");
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.info("[" + ctx.channel().remoteAddress() + "]" + "exit the room");
-        logger.info("[" + ctx.channel().remoteAddress() + "]" + cause.toString());
+        Channel channel = ctx.channel();
+        String str = channel.remoteAddress().toString();
+        String ip = str.substring(1, str.indexOf(":"));
+//        ConsoleUtil.deleteHost(ip);
+        logger.info("[" + ip + "]" + cause.toString());
         ctx.close().sync();
     }
 }

@@ -18,7 +18,7 @@ public class ConsoleInfo implements Serializable {
     private String ip;
     private String cmd;
     private String other;
-    private Date log_date;
+    private Date log_date=new Date();
 
     public int getId() {
         return id;

@@ -1,5 +1,8 @@
 package com.example.blt.socket;
 
+import com.example.blt.entity.ConsoleInfo;
+import com.example.blt.entity.HostInfo;
+import com.example.blt.utils.ConsoleUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -8,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 
 /**
@@ -33,6 +37,10 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         buf.readBytes(con);
         try {
             msg = new String(con, "UTF-8");
+            ConsoleInfo info=new ConsoleInfo();
+            info.setIp(ip);
+            info.setCmd(msg);
+            ConsoleUtil.saveConsole(info);
         } catch (UnsupportedEncodingException e) {
             logger.error("UnsupportedEncodingException：" + e.getMessage());
             return null;
@@ -47,8 +55,10 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 第一种：接收字符串时的处理
         Channel channel = ctx.channel();
+        String str = channel.remoteAddress().toString();
+        String ip = str.substring(1, str.indexOf(":"));
         ByteBuf buf = (ByteBuf) msg;
-        String rev = getMessage(buf,channel.remoteAddress().toString());
+        String rev = getMessage(buf,ip);
         ctx.writeAndFlush(rev);
         logger.info("receive from client:" + rev);
     }

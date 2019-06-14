@@ -20,6 +20,12 @@ public class HostService {
         hostDao.save(info);
     }
 
+    public void updateByIp( String ip,boolean status) {
+        hostDao.updateByIp(ip,status);
+    }
+    public void deleteByIp(String ip) {
+        hostDao.deleteByIp(ip);
+    }
     public HostInfo getByIp(String ip) {
         return hostDao.getByIp(ip);
     }

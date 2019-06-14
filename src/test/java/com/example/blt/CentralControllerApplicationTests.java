@@ -25,14 +25,9 @@ public class CentralControllerApplicationTests {
     private ConsoleService consoleService;
     @Test
     public void contextLoads() {
-        HostInfo host = new HostInfo();
-        host.setStatus(true);
-        host.setIp("192.168.51.75");
-        host.setCreate_date(new Date());
-        host.setLog_date(new Date());
-        hostService.save(host);
+        hostService.updateByIp("192.168.56.1",false);
         HostInfo s = hostService.getByIp("192.168.56.1");
-        logger.warn("id=" + s.getId());
+        logger.warn("id=" + s.getId()+",status="+s.getStatus());
 //        consoleDao.delete(s);
     }
 
