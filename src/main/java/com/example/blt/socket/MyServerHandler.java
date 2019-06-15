@@ -23,7 +23,7 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(MyServerHandler.class);
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        logger.info(ctx.channel().localAddress().toString() + " 通道已激活！");
+        logger.info(ctx.channel().localAddress().toString() + " connected");
     }
     /**
      * @param buf
@@ -57,8 +57,8 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         String ip = str.substring(1, str.indexOf(":"));
         ByteBuf buf = (ByteBuf) msg;
         String rev = getMessage(buf,ip);
+//        logger.info("receive from client:" + rev);
         ctx.writeAndFlush(rev);
-        logger.info("receive from client:" + rev);
     }
 
     /**
@@ -67,6 +67,5 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
-        logger.error("异常信息：" + cause.getMessage());
     }
 }

@@ -15,17 +15,34 @@ public class StrUtil {
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
-    public static Map buildLightInfo(String str, String ip) {
+    public static Map buildLightInfo(String msg, String ip) {
         Map map = new HashMap();
-        String msg = str.replace(" ", "");
+        String str = msg.replace(" ", "");
+        String str1 = "77040F0227";
         map.put("host", ip);
-        map.put("other", msg);
         map.put("status", 1);
-        if (msg.indexOf("77040F0") != -1) {
-            String prefix = msg.substring(0, 8);
-            String lmac = msg.substring(8, 20).toLowerCase();
-            String vaddr = msg.substring(20, 28);
-            String productId = msg.substring(28, 32);
+        if (str.indexOf(str1) != -1) {
+            map.put("host", ip);
+            int index = str1.length();
+            String vaddr = str.substring(index, index + 8);
+            String x = str.substring(index + 10, index + 12);
+            String y = str.substring(index + 12, index + 14);
+            if (msg.contains("3232")) {
+                map.put("status", 0);
+            } else {
+                map.put("status", 1);
+            }
+            map.put("vaddr", vaddr);
+            map.put("x", x);
+            map.put("y", y);
+            map.put("other", str);
+            sqlSessionTemplate.selectOne("console.saveConsole", map);
+            logger.info("result=" + map.get("result"));
+        } else if (str.indexOf("77040F01") != -1) {
+            String prefix = str.substring(0, 8);
+            String lmac = str.substring(8, 20).toLowerCase();
+            String vaddr = str.substring(20, 28);
+            String productId = str.substring(28, 32);
             System.out.println(prefix + "\t" + lmac + "\t" + vaddr + "\t" + productId);
             map.put("vaddr", vaddr);
             map.put("product_id", productId);
@@ -40,29 +57,11 @@ public class StrUtil {
             }
             map.put("lmac", sortMac.toString());
             sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.info("vaddr=" + vaddr + ",result=" + map.get("result"));
+            logger.info("result=" + map.get("result"));
         }
         return map;
     }
 
-    public static void buildLightInfo1(String str, String ip) {
-        Map map = new HashMap();
-        String msg = str.replace(" ", "");
-        String str1 = "77040F0227";
-        map.put("host", ip);
-        if (msg.indexOf(str1) != -1) {
-            String vaddr = str.substring(str1.length(), str1.length() + 8);
-            if (msg.contains("3232")) {
-                map.put("status", 0);
-            }
-            if (msg.contains("3737")) {
-                map.put("status", 1);
-            }
-            map.put("vaddr", vaddr);
-            sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.info("vaddr=" + vaddr + ",result=" + map.get("result"));
-        }
-    }
 
 
 //    public static void main(String args[]) {

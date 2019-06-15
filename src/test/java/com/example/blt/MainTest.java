@@ -61,15 +61,20 @@ public class MainTest {
 //    }
     @Test
     public void testStr() {
-        String str = "77040F02277D000000713232000000CC";
+        String str = "77040F0227E9010000713232000000000000CC";
         String str1 = "77040F0227";
-        String vaddr = str.substring(str1.length(),str1.length() + 8);
-        System.out.println("vaddr="+vaddr);
+        int index=str1.length();
+        String vaddr = str.substring(index,index + 8);
+        String x=str.substring(index+10,index+12);
+        String y=str.substring(index+12,index+14);
+        System.out.println("vaddr="+vaddr+",x="+x+",y="+y);
     }
 
     @Test
     public void testSqlSession() {
-        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
+//        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
+        String str = "77040F0227E9010000711212000000000000CC";
+        StrUtil.buildLightInfo(str,"127.0.0.1");
         System.out.println(str);
     }
 }

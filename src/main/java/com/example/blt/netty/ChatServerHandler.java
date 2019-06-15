@@ -64,8 +64,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             ch.writeAndFlush(cmd);
                         }
                     } else {
-                        StrUtil.buildLightInfo1(arg1,ip);
-                        logger.info("[" + ip + "/" + channel.id() + "] receive heartbeat:" + arg1);
+                        StrUtil.buildLightInfo(arg1,ip);
                         ch.writeAndFlush(arg1);
                     }
                 }

@@ -72,15 +72,5 @@ public class CentralControllerApplicationTests {
 //        logger.info("id=" + list.get(0));
 //    }
 
-    @Test
-    public void testSqlSession() {
-        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ";
-        String str1 = "77 04 0F 01 F1 10 64 D7 AC F0 3D 00 00 00 44 4F 03 0A CC CC ";
-        String str2 = "77 04 0F 01 A8 10 64 D7 AC F0 0D 00 00 00 44 4F 03 0A CC CC ";
-        Map map = StrUtil.buildLightInfo(str1,"127.0.0.1");
-        sqlSessionTemplate.selectOne("light.saveConsole", map);
-        logger.info("result=" + map.get("result"));
-    }
-
 
 }
