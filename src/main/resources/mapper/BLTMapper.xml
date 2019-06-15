@@ -3,18 +3,15 @@
 <mapper namespace="console">
 
     <parameterMap id="consoleMapper" type="map">
-        <parameter property="prefix_value" mode="IN"/>
-        <parameter property="dmac" mode="IN"/>
-        <parameter property="mesh_id" mode="IN"/>
         <parameter property="lmac" mode="IN"/>
-        <parameter property="CODE" mode="IN"/>
-        <parameter property="code_version" mode="IN"/>
-        <parameter property="GID" mode="IN"/>
+        <parameter property="vaddr" mode="IN"/>
+        <parameter property="product_id" mode="IN"/>
+        <parameter property="mesh_id" mode="IN"/>
         <parameter property="x" mode="IN"/>
         <parameter property="y" mode="IN"/>
-        <parameter property="ctype" mode="IN"/>
-        <parameter property="cid" mode="IN"/>
-        <parameter property="suffix_value" mode="IN"/>
+        <parameter property="host" mode="IN"/>
+        <parameter property="other" mode="IN"/>
+        <parameter property="status" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
 
@@ -26,6 +23,6 @@
     </insert>
 
     <select id="saveConsole" parameterMap="consoleMapper" statementType="CALLABLE">
-        CALL save_blt_console(?,?,?,?,?,?,?,?,?,?,?,?,?)
+        CALL save_light(?,?,?,?,?,?,?,?,?,?)
     </select>
 </mapper>

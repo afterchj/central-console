@@ -1,15 +1,13 @@
 package com.example.blt;
 
-import com.example.blt.entity.HostInfo;
-import com.example.blt.service.ConsoleService;
-import com.example.blt.service.HostService;
+import com.example.blt.utils.SpringUtils;
+import com.example.blt.utils.StrUtil;
 import org.junit.Test;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -17,6 +15,7 @@ import java.util.List;
 public class MainTest {
 
     private static Logger logger = LoggerFactory.getLogger(MainTest.class);
+    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     public static void main(String[] args) {
 //        ConsoleService consoleService = (ConsoleService) SpringJpaUtil.getBean(ConsoleService.class);
@@ -47,7 +46,7 @@ public class MainTest {
 //        }
 //    }
 
-//    @Test
+    //    @Test
 //    public void testQuery2() {
 //        EntityManager em = SpringJpaUtil.getEntityManager().createEntityManager();
 //        try {
@@ -60,4 +59,17 @@ public class MainTest {
 //            }
 //        }
 //    }
+    @Test
+    public void testStr() {
+        String str = "77040F02277D000000713232000000CC";
+        String str1 = "77040F0227";
+        String vaddr = str.substring(str1.length(),str1.length() + 8);
+        System.out.println("vaddr="+vaddr);
+    }
+
+    @Test
+    public void testSqlSession() {
+        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
+        System.out.println(str);
+    }
 }

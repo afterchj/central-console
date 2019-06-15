@@ -3,7 +3,7 @@ package com.example.blt.netty;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.HostInfo;
-import com.example.blt.utils.ConsoleUtil;
+import com.example.blt.utils.StrUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -64,6 +64,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             ch.writeAndFlush(cmd);
                         }
                     } else {
+                        StrUtil.buildLightInfo(arg1,ip);
                         logger.info("[" + ip + "/" + channel.id() + "] receive heartbeat:" + arg1);
                         ch.writeAndFlush(arg1);
                     }

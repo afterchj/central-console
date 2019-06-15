@@ -3,11 +3,10 @@ package com.example.blt;
 import com.example.blt.entity.ConsoleInfo;
 import com.example.blt.entity.HostInfo;
 import com.example.blt.entity.LightInfo;
-import com.example.blt.service.ConsoleService;
-import com.example.blt.service.HostService;
-import com.example.blt.service.LightService;
+import com.example.blt.utils.StrUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,57 +15,72 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//随机生成一个端口号
 public class CentralControllerApplicationTests {
+
+    @Autowired
+    private SqlSessionTemplate sqlSessionTemplate;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private HostService hostService;
-    @Autowired
-    private ConsoleService consoleService;
-
-    @Autowired
-    private LightService lightService;
+//    @Autowired
+//    private HostService hostService;
+//    @Autowired
+//    private ConsoleService consoleService;
+//
+//    @Autowired
+//    private LightService lightService;
+//
+//    @Test
+//    public void contextLoads() {
+////        hostService.updateByIp("192.168.56.1", false);
+//        HostInfo s = hostService.getByIp("127.0.0.1");
+//        logger.warn("id=" + s.getId());
+////        consoleDao.delete(s);
+//    }
+//
+//    @Test
+//    public void testGetBean() {
+//        ConsoleInfo info = new ConsoleInfo();
+//        info.setIp("127.0.0.1");
+//        info.setCmd("010101010101");
+//        info.setLog_date(new Date());
+//        consoleService.save(info);
+//        logger.warn("id=" + consoleService.getByIp("192.168.56.1").getId());
+//    }
+//
+//    @Test
+//    public void testJoin() {
+//        HostInfo hostInfo = new HostInfo();
+//        hostInfo.setId(6);
+////        hostInfo.setIp("192.168.51.1");
+//        LightInfo lightInfo = new LightInfo();
+//        lightInfo.setLmac("f0:ac:d7:6d:44:e7");
+//        HostInfo s = hostService.getByIp("127.0.0.1");
+////        lightInfo.setHostInfo(hostInfo);
+//        logger.warn("id=" + s.getId());
+//        lightService.save(lightInfo);
+//
+//    }
+//
+//    @Test
+//    public void testList() {
+//        HostInfo s = hostService.getByIp("192.168.51.95");
+//        List<LightInfo> list = lightService.getByHostInfo(s);
+//        logger.info("size=" + list.size() + ",id=" + list.get(0));
+//        logger.info("id=" + list.get(0));
+//    }
 
     @Test
-    public void contextLoads() {
-//        hostService.updateByIp("192.168.56.1", false);
-        HostInfo s = hostService.getByIp("127.0.0.1");
-        logger.warn("id=" + s.getId());
-//        consoleDao.delete(s);
+    public void testSqlSession() {
+        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ";
+        String str1 = "77 04 0F 01 F1 10 64 D7 AC F0 3D 00 00 00 44 4F 03 0A CC CC ";
+        String str2 = "77 04 0F 01 A8 10 64 D7 AC F0 0D 00 00 00 44 4F 03 0A CC CC ";
+        Map map = StrUtil.buildLightInfo(str1,"127.0.0.1");
+        sqlSessionTemplate.selectOne("light.saveConsole", map);
+        logger.info("result=" + map.get("result"));
     }
 
-    @Test
-    public void testGetBean() {
-        ConsoleInfo info = new ConsoleInfo();
-        info.setIp("127.0.0.1");
-        info.setCmd("010101010101");
-        info.setLog_date(new Date());
-        consoleService.save(info);
-        logger.warn("id=" + consoleService.getByIp("192.168.56.1").getId());
-    }
 
-    @Test
-    public void testJoin() {
-        HostInfo hostInfo = new HostInfo();
-        hostInfo.setId(6);
-//        hostInfo.setIp("192.168.51.1");
-        LightInfo lightInfo = new LightInfo();
-        lightInfo.setHostInfo(hostInfo);
-        lightInfo.setLmac("f0:ac:d7:6d:44:e7");
-        HostInfo s = hostService.getByIp("127.0.0.1");
-//        lightInfo.setHostInfo(hostInfo);
-        logger.warn("id=" + s.getId());
-        lightService.save(lightInfo);
-
-    }
-
-    @Test
-    public void testList() {
-        HostInfo s = hostService.getByIp("192.168.51.95");
-        List<LightInfo> list = lightService.getByHostInfo(s);
-        logger.info("size=" + list.size() + ",id=" + list.get(0).getHostInfo().getId());
-        logger.info("id=" + list.get(0).getHostInfo().getId());
-    }
 }
