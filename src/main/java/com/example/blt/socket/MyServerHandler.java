@@ -38,7 +38,7 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         buf.readBytes(con);
         try {
             msg = new String(con, "UTF-8");
-            StrUtil.buildLightInfo1(msg,ip);
+            StrUtil.buildLightInfo(msg,ip);
         } catch (UnsupportedEncodingException e) {
             logger.error("UnsupportedEncodingException：" + e.getMessage());
             return null;
