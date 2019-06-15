@@ -49,12 +49,14 @@ public class StrUtil {
         Map map = new HashMap();
         String msg = str.replace(" ", "");
         String str1 = "77040F0227";
-        map.put("status", 1);
         map.put("host", ip);
         if (msg.indexOf(str1) != -1) {
             String vaddr = str.substring(str1.length(), str1.length() + 8);
             if (msg.contains("3232")) {
                 map.put("status", 0);
+            }
+            if (msg.contains("3737")) {
+                map.put("status", 1);
             }
             map.put("vaddr", vaddr);
             sqlSessionTemplate.selectOne("console.saveConsole", map);

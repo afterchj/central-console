@@ -3,8 +3,6 @@ package com.example.blt.utils;
 import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.ConsoleInfo;
 import com.example.blt.entity.HostInfo;
-import com.example.blt.service.ConsoleService;
-import com.example.blt.service.HostService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
