@@ -21,6 +21,7 @@ public class StrUtil {
         String str1 = "77040F0227";
         map.put("host", ip);
         map.put("status", 1);
+        map.put("other", str);
         if (str.indexOf(str1) != -1) {
             map.put("host", ip);
             int index = str1.length();
@@ -35,7 +36,6 @@ public class StrUtil {
             map.put("vaddr", vaddr);
             map.put("x", x);
             map.put("y", y);
-            map.put("other", str);
             sqlSessionTemplate.selectOne("console.saveConsole", map);
             logger.info("result=" + map.get("result"));
         } else if (str.indexOf("77040F01") != -1) {
@@ -61,7 +61,6 @@ public class StrUtil {
         }
         return map;
     }
-
 
 
 //    public static void main(String args[]) {
