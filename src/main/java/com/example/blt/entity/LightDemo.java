@@ -8,11 +8,29 @@ package com.example.blt.entity;
  **/
 public class LightDemo {
 
-    private String mname;
-    private String lmac;
-    private String lname;
-    private Integer place;
-    private Integer PlaceLNum;
+    private String mname;//楼层
+    private String lmac;//灯mac
+    private Integer lname;//灯序号
+    private Integer place;//区域
+    private Integer PlaceLNum;//区域中灯个数
+    private String status;
+    private Integer group;
+
+    public Integer getGroup() {
+        return group;
+    }
+
+    public void setGroup(Integer group) {
+        this.group = group;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Integer getPlaceLNum() {
         return PlaceLNum;
@@ -46,11 +64,11 @@ public class LightDemo {
         this.lmac = lmac;
     }
 
-    public String getLname() {
+    public Integer getLname() {
         return lname;
     }
 
-    public void setLname(String lname) {
+    public void setLname(Integer lname) {
         this.lname = lname;
     }
 
@@ -62,6 +80,8 @@ public class LightDemo {
                 ", lname='" + lname + '\'' +
                 ", place=" + place +
                 ", PlaceLNum=" + PlaceLNum +
+                ", status='" + status + '\'' +
+                ", group=" + group +
                 '}';
     }
 }

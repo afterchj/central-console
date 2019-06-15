@@ -53,13 +53,19 @@ public class HomeController {
     public String monitor(Model model){
         List<Map<String,Object>> centerLNumList = lightListDao.getCenterLNum();
         List<LightDemo> placeLNumList = lightListDao.getPlaceLNum();
-        model.addAttribute("centerLState","");//每个楼层灯的总开关状态
-        model.addAttribute("placeLState","");//每个区域灯的总开关状态
+        List<LightDemo> lightState = lightListDao.getLightInfo();
+//        model.addAttribute("centerLState","");//每个楼层灯的总开关状态
+//        model.addAttribute("placeLState","");//每个区域灯的总开关状态
         model.addAttribute("centerLNumList",centerLNumList);//每个楼层灯总个数
         model.addAttribute("placeLNumList",placeLNumList);//每个区域的灯个数
-        model.addAttribute("lightState","");//所有灯的状态
+        model.addAttribute("lightState",lightState);//所有灯的状态
 
         return "monitor";
+    }
+
+    @RequestMapping("/monitor2")
+    public String monitor2(){
+        return "monitor2";
     }
 
     @Resource

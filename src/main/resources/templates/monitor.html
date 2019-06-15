@@ -318,155 +318,208 @@
         <div class="five-floor floor clearfix p-r" id="five-center">
             <div class="floor-name f-l">
                 <p>五楼</p>
-                <div>
-                    <!-- <img src="img/2.png" alt=""> -->
+                <div id="five-hinit">
+                    <img src="img/2.png" alt="">
+                    <img src="img/1.png" >
                 </div>
                 <div class="page p-a">
                     <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='5楼'}"
-                          th:text="${centerLNum.centerLNum}">
-                    </span><span>/
-                </span><span>48</span>
+                          th:text="${centerLNum.centerLNum}" id="five-num">
+                    </span>
+                    <span>/</span>
+                    <span id="fiv-num-total">48</span>
                 </div>
             </div>
             <div class="clearfix f-r light-list">
-                <div class="light f-l ">
+                <div class="light f-l " id="five-oneplace">
                     <p>区域1</p>
                     <div class="clearfix group">
                         <span class="f-l">组1</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="1"></span>
-                            <span><img src="img/4.png" alt="2"></span>
-                            <span><img src="img/4.png" alt="3"></span>
-                            <span><img src="img/4.png" alt="4"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-onegroup">
+                            <span th:each="light:${lightState} "
+                                  th:if="${light.mname=='5楼'} and ${light.group==1}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组2</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="5"></span>
-                            <span><img src="img/4.png" alt="6"></span>
-                            <span><img src="img/4.png" alt="7"></span>
-                            <span><img src="img/4.png" alt="8"></span>
+                            <span class="f-r" id="five-twogroup">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==2}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组3</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="9"></span>
-                            <span><img src="img/4.png" alt="10"></span>
-                            <span><img src="img/4.png" alt="11"></span>
-                            <span><img src="img/4.png" alt="12"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-thirdgroup">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==3}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r" >12/12</span>
+                        <span class="status f-l" id="five-oneplace-state">ON</span>
+                        <span class="num f-r" id="five-oneplace-num">
+                            <span th:each="placeLNum:${placeLNumList}"
+                                                     th:if="${placeLNum.mname=='5楼'} and ${placeLNum.place==1}"
+                                                     th:text="${placeLNum.PlaceLNum}"></span>
+                            /12</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="five-twoplace">
                     <p>区域2</p>
                     <div class="clearfix group">
                         <span class="f-l">组4</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="13"></span>
-                            <span><img src="img/4.png" alt="14"></span>
-                            <span><img src="img/4.png" alt="15"></span>
-                            <span><img src="img/4.png" alt="16"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-fourgroup">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==4}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组5</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="17"></span>
-                            <span><img src="img/4.png" alt="18"></span>
-                            <span><img src="img/4.png" alt="19"></span>
-                            <span><img src="img/4.png" alt="20"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-fivegroup">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==5}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组6</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="21"></span>
-                            <span><img src="img/4.png" alt="22"></span>
-                            <span><img src="img/4.png" alt="23"></span>
-                            <span><img src="img/4.png" alt="24"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-sixgroup">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==6}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="five-twoplace-state">ON</span>
+                        <span class="num f-r" id="five-twoplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='5楼'} and ${placeLNum.place==2}"
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="five-thirdplace">
                     <p>区域3</p>
                     <div class="clearfix group">
                         <span class="f-l">组7</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="25"></span>
-                            <span><img src="img/4.png" alt="26"></span>
-                            <span><img src="img/4.png" alt="27"></span>
-                            <span><img src="img/4.png" alt="28"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-senvegroup">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==7}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组8</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="29"></span>
-                            <span><img src="img/4.png" alt="30"></span>
-                            <span><img src="img/4.png" alt="31"></span>
-                            <span><img src="img/4.png" alt="32"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-8group">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==8}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组9</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="33"></span>
-                            <span><img src="img/4.png" alt="34"></span>
-                            <span><img src="img/4.png" alt="35"></span>
-                            <span><img src="img/4.png" alt="36"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-9group">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==9}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="five-thirdplace-state">ON</span>
+                        <span class="num f-r" id="five-thirdplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='5楼'} and ${placeLNum.place==3} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light  f-l">
+                <div class="light  f-l" id="five-fourplace">
                     <p>区域4</p>
                     <div class="clearfix group">
                         <span class="f-l">组10</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="37"></span>
-                            <span><img src="img/4.png" alt="38"></span>
-                            <span><img src="img/4.png" alt="39"></span>
-                            <span><img src="img/4.png" alt="40"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-10group">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==10}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组11</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="41"></span>
-                            <span><img src="img/4.png" alt="42"></span>
-                            <span><img src="img/4.png" alt="43"></span>
-                            <span><img src="img/4.png" alt="44"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-11group">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==11}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组12</span>
-                        <span class="f-r">
-                            <span><img src="img/4.png" alt="45"></span>
-                            <span><img src="img/4.png" alt="46"></span>
-                            <span><img src="img/4.png" alt="47"></span>
-                            <span><img src="img/4.png" alt="48"></span>
+                        <!--<span class="f-r">-->
+                        <span class="f-r" id="five-12group">
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='5楼'} and ${light.group==12}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="five-fourplace-state">ON</span>
+                        <span class="num f-r" id="five-fourplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='5楼'} and ${placeLNum.place==4} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
             </div>
@@ -474,154 +527,206 @@
         <div class="four-floor floor clearfix p-r" id="four-center">
             <div class="floor-name f-l">
                 <p>四楼</p>
-                <div>
-                    <!-- <img src="img/2.png" alt=""> -->
+                <div id="four-hinit">
+                    <img src="img/2.png" alt="">
+                    <img src="img/1.png" >
                 </div>
                 <div class="page p-a">
                     <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='4楼'}"
-                          th:text="${centerLNum.centerLNum}">
-                    </span><span>/</span><span>48</span>
+                          th:text="${centerLNum.centerLNum}" id="four-num">
+                    </span><span>/</span><span id="four-num-total">48</span>
                 </div>
             </div>
             <div class="clearfix f-r light-list">
-                <div class="light f-l ">
+                <div class="light f-l " id="four-oneplace">
                     <p>区域1</p>
                     <div class="clearfix group">
                         <span class="f-l">组1</span>
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="1"></span>
-                            <span><img src="img/4.png" alt="2"></span>
-                            <span><img src="img/4.png" alt="3"></span>
-                            <span><img src="img/4.png" alt="4"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==1}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组2</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="5"></span>
-                            <span><img src="img/4.png" alt="6"></span>
-                            <span><img src="img/4.png" alt="7"></span>
-                            <span><img src="img/4.png" alt="8"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==2}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组3</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="9"></span>
-                            <span><img src="img/4.png" alt="10"></span>
-                            <span><img src="img/4.png" alt="11"></span>
-                            <span><img src="img/4.png" alt="12"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==3}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="four-oneplace-state">ON</span>
+                        <span class="num f-r" id="four-oneplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='4楼'} and ${placeLNum.place==1} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light  f-l">
+                <div class="light  f-l" id="four-twoplace">
                     <p>区域2</p>
-                    <div class="clearfix group">
+                    <div class="clearfix group" >
                         <span class="f-l">组4</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="13"></span>
-                            <span><img src="img/4.png" alt="14"></span>
-                            <span><img src="img/4.png" alt="15"></span>
-                            <span><img src="img/4.png" alt="16"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==4}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组5</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="17"></span>
-                            <span><img src="img/4.png" alt="18"></span>
-                            <span><img src="img/4.png" alt="19"></span>
-                            <span><img src="img/4.png" alt="20"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==5}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组6</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="21"></span>
-                            <span><img src="img/4.png" alt="22"></span>
-                            <span><img src="img/4.png" alt="23"></span>
-                            <span><img src="img/4.png" alt="24"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==6}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="four-twoplace-state">ON</span>
+                        <span class="num f-r" id="four-twoplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='4楼'} and ${placeLNum.place==2} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="four-thirdplace">
                     <p>区域3</p>
                     <div class="clearfix group">
                         <span class="f-l">组7</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="25"></span>
-                            <span><img src="img/4.png" alt="26"></span>
-                            <span><img src="img/4.png" alt="27"></span>
-                            <span><img src="img/4.png" alt="28"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==7}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组8</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="29"></span>
-                            <span><img src="img/4.png" alt="30"></span>
-                            <span><img src="img/4.png" alt="31"></span>
-                            <span><img src="img/4.png" alt="32"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==8}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组9</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="33"></span>
-                            <span><img src="img/4.png" alt="34"></span>
-                            <span><img src="img/4.png" alt="35"></span>
-                            <span><img src="img/4.png" alt="36"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==9}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="four-thirdplace-state">ON</span>
+                        <span class="num f-r" id="four-thirdplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='4楼'} and ${placeLNum.place==3} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light  f-l">
+                <div class="light  f-l" id="four-fourplace">
                     <p>区域4</p>
                     <div class="clearfix group">
                         <span class="f-l">组10</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="37"></span>
-                            <span><img src="img/4.png" alt="38"></span>
-                            <span><img src="img/4.png" alt="39"></span>
-                            <span><img src="img/4.png" alt="40"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==10}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组11</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="41"></span>
-                            <span><img src="img/4.png" alt="42"></span>
-                            <span><img src="img/4.png" alt="43"></span>
-                            <span><img src="img/4.png" alt="44"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==11}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组12</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="45"></span>
-                            <span><img src="img/4.png" alt="46"></span>
-                            <span><img src="img/4.png" alt="47"></span>
-                            <span><img src="img/4.png" alt="48"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='4楼'} and ${light.group==12}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="four-fourplace-state">ON</span>
+                        <span class="num f-r" id="four-fourplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='4楼'} and ${placeLNum.place==4} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
             </div>
@@ -629,153 +734,208 @@
         <div class="three-floor floor clearfix p-r" id="third-center">
             <div class="floor-name f-l ">
                 <p>三楼</p>
+                <div id="third-hinit">
+                    <img src="img/2.png" alt="">
+                    <img src="img/1.png" >
+                </div>
                 <div class="page p-a">
                     <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='3楼'}"
-                          th:text="${centerLNum.centerLNum}">
-                    </span><span>/</span><span>47</span>
+                          th:text="${centerLNum.centerLNum}" id="third-num">
+                    </span><span>/</span><span id="third-num-total">47</span>
                 </div>
             </div>
             <div class="clearfix f-r light-list">
-                <div class="light f-l ">
+                <div class="light f-l " id="third-oneplace">
                     <p>区域1</p>
                     <div class="clearfix group">
                         <span class="f-l">组1</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="1"></span>
-                            <span><img src="img/4.png" alt="2"></span>
-                            <span><img src="img/4.png" alt="3"></span>
-                            <span><img src="img/4.png" alt="4"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==1}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组2</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="5"></span>
-                            <span><img src="img/4.png" alt="6"></span>
-                            <span><img src="img/4.png" alt="7"></span>
-                            <span><img src="img/4.png" alt="8"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==2}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组3</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="9"></span>
-                            <span><img src="img/4.png" alt="10"></span>
-                            <span><img src="img/4.png" alt="11"></span>
-                            <span><img src="img/4.png" alt="12"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==3}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="third-oneplace-state">ON</span>
+                        <span class="num f-r" id="third-oneplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='3楼'} and ${placeLNum.place==1} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="third-twoplace">
                     <p>区域2</p>
                     <div class="clearfix group">
                         <span class="f-l">组4</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="13"></span>
-                            <span><img src="img/4.png" alt="14"></span>
-                            <span><img src="img/4.png" alt="15"></span>
-                            <span><img src="img/4.png" alt="16"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==4}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组5</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="17"></span>
-                            <span><img src="img/4.png" alt="18"></span>
-                            <span><img src="img/4.png" alt="19"></span>
-                            <span><img src="img/4.png" alt="20"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==5}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组6</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="21"></span>
-                            <span><img src="img/4.png" alt="22"></span>
-                            <span><img src="img/4.png" alt="23"></span>
-                            <span><img src="img/4.png" alt="24"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==6}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="third-twoplace-state">ON</span>
+                        <span class="num f-r" id="third-twoplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='3楼'} and ${placeLNum.place==2} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="third-thirdplace">
                     <p>区域3</p>
                     <div class="clearfix group">
                         <span class="f-l">组7</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="25"></span>
-                            <span><img src="img/4.png" alt="26"></span>
-                            <span><img src="img/4.png" alt="27"></span>
-                            <span><img src="img/4.png" alt="28"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==7}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组8</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="29"></span>
-                            <span><img src="img/4.png" alt="30"></span>
-                            <span><img src="img/4.png" alt="31"></span>
-                            <span><img src="img/4.png" alt="32"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==8}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组9</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span>
-                                <!-- <img src="img/3.png" alt=""> -->
+                                <span></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==9}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
                             </span>
-                            <span><img src="img/4.png" alt="34"></span>
-                            <span><img src="img/4.png" alt="35"></span>
-                            <span><img src="img/4.png" alt="36"></span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/11</span>
+                        <span class="status f-l" id="third-thirdplace-state">ON</span>
+                        <span class="num f-r" id="third-thirdplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='3楼'} and ${placeLNum.place==3} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /11</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="third-fourplace">
                     <p>区域4</p>
                     <div class="clearfix group">
                         <span class="f-l">组10</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="37"></span>
-                            <span><img src="img/4.png" alt="38"></span>
-                            <span><img src="img/4.png" alt="39"></span>
-                            <span><img src="img/4.png" alt="40"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==10}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组11</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="41"></span>
-                            <span><img src="img/4.png" alt="42"></span>
-                            <span><img src="img/4.png" alt="43"></span>
-                            <span><img src="img/4.png" alt="44"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==11}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组12</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="45"></span>
-                            <span><img src="img/4.png" alt="46"></span>
-                            <span><img src="img/4.png" alt="47"></span>
-                            <span><img src="img/4.png" alt="48"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='3楼'} and ${light.group==12}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="third-fourplace-state">ON</span>
+                        <span class="num f-r" id="third-fourplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='3楼'} and ${placeLNum.place==4} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
             </div>
@@ -783,160 +943,213 @@
         <div class="two-floor floor clearfix p-r off" id="tow-center">
             <div class="floor-name f-l ">
                 <p>二楼</p>
+                <div id="two-hinit">
+                    <img src="img/2.png" alt="">
+                    <img src="img/1.png" >
+                </div>
                 <div>
                     <!-- <img src="img/1.png" alt=""> -->
                 </div>
                 <div class="page p-a">
                     <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='2楼'}"
-                          th:text="${centerLNum.centerLNum}">
-                    </span><span>/</span><span>45</span>
+                          th:text="${centerLNum.centerLNum}" id="two-num">
+                    </span><span>/</span><span id="two-num-total">45</span>
                 </div>
             </div>
             <div class="clearfix f-r light-list">
-                <div class="light f-l ">
+                <div class="light f-l " id="two-oneplace">
                     <p>区域1</p>
                     <div class="clearfix group">
                         <span class="f-l">组1</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span>
-                                <!-- <img src="img/4.png" alt=""> -->
+                                <span></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==1}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
                             </span>
-                            <span><img src="img/4.png" alt="2"></span>
-                            <span><img src="img/4.png" alt="3"></span>
-                            <span><img src="img/4.png" alt="4"></span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组2</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="5"></span>
-                            <span><img src="img/4.png" alt="6"></span>
-                            <span><img src="img/4.png" alt="7"></span>
-                            <span><img src="img/4.png" alt="8"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==2}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组3</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="9"></span>
-                            <span><img src="img/4.png" alt="10"></span>
-                            <span><img src="img/4.png" alt="11"></span>
-                            <span>
-                                <!-- <img src="img/3.png" alt=""> -->
+                                <span></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==3}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
                             </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/10</span>
+                        <span class="status f-l" id="two-oneplace-state">ON</span>
+                        <span class="num f-r" id="two-oneplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='2楼'} and ${placeLNum.place==1} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /10</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="two-twoplace">
                     <p>区域2</p>
                     <div class="clearfix group">
                         <span class="f-l">组4</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="13"></span>
-                            <span><img src="img/4.png" alt="14"></span>
-                            <span><img src="img/4.png" alt="15"></span>
-                            <span><img src="img/4.png" alt="16"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==4}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组5</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="17"></span>
-                            <span><img src="img/4.png" alt="18"></span>
-                            <span><img src="img/4.png" alt="19"></span>
-                            <span>
-                                <!-- <img src="img/3.png" alt=""> -->
+                                <span></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==5}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
                             </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组6</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="21"></span>
-                            <span><img src="img/4.png" alt="22"></span>
-                            <span><img src="img/4.png" alt="23"></span>
-                            <span><img src="img/4.png" alt="24"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==6}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/11</span>
+                        <span class="status f-l" id="two-twoplace-state">ON</span>
+                        <span class="num f-r" id="two-twoplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='2楼'} and ${placeLNum.place==2} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /11</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="two-thirdplace">
                     <p>区域3</p>
                     <div class="clearfix group">
                         <span class="f-l">组7</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="25"></span>
-                            <span><img src="img/4.png" alt="26"></span>
-                            <span><img src="img/4.png" alt="27"></span>
-                            <span><img src="img/4.png" alt="28"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==7}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组8</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="29"></span>
-                            <span><img src="img/4.png" alt="30"></span>
-                            <span><img src="img/4.png" alt="31"></span>
-                            <span><img src="img/4.png" alt="32"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==8}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组9</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="33"></span>
-                            <span><img src="img/4.png" alt="34"></span>
-                            <span><img src="img/4.png" alt="35"></span>
-                            <span><img src="img/4.png" alt="36"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==9}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="two-thirdplace-state">ON</span>
+                        <span class="num f-r" id="two-thirdplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='2楼'} and ${placeLNum.place==3} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="two-fourplace">
                     <p>区域4</p>
                     <div class="clearfix group">
                         <span class="f-l">组10</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="37"></span>
-                            <span><img src="img/4.png" alt="38"></span>
-                            <span><img src="img/4.png" alt="39"></span>
-                            <span><img src="img/4.png" alt="40"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==10}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组11</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="41"></span>
-                            <span><img src="img/4.png" alt="42"></span>
-                            <span><img src="img/4.png" alt="43"></span>
-                            <span><img src="img/4.png" alt="44"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==11}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组12</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="45"></span>
-                            <span><img src="img/4.png" alt="46"></span>
-                            <span><img src="img/4.png" alt="47"></span>
-                            <span><img src="img/4.png" alt="48"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='2楼'} and ${light.group==12}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="two-fourplace-state">ON</span>
+                        <span class="num f-r" id="two-fourplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='2楼'} and ${placeLNum.place==4} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
             </div>
@@ -944,156 +1157,212 @@
         <div class="one-floor floor clearfix p-r" id="one-center">
             <div class="floor-name f-l">
                 <p>一楼</p>
+                <div id="one-hinit">
+                    <img src="img/2.png" alt="">
+                    <img src="img/1.png" >
+                </div>
                 <div>
                     <!-- <img src="img/2.png" alt=""> -->
                 </div>
                 <div class="page p-a">
                    <span th:each="centerLNum:${centerLNumList}" th:if="${centerLNum.mname=='1楼'}"
-                         th:text="${centerLNum.centerLNum}">
-                    </span><span>/</span><span>48</span>
+                         th:text="${centerLNum.centerLNum}" id="one-num">
+                    </span><span>/</span><span id="one-num-total">48</span>
                 </div>
             </div>
             <div class="clearfix f-r light-list">
-                <div class="light f-l ">
+                <div class="light f-l " id="one-oneplace">
                     <p>区域1</p>
                     <div class="clearfix group">
                         <span class="f-l">组1</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="1"></span>
-                            <span><img src="img/4.png" alt="2"></span>
-                            <span><img src="img/4.png" alt="3"></span>
-                            <span><img src="img/4.png" alt="4"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==1}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组2</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="5"></span>
-                            <span><img src="img/4.png" alt="6"></span>
-                            <span><img src="img/4.png" alt="7"></span>
-                            <span><img src="img/4.png" alt="8"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==2}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组3</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="9"></span>
-                            <span><img src="img/4.png" alt="10"></span>
-                            <span><img src="img/4.png" alt="11"></span>
-                            <span><img src="img/4.png" alt="12"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==3}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="one-oneplace-state">ON</span>
+                        <span class="num f-r" id="one-oneplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='1楼'} and ${placeLNum.place==1} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light  f-l">
+                <div class="light  f-l" id="one-twoplace">
                     <p>区域2</p>
                     <div class="clearfix group">
                         <span class="f-l">组4</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="13"></span>
-                            <span><img src="img/4.png" alt="14"></span>
-                            <span><img src="img/4.png" alt="15"></span>
-                            <span><img src="img/4.png" alt="16"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==4}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组5</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="17"></span>
-                            <span><img src="img/4.png" alt="18"></span>
-                            <span><img src="img/4.png" alt="19"></span>
-                            <span><img src="img/4.png" alt="20"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==5}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组6</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="21"></span>
-                            <span><img src="img/4.png" alt="22"></span>
-                            <span><img src="img/4.png" alt="23"></span>
-                            <span><img src="img/4.png" alt="24"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==6}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="one-twoplace-state">ON</span>
+                        <span class="num f-r" id="one-twoplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='1楼'} and ${placeLNum.place==2} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light f-l">
+                <div class="light f-l" id="one-thirdplace">
                     <p>区域3</p>
                     <div class="clearfix group">
                         <span class="f-l">组7</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="25"></span>
-                            <span><img src="img/4.png" alt="26"></span>
-                            <span><img src="img/4.png" alt="27"></span>
-                            <span><img src="img/4.png" alt="28"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==7}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组8</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="29"></span>
-                            <span><img src="img/4.png" alt="30"></span>
-                            <span><img src="img/4.png" alt="31"></span>
-                            <span><img src="img/4.png" alt="32"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==8}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组9</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="33"></span>
-                            <span><img src="img/4.png" alt="34"></span>
-                            <span><img src="img/4.png" alt="35"></span>
-                            <span><img src="img/4.png" alt="36"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==9}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON</span>
-                        <span class="num f-r">12/12</span>
+                        <span class="status f-l" id="one-thirdplace-state">ON</span>
+                        <span class="num f-r" id="one-thirdplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='1楼'} and ${placeLNum.place==3} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
-                <div class="light  f-l">
+                <div class="light  f-l" id="one-fourplace">
                     <p>区域4</p>
                     <div class="clearfix group">
                         <span class="f-l">组10</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="37"></span>
-                            <span><img src="img/4.png" alt="38"></span>
-                            <span><img src="img/4.png" alt="39"></span>
-                            <span><img src="img/4.png" alt="40"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==10}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组11</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="41"></span>
-                            <span><img src="img/4.png" alt="42"></span>
-                            <span><img src="img/4.png" alt="43"></span>
-                            <span><img src="img/4.png" alt="44"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==11}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
                     <div class="clearfix group">
                         <span class="f-l">组12</span>
+                        <!--<span class="f-r">-->
                         <span class="f-r">
-                            <span><img src="img/4.png" alt="45"></span>
-                            <span><img src="img/4.png" alt="46"></span>
-                            <span><img src="img/4.png" alt="47"></span>
-                            <span><img src="img/4.png" alt="48"></span>
+                                <span th:each="light:${lightState} "
+                                      th:if="${light.mname=='1楼'} and ${light.group==12}">
+                                <img src="img/3.png" alt="1" th:if="${light.status=='0'}">
+                                <img src="img/4.png" alt="1" th:if="${light.status=='1'}">
+                                <img src="img/5.png" alt="1" th:if="${light.status==null}" class="bulb abnormal">
+                            </span>
                         </span>
                     </div>
 
                     <div class="light-foot clearfix">
-                        <span class="status f-l">ON
+                        <span class="status f-l" id="one-fourplace-state">ON
                             <!-- <img src="img/2.png" alt=""> -->
                         </span>
-                        <span class="num f-r">12/12</span>
+                        <span class="num f-r" id="one-fourplace-num">
+                        <span th:each="placeLNum:${placeLNumList}"
+                              th:if="${placeLNum.mname=='1楼'} and ${placeLNum.place==4} "
+                              th:text="${placeLNum.PlaceLNum}"></span>
+                        /12</span>
                     </div>
                 </div>
             </div>
@@ -1191,70 +1460,927 @@
         </div>
     </div>
     <script src="/static/jquery-1.10.2.min.js"></script>
-    <script>
+    <script th:inline="none">
+        $(function () {
+            var shuaxin1 = setInterval(function () {
+                shuaxin()
+            }, 5000);
+
+            function shuaxin() {
+                window.location.href="http://localhost:8080/monitor";
+            }
+
+//                            var socket;
+//                            if (typeof (WebSocket) == "undefined") {
+//                                console.log("遗憾：您的浏览器不支持WebSocket");
+//
+//                            } else {
+//                                console.log("恭喜：您的浏览器支持WebSocket");
+//                                //实现化WebSocket对象
+//                                //指定要连接的服务器地址与端口建立连接
+//                                //注意ws、wss使用不同的端口。我使用自签名的证书测试，
+//                                //无法使用wss，浏览器打开WebSocket时报错
+//                                //ws对应http、wss对应https。
+////                                socket = new WebSocket("ws://192.168.16.60:8080/ws/webSocket");
+//                                socket = new WebSocket("ws://127.0.0.1:8080/ws/webSocket");
+//                                //连接打开事件
+//                                socket.onopen = function () {
+//                                    console.log("Socket 已打开");
+//            //                        socket.send("消息发送测试(From Client)");
+//                                };
+//                                //收到消息事件
+//                                socket.onmessage = function (msg) {
+////                                    console.log("total: "+JSON.parse(msg.data));
+////                                    console.log("centerLNumList: "+JSON.parse(msg.data).centerLNumList);//每个楼层灯总个数
+////                                    console.log("lightState :"+JSON.parse(msg.data).lightState);//所有灯的状态
+////                                    console.log("placeLNumList :"+JSON.parse(msg.data).placeLNumList);//每个区域的灯个数
+//                                    var centerLNumList = JSON.parse(msg.data).centerLNumList;
+//                                    $.each(centerLNumList,function (key,value) {
+////                                        console.log(value);
+//                                        if (value.mname=='5楼'){
+//                                            $("#five-num").text(value.centerLNum);
+//                                        }else if (value.mname=='4楼'){
+//                                            $("#four-num").text(value.centerLNum);
+//                                        }else if (value.mname=='3楼'){
+//                                            $("#third-num").text(value.centerLNum);
+//                                        }else if (value.mname=='2楼'){
+//                                            $("#two-num").text(value.centerLNum);
+//                                        }else if (value.mname=='1楼'){
+//                                            $("#one-num").text(value.centerLNum);
+//                                        }
+//                                    })
+//                                    var placeLNumList = JSON.parse(msg.data).placeLNumList;
+//                                    $.each(placeLNumList,function (key,value) {
+////                                        console.log(value);
+//                                        if (value.mname=='5楼'){
+//                                            if (value.place==1){
+//                                                $("#five-oneplace-num").empty();
+//                                                $("#five-oneplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==2){
+//                                                $("#five-twoplace-num").empty();
+//                                                $("#five-twoplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==3){
+//                                                $("#five-thirdplace-num").empty();
+//                                                $("#five-thirdplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==4){
+//                                                $("#five-fourplace-num").empty();
+//                                                $("#five-fourplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }
+//                                        }else if (value.mname=='4楼'){
+//                                            if (value.place==1){
+//                                                $("#four-oneplace-num").empty();
+//                                                $("#four-oneplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==2){
+//                                                $("#four-twoplace-num").empty();
+//                                                $("#four-twoplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==3){
+//                                                $("#four-thirdplace-num").empty();
+//                                                $("#four-thirdplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==4){
+//                                                $("#four-fourplace-num").empty();
+//                                                $("#four-fourplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }
+//                                        }else if (value.mname=='3楼'){
+//                                            if (value.place==1){
+//                                                $("#third-oneplace-num").empty();
+//                                                $("#third-oneplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==2){
+//                                                $("#third-twoplace-num").empty();
+//                                                $("#third-twoplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==3){
+//                                                $("#third-thirdplace-num").empty();
+//                                                $("#third-thirdplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==4){
+//                                                $("#third-fourplace-num").empty();
+//                                                $("#third-fourplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }
+//                                        }else if (value.mname=='2楼'){
+//                                            if (value.place==1){
+//                                                $("#two-oneplace-num").empty();
+//                                                $("#two-oneplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==2){
+//                                                $("#two-twoplace-num").empty();
+//                                                $("#two-twoplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==3){
+//                                                $("#two-thirdplace-num").empty();
+//                                                $("#two-thirdplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==4){
+//                                                $("#two-fourplace-num").empty();
+//                                                $("#two-fourplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }
+//                                        }else if (value.mname=='1楼'){
+//                                            if (value.place==1){
+//                                                $("#one-oneplace-num").empty();
+//                                                $("#one-oneplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==2){
+//                                                $("#one-twoplace-num").empty();
+//                                                $("#one-twoplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==3){
+//                                                $("#one-thirdplace-num").empty();
+//                                                $("#one-thirdplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }else if (value.place==4){
+//                                                $("#one-fourplace-num").empty();
+//                                                $("#one-fourplace-num").append('<span >'+value.placeLNum+'</span> /12</span>');
+//                                            }
+//                                        }
+//                                    });
+//                                    var lightState = JSON.parse(msg.data).lightState;
+//                                    $.each(lightState,function (key,value) {
+////                                        console.log(value);
+//                                        if (value.mname=='5楼'){
+//                                            if (value.place==1){
+//
+//                                            }else if (value.place==2){
+//                                            }else if (value.place==3){
+//                                            }else if (value.place==4){
+//                                            }
+//                                        }else if (value.mname=='4楼'){
+//                                            if (value.place==1){
+//                                            }else if (value.place==2){
+//                                            }else if (value.place==3){
+//                                            }else if (value.place==4){
+//                                            }
+//                                        }else if (value.mname=='3楼'){
+//                                            if (value.place==1){
+//                                            }else if (value.place==2){
+//                                            }else if (value.place==3){
+//                                            }else if (value.place==4){
+//                                            }
+//                                        }else if (value.mname=='2楼'){
+//                                            if (value.place==1){
+//                                            }else if (value.place==2){
+//                                            }else if (value.place==3){
+//                                            }else if (value.place==4){
+//                                            }
+//                                        }else if (value.mname=='1楼'){
+//                                            if (value.place==1){
+//                                            }else if (value.place==2){
+//                                            }else if (value.place==3){
+//                                            }else if (value.place==4){
+//                                            }
+//                                        }
+//                                    });
+//
+//                                };
+//                                //连接关闭事件
+//                                socket.onclose = function () {
+//                                    console.log("Socket已关闭");
+//                                };
+//                                //发生了错误事件
+//                                socket.onerror = function () {
+//                                    alert("Socket发生了错误");
+//                                }
+//
+//                                //窗口关闭时，关闭连接
+//                                window.unload = function () {
+//                                    socket.close();
+//                                };
+//                            }
+        });
+
         $(function () {
 
-                            var socket;
-                            if (typeof (WebSocket) == "undefined") {
-                                console.log("遗憾：您的浏览器不支持WebSocket");
-            //                    var shuaxin1 = setInterval(function () {
-            //                        shuaxin()
-            //                    }, 1000);
-            //
-            //                    function shuaxin() {
-            //                        $.ajax({
-            //                            url: "/getMemcacheAddress",
-            //                            data: "address=" + $("#ip1").text(),
-            //                            dataType: "json",
-            //                            type: "POST",
-            //                            success: function (data) {
-            //                                var value = data.value;
-            //                                if (value == "0") {
-            //                                    $("#msg1").text("连接成功");
-            //                                } else if (value == "1"){
-            //                                    $("#msg1").text("连接失败");
-            //                                }
-            //                            }
-            //                        });
-            //                    }
-                            } else {
-                                console.log("恭喜：您的浏览器支持WebSocket");
-                                //实现化WebSocket对象
-                                //指定要连接的服务器地址与端口建立连接
-                                //注意ws、wss使用不同的端口。我使用自签名的证书测试，
-                                //无法使用wss，浏览器打开WebSocket时报错
-                                //ws对应http、wss对应https。
-//                                socket = new WebSocket("ws://192.168.16.60:8080/ws/webSocket");
-                                socket = new WebSocket("ws://127.0.0.1:8080/ws/webSocket");
-                                //连接打开事件
-                                socket.onopen = function () {
-                                    console.log("Socket 已打开");
-            //                        socket.send("消息发送测试(From Client)");
-                                };
-                                //收到消息事件
-                                socket.onmessage = function (msg) {
-                                    console.log("total: "+JSON.parse(msg.data));
-                                    console.log("centerLNumList: "+JSON.parse(msg.data).centerLNumList);//每个楼层灯总个数
-                                    console.log("centerLState :"+JSON.parse(msg.data).centerLState);//每个楼层灯的总开关状态
-                                    console.log("lightState :"+JSON.parse(msg.data).lightState);//所有灯的状态
-                                    console.log("placeLNumList :"+JSON.parse(msg.data).placeLNumList);//每个区域的灯个数
-                                    console.log("placeLState :"+JSON.parse(msg.data).placeLState);//每个区域灯的总开关状态
-                                }
-                                ;
-                                //连接关闭事件
-                                socket.onclose = function () {
-                                    console.log("Socket已关闭");
-                                };
-                                //发生了错误事件
-                                socket.onerror = function () {
-                                    alert("Socket发生了错误");
-                                }
 
-                                //窗口关闭时，关闭连接
-                                window.unload = function () {
-                                    socket.close();
-                                };
-                            }
+            var fiveOnePlaceImg;
+            var fiveImg;
+            //5楼区域1
+             fiveOnePlaceImg = $("#five-oneplace").find("img").attr("src");
+             fiveImg = $("#five-oneplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#five-oneplace-state").empty();
+                    $("#five-oneplace-state").append('<img src="img/2.png" >');
+                    $("#five-oneplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#five-oneplace-state").empty();
+                    $("#five-oneplace").removeClass("warning");
+                    $("#five-oneplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#five-oneplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#five-oneplace-state").empty();
+                    $("#five-oneplace").removeClass("warning");
+                    $("#five-oneplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#five-oneplace-state").empty();
+                    $("#five-oneplace").removeClass("warning");
+                    $("#five-oneplace-state").text("OFF")
+                }
+            }
+
+            //5楼区域2
+            fiveOnePlaceImg = $("#five-twoplace").find("img").attr("src");
+            fiveImg = $("#five-twoplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#five-twoplace-state").empty();
+                    $("#five-twoplace-state").append('<img src="img/2.png" >');
+                    $("#five-twoplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#five-twoplace-state").empty();
+                    $("#five-twoplace").removeClass("warning");
+                    $("#five-twoplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#five-twoplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#five-twoplace-state").empty();
+                    $("#five-twoplace").removeClass("warning");
+                    $("#five-twoplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#five-twoplace-state").empty();
+                    $("#five-twoplace").removeClass("warning");
+                    $("#five-twoplace-state").text("OFF")
+                }
+            }
+            //5楼区域3
+            fiveOnePlaceImg = $("#five-thirdplace").find("img").attr("src");
+            fiveImg = $("#five-thirdplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#five-thirdplace-state").empty();
+                    $("#five-thirdplace-state").append('<img src="img/2.png" >');
+                    $("#five-thirdplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#five-thirdplace-state").empty();
+                    $("#five-thirdplace").removeClass("warning");
+                    $("#five-thirdplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#five-thirdplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#five-thirdplace-state").empty();
+                    $("#five-thirdplace").removeClass("warning");
+                    $("#five-thirdplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#five-thirdplace-state").empty();
+                    $("#five-thirdplace").removeClass("warning");
+                    $("#five-thirdplace-state").text("OFF")
+                }
+            }
+            //5楼区域4
+            fiveOnePlaceImg = $("#five-fourplace").find("img").attr("src");
+            fiveImg = $("#five-fourplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#five-fourplace-state").empty();
+                    $("#five-fourplace-state").append('<img src="img/2.png" >');
+                    $("#five-fourplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#five-fourplace-state").empty();
+                    $("#five-fourplace").removeClass("warning");
+                    $("#five-fourplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#five-fourplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#five-fourplace-state").empty();
+                    $("#five-fourplace").removeClass("warning");
+                    $("#five-fourplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#five-fourplace-state").empty();
+                    $("#five-fourplace").removeClass("warning");
+                    $("#five-fourplace-state").text("OFF")
+                }
+            }
+            //4楼区域1
+            fiveOnePlaceImg = $("#four-oneplace").find("img").attr("src");
+            fiveImg = $("#four-oneplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#four-oneplace-state").empty();
+                    $("#four-oneplace-state").append('<img src="img/2.png" >');
+                    $("#four-oneplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#four-oneplace-state").empty();
+                    $("#four-oneplace").removeClass("warning");
+                    $("#four-oneplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#four-oneplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#four-oneplace-state").empty();
+                    $("#four-oneplace").removeClass("warning");
+                    $("#four-oneplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#four-oneplace-state").empty();
+                    $("#four-oneplace").removeClass("warning");
+                    $("#four-oneplace-state").text("OFF")
+                }
+            }
+
+            //4楼区域2
+            fiveOnePlaceImg = $("#four-twoplace").find("img").attr("src");
+            fiveImg = $("#four-twoplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#four-twoplace-state").empty();
+                    $("#four-twoplace-state").append('<img src="img/2.png" >');
+                    $("#four-twoplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#four-twoplace-state").empty();
+                    $("#four-twoplace").removeClass("warning");
+                    $("#four-twoplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#four-twoplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#four-twoplace-state").empty();
+                    $("#four-twoplace").removeClass("warning");
+                    $("#four-twoplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#four-twoplace-state").empty();
+                    $("#four-twoplace").removeClass("warning");
+                    $("#four-twoplace-state").text("OFF")
+                }
+            }
+            //4楼区域3
+            fiveOnePlaceImg = $("#four-thirdplace").find("img").attr("src");
+            fiveImg = $("#four-thirdplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#four-thirdplace-state").empty();
+                    $("#four-thirdplace-state").append('<img src="img/2.png" >');
+                    $("#four-thirdplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#four-thirdplace-state").empty();
+                    $("#four-thirdplace").removeClass("warning");
+                    $("#four-thirdplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#four-thirdplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#four-thirdplace-state").empty();
+                    $("#four-thirdplace").removeClass("warning");
+                    $("#four-thirdplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#four-thirdplace-state").empty();
+                    $("#four-thirdplace").removeClass("warning");
+                    $("#four-thirdplace-state").text("OFF")
+                }
+            }
+            //4楼区域4
+            fiveOnePlaceImg = $("#four-fourplace").find("img").attr("src");
+            fiveImg = $("#four-fourplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#four-fourplace-state").empty();
+                    $("#four-fourplace-state").append('<img src="img/2.png" >');
+                    $("#four-fourplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#four-fourplace-state").empty();
+                    $("#four-fourplace").removeClass("warning");
+                    $("#four-fourplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#four-fourplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#four-fourplace-state").empty();
+                    $("#four-fourplace").removeClass("warning");
+                    $("#four-fourplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#four-fourplace-state").empty();
+                    $("#four-fourplace").removeClass("warning");
+                    $("#four-fourplace-state").text("OFF")
+                }
+            }
+            //3楼区域1
+            fiveOnePlaceImg = $("#third-oneplace").find("img").attr("src");
+            fiveImg = $("#third-oneplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#third-oneplace-state").empty();
+                    $("#third-oneplace-state").append('<img src="img/2.png" >');
+                    $("#third-oneplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#third-oneplace-state").empty();
+                    $("#third-oneplace").removeClass("warning");
+                    $("#third-oneplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#third-oneplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#third-oneplace-state").empty();
+                    $("#third-oneplace").removeClass("warning");
+                    $("#third-oneplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#third-oneplace-state").empty();
+                    $("#third-oneplace").removeClass("warning");
+                    $("#third-oneplace-state").text("OFF")
+                }
+            }
+
+            //3楼区域2
+            fiveOnePlaceImg = $("#third-twoplace").find("img").attr("src");
+            fiveImg = $("#third-twoplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#third-twoplace-state").empty();
+                    $("#third-twoplace-state").append('<img src="img/2.png" >');
+                    $("#third-twoplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#third-twoplace-state").empty();
+                    $("#third-twoplace").removeClass("warning");
+                    $("#third-twoplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#third-twoplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#third-twoplace-state").empty();
+                    $("#third-twoplace").removeClass("warning");
+                    $("#third-twoplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#third-twoplace-state").empty();
+                    $("#third-twoplace").removeClass("warning");
+                    $("#third-twoplace-state").text("OFF")
+                }
+            }
+            //3楼区域3
+            fiveOnePlaceImg = $("#third-thirdplace").find("img").attr("src");
+            fiveImg = $("#third-thirdplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#third-thirdplace-state").empty();
+                    $("#third-thirdplace-state").append('<img src="img/2.png" >');
+                    $("#third-thirdplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#third-thirdplace-state").empty();
+                    $("#third-thirdplace").removeClass("warning");
+                    $("#third-thirdplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#third-thirdplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#third-thirdplace-state").empty();
+                    $("#third-thirdplace").removeClass("warning");
+                    $("#third-thirdplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#third-thirdplace-state").empty();
+                    $("#third-thirdplace").removeClass("warning");
+                    $("#third-thirdplace-state").text("OFF")
+                }
+            }
+            //3楼区域4
+            fiveOnePlaceImg = $("#third-fourplace").find("img").attr("src");
+            fiveImg = $("#third-fourplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#third-fourplace-state").empty();
+                    $("#third-fourplace-state").append('<img src="img/2.png" >');
+                    $("#third-fourplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#third-fourplace-state").empty();
+                    $("#third-fourplace").removeClass("warning");
+                    $("#third-fourplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#third-fourplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#third-fourplace-state").empty();
+                    $("#third-fourplace").removeClass("warning");
+                    $("#third-fourplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#third-fourplace-state").empty();
+                    $("#third-fourplace").removeClass("warning");
+                    $("#third-fourplace-state").text("OFF")
+                }
+            }
+
+            //2楼区域1
+            fiveOnePlaceImg = $("#two-oneplace").find("img").attr("src");
+            fiveImg = $("#two-oneplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#two-oneplace-state").empty();
+                    $("#two-oneplace-state").append('<img src="img/2.png" >');
+                    $("#two-oneplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#two-oneplace-state").empty();
+                    $("#two-oneplace").removeClass("warning");
+                    $("#two-oneplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#two-oneplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#two-oneplace-state").empty();
+                    $("#two-oneplace").removeClass("warning");
+                    $("#two-oneplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#two-oneplace-state").empty();
+                    $("#two-oneplace").removeClass("warning");
+                    $("#two-oneplace-state").text("OFF")
+                }
+            }
+
+            //2楼区域2
+            fiveOnePlaceImg = $("#two-twoplace").find("img").attr("src");
+            fiveImg = $("#two-twoplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#two-twoplace-state").empty();
+                    $("#two-twoplace-state").append('<img src="img/2.png" >');
+                    $("#two-twoplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#two-twoplace-state").empty();
+                    $("#two-twoplace").removeClass("warning");
+                    $("#two-twoplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#two-twoplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#two-twoplace-state").empty();
+                    $("#two-twoplace").removeClass("warning");
+                    $("#two-twoplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#two-twoplace-state").empty();
+                    $("#two-twoplace").removeClass("warning");
+                    $("#two-twoplace-state").text("OFF")
+                }
+            }
+            //2楼区域3
+            fiveOnePlaceImg = $("#two-thirdplace").find("img").attr("src");
+            fiveImg = $("#two-thirdplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#two-thirdplace-state").empty();
+                    $("#two-thirdplace-state").append('<img src="img/2.png" >');
+                    $("#two-thirdplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#two-thirdplace-state").empty();
+                    $("#two-thirdplace").removeClass("warning");
+                    $("#two-thirdplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#two-thirdplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#two-thirdplace-state").empty();
+                    $("#two-thirdplace").removeClass("warning");
+                    $("#two-thirdplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#two-thirdplace-state").empty();
+                    $("#two-thirdplace").removeClass("warning");
+                    $("#two-thirdplace-state").text("OFF")
+                }
+            }
+            //2楼区域4
+            fiveOnePlaceImg = $("#two-fourplace").find("img").attr("src");
+            fiveImg = $("#two-fourplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#two-fourplace-state").empty();
+                    $("#two-fourplace-state").append('<img src="img/2.png" >');
+                    $("#two-fourplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#two-fourplace-state").empty();
+                    $("#two-fourplace").removeClass("warning");
+                    $("#two-fourplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#two-fourplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#two-fourplace-state").empty();
+                    $("#two-fourplace").removeClass("warning");
+                    $("#two-fourplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#two-fourplace-state").empty();
+                    $("#two-fourplace").removeClass("warning");
+                    $("#two-fourplace-state").text("OFF")
+                }
+            }
+            //1楼区域1
+            fiveOnePlaceImg = $("#one-oneplace").find("img").attr("src");
+            fiveImg = $("#one-oneplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#one-oneplace-state").empty();
+                    $("#one-oneplace-state").append('<img src="img/2.png" >');
+                    $("#one-oneplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#one-oneplace-state").empty();
+                    $("#one-oneplace").removeClass("warning");
+                    $("#one-oneplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#one-oneplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#one-oneplace-state").empty();
+                    $("#one-oneplace").removeClass("warning");
+                    $("#one-oneplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#one-oneplace-state").empty();
+                    $("#one-oneplace").removeClass("warning");
+                    $("#one-oneplace-state").text("OFF")
+                }
+            }
+
+            //1楼区域2
+            fiveOnePlaceImg = $("#one-twoplace").find("img").attr("src");
+            fiveImg = $("#one-twoplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#one-twoplace-state").empty();
+                    $("#one-twoplace-state").append('<img src="img/2.png" >');
+                    $("#one-twoplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#one-twoplace-state").empty();
+                    $("#one-twoplace").removeClass("warning");
+                    $("#one-twoplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#one-twoplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#one-twoplace-state").empty();
+                    $("#one-twoplace").removeClass("warning");
+                    $("#one-twoplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#one-twoplace-state").empty();
+                    $("#one-twoplace").removeClass("warning");
+                    $("#one-twoplace-state").text("OFF")
+                }
+            }
+            //1楼区域3
+            fiveOnePlaceImg = $("#one-thirdplace").find("img").attr("src");
+            fiveImg = $("#one-thirdplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#one-thirdplace-state").empty();
+                    $("#one-thirdplace-state").append('<img src="img/2.png" >');
+                    $("#one-thirdplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#one-thirdplace-state").empty();
+                    $("#one-thirdplace").removeClass("warning");
+                    $("#one-thirdplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#one-thirdplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#one-thirdplace-state").empty();
+                    $("#one-thirdplace").removeClass("warning");
+                    $("#one-thirdplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#one-thirdplace-state").empty();
+                    $("#one-thirdplace").removeClass("warning");
+                    $("#one-thirdplace-state").text("OFF")
+                }
+            }
+            //1楼区域4
+            fiveOnePlaceImg = $("#one-fourplace").find("img").attr("src");
+            fiveImg = $("#one-fourplace").find("img");
+            $(fiveImg).each(function (key,value) {
+                var img = $(value).attr("src");
+                if (img=='img/5.png'){
+                    //区域灯异常
+                    $("#one-fourplace-state").empty();
+                    $("#one-fourplace-state").append('<img src="img/2.png" >');
+                    $("#one-fourplace").addClass("warning");
+                    return false;
+                }
+                if (fiveOnePlaceImg!=img){
+                    //区域灯状态不一致
+                    $("#one-fourplace-state").empty();
+                    $("#one-fourplace").removeClass("warning");
+                    $("#one-fourplace-state").append('<img src="img/1.png" >');
+                }
+            });
+            if ($("#one-fourplace-state img").length<=0){
+                //区域灯状态一致
+                if (fiveOnePlaceImg=='img/3.png'){
+                    //灯亮
+                    $("#one-fourplace-state").empty();
+                    $("#one-fourplace").removeClass("warning");
+                    $("#one-fourplace-state").text("ON")
+                }else if (fiveOnePlaceImg=='img/4.png'){
+                    //灯关
+                    $("#one-fourplace-state").empty();
+                    $("#one-fourplace").removeClass("warning");
+                    $("#one-fourplace-state").text("OFF")
+                }
+            }
+
+            //每层灯状态
+            var fiveOnePlace = $("#five-num").text();
+            var fiveOnePlaceTotal = $("#fiv-num-total").text();
+
+            if(fiveOnePlace!=fiveOnePlaceTotal){
+                $("#five-hinit img:eq(0)").css("display","none");
+                $("#five-hinit img:eq(1)").css("display","none");
+                $("#five-hinit img:eq(0)").css("display","inline");
+            }else if ($("#five-oneplace-state img").attr("src")=='img/1.png'||$("#five-twoplace-state img").attr("src")=='img/1.png'||$("#five-thirdplace-state img").attr("src")=='img/1.png'||$("#five-fourplace-state img").attr("src")=='img/1.png'){
+                $("#five-hinit img:eq(0)").css("display","none");
+                $("#five-hinit img:eq(1)").css("display","none");
+                $("#five-hinit img:eq(1)").css("display","inline");
+            }else {
+                $("#five-hinit img:eq(0)").css("display","none");
+                $("#five-hinit img:eq(1)").css("display","none");
+            }
+
+
+            if(($("#four-num").text())!=($("#four-num-total").text())){
+                $("#four-hinit img:eq(0)").css("display","none");
+                $("#four-hinit img:eq(1)").css("display","none");
+                $("#four-hinit img:eq(0)").css("display","inline");
+            }else if ($("#four-oneplace-state img").attr("src")=='img/1.png'||$("#four-twoplace-state img").attr("src")=='img/1.png'||$("#four-thirdplace-state img").attr("src")=='img/1.png'||$("#four-fourplace-state img").attr("src")=='img/1.png'){
+                $("#four-hinit img:eq(0)").css("display","none");
+                $("#four-hinit img:eq(1)").css("display","none");
+                $("#four-hinit img:eq(1)").css("display","inline");
+            } else {
+                $("#four-hinit img:eq(0)").css("display","none");
+                $("#four-hinit img:eq(1)").css("display","none");
+            }
+
+
+            if(($("#third-num").text())!=($("#third-num-total").text())){
+                $("#third-hinit img:eq(0)").css("display","none");
+                $("#third-hinit img:eq(1)").css("display","none");
+                $("#third-hinit img:eq(0)").css("display","inline");
+            }else if ($("#third-oneplace-state img").attr("src")=='img/1.png'||$("#third-twoplace-state img").attr("src")=='img/1.png'||$("#third-thirdplace-state img").attr("src")=='img/1.png'||$("#third-fourplace-state img").attr("src")=='img/1.png'){
+                $("#third-hinit img:eq(0)").css("display","none");
+                $("#third-hinit img:eq(1)").css("display","none");
+                $("#third-hinit img:eq(1)").css("display","inline");
+            }else {
+                $("#third-hinit img:eq(0)").css("display","none");
+                $("#third-hinit img:eq(1)").css("display","none");
+            }
+
+             if(($("#two-num").text())!=($("#two-num-total").text())){
+                $("#two-hinit img:eq(0)").css("display","none");
+                $("#two-hinit img:eq(1)").css("display","none");
+                $("#two-hinit img:eq(0)").css("display","inline");
+            }else if ($("#two-oneplace-state img").attr("src")=='img/1.png'||$("#two-twoplace-state img").attr("src")=='img/1.png'||$("#two-thirdplace-state img").attr("src")=='img/1.png'||$("#five-fourplace-state img").attr("src")=='img/1.png'){
+                 $("#two-hinit img:eq(0)").css("display","none");
+                 $("#two-hinit img:eq(1)").css("display","none");
+                 $("#two-hinit img:eq(1)").css("display","inline");
+             }else {
+                $("#two-hinit img:eq(0)").css("display","none");
+                $("#two-hinit img:eq(1)").css("display","none");
+            }
+
+             if(($("#one-num").text())!=($("#one-num-total").text())){
+                $("#one-hinit img:eq(0)").css("display","none");
+                $("#one-hinit img:eq(1)").css("display","none");
+                $("#one-hinit img:eq(0)").css("display","inline");
+            }else if ($("#one-oneplace-state img").attr("src")=='img/1.png'||$("#one-twoplace-state img").attr("src")=='img/1.png'||$("#one-thirdplace-state img").attr("src")=='img/1.png'||$("#one-fourplace-state img").attr("src")=='img/1.png'){
+                 $("#one-hinit img:eq(0)").css("display","none");
+                 $("#one-hinit img:eq(1)").css("display","none");
+                 $("#one-hinit img:eq(1)").css("display","inline");
+             }else {
+                $("#one-hinit img:eq(0)").css("display","none");
+                $("#one-hinit img:eq(1)").css("display","none");
+            }
+
         });
     </script>
 </body>
