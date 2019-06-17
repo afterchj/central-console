@@ -1,5 +1,6 @@
 package com.example.blt.task;
 
+import com.example.blt.netty.ClientMain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +29,25 @@ public class ExecuteTask {
         }
     }
 
-    public static void pingStatus() {
-
+    public static void pingStatus(boolean delay, ClientMain clientMain) {
+        new Thread(() -> {
+            try {
+                if (delay) {
+                    new Thread().sleep(20000);
+                }
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage());
+            }
+            for (int i = 0; i < 3; i++) {
+                clientMain.sendCron(8001, "7701011B66", false);
+                try {
+                    new Thread().sleep(5000);
+                } catch (InterruptedException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+            clientMain.sendCron(8001, "7701012766", false);
+        }).start();
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {

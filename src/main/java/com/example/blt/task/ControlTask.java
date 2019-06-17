@@ -35,7 +35,7 @@ public class ControlTask implements Callable<String> {
     }
 
     public String executeTask() {
-        ExecutorService executor = Executors.newCachedThreadPool();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         FutureTask<String> futureTask = new FutureTask(this);
         executor.submit(futureTask);
         executor.shutdown();
