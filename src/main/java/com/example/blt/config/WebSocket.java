@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @create: 2019-05-21 10:44
  **/
 @Component
-@ServerEndpoint(value = "/ws/webSocket" )
+@ServerEndpoint(value = "/ws/webSocket")
 public class WebSocket {
     //每个客户端都会有相应的session,服务端可以发送相关消息
     private Session session;
