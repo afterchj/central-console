@@ -23,16 +23,18 @@
                     </div>
                     <div class="f-l light-line ">
                     </div>
-                    <div class="f-l light-line ">
+                    <div class="f-l light-line " >
                         <span class="hide"></span>
                         <span class="hide"></span>
                         <span class="hide"></span>
-                        <span class="air">空调</span>
+                        <span class="air" >空调</span>
                     </div>
-                    <div class="f-l light-line ">
+                    <div class="f-l light-line " th:each="lightState,user:${lightState}"  th:if="${lightState.group}==1">
                         <span class="hide"></span>
                         <span class="hide"></span>
-                        <span></span>
+                        <span  th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
+                        <span  th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>
+                        <span  th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"></span>
                     </div>
                 </div>
@@ -40,27 +42,25 @@
                     <p class="f-r num p-a b">B</p>
                     <span class="cricle p-a b"></span>
                     <div class="pillar-square b1 p-a"></div>
-                    <div class="f-l light-line ">
+                    <div class="f-l light-line " >
                         <span class="hide"></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==0 and ${user.index}&lt;4"   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==1 and ${user.index}&lt;4"   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==null and ${user.index}&lt;4"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==0 and ${user.index}&gt;3  and  ${user.index}&lt;8"   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==1 and ${user.index}&gt;3 and  ${user.index}&lt;8"   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==null and ${user.index}&gt;3  and  ${user.index}&lt;8"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
 
                 </div>
                 <div class="place03 c clearfix p-r">
                     <p class="f-r num p-a c">C</p>
                     <div class="f-l light-line">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==3 and ${lightState.status}==0 and   ${user.index}&lt;12 and ${user.index}&gt;7"   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==3 and ${lightState.status}==1 and    ${user.index}&lt;12 and ${user.index}&gt;7"   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==3 and ${lightState.status}==null and  ${user.index}&lt;12 and ${user.index}&gt;7"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
             </div>
@@ -68,86 +68,66 @@
                 <div class="place04 d clearfix p-r">
                     <p class="f-r num p-a d">D</p>
                     <div class="f-l light-line ">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span class="hide"></span>
+                        <span class="hide"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==0 and   ${user.index}&lt;14 and ${user.index}&gt;11"   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==1 and    ${user.index}&lt;14 and ${user.index}&gt;11"   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==null and   ${user.index}&lt;14 and ${user.index}&gt;11"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
                         <span class="air">空调</span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;13  and  ${user.index}&lt;16 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;13  and  ${user.index}&lt;16  "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;13  and  ${user.index}&lt;16"   class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
                     <div class="f-l light-line">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span class="hide"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;15  and  ${user.index}&lt;19 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;15  and  ${user.index}&lt;19  "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;15  and  ${user.index}&lt;19"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span class="hide"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;18  and  ${user.index}&lt;21 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;18  and  ${user.index}&lt;21  "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;18  and  ${user.index}&lt;21"   class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
                 </div>
                 <div class="place05 d clearfix p-r">
                     <p class="f-r num p-a e">E</p>
                     <div class="f-l light-line ">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;21  and  ${user.index}&lt;26 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;21  and  ${user.index}&lt;26  "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;21  and  ${user.index}&lt;26"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;25  and  ${user.index}&lt;30 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;25  and  ${user.index}&lt;30  "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;25  and  ${user.index}&lt;30"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;29  and  ${user.index}&lt;33 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;29  and  ${user.index}&lt;33  "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;29  and  ${user.index}&lt;33"   class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
                     <div class="f-l light-line">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;32  and  ${user.index}&lt;37 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;32  and  ${user.index}&lt;37 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;32  and  ${user.index}&lt;37"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
             </div>
             <div class="part-three f-l">
                 <div class="place06  f clearfix p-r">
                     <p class="f-r num p-a f">F</p>
-                    <div class="f-l light-line">
-                        <span> </span>
+                    <div class="f-l light-line"  th:each="lightState,user:${lightState}"  th:if="${lightState.group}==6">
+                        <span  th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
+                        <span  th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>
+                        <span  th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>
                     </div>
-                    <div class="f-l light-line">
-                        <span> </span>
-                    </div>
-                    <div class="f-l light-line">
-                        <span> </span>
-                    </div>
-                    <div class="f-l light-line">
-                        <span> </span>
-                    </div>
-                    <div class="f-l light-line">
-                        <span> </span>
-                    </div>
-                    <div class="f-l light-line">
-                        <span> </span>
-                    </div>
-                    <div class="f-l light-line">
-                        <span> </span>
-                    </div>
-                    <div class="f-l light-line">
-                        <span> </span>
-                    </div>
-
                 </div>
             </div>
             <div class="part-four f-l">
@@ -156,46 +136,44 @@
                     <div class="pillar-square g1 p-a"></div>
                     <div class="pillar-square g2 p-a"></div>
                     <div class="f-l light-line">
-                        <span> </span>
-                        <span> </span>
-                        <span> </span>
-                        <span> </span>
-                        <span> </span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;44  and  ${user.index}&lt;50 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;44  and  ${user.index}&lt;50 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;44  and  ${user.index}&lt;50"   class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
                     <div class="f-l light-line">
 
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;49  and  ${user.index}&lt;52 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;49  and  ${user.index}&lt;52 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;49  and  ${user.index}&lt;52"   class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;51  and  ${user.index}&lt;54 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;51   and  ${user.index}&lt;54 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;51   and  ${user.index}&lt;54"   class="disconnected" th:alt="${user.index}"></span>
+                        <span class="hide"></span>
+                    </div>
+                    <div class="f-l light-line">
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;53  and  ${user.index}&lt;59 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;53  and  ${user.index}&lt;59 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;53  and  ${user.index}&lt;59"   class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"></span>
                     </div>
                     <div class="f-l light-line">
 
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span class="hide"></span>
-                    </div>
-                    <div class="f-l light-line">
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;58  and  ${user.index}&lt;61 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;58  and  ${user.index}&lt;61 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;58  and  ${user.index}&lt;61"   class="disconnected" th:alt="${user.index}"></span>
 
-                        <span></span>
-                        <span></span>
                         <span class="air">空调</span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;60  and  ${user.index}&lt;63 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;60  and  ${user.index}&lt;63 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;60  and  ${user.index}&lt;63"   class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
                     <div class="f-l light-line">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;62  and  ${user.index}&lt;68 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;62  and  ${user.index}&lt;68 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;62  and  ${user.index}&lt;68"   class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
                 </div>
@@ -205,40 +183,39 @@
                         <div class="pillar-square  h1 p-a"></div>
 
                         <div class="f-l light-line ">
-                            <span></span>
-                            <span></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==0 and ${user.index}&gt;67  and  ${user.index}&lt;70 "   class="on" th:alt="${user.index}"></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==1 and ${user.index}&gt;67  and  ${user.index}&lt;70 "   class="off" th:alt="${user.index}"></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==null   and ${user.index}&gt;67  and  ${user.index}&lt;70"   class="disconnected" th:alt="${user.index}"></span>
                         </div>
                         <div class="f-l light-line ">
-                            <span></span>
-                            <span></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==0 and ${user.index}&gt;69  and  ${user.index}&lt;72 "   class="on" th:alt="${user.index}"></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==1 and ${user.index}&gt;69  and  ${user.index}&lt;72 "   class="off" th:alt="${user.index}"></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==null   and ${user.index}&gt;69  and  ${user.index}&lt;72"   class="disconnected" th:alt="${user.index}"></span>
                         </div>
                     </div>
                     <div class="place09 b f-l p-r">
                         <p class="f-r num p-a i">I</p>
                         <div class="pillar-square  I2 p-a"></div>
-                        <div class="f-l light-line ">
-                            <span class="disconnected"></span>
-                            <span class="on"></span>
-                            <span class="off"></span>
+                        <div class="f-l light-line">
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==0 and ${user.index}&gt;71  and  ${user.index}&lt;75 "   class="on" th:alt="${user.index}"></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==1 and ${user.index}&gt;71  and  ${user.index}&lt;75 "   class="off" th:alt="${user.index}"></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==null   and ${user.index}&gt;71  and  ${user.index}&lt;75"   class="disconnected" th:alt="${user.index}"></span>
                             <span class="hide"></span>
                         </div>
                         <div class="f-l light-line">
                             <span class="air">空调</span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==0 and ${user.index}&gt;74  and  ${user.index}&lt;78 "   class="on" th:alt="${user.index}"></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==1 and ${user.index}&gt;74  and  ${user.index}&lt;78 "   class="off" th:alt="${user.index}"></span>
+                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==null   and ${user.index}&gt;74  and  ${user.index}&lt;78"   class="disconnected" th:alt="${user.index}"></span>
                         </div>
                     </div>
                 </div>
                 <div class="place10 j clearfix  p-r">
                     <p class="f-r num p-a j">J</p>
                     <div class="f-l light-line ">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==10 and ${lightState.status}==0 and ${user.index}&gt;77  and  ${user.index}&lt;85 "   class="on" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==10 and ${lightState.status}==1 and ${user.index}&gt;77  and  ${user.index}&lt;85 "   class="off" th:alt="${user.index}"></span>
+                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==10 and ${lightState.status}==null   and ${user.index}&gt;77  and  ${user.index}&lt;85"   class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
             </div>
@@ -257,12 +234,12 @@
                             </div>
                             <div class="f-r right-content">
                                 <label class="caption"></label>
-                            <span class="frame on-off clearfix active">
+                            <span class="frame on-off clearfix active total-frame">
                                  <span class="f-l">ON</span>
                                  <span class="f-l">OFF</span>
                             </span>
-                             <span class="page">
-                                <span>84</span>/
+                             <span class="page ">
+                                <span th:text="${centerLNumList[0].centerLNum}" class="total-page"></span>/
                                 <span>84</span>
                             </span>
                             </div>
@@ -274,17 +251,13 @@
                             </div>
                             <div class="f-r right-content">
                                 <label class=" caption">Scenes</label>
-
                                     <select name="" id="" class="frame" >
-                                        <option value="">scence 01</option>
-                                        <option value="">scence 02</option>
-                                        <option value="">scence 03</option>
-                                        <option value="">scence 04</option>
+                                        <option value="场景一">scence 01</option>
+                                        <option value="场景二">scence 02</option>
+                                        <option value="场景三">scence 03</option>
+                                        <option value="场景四">scence 04</option>
                                     </select>
-
                             <span class="page">
-                                <!--<span>12</span>/-->
-                                <!--<span>12</span>-->
                             </span>
                             </div>
 
@@ -293,179 +266,49 @@
                 </div>
             </div>
             <div class="place-list  p-r">
-                <!--<div class="f-l icon p-a">-->
-                <!--<img th:src="@{/static/img/1.png}" alt="">-->
-                <!--</div>-->
                 <div class=" place-status-list ">
-                    <div class="place-status clearfix line">
+                    <div class="place-status clearfix line" th:each="placeLNum:${placeLNumList}">
                         <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
+                            <img   th:src="@{/static/img/1.png}" alt="" th:if="${placeLNum.status==null}">
+                            <img  src="" alt="" th:if="${placeLNum.status!=null}">
                         </div>
                         <div class="f-r right-content">
-                            <label class="caption">A:Place01</label>
-                        <span class="frame on-off clearfix ">
-                                 <span class="f-l active">ON</span>
+                            <label class="caption" th:if="${placeLNum.place}==1">A:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==2">B:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==3">C:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==4">D:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==5">E:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==6">F:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==7">G:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==8">H:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==9">I:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption" th:if="${placeLNum.place}==10">G:Place<span>[[${placeLNum.place}]]</span></label>
+                            <span class="frame on-off clearfix " th:if="${placeLNum.status=='0'}">
+                                 <span class="f-l active" >ON</span>
                                  <span class="f-l">OFF</span>
                             </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">B:Place02</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
+                             <span class="frame on-off clearfix " th:if="${placeLNum.status=='1'}">
+                                 <span class="f-l " >ON</span>
+                                 <span class="f-l active">OFF</span>
+                            </span>
+                             <span class="frame on-off clearfix " th:if="${placeLNum.status==null}">
+                                 <span class="f-l " >ON</span>
+                                 <span class="f-l ">OFF</span>
                             </span>
                         <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
+                            <span th:text="${placeLNum.placeLNum}"></span>/
+                            <span th:if="${placeLNum.place}==1">1</span>
+                            <span th:if="${placeLNum.place}==2">7</span>
+                            <span th:if="${placeLNum.place}==3">4</span>
+                            <span th:if="${placeLNum.place}==4">13</span>
+                            <span th:if="${placeLNum.place}==5">15</span>
+                            <span th:if="${placeLNum.place}==6">8</span>
+                            <span th:if="${placeLNum.place}==7">24</span>
+                            <span th:if="${placeLNum.place}==8">4</span>
+                            <span th:if="${placeLNum.place}==9">6</span>
+                            <span th:if="${placeLNum.place}==10">6</span>
                         </span>
                         </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">C:Place03</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
-                            </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">D:Place04</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
-                            </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">E:Place05</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
-                            </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">F:Place06</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
-                            </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">G:Place07</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
-                            </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">H:Place08</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
-                            </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">I:Place09</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
-                            </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
-                    </div>
-                    <div class="place-status clearfix line">
-                        <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="">
-                        </div>
-                        <div class="f-r right-content">
-                            <label class="caption">J:Place10</label>
-                        <span class="frame on-off clearfix on">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
-                            </span>
-                        <span class="page">
-                            <span>12</span>/
-                            <span>12</span>
-                        </span>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -537,13 +380,107 @@
 </div>
 <script th:src="@{/static/jquery-3.1.1.min.js}"></script>
 <script th:inline="javascript">
-        var data=[[${centerLNumList}]];
 
-    $('.frame>span').click(function(){
-        console.log($(this).text())
-        $(this).addClass('active').siblings('span').removeClass('active');
-//        $(this).siblings('span').removeClass('active');
-    })
+        $('.frame>span').click(function(){
+            $(this).addClass('active').siblings('span').removeClass('active');
+        })
+
+        $("select").change(function () {
+            var command = $.trim($(this).val());
+            var host = '192.168.1.8';
+            $.post("/sendSocket5", {"command": command, "host": host}, function () {
+
+            })
+        });
+        $(function () {
+            setInterval(function () {
+                light()
+            }, 2000)
+        })
+
+
+        function light() {
+            $.ajax({
+                type: "post",
+                url: "/getMonitor2",
+                dataType: "json",
+                success: function (data) {
+                    var lightState=data.lightState;
+                    var placeLNumList=data.placeLNumList;
+                    var centerLNumList=data.centerLNumList;
+                    var centerLNum= centerLNumList.centerLNum;
+                    var centerNum2= parseInt($('.total-page').text());
+                    $('.total-page').text(centerLNum);
+                    if(centerNum2==centerLNum){
+                        $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                    }
+                    $('.light-line>span').not(".hide").removeClass('disconnected off on')
+                    $('.light-line>span').not(".air").removeClass('disconnected off on')
+                    $(this).find('.icon img').attr('src','')
+                    $.each(placeLNumList,function(i,val){
+                        var place= val.place;
+                        var status= val.status;
+                        var placeLNum=val.placeLNum;
+                        $('.place-status').each(function(){
+                            var place2=$(this).find('.caption span').text();
+                            if(place==place2){
+                                var totalNum=parseInt($(this).find('.page>span:last-child').text());
+                                $(this).find('.page>span:first-child').text(placeLNum);
+                                if(status==0){
+                                    if(totalNum==placeLNum){
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                }else if(status==1){
+                                    if(totalNum==placeLNum){
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                }else if(status==null){
+                                    $(this).find('.frame>span').removeClass('active');
+                                    $(this).find('.icon img').attr('src','/static/img/1.png')
+                                }
+                            }
+                        })
+                    })
+                    $.each(lightState,function(i,val){
+                         var index=i;
+                         var group=val.group;
+                         var status=val.status;
+                        if(group<=9){
+                            $('.place0'+group+'  .light-line').each(function(){
+                                $(this).find('span').not(".hide").each(function(){
+                                    var sIndex=$(this).attr('alt');
+                                    if(sIndex==index){
+                                        if(status==0){
+                                            $(this).addClass('on')
+                                        }else if(status==1){
+                                            $(this).addClass('off')
+                                        }else if(status==null){
+                                            $(this).addClass('disconnected')
+                                        }
+                                    }
+                                })
+                            })
+                        }else{
+                            $('.place'+group+'  .light-line').each(function(){
+                                $(this).find('span').not(".hide").each(function(){
+                                    var sIndex=$(this).attr('alt');
+                                    if(sIndex==index){
+                                        if(status==0){
+                                            $(this).addClass('on')
+                                        }else if(status==1){
+                                            $(this).addClass('off')
+                                        }else if(status==null){
+                                            $(this).addClass('disconnected')
+                                        }
+                                    }
+                                })
+                            })
+                        }
+                    })
+                }
+            });
+        }
+
 </script>
 </body>
 </html>
