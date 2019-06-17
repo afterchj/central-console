@@ -2,6 +2,7 @@ package com.example.blt.socket;
 
 import com.example.blt.entity.ConsoleInfo;
 import com.example.blt.entity.HostInfo;
+import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.StrUtil;
 import io.netty.buffer.ByteBuf;
@@ -38,7 +39,8 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         buf.readBytes(con);
         try {
             msg = new String(con, "UTF-8");
-            StrUtil.buildLightInfo(msg,ip);
+            ExecuteTask.pingInfo(msg,ip);
+//            StrUtil.buildLightInfo(msg,ip);
         } catch (UnsupportedEncodingException e) {
             logger.error("UnsupportedEncodingException：" + e.getMessage());
             return null;

@@ -1,5 +1,6 @@
 package com.example.blt;
 
+import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StrUtil;
 import org.junit.Test;
@@ -73,9 +74,10 @@ public class MainTest {
     @Test
     public void testSqlSession() {
 //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
-        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
-//        String str = "77040F0227E9010000713232000000000000CC";
-        StrUtil.buildLightInfo(str,"127.0.0.1");
+//        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
+        String str = "77040F0227E9010000713232000000000000CC";
+//        StrUtil.buildLightInfo(str,"127.0.0.1");
+        ExecuteTask.pingInfo(str,"127.0.0.1");
         System.out.println(str);
     }
 }

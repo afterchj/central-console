@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,13 +21,29 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //        clientMain.sendCron(8001,"7701011B66", false);
 //    }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
-    public void cronTest2() {
-        clientMain.sendCron(8001,"7701012766", false);
-    }
+//    @Scheduled(cron = "0 0/1 * * * ?")
+//    public void cronTest2() {
+//        clientMain.sendCron(8001, "7701012766", false);
+//    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        logger.info("ApplicationListener starting...");
+        logger.info("nettyService starting...");
+        new Thread(() -> {
+            try {
+                new Thread().sleep(20000);
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage());
+            }
+            for (int i = 0; i < 3; i++) {
+                clientMain.sendCron(8001, "7701011B66", false);
+                try {
+                    new Thread().sleep(5000);
+                } catch (InterruptedException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+            clientMain.sendCron(8001, "7701012766", false);
+        }).start();
     }
 }
