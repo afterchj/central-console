@@ -36,11 +36,14 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String msg) throws Exception {
         Channel channel = arg0.channel();
+        channel.writeAndFlush(msg);
+        logger.info("[" + channel.remoteAddress().toString() + "] receive:" + msg);
         Set<Map> set = new CopyOnWriteArraySet<>();
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             SocketAddress address = ch.remoteAddress();
             if (address != null) {
+//                ch.writeAndFlush(arg1);
                 String str = address.toString();
                 String ip = str.substring(1, str.indexOf(":"));
                 Map map = ExecuteTask.pingInfo(msg, ip);
@@ -88,9 +91,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Channel channel = ctx.channel();
-        String str = channel.remoteAddress().toString();
-        String ip = str.substring(1, str.indexOf(":"));
-        logger.info("[" + ip + "]" + cause.toString());
         ctx.close().sync();
     }
 }

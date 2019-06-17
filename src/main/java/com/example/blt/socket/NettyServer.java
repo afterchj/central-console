@@ -1,18 +1,14 @@
 package com.example.blt.socket;
 
+import com.example.blt.netty.ServerIniterHandler;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.bytes.ByteArrayEncoder;
-import io.netty.handler.codec.string.StringEncoder;
 import org.slf4j.Logger;
-
-import java.nio.charset.Charset;
 
 /**
  * Created by hongjian.chen on 2019/2/15.
@@ -22,41 +18,33 @@ public class NettyServer {
     private static Logger logger = org.slf4j.LoggerFactory.getLogger(NettyServer.class);
 
     public static void start(int port) {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup group = new NioEventLoopGroup();
         try {
-            ServerBootstrap sb = new ServerBootstrap();
-            sb.option(ChannelOption.SO_BACKLOG, 1024);
-            sb.group(group, bossGroup) // 绑定线程池
-                    .channel(NioServerSocketChannel.class) // 指定使用的channel
-                    .localAddress(port)// 绑定监听端口
-                    .childHandler(new ChannelInitializer<SocketChannel>() { // 绑定客户端连接时候触发操作
-                        @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new StringEncoder(Charset.forName("utf-8")));
-                            ch.pipeline().addLast(new MyServerHandler()); // 客户端触发操作
-                            ch.pipeline().addLast(new ByteArrayEncoder());
-                        }
-                    });
-            ChannelFuture cf = sb.bind().sync(); // 服务器异步创建绑定
-            logger.info("端口[" + port + "]绑定成功!");
-            // 关闭服务器通道
-//            cf.channel().closeFuture().sync();
-        } catch (Exception e) {
-            logger.error("异常：" + e.getMessage());
+            EventLoopGroup acceptor = new NioEventLoopGroup();
+            EventLoopGroup worker = new NioEventLoopGroup();
+            final ServerBootstrap bootstrap = new ServerBootstrap();
+            bootstrap.option(ChannelOption.SO_BACKLOG, 1024); //设置TCP相关信息
+            bootstrap.option(ChannelOption.ALLOW_HALF_CLOSURE, true);
+            bootstrap.group(acceptor, worker);//设置循环线程组，前者用于处理客户端连接事件，后者用于处理网络IO
+            bootstrap.channel(NioServerSocketChannel.class);//用于构造socketchannel工厂
+            bootstrap.childHandler(new MyServerIniterHandler());//为处理accept客户端的channel中的pipeline添加自定义处理函数
+            // 服务器绑定端口监听
+            final ChannelFuture bind = bootstrap.bind(port).sync();
+            logger.warn("端口[" + port + "]绑定成功!");
+            Channel channel = bind.sync().channel();
+            // 监听服务器关闭监听
+            //channel.closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+//             退出
+//            acceptor.shutdownGracefully();
+//            worker.shutdownGracefully();
         }
-// finally {
-//            try {
-//                Group.shutdownGracefully().sync(); // 释放线程池资源
-//                bossGroup.shutdownGracefully().sync();
-//            } catch (InterruptedException e) {
-//                logger.error("InterruptedException:" + e.getMessage());
-//            }
-//        }
-
     }
+
 
     public static void main(String[] args) throws InterruptedException {
         start(8000);
+
     }
 }
