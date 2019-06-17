@@ -2,13 +2,12 @@ package com.example.blt;
 
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
-import com.example.blt.utils.StrUtil;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -64,11 +63,11 @@ public class MainTest {
     public void testStr() {
         String str = "77040F0227E9010000713232000000000000CC";
         String str1 = "77040F0227";
-        int index=str1.length();
-        String vaddr = str.substring(index,index + 8);
-        String x=str.substring(index+10,index+12);
-        String y=str.substring(index+12,index+14);
-        System.out.println("vaddr="+vaddr+",x="+x+",y="+y);
+        int index = str1.length();
+        String vaddr = str.substring(index, index + 8);
+        String x = str.substring(index + 10, index + 12);
+        String y = str.substring(index + 12, index + 14);
+        System.out.println("vaddr=" + vaddr + ",x=" + x + ",y=" + y);
     }
 
     @Test
@@ -77,7 +76,23 @@ public class MainTest {
 //        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
         String str = "77040F0227E9010000713232000000000000CC";
 //        StrUtil.buildLightInfo(str,"127.0.0.1");
-        ExecuteTask.pingInfo(str,"127.0.0.1");
+        ExecuteTask.pingInfo(str, "127.0.0.1");
         System.out.println(str);
+    }
+
+    @Test
+    public void testUpdate() {
+        Map map = new HashMap();
+        Set<Map> list = new HashSet<>();
+        Map map1 = new HashMap();
+        map1.put("lmac", "f0:ac:d7:64:10:a8");
+        map1.put("vaddr", "7D000000");
+        Map map2 = new HashMap();
+        map2.put("lmac", "f0:ac:d7:64:10:a9");
+        map2.put("vaddr", "E9010000");
+        list.add(map1);
+        list.add(map2);
+        map.put("list",list);
+        sqlSessionTemplate.selectOne("console.saveUpdate", map);
     }
 }

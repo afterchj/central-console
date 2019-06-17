@@ -2,6 +2,7 @@ package com.example.blt.task;
 
 import com.example.blt.utils.StrUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -10,6 +11,7 @@ import java.util.concurrent.Callable;
  */
 public class PingTask implements Callable<Object> {
 
+    Map map = new HashMap();
     private String msg;
     private String ip;
 
@@ -19,8 +21,8 @@ public class PingTask implements Callable<Object> {
     }
 
     @Override
-    public Object call() throws Exception {
-        Map map= StrUtil.buildLightInfo(msg,ip);
-        return map.get("result");
+    public Object call() {
+        map = StrUtil.buildLightInfo(msg, ip);
+        return map;
     }
 }

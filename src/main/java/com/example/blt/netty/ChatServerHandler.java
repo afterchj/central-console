@@ -2,9 +2,8 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.entity.HostInfo;
 import com.example.blt.task.ExecuteTask;
-import com.example.blt.utils.StrUtil;
+import com.example.blt.utils.ConsoleUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * 服务器主要的业务逻辑
@@ -29,14 +31,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     private static Logger logger = LoggerFactory.getLogger(ChatServerHandler.class);
     //保存所有活动的用户
     public static final ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-//    @Resource
-//    private RedisTemplate<String,String> redisTemplate;
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
-//        MemCachedClient memCachedClient = new MemCachedClient();
-//        redisTemplate= new RedisTemplate<>();
         Channel channel = arg0.channel();
+        Set<Map> list = new CopyOnWriteArraySet<>();
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             SocketAddress address = ch.remoteAddress();
@@ -67,24 +66,16 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     } else {
                         logger.info("[" + ip + "] receive:" + arg1);
                         ch.writeAndFlush(arg1);
-                        ExecuteTask.pingInfo(arg1,ip);
+                        Map map = ExecuteTask.pingInfo(arg1, ip);
+                        list.add(map);
 //                        StrUtil.buildLightInfo(arg1, ip);
                     }
                 }
             }
         }
-//        if ("0".equals(arg1)) {
-//            String address = String.valueOf(channel.remoteAddress());
-//            address = address.substring(1, address.lastIndexOf(":"));
-//            address = "central-console" + address;
-//            Jedis jedis = new Jedis("127.0.0.1",6379);
-//            jedis.auth("Tp123456");
-//            jedis.setex(address,21,arg1);
-//            System.out.println(jedis.get(address));
-////            redisTemplate.opsForValue().set(address,arg1,210000, TimeUnit.MILLISECONDS);
-////            System.out.println(redisTemplate.opsForValue().get(address));
-////            memCachedClient.set(address, arg1, new Date(21000));
-//        }
+        if (list.size() > 0) {
+            ConsoleUtil.saveHosts(list);
+        }
     }
 
     @Override
@@ -105,10 +96,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String str = channel.remoteAddress().toString();
         String ip = str.substring(1, str.indexOf(":"));
-        HostInfo info = new HostInfo();
-        info.setIp(ip);
-        info.setStatus(channel.isActive());
-//        ConsoleUtil.saveHostInfo(info);
         logger.info("[" + ip + "] " + "online");
     }
 
@@ -118,8 +105,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String str = channel.remoteAddress().toString();
         String ip = str.substring(1, str.indexOf(":"));
-//        ConsoleUtil.updateHost(ip, false);
-        logger.info("[" + channel.remoteAddress() + "] " + "offline");
+        logger.info("[" + ip + "] " + "offline");
     }
 
     @Override
@@ -127,7 +113,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String str = channel.remoteAddress().toString();
         String ip = str.substring(1, str.indexOf(":"));
-//        ConsoleUtil.deleteHost(ip);
         logger.info("[" + ip + "]" + cause.toString());
         ctx.close().sync();
     }

@@ -59,8 +59,8 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         String ip = str.substring(1, str.indexOf(":"));
         ByteBuf buf = (ByteBuf) msg;
         String rev = getMessage(buf,ip);
-//        logger.info("receive from client:" + rev);
         ctx.writeAndFlush(rev);
+        logger.info("receive from 8000 client:" + rev);
     }
 
     /**
