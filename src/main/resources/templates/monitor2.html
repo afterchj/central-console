@@ -170,7 +170,7 @@
                         <span class="air">空调</span>
                         <span></span>
                         <span></span>
-                        <span class="hide"> </span>
+                        <span class="hide"></span>
                     </div>
                     <div class="f-l light-line">
 
@@ -179,7 +179,7 @@
                         <span></span>
                         <span></span>
                         <span></span>
-                        <span class="hide"> </span>
+                        <span class="hide"></span>
                     </div>
                     <div class="f-l light-line">
 
@@ -217,9 +217,9 @@
                         <p class="f-r num p-a i">I</p>
                         <div class="pillar-square  I2 p-a"></div>
                         <div class="f-l light-line ">
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                            <span class="disconnected"></span>
+                            <span class="on"></span>
+                            <span class="off"></span>
                             <span class="hide"></span>
                         </div>
                         <div class="f-l light-line">
@@ -275,7 +275,7 @@
                             <div class="f-r right-content">
                                 <label class=" caption">Scenes</label>
 
-                                    <select name="" id="" class="frame">
+                                    <select name="" id="" class="frame" >
                                         <option value="">scence 01</option>
                                         <option value="">scence 02</option>
                                         <option value="">scence 03</option>
@@ -529,7 +529,6 @@
             <div>
                 <label class="state">
                     <span> <img th:src="@{/static/img/2.png}" alt=""></span>
-
                 </label>
                 <span>Place内有灯断连</span>
             </div>
@@ -539,6 +538,12 @@
 <script th:src="@{/static/jquery-3.1.1.min.js}"></script>
 <script th:inline="javascript">
         var data=[[${centerLNumList}]];
+
+    $('.frame>span').click(function(){
+        console.log($(this).text())
+        $(this).addClass('active').siblings('span').removeClass('active');
+//        $(this).siblings('span').removeClass('active');
+    })
 </script>
 </body>
 </html>
