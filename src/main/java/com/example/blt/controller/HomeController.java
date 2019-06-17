@@ -75,6 +75,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/getMonitor2",method = RequestMethod.POST)
+    @ResponseBody
     public Map<String,Object> getMonitor2(){
         Map<String,Object> map = new HashMap<>();
         List<Map<String,Object>> centerLNumList = lightListDao.getOfficeCenterLNum();
