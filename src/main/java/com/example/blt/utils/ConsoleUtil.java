@@ -47,7 +47,9 @@ public class ConsoleUtil {
             list = (Set<Map>) ois.readObject();
             Map map = new HashMap();
             map.put("list", list);
-            sqlSessionTemplate.selectOne("console.saveUpdate", map);
+            if (list.size() > 0) {
+                sqlSessionTemplate.selectOne("console.saveUpdate", map);
+            }
         } catch (IOException e) {
             logger.error("IOException:" + e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -63,16 +65,16 @@ public class ConsoleUtil {
         for (int i = 0; i < 11; i++) {
             Map map = new HashMap();
             if (i % 2 == 0) {
-                map.put("vaddr", 1);
-                map.put("lmac", 11);
+                map.put("vaddr", "1");
+                map.put("lmac", "11");
             } else {
-                map.put("vaddr", i);
-                map.put("lmac", i + 10);
+                map.put("vaddr", "t" + i);
+                map.put("lmac", "l" + i);
             }
             list.add(map);
         }
         saveHosts(list);
-        Set<Map> set =  persistHosts();
+        Set<Map> set = persistHosts();
         logger.info("lists=" + JSON.toJSONString(set));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.blt;
 
 import com.example.blt.task.ExecuteTask;
+import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -50,7 +51,7 @@ public class MainTest {
 //    public void testQuery2() {
 //        EntityManager em = SpringJpaUtil.getEntityManager().createEntityManager();
 //        try {
-//            Query query = em.createQuery("from HostInfo group by ip", HostInfo.class);
+//            Query query = em.createQuery("from HostInfo Group by ip", HostInfo.class);
 //            List<HostInfo> info = query.getResultList();
 //            System.out.println("id=" + info.size());
 //        } finally {
@@ -92,7 +93,10 @@ public class MainTest {
         map2.put("vaddr", "E9010000");
         list.add(map1);
         list.add(map2);
-        map.put("list",list);
+        ConsoleUtil.saveHosts(list);
+        Set<Map> list1 = ConsoleUtil.persistHosts();
+        logger.info(list.toString());
+        map.put("list",list1);
         sqlSessionTemplate.selectOne("console.saveUpdate", map);
     }
 }

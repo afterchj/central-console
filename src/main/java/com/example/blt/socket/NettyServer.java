@@ -47,7 +47,7 @@ public class NettyServer {
         }
 // finally {
 //            try {
-//                group.shutdownGracefully().sync(); // 释放线程池资源
+//                Group.shutdownGracefully().sync(); // 释放线程池资源
 //                bossGroup.shutdownGracefully().sync();
 //            } catch (InterruptedException e) {
 //                logger.error("InterruptedException:" + e.getMessage());

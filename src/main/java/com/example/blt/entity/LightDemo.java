@@ -81,7 +81,7 @@ public class LightDemo {
                 ", place=" + place +
                 ", PlaceLNum=" + PlaceLNum +
                 ", status='" + status + '\'' +
-                ", group=" + group +
+                ", Group=" + group +
                 '}';
     }
 }
