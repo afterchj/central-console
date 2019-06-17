@@ -64,9 +64,17 @@ public class HomeController {
     }
 
     @RequestMapping("/monitor2")
-    public String monitor2(){
+    public String monitor2(Model model){
+        List<Map<String,Object>> centerLNumList = lightListDao.getOfficeCenterLNum();
+        List<LightDemo> placeLNumList = lightListDao.getOfficePlaceLNum();
+        List<LightDemo> lightState = lightListDao.getOfficeLightInfo();
+        model.addAttribute("centerLNumList",centerLNumList);//每个楼层灯总个数
+        model.addAttribute("placeLNumList",placeLNumList);//每个区域的灯个数
+        model.addAttribute("lightState",lightState);//所有灯的状态
         return "monitor2";
     }
+
+
 
     @Resource
     private GuavaCacheManager guavaCacheManager;
