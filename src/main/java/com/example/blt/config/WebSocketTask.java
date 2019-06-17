@@ -26,7 +26,7 @@ public class WebSocketTask {
     /**
      * 一秒钟查询一次
      */
-    @Scheduled(cron = "0/5 * * * * *")
+    @Scheduled(cron = "0/1 * * * * *")
     public void backSearch() {
         List<Map<String,Object>> centerLNumList = lightListDao.getCenterLNum();
         List<LightDemo> placeLNumList = lightListDao.getPlaceLNum();

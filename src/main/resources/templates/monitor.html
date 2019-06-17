@@ -1162,230 +1162,222 @@
 <script th:inline="none">
 
     $(function () {
-            var shuaxin1 = setInterval(function () {
-                shuaxin()
-            }, 5000);
+//            var shuaxin1 = setInterval(function () {
+//                shuaxin()
+//            }, 5000);
+//
+//            function shuaxin() {
+//                window.location.href="http://192.168.1.3:8080/monitor";
+////                window.location.href="http://192.168.16.60:8080/monitor";
+//            }
 
-            function shuaxin() {
-                window.location.href="http://192.168.1.3:8080/monitor";
-//                window.location.href="http://192.168.16.60:8080/monitor";
+        var socket;
+        if (typeof (WebSocket) == "undefined") {
+            console.log("遗憾：您的浏览器不支持WebSocket");
+
+        } else {
+            console.log("恭喜：您的浏览器支持WebSocket");
+            //实现化WebSocket对象
+            //指定要连接的服务器地址与端口建立连接
+            //注意ws、wss使用不同的端口。我使用自签名的证书测试，
+            //无法使用wss，浏览器打开WebSocket时报错
+            //ws对应http、wss对应https。
+//                                socket = new WebSocket("ws://192.168.16.60:8080/ws/webSocket");
+            socket = new WebSocket("ws://127.0.0.1:8080/ws/webSocket");
+            //连接打开事件
+            socket.onopen = function () {
+                console.log("Socket 已打开");
+                //                        socket.send("消息发送测试(From Client)");
+            };
+            //收到消息事件
+            socket.onmessage = function (msg) {
+//                console.log(new Date());
+                var centerLNumList = JSON.parse(msg.data).centerLNumList;
+                var lightState = JSON.parse(msg.data).lightState;
+                var groupArr;
+                $.each(centerLNumList, function (key, value) {
+                    if (value.mname == '5楼') {
+                        $("#five-num").text(value.centerLNum);
+                    } else if (value.mname == '4楼') {
+                        $("#four-num").text(value.centerLNum);
+                    } else if (value.mname == '3楼') {
+                        $("#third-num").text(value.centerLNum);
+                    } else if (value.mname == '2楼') {
+                        $("#two-num").text(value.centerLNum);
+                    } else if (value.mname == '1楼') {
+                        $("#one-num").text(value.centerLNum);
+                    }
+                })
+                var placeLNumList = JSON.parse(msg.data).placeLNumList;
+                $.each(placeLNumList, function (key, value) {
+//                                        console.log(value);
+                    if (value.mname == '5楼') {
+                        if (value.place == 1) {
+                            $("#five-oneplace-num").empty();
+                            $("#five-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 2) {
+                            $("#five-twoplace-num").empty();
+                            $("#five-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 3) {
+                            $("#five-thirdplace-num").empty();
+                            $("#five-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 4) {
+                            $("#five-fourplace-num").empty();
+                            $("#five-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        }
+                    } else if (value.mname == '4楼') {
+                        if (value.place == 1) {
+                            $("#four-oneplace-num").empty();
+                            $("#four-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 2) {
+                            $("#four-twoplace-num").empty();
+                            $("#four-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 3) {
+                            $("#four-thirdplace-num").empty();
+                            $("#four-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 4) {
+                            $("#four-fourplace-num").empty();
+                            $("#four-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        }
+                    } else if (value.mname == '3楼') {
+                        if (value.place == 1) {
+                            $("#third-oneplace-num").empty();
+                            $("#third-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 2) {
+                            $("#third-twoplace-num").empty();
+                            $("#third-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 3) {
+                            $("#third-thirdplace-num").empty();
+                            $("#third-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 4) {
+                            $("#third-fourplace-num").empty();
+                            $("#third-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        }
+                    } else if (value.mname == '2楼') {
+                        if (value.place == 1) {
+                            $("#two-oneplace-num").empty();
+                            $("#two-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 2) {
+                            $("#two-twoplace-num").empty();
+                            $("#two-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 3) {
+                            $("#two-thirdplace-num").empty();
+                            $("#two-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 4) {
+                            $("#two-fourplace-num").empty();
+                            $("#two-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        }
+                    } else if (value.mname == '1楼') {
+                        if (value.place == 1) {
+                            $("#one-oneplace-num").empty();
+                            $("#one-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 2) {
+                            $("#one-twoplace-num").empty();
+                            $("#one-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 3) {
+                            $("#one-thirdplace-num").empty();
+                            $("#one-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        } else if (value.place == 4) {
+                            $("#one-fourplace-num").empty();
+                            $("#one-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
+                        }
+                    }
+                });
+                groupArr = $("span[class='f-r']");
+                $(groupArr).empty();
+                $.each(lightState, function (key, value) {
+                    switch (value.mname) {
+                        case '5楼':
+                            groupArr = $("#five-center span[class='f-r']");
+                            setGroupLight(value, groupArr);
+                            break;
+                        case '4楼':
+                            groupArr = $("#four-center span[class='f-r']");
+                            setGroupLight(value, groupArr);
+                            break;
+                        case '3楼':
+                            groupArr = $("#third-center span[class='f-r']");
+                            setGroupLight(value, groupArr);
+                            break;
+                        case '2楼':
+                            groupArr = $("#tow-center span[class='f-r']");
+                            setGroupLight(value, groupArr);
+                            break;
+                        case '1楼':
+                            groupArr = $("#one-center span[class='f-r']");
+                            setGroupLight(value, groupArr);
+                            break;
+                    }
+                });
+                $("#third-thirdplace span[class='f-r']:eq('2')").prepend('<span></span>');
+                $("#two-oneplace span[class='f-r']:eq('0')").prepend('<span></span>');
+                $("#two-oneplace span[class='f-r']:eq('2')").prepend('<span></span>');
+                $("#two-twoplace span[class='f-r']:eq('1')").prepend('<span></span>');
+                function SetLight(groupSpan, status) {
+                    if (status == 0) {
+                        groupSpan.append('<span><img src="img/3.PNG" alt="1"> </span>');
+                    } else if (status == 1) {
+                        groupSpan.append('<span><img src="img/4.PNG" alt="1"> </span>');
+                    } else {
+                        groupSpan.append('<span><img src="img/5.png" alt="1" class="bulb abnormal"> </span>');
+                    }
+                }
+
+                function setGroupLight(value, groupArr) {
+                    switch (value.group) {
+                        case 1:
+                            SetLight($(groupArr[0]), value.status);
+                            break;
+                        case 2:
+                            SetLight($(groupArr[1]), value.status);
+                            break;
+                        case 3:
+                            SetLight($(groupArr[2]), value.status);
+                            break;
+                        case 4:
+                            SetLight($(groupArr[3]), value.status);
+                            break;
+                        case 5:
+                            SetLight($(groupArr[4]), value.status);
+                            break;
+                        case 6:
+                            SetLight($(groupArr[5]), value.status);
+                            break;
+                        case 7:
+                            SetLight($(groupArr[6]), value.status);
+                            break;
+                        case 8:
+                            SetLight($(groupArr[7]), value.status);
+                            break;
+                        case 9:
+                            SetLight($(groupArr[8]), value.status);
+                            break;
+                        case 10:
+                            SetLight($(groupArr[9]), value.status);
+                            break;
+                        case 11:
+                            SetLight($(groupArr[10]), value.status);
+                            break;
+                        case 12:
+                            SetLight($(groupArr[11]), value.status);
+                            break;
+                    }
+                }
+            };
+            //连接关闭事件
+            socket.onclose = function () {
+                console.log("Socket已关闭");
+            };
+            //发生了错误事件
+            socket.onerror = function () {
+                alert("Socket发生了错误");
             }
 
-//        var socket;
-//        if (typeof (WebSocket) == "undefined") {
-//            console.log("遗憾：您的浏览器不支持WebSocket");
-//
-//        } else {
-//            console.log("恭喜：您的浏览器支持WebSocket");
-//            //实现化WebSocket对象
-//            //指定要连接的服务器地址与端口建立连接
-//            //注意ws、wss使用不同的端口。我使用自签名的证书测试，
-//            //无法使用wss，浏览器打开WebSocket时报错
-//            //ws对应http、wss对应https。
-////                                socket = new WebSocket("ws://192.168.16.60:8080/ws/webSocket");
-//            socket = new WebSocket("ws://127.0.0.1:8080/ws/webSocket");
-//            //连接打开事件
-//            socket.onopen = function () {
-//                console.log("Socket 已打开");
-//                //                        socket.send("消息发送测试(From Client)");
-//            };
-//            //收到消息事件
-//            socket.onmessage = function (msg) {
-//                var centerLNumList = JSON.parse(msg.data).centerLNumList;
-//                var lightState = JSON.parse(msg.data).lightState;
-//                var groupArr;
-//                $.each(centerLNumList, function (key, value) {
-//                    if (value.mname == '5楼') {
-//                        $("#five-num").text(value.centerLNum);
-//                    } else if (value.mname == '4楼') {
-//                        $("#four-num").text(value.centerLNum);
-//                    } else if (value.mname == '3楼') {
-//                        $("#third-num").text(value.centerLNum);
-//                    } else if (value.mname == '2楼') {
-//                        $("#two-num").text(value.centerLNum);
-//                    } else if (value.mname == '1楼') {
-//                        $("#one-num").text(value.centerLNum);
-//                    }
-//                })
-//                var placeLNumList = JSON.parse(msg.data).placeLNumList;
-//                $.each(placeLNumList, function (key, value) {
-////                                        console.log(value);
-//                    if (value.mname == '5楼') {
-//                        if (value.place == 1) {
-//                            $("#five-oneplace-num").empty();
-//                            $("#five-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 2) {
-//                            $("#five-twoplace-num").empty();
-//                            $("#five-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 3) {
-//                            $("#five-thirdplace-num").empty();
-//                            $("#five-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 4) {
-//                            $("#five-fourplace-num").empty();
-//                            $("#five-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        }
-//                    } else if (value.mname == '4楼') {
-//                        if (value.place == 1) {
-//                            $("#four-oneplace-num").empty();
-//                            $("#four-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 2) {
-//                            $("#four-twoplace-num").empty();
-//                            $("#four-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 3) {
-//                            $("#four-thirdplace-num").empty();
-//                            $("#four-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 4) {
-//                            $("#four-fourplace-num").empty();
-//                            $("#four-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        }
-//                    } else if (value.mname == '3楼') {
-//                        if (value.place == 1) {
-//                            $("#third-oneplace-num").empty();
-//                            $("#third-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 2) {
-//                            $("#third-twoplace-num").empty();
-//                            $("#third-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 3) {
-//                            $("#third-thirdplace-num").empty();
-//                            $("#third-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 4) {
-//                            $("#third-fourplace-num").empty();
-//                            $("#third-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        }
-//                    } else if (value.mname == '2楼') {
-//                        if (value.place == 1) {
-//                            $("#two-oneplace-num").empty();
-//                            $("#two-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 2) {
-//                            $("#two-twoplace-num").empty();
-//                            $("#two-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 3) {
-//                            $("#two-thirdplace-num").empty();
-//                            $("#two-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 4) {
-//                            $("#two-fourplace-num").empty();
-//                            $("#two-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        }
-//                    } else if (value.mname == '1楼') {
-//                        if (value.place == 1) {
-//                            $("#one-oneplace-num").empty();
-//                            $("#one-oneplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 2) {
-//                            $("#one-twoplace-num").empty();
-//                            $("#one-twoplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 3) {
-//                            $("#one-thirdplace-num").empty();
-//                            $("#one-thirdplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        } else if (value.place == 4) {
-//                            $("#one-fourplace-num").empty();
-//                            $("#one-fourplace-num").append('<span >' + value.placeLNum + '</span> /12</span>');
-//                        }
-//                    }
-//                });
-//                groupArr = $("span[class='f-r']");
-//                $(groupArr).empty();
-//                $.each(lightState, function (key, value) {
-//                    switch (value.mname) {
-//                        case '5楼':
-//                            groupArr = $("#five-center span[class='f-r']");
-//                            setGroupLight(value, groupArr);
-//                            break;
-//                        case '4楼':
-//                            groupArr = $("#four-center span[class='f-r']");
-//                            setGroupLight(value, groupArr);
-//                            break;
-//                        case '3楼':
-//                            groupArr = $("#third-center span[class='f-r']");
-//                            setGroupLight(value, groupArr);
-//                            break;
-//                        case '2楼':
-//                            groupArr = $("#tow-center span[class='f-r']");
-//                            setGroupLight(value, groupArr);
-//                            break;
-//                        case '1楼':
-//                            groupArr = $("#one-center span[class='f-r']");
-//                            setGroupLight(value, groupArr);
-//                            break;
-//                    }
-//                });
-//                function SetLight(groupSpan, status) {
-//                    if (status == 0) {
-//                        groupSpan.append('<span><img src="img/3.PNG" alt="1"> </span>');
-//                    } else if (status == 1) {
-//                        groupSpan.append('<span><img src="img/4.PNG" alt="1"> </span>');
-//                    } else {
-//                        groupSpan.append('<span><img src="img/5.png" alt="1" class="bulb abnormal"> </span>');
-//                    }
-//                }
-//
-//                function setGroupLight(value, groupArr) {
-//                    switch (value.group) {
-//                        case 1:
-//                            if (value.mname=='2楼'){
-//                                $(groupArr[0]).append('<span> </span>');
-//                            }
-//                            SetLight($(groupArr[0]), value.status);
-//                            break;
-//                        case 2:
-//                            SetLight($(groupArr[1]), value.status);
-//                            break;
-//                        case 3:
-//                            if (value.mname=='2楼'){
-//                                $(groupArr[2]).append('<span></span>');
-//                            }
-//                            SetLight($(groupArr[2]), value.status);
-//                            break;
-//                        case 4:
-//                            SetLight($(groupArr[3]), value.status);
-//                            break;
-//                        case 5:
-//                            if (value.mname=='2楼'){
-//                                $(groupArr[4]).append('<span></span>');
-//                            }
-//                            SetLight($(groupArr[4]), value.status);
-//                            break;
-//                        case 6:
-//                            SetLight($(groupArr[5]), value.status);
-//                            break;
-//                        case 7:
-//                            SetLight($(groupArr[6]), value.status);
-//                            break;
-//                        case 8:
-//                            SetLight($(groupArr[7]), value.status);
-//                            break;
-//                        case 9:
-//                            if (value.mname=='3楼'){
-//                                $(groupArr[8]).append('<span></span>');
-//                            }
-//                            SetLight($(groupArr[8]), value.status);
-//                            break;
-//                        case 10:
-//                            SetLight($(groupArr[9]), value.status);
-//                            break;
-//                        case 11:
-//                            SetLight($(groupArr[10]), value.status);
-//                            break;
-//                        case 12:
-//                            SetLight($(groupArr[11]), value.status);
-//                            break;
-//
-//                    }
-//                }
-//            };
-//            //连接关闭事件
-//            socket.onclose = function () {
-//                console.log("Socket已关闭");
-//            };
-//            //发生了错误事件
-//            socket.onerror = function () {
-//                alert("Socket发生了错误");
-//            }
-//
-//            //窗口关闭时，关闭连接
-//            window.unload = function () {
-//                socket.close();
-//            };
-//        }
+            //窗口关闭时，关闭连接
+            window.unload = function () {
+                socket.close();
+            };
+        }
 
 
     });
