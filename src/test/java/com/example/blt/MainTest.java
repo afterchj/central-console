@@ -51,7 +51,7 @@ public class MainTest {
 //    public void testQuery2() {
 //        EntityManager em = SpringJpaUtil.getEntityManager().createEntityManager();
 //        try {
-//            Query query = em.createQuery("from HostInfo group by ip", HostInfo.class);
+//            Query query = em.createQuery("from HostInfo Group by ip", HostInfo.class);
 //            List<HostInfo> info = query.getResultList();
 //            System.out.println("id=" + info.size());
 //        } finally {
