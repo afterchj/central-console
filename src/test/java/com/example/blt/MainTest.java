@@ -1,6 +1,7 @@
 package com.example.blt;
 
 import com.example.blt.task.ExecuteTask;
+import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -92,7 +93,10 @@ public class MainTest {
         map2.put("vaddr", "E9010000");
         list.add(map1);
         list.add(map2);
-        map.put("list",list);
+        ConsoleUtil.saveHosts(list);
+        Set<Map> list1 = ConsoleUtil.persistHosts();
+        logger.info(list.toString());
+        map.put("list",list1);
         sqlSessionTemplate.selectOne("console.saveUpdate", map);
     }
 }

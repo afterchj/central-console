@@ -27,7 +27,7 @@
     </select>
 
     <update id="saveUpdate" parameterType="map">
-        UPDATE t_light_info SET `status`=NULL ,x=NULL ,y=NULL WHERE lmac not in
+        UPDATE t_light_info SET log_date=now(),`status`=NULL ,x=NULL ,y=NULL WHERE lmac not in
         <foreach collection="list" index="index" item="info" separator="," open="(" close=")">
             #{info.lmac}
         </foreach>
