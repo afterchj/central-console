@@ -1,0 +1,158 @@
+
+
+.floor {
+    margin-bottom: 20px;
+    border: 1px solid #bbb
+}
+
+
+.light {
+    margin: 10px 0;
+    width: 24.4%;
+    border: 1px solid #bbb;
+    border-right: 0;
+    background-color: #fff
+}
+
+.light.warning {
+    background-color: red
+}
+
+.light:last-child {
+    margin-right: 10px;
+    border-right: 1px solid #bbb
+}
+
+.light p {
+    padding: 10px 10px 0
+}
+
+.light-list {
+    width: 85%
+}
+
+.floor-name {
+    width: 15%
+}
+
+.group {
+    margin: 10px;
+    padding: 5px;
+    max-height: 24px;
+    min-height: 20px;
+    border: 1px solid #bbb
+}
+
+.group,
+.light-foot {
+    background-color: #fff
+}
+
+.light-foot {
+    margin-top: 10px;
+    padding: 2px 10px;
+    border-top: 1px solid #bbb
+}
+
+.group img {
+    margin: auto;
+    width: 65%;
+    max-width: 18px
+}
+
+.group span {
+    display: inline-block
+}
+
+.group>span:first-child {
+    width: 26%;
+    height: 24px;
+    text-align: left;
+    line-height: 24px
+}
+
+.group>span:last-child {
+    width: 74%
+}
+
+.group>span:last-child>span {
+    width: 21.5%;
+    text-align: right
+}
+
+.floor-name p {
+    min-height: 75pt;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 75pt
+}
+
+.status {
+    display: inline-block;
+    width: 50%;
+    height: 26px;
+    text-align: left;
+    line-height: 26px
+}
+
+.status img {
+    width: 35%;
+    max-width: 25px;
+    vertical-align: text-bottom
+}
+
+.num {
+    height: 26px;
+    line-height: 26px
+}
+
+.floor-name img {
+    width: 30%
+}
+
+.page {
+    bottom: 10px;
+    width: 15%
+}
+
+.light-status-explain label {
+    display: inline-block;
+    margin-top: 4%;
+    width: 75pt;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px
+}
+
+.light-status-explain span {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle
+}
+
+.line>span:first-child {
+    width: 50px;
+    text-align: center
+}
+
+.line>span:first-child img.bulb {
+    width: 45%
+}
+
+.line>span:first-child img.exclamation {
+    width: 65%
+}
+
+.line {
+    margin-bottom: 15px;
+    text-align: left
+}
+
+.group .abnormal {
+    width: 100%;
+    max-width: 25px;
+    border-radius: 50%
+}
+.floor:nth-of-type(odd){
+    background-color: #ddd;
+}

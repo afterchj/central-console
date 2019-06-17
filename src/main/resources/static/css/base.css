@@ -1,0 +1,142 @@
+abbr,
+address,
+article,
+aside,
+audio,
+b,
+blockquote,
+body,
+canvas,
+caption,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+p,
+pre,
+q,
+samp,
+section,
+small,
+span,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+ul,
+var,
+video {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    outline-style: none;
+    border: 0;
+    vertical-align: baseline;
+    font-size: 100%
+}
+
+table {
+    border-collapse: unset;
+    border-spacing: 0
+}
+
+body {
+    width: 100%;
+    background: #fff;
+    color: #323232;
+    font: 14px Helvetica Neue, Helvetica, PingFang SC, \5FAE\8F6F\96c5\9ED1, Tahoma, Arial, sans-serif;
+    line-height: 24px;
+    zoom: 1
+}
+
+a {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: #3598db;
+    vertical-align: baseline;
+    text-decoration: none;
+    font-size: 100%
+}
+
+a.k-link:focus,
+a.k-link:hover {
+    outline-style: none;
+    border-bottom: 1px solid #003e68;
+    color: #003e68;
+    text-decoration: none
+}
+
+.p-r {
+    position: relative
+}
+
+.p-a {
+    position: absolute
+}
+
+.clearfix:after {
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0;
+    content: ''
+}
+
+ul li {
+    list-style-type: none
+}
+
+.clearfix {
+    zoom: 1
+}
+
+.f-l {
+    float: left
+}
+
+.f-r {
+    float: right
+}
+
+.container {
+    margin: 30px auto;
+    width: 96%;
+    max-width: 975px;
+    text-align: center
+}

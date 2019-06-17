@@ -1,0 +1,366 @@
+.container{
+    margin: 30px auto;
+    width: 96%;
+    max-width: 1300px;
+    text-align: center;
+}
+.right-part{
+    border:1px solid #bbb;
+}
+.office{
+    width:100%;
+}
+.left-part{
+    width:65%;
+    margin-right: 20px;
+    min-height: 642px;
+}
+.right-part{
+    width: calc(35% - 44px);
+    padding: 20px 10px;
+    height: 680px;
+}
+.icon{
+    width: 15%;
+    text-align: right;
+
+}
+.icon img{
+    width: 45%;
+
+}
+.right-content{
+    width:85%;
+}
+.right{
+    width: 100%;
+    font-size: .9em;
+    /* margin-left: 15%; */
+}
+.place-status-list{
+
+}
+label,span{
+    display: inline-block;
+}
+.caption{
+    width: calc(35% - 2px);
+
+}
+.frame{
+    border: 1px solid #bbb;
+    width: 22%;
+    margin: 0 5px;
+    font-size: 12px;
+    height: 23px;
+    text-align: center;
+    vertical-align: middle;
+}
+.page{
+    width: 20%;
+
+}
+.on-off>span:first-child{
+    border-right: 1px solid #bbb;
+    width: calc(50% - 1px);
+}
+.frame>span{
+    /*width: 45%;*/
+    /*cursor: pointer;*/
+    width: 50%;
+    cursor: pointer;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block;
+    text-align: center;
+}
+.place-title,.place-status{
+    border-bottom: 1px dashed #bbb;
+}
+.line{
+    padding: 13px 0;
+}
+.place01,.place07{
+    height: calc(100%/8*5);
+}
+.place08,.place09,.place02{
+    height: calc(100%/8*2);
+}
+.place03,.place10{
+    height: calc(100%/8*1);
+}
+.part-four,.part-one,.part-two,.part-three{
+    height: 720px;
+}
+.part-one{
+    width: 26%;
+}
+.part-two{
+    width:27%;
+}
+.merge{
+    height: calc(100%/8*2);
+}
+.place08, .place09{
+    height: 100%;
+}
+
+.part-three{
+    width: 7%;
+}
+.part-four{
+    width:40%;
+}
+.place01{
+    border-right: 1px dashed #bbb;
+    border-left: 1px solid #bbb;
+    border-top-left-radius: 153%;
+    border-top: 1px solid #bbb;
+}
+.place02{
+    border:1px solid #bbb;
+}
+.place03{
+    border-left: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    border-right: 1px dashed #bbb;
+}
+.place04{
+    height: 150px;
+    border: 1px dashed #bbb;
+    border-left: none;
+    height: calc(100%/8*4);
+}
+.place05{
+    height: 200px;
+    border: 1px dashed #bbb;
+    border-left: none;
+    border-top: none;
+    height: calc(100%/8*4);
+}
+.place06{
+    border-top: 1px solid #bbb;
+    height: calc(100%/8*8);
+}
+.place07{
+    border: 1px dashed #bbb;
+    border-bottom: none;
+}
+.place08{
+    width: 110px;
+    border: 1px solid #bbb;
+}
+.place09{
+    width: calc(100% - 113px);
+    border: 1px solid #bbb;
+    border-left: none;
+}
+.place10{
+    border: 1px dashed #bbb;
+    border-top: none;
+}
+.light-line span{
+    /*width: calc(100%/6 - 42px); *!*/
+width: 12px !important;
+    /* max-width: 10px; */
+    /* margin: 10px 8px; */
+    height: 45px;
+    border: 1px solid #aaa;
+    font-size: .7em;
+    min-width: 10px;
+    vertical-align: middle;
+    line-height: normal;
+    /* word-wrap: break-word; */
+    margin: 0px 18px;
+}
+.d .light-line span{
+    width: calc(100%/4 - 37px);
+}
+.f .light-line span{
+    /*margin: 16px 10px !important;*/
+}
+.d .light-line{
+    width: 100%;
+    height: calc(100%/4);
+}
+.b .light-line span{
+    width: calc(100%/4 - 37px);
+}
+.b .light-line{
+    width: 100%;
+    height: calc(100%/2);
+}
+.c .light-line span{
+    width: calc(100%/4 - 37px);
+}
+.c .light-line{
+    width: 100%;
+    height: calc(100%/1);
+}
+.j .light-line{
+    width: 100%;
+    height: calc(100%/1);
+}
+.f .light-line {
+    width: 100%;
+    height: calc(100%/8);
+}
+/*.j .light-line span{*/
+    /*width: calc(100%/6 - 42px);*/
+/*}*/
+.light-line{
+    width: 100%;
+    height: calc(100%/5);
+    line-height: 75px;
+    text-align: center;
+}
+.num{
+    width: 10%;
+    color: red;
+    font-weight: 600;
+}
+.num.g{
+    right:2px;
+    top: 0;
+}
+.num.e{
+    right:45%;
+    bottom: 0;
+}
+.num.a{
+    bottom: 45%;
+    left: 20%;
+}
+.num.h,.num.i,.num.j{
+    right:2px;
+    bottom: 0;
+}
+.air{
+    background-color: #666;
+    color: #fff;
+    min-width: 13px !important;
+}
+.pillar-square{
+    background-color: #666;
+    width: 15px;
+    height: 15px;
+    right: 0;
+    top: 35%;
+}
+.cricle{
+    background-color: #666;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+.pillar-square.b1{
+    top:0;
+    right:2px;
+}
+.pillar-square.g1{
+    left: -10px;
+    top: 40%;
+}
+.pillar-square.g2{
+    right:0;
+    top: 40%;
+}
+.pillar-square.h1{
+    left: -10px;
+    top: 0px;
+}
+.pillar-square.I2{
+    right:0;
+    top: 0;
+}
+.a .light-line{
+    bottom: 0;
+}
+.light-line .hide{
+    visibility: hidden;
+}
+/*.light-on,.light-off,.light-disconnected{*/
+    /**/
+/*}*/
+.light{
+    width:12px;
+    height: 40px;
+    border:1px solid #bbb;
+}
+
+.light.on{
+    background-color: yellow;
+}
+.light.off{
+    background-color: #fff;
+}
+.light.disconnected{
+    background-color: red;
+    color: #fff;
+}
+.hint>div.f-l{
+    width: 300px;
+    text-align: left;
+}
+.hint>div.f-l>div{
+    height: 60px;
+}
+.hint label{
+    width: 45px;
+}
+.hint label img{
+    width: 35px;
+}
+.hint>div.f-l>div>span{
+    vertical-align: top;
+    /* height: 100%; */
+    display: inline;
+}
+.door{
+    width: 65%;
+    height:50px;
+    line-height: 50px;
+}
+.door div{
+    text-align: left;
+    margin-left: 54.5%;
+    font-weight: bold;
+}
+.left-line,.right-line{
+    width: 25px;
+    height: 1px;
+    display: inline-block;
+    background-color: #888;
+}
+.left-line{
+    left: calc(53% - 20px);
+    top: 8px;
+    transform: rotate(-45deg);
+}
+.right-line{
+    right: calc(40% - 20px );
+    transform: rotate(225deg);
+    top: 8px;
+}
+.a .cricle{
+    right: 3px;
+    top: 35%;
+}
+.b .cricle{
+    right: 52%;
+    top: 0px;
+}
+/*.on-off.on{*/
+    /*background-color: #3598db;*/
+    /*color: #fff;*/
+/*}*/
+.on-off >span:first-child.active{
+    background-color: #3598db;
+    color: #fff;
+    border-right-color: #3598db;
+}
+.on-off >span:last-child.active{
+    background-color: #3598db;
+    color: #fff;
+    /*border-right-color: #3598db;*/
+}
