@@ -1,6 +1,7 @@
 package com.example.blt.socket;
 
 import com.example.blt.task.ExecuteTask;
+import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -36,20 +37,22 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String msg) throws Exception {
         Channel channel = arg0.channel();
-        channel.writeAndFlush(msg);
         logger.info("[" + channel.remoteAddress().toString() + "] receive:" + msg);
+        channel.writeAndFlush(msg);
         Set<Map> set = new CopyOnWriteArraySet<>();
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             SocketAddress address = ch.remoteAddress();
             if (address != null) {
-//                ch.writeAndFlush(arg1);
+//                ch.writeAndFlush(msg);
                 String str = address.toString();
                 String ip = str.substring(1, str.indexOf(":"));
                 Map map = ExecuteTask.pingInfo(msg, ip);
                 set.add(map);
             }
         }
+        logger.info("size=" + set.size());
+        ConsoleUtil.saveHosts(set);
         if (set.size() > 0) {
             Map map = new HashMap();
             map.put("list", map);

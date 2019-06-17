@@ -1,6 +1,5 @@
 package com.example.blt.netty;
 
-import com.example.blt.socket.MyServerIniterHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -15,7 +14,7 @@ public class ServerIniterHandler extends  ChannelInitializer<SocketChannel> {
 		ChannelPipeline pipeline = arg0.pipeline();
 		pipeline.addLast("decode",new StringDecoder());
 		pipeline.addLast("encode",new StringEncoder());
-		pipeline.addLast("chat",new MyServerIniterHandler());
+		pipeline.addLast("chat",new ChatServerHandler());
 	}
 
 }

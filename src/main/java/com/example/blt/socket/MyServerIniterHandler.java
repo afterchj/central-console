@@ -14,7 +14,7 @@ public class MyServerIniterHandler extends  ChannelInitializer<SocketChannel> {
 		ChannelPipeline pipeline = arg0.pipeline();
 		pipeline.addLast("dec",new StringDecoder());
 		pipeline.addLast("enc",new StringEncoder());
-		pipeline.addLast("cmd",new MyServerIniterHandler());
+		pipeline.addLast("cmd",new NettyServerHandler());
 	}
 
 }
