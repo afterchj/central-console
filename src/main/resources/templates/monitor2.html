@@ -399,7 +399,6 @@
             }, 2000)
         })
 
-
         function light() {
             $.ajax({
                 type: "post",
@@ -416,13 +415,10 @@
                     $('.light-line>span').not(".air").removeClass('disconnected off on')
                     $('.total-frame>span').removeClass('active')
                     $(this).find('.icon img').attr('src','')
-
                     $.each(lightState,function(i,val){
                          var index=i;
                          var group=val.group;
                          var status=val.status;
-//                        $('#group'+group).val(status)
-//                        console.log(status);
                          if(group==1){
                              group1.push(status);
                          }else if(group==2){
@@ -482,7 +478,6 @@
                         $('.place-status').each(function(){
                             var place2=$(this).find('.caption span').text();
                             if(place==place2){
-//                                var totalNum=parseInt($(this).find('.page>span:last-child').text());
                                 $(this).find('.page>span:first-child').text(placeLNum);
                                 if(place==1){
                                     if(group1.indexOf(null)!=-1){
@@ -592,7 +587,6 @@
                                         }else if(state==1){
                                             $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
                                         }
-
                                         $(this).find('.icon img').attr('src','')
                                     }else if(!isAllEqual(group8)){
                                         $(this).find('.icon img').attr('src','/static/img/1.png')
@@ -626,19 +620,6 @@
                                         $(this).find('.icon img').attr('src','/static/img/1.png')
                                     }
                                 }
-
-//                                if(status==0){
-//                                    if(totalNum==placeLNum){
-//                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-//                                    }
-//                                }else if(status==1){
-//                                    if(totalNum==placeLNum){
-//                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-//                                    }
-//                                }else if(status==null){
-//                                    $(this).find('.frame>span').removeClass('active');
-//                                    $(this).find('.icon img').attr('src','/static/img/1.png')
-//                                }
                             }
                         })
                     })
