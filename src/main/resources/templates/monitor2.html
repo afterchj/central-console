@@ -235,8 +235,8 @@
                             <div class="f-r right-content">
                                 <label class="caption"></label>
                             <span class="frame on-off clearfix active total-frame">
-                                 <span class="f-l">ON</span>
-                                 <span class="f-l">OFF</span>
+                                 <span class="f-l" id="total-on" alt="total-on">ON</span>
+                                 <span class="f-l" id="total-off" alt="total-off">OFF</span>
                             </span>
                              <span class="page ">
                                 <span th:text="${centerLNumList[0].centerLNum}" class="total-page"></span>/
@@ -385,20 +385,25 @@
             $(this).addClass('active').siblings('span').removeClass('active');
             var groupOrder=parseInt($(this).parent().siblings('label').find('span').text());
 
+
             if($(this).text()=='ON'){
-                var onOffOrder=32;
-            }else{
-                var onOffOrder=37;
+                var onOffOrder='0037';
+            }else if ($(this).text()=='OFF'){
+                var onOffOrder='0032';
             }
             if(groupOrder<=9){
                 var command ='770104160'+groupOrder+onOffOrder+'66';
             }else if(groupOrder==10){
                 var command ='770104160A'+onOffOrder+'66';
             }
+            if ($(this).attr("alt")=="total-on"){
+                var command='77010315373766';
+            }else if($(this).attr("alt")=="total-off"){
+                var command='77010315323266';
+            }
 
             var host = '192.168.1.8';
-            $.post("/sendSocket6", {"command": command, "host": host}, function () {
-
+            $.post("/sendSocket5", {"command": command, "host": host}, function () {
             })
         })
         $("select").change(function () {
