@@ -365,7 +365,6 @@
             <div>
                 <label class="state">
                     <span><img th:src="@{/static/img/1.png}" alt=""></span>
-
                 </label>
                 <span>Place内灯的开关状态不一致</span>
             </div>
@@ -381,24 +380,39 @@
 
 <script th:src="@{/static/jquery-3.1.1.min.js}"></script>
 <script th:inline="javascript">
-
+        //77010416 01 00 32/37 66
         $('.frame>span').click(function(){
             $(this).addClass('active').siblings('span').removeClass('active');
-        })
+            var groupOrder=parseInt($(this).parent().siblings('label').find('span').text());
 
+            if($(this).text()=='ON'){
+                var onOffOrder=32;
+            }else{
+                var onOffOrder=37;
+            }
+            if(groupOrder<=9){
+                var command ='770104160'+groupOrder+onOffOrder+'66';
+            }else if(groupOrder==10){
+                var command ='770104160A'+onOffOrder+'66';
+            }
+
+            var host = '192.168.1.8';
+            $.post("/sendSocket6", {"command": command, "host": host}, function () {
+
+            })
+        })
         $("select").change(function () {
             var command = $.trim($(this).val());
             var host = '192.168.1.8';
             $.post("/sendSocket5", {"command": command, "host": host}, function () {
 
             })
-        });
+        })
         $(function () {
             setInterval(function () {
                 light()
             }, 2000)
         })
-
         function light() {
             $.ajax({
                 type: "post",
@@ -643,7 +657,7 @@
                             })
                         }
                     })
-                        $('.total-frame').attr('src',isExist);
+                    $('.total-frame').attr('src',isExist);
                     if(isExist==''){
                         if(isText=='ON'){
                             $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
@@ -654,7 +668,7 @@
                         }
                     }
                 }
-            });
+            })
         }
         function isAllEqual(array) {
             if (array.length > 0) {

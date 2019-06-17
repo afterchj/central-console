@@ -206,6 +206,21 @@ public class MainController {
         return map;
     }
 
+    @RequestMapping(value = "/sendSocket6", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> sendSocket6(String host,  String command) {
+        Map<String, String> map = new HashMap<>();
+        String success = "success";
+        String cmd1 = host + ":" + command;
+        String code1 = SocketUtil.sendCmd2(host, cmd1);
+        if ("1".equals(code1)) {
+//            失败
+            success = "error";
+        }
+        map.put("success", success);
+        return map;
+    }
+
 //    private static Cache<String, String> cache;
 //    static {
 //         cache = CacheBuilder.newBuilder()
