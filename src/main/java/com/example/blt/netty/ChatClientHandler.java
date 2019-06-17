@@ -16,7 +16,7 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
             ConsoleUtil.persistHosts();
         }
         //客户端主要用来接收服务器发送的消息
-        logger.info("from server:" + arg1);
+        logger.info("from server 80001:" + arg1);
     }
 
 }

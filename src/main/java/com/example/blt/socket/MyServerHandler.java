@@ -1,10 +1,7 @@
 package com.example.blt.socket;
 
-import com.example.blt.entity.ConsoleInfo;
-import com.example.blt.entity.HostInfo;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
-import com.example.blt.utils.StrUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 
 /**
@@ -23,9 +22,11 @@ import java.util.Date;
 public class MyServerHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(MyServerHandler.class);
+
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info(ctx.channel().localAddress().toString() + " connected");
     }
+
     /**
      * @param buf
      * @return
@@ -33,13 +34,18 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
      * TODO  此处用来处理收到的数据中含有中文的时  出现乱码的问题
      * 2019年2月15日 下午3:57:28
      */
-    private String getMessage(ByteBuf buf,String ip) {
+    private String getMessage(ByteBuf buf, String ip) {
+        Set<Map> list = new CopyOnWriteArraySet<>();
         String msg;
         byte[] con = new byte[buf.readableBytes()];
         buf.readBytes(con);
         try {
             msg = new String(con, "UTF-8");
-            ExecuteTask.pingInfo(msg,ip);
+            Map map = ExecuteTask.pingInfo(msg, ip);
+            list.add(map);
+            if (list.size() > 0) {
+                ConsoleUtil.saveHosts(list);
+            }
 //            StrUtil.buildLightInfo(msg,ip);
         } catch (UnsupportedEncodingException e) {
             logger.error("UnsupportedEncodingException：" + e.getMessage());
@@ -58,7 +64,7 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         String str = channel.remoteAddress().toString();
         String ip = str.substring(1, str.indexOf(":"));
         ByteBuf buf = (ByteBuf) msg;
-        String rev = getMessage(buf,ip);
+        String rev = getMessage(buf, ip);
         ctx.writeAndFlush(rev);
         logger.info("receive from 8000 client:" + rev);
     }

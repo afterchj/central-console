@@ -93,10 +93,10 @@ public class MainTest {
         map2.put("vaddr", "E9010000");
         list.add(map1);
         list.add(map2);
-        ConsoleUtil.saveHosts(list);
+//        ConsoleUtil.saveHosts(list);
         Set<Map> list1 = ConsoleUtil.persistHosts();
         logger.info(list.toString());
         map.put("list",list1);
-        sqlSessionTemplate.selectOne("console.saveUpdate", map);
+//        sqlSessionTemplate.selectOne("console.saveUpdate", map);
     }
 }

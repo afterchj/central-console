@@ -6,6 +6,7 @@ import com.example.blt.entity.ConsoleInfo;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
+import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SocketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
@@ -42,6 +44,13 @@ public class MainController {
         ControlTask task = new ControlTask(clientMain, info, true);
         String result = task.executeTask();
         return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/getHost")
+    public Set<Map> showHost(String cmd) {
+        Set<Map> set= ConsoleUtil.persistHosts();
+        return set;
     }
 
 //    @RequestMapping("/getMemcacheAddress")

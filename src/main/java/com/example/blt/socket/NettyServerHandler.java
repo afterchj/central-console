@@ -1,8 +1,7 @@
-package com.example.blt.netty;
+package com.example.blt.socket;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.blt.task.ExecuteTask;
+import com.example.blt.utils.SpringUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,10 +9,15 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * 服务器主要的业务逻辑
@@ -22,53 +26,34 @@ import java.net.SocketAddress;
  * @version time：2018/2/28.
  */
 @ChannelHandler.Sharable
-public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
-    private static Logger logger = LoggerFactory.getLogger(ChatServerHandler.class);
+    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+    private static Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
     //保存所有活动的用户
     public static final ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
-    protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
+    protected void channelRead0(ChannelHandlerContext arg0, String msg) throws Exception {
         Channel channel = arg0.channel();
-//        Set<Map> list = new CopyOnWriteArraySet<>();
+        Set<Map> set = new CopyOnWriteArraySet<>();
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             SocketAddress address = ch.remoteAddress();
             if (address != null) {
                 String str = address.toString();
                 String ip = str.substring(1, str.indexOf(":"));
-                try {
-                    JSONObject jsonObject = JSON.parseObject(arg1);
-                    String cmd = jsonObject.getString("cmd");
-                    String to = jsonObject.getString("ip");
-                    logger.info("[" + ip + "] cmd: " + arg1);
-                    if (to.equals(ip)) {
-                        ch.writeAndFlush(cmd);
-                    } else {
-                        ch.writeAndFlush(cmd);
-                    }
-                } catch (Exception e) {
-                    int index = arg1.indexOf(":");
-                    if (index != -1) {
-                        logger.info("[" + ip + "] receive cmd:" + arg1);
-                        String to = arg1.substring(0, index);
-                        String cmd = arg1.substring(index + 1);
-                        if (ip.equals(to)) {
-                            ch.writeAndFlush(cmd);
-                        } else {
-                            ch.writeAndFlush(cmd);
-                        }
-                    } else {
-                        logger.info("[" + ip + "] receive:" + arg1);
-                        ch.writeAndFlush(arg1);
-                        ExecuteTask.pingInfo(arg1, ip);
-//                        StrUtil.buildLightInfo(arg1, ip);
-                    }
-                }
+                Map map = ExecuteTask.pingInfo(msg, ip);
+                set.add(map);
             }
         }
+        if (set.size() > 0) {
+            Map map = new HashMap();
+            map.put("list", map);
+            sqlSessionTemplate.selectOne("console.saveUpdate", map);
+        }
     }
+
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
