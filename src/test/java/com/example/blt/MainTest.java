@@ -8,7 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -95,8 +98,8 @@ public class MainTest {
         list.add(map2);
 //        ConsoleUtil.saveHosts(list);
         Set<Map> list1 = ConsoleUtil.persistHosts();
-        logger.info(list.toString());
-        map.put("list",list1);
+        logger.info("size=" + list1.size());
+//        map.put("list", list1);
 //        sqlSessionTemplate.selectOne("console.saveUpdate", map);
     }
 }

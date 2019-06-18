@@ -35,10 +35,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String msg) throws Exception {
         Channel channel = arg0.channel();
+        channel.writeAndFlush(msg);
         logger.info("[" + channel.remoteAddress().toString() + "] receive:" + msg);
         SocketAddress address = channel.remoteAddress();
-        if (address != null) {
-            channel.writeAndFlush(msg);
+        if (msg.indexOf("77040F0227") != -1) {
             String str = address.toString();
             String ip = str.substring(1, str.indexOf(":"));
             Map map = ExecuteTask.pingInfo(msg, ip);
