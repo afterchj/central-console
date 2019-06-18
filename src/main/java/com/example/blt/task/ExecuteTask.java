@@ -42,11 +42,11 @@ public class ExecuteTask {
                 clientMain.sendCron(8001, "7701011B66", false);
                 try {
                     new Thread().sleep(5000);
+                    clientMain.sendCron(8001, "7701012766", false);
                 } catch (InterruptedException e) {
                     logger.error(e.getMessage());
                 }
             }
-            clientMain.sendCron(8001, "7701012766", false);
         }).start();
     }
 
