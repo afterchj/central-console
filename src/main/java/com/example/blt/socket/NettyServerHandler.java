@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -41,18 +40,21 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         SocketAddress address = channel.remoteAddress();
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
-        Map map = ExecuteTask.pingInfo(msg, ip);
         if (msg.indexOf("77040F0227") != -1) {
-            MapUtil.removeEntries(map, new String[]{"lmac", "vaddr"});
-            set.add(map);
-            ConsoleUtil.saveHosts(set);
+            Map map = ExecuteTask.pingInfo(msg, ip);
             logger.info("size=" + set.size());
+            executorService.submit(() -> {
+                MapUtil.removeEntries(map, new String[]{"vaddr"});
+                set.add(map);
+                ConsoleUtil.saveHosts(set);
+                Map map1 = map;
+                Set<Map> set = ConsoleUtil.persistHosts();
+                map1.put("list", set);
+                sqlSessionTemplate.selectOne("console.saveUpdate", map1);
+            });
+        } else {
+            ExecuteTask.pingInfo(msg, ip);
         }
-        executorService.submit(() -> {
-            Set<Map> set = ConsoleUtil.persistHosts();
-            map.put("list", set);
-            sqlSessionTemplate.selectOne("console.saveUpdate", map);
-        });
     }
 
 
