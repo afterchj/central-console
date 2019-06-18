@@ -23,18 +23,18 @@
                     </div>
                     <div class="f-l light-line ">
                     </div>
-                    <div class="f-l light-line " >
+                    <div class="f-l light-line ">
                         <span class="hide"></span>
                         <span class="hide"></span>
                         <span class="hide"></span>
-                        <span class="air" >空调</span>
+                        <span class="air">空调</span>
                     </div>
-                    <div class="f-l light-line " th:each="lightState,user:${lightState}"  th:if="${lightState.group}==1">
+                    <div class="f-l light-line " th:each="lightState,user:${lightState}" th:if="${lightState.group}==1">
                         <span class="hide"></span>
                         <span class="hide"></span>
-                        <span  th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
-                        <span  th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>
-                        <span  th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>
+                        <span th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
+                        <span th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>
+                        <span th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"></span>
                     </div>
                 </div>
@@ -44,22 +44,40 @@
                     <div class="pillar-square b1 p-a"></div>
                     <div class="f-l light-line ">
                         <span class="hide"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==0 and ${user.index}&lt;4"   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==1 and ${user.index}&lt;4"   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==null and ${user.index}&lt;4"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==2 and ${lightState.status}==0 and ${user.index}&lt;4"
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==2 and ${lightState.status}==1 and ${user.index}&lt;4"
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==2 and ${lightState.status}==null and ${user.index}&lt;4"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==0 and ${user.index}&gt;3  and  ${user.index}&lt;8"   class="on" th:alt="${user.index}" ></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==1 and ${user.index}&gt;3 and  ${user.index}&lt;8"   class="off" th:alt="${user.index}"  ></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==2 and ${lightState.status}==null and ${user.index}&gt;3  and  ${user.index}&lt;8"   class="disconnected" th:alt="${user.index}"  ></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==2 and ${lightState.status}==0 and ${user.index}&gt;3  and  ${user.index}&lt;8"
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==2 and ${lightState.status}==1 and ${user.index}&gt;3 and  ${user.index}&lt;8"
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==2 and ${lightState.status}==null and ${user.index}&gt;3  and  ${user.index}&lt;8"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
                 <div class="place03 c clearfix p-r">
                     <p class="f-r num p-a c">C</p>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==3 and ${lightState.status}==0 and   ${user.index}&lt;12 and ${user.index}&gt;7"   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==3 and ${lightState.status}==1 and    ${user.index}&lt;12 and ${user.index}&gt;7"   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==3 and ${lightState.status}==null and  ${user.index}&lt;12 and ${user.index}&gt;7"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==3 and ${lightState.status}==0 and   ${user.index}&lt;12 and ${user.index}&gt;7"
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==3 and ${lightState.status}==1 and    ${user.index}&lt;12 and ${user.index}&gt;7"
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==3 and ${lightState.status}==null and  ${user.index}&lt;12 and ${user.index}&gt;7"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
             </div>
@@ -69,63 +87,111 @@
                     <div class="f-l light-line ">
                         <span class="hide"></span>
                         <span class="hide"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==0 and   ${user.index}&lt;14 and ${user.index}&gt;11"   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==1 and    ${user.index}&lt;14 and ${user.index}&gt;11"   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==null and   ${user.index}&lt;14 and ${user.index}&gt;11"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==0 and   ${user.index}&lt;14 and ${user.index}&gt;11"
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==1 and    ${user.index}&lt;14 and ${user.index}&gt;11"
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==null and   ${user.index}&lt;14 and ${user.index}&gt;11"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
                         <span class="air">空调</span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;13  and  ${user.index}&lt;16 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;13  and  ${user.index}&lt;16  "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;13  and  ${user.index}&lt;16"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;13  and  ${user.index}&lt;16 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;13  and  ${user.index}&lt;16  "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;13  and  ${user.index}&lt;16"
+                              class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
                     <div class="f-l light-line">
                         <span class="hide"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;15  and  ${user.index}&lt;19 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;15  and  ${user.index}&lt;19  "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;15  and  ${user.index}&lt;19"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;15  and  ${user.index}&lt;19 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;15  and  ${user.index}&lt;19  "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;15  and  ${user.index}&lt;19"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
                         <!--<span class="hide"></span>-->
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;18  and  ${user.index}&lt;22 "   class="on"  th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;18  and  ${user.index}&lt;22  "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;18  and  ${user.index}&lt;22"   class="disconnected" th:alt="${user.index}" ></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;18  and  ${user.index}&lt;22 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;18  and  ${user.index}&lt;22  "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;18  and  ${user.index}&lt;22"
+                              class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
                 </div>
                 <div class="place05 d clearfix p-r">
                     <p class="f-r num p-a e">E</p>
                     <div class="f-l light-line ">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;21  and  ${user.index}&lt;26 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;21  and  ${user.index}&lt;26  "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;21  and  ${user.index}&lt;26"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;21  and  ${user.index}&lt;26 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;21  and  ${user.index}&lt;26  "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;21  and  ${user.index}&lt;26"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;25  and  ${user.index}&lt;30 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;25  and  ${user.index}&lt;30  "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;25  and  ${user.index}&lt;30"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;25  and  ${user.index}&lt;30 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;25  and  ${user.index}&lt;30  "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;25  and  ${user.index}&lt;30"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;29  and  ${user.index}&lt;33 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;29  and  ${user.index}&lt;33  "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;29  and  ${user.index}&lt;33"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;29  and  ${user.index}&lt;33 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;29  and  ${user.index}&lt;33  "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;29  and  ${user.index}&lt;33"
+                              class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;32  and  ${user.index}&lt;37 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;32  and  ${user.index}&lt;37 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;32  and  ${user.index}&lt;37"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;32  and  ${user.index}&lt;37 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;32  and  ${user.index}&lt;37 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;32  and  ${user.index}&lt;37"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
             </div>
             <div class="part-three f-l">
                 <div class="place06  f clearfix p-r">
                     <p class="f-r num p-a f">F</p>
-                    <div class="f-l light-line"  th:each="lightState,user:${lightState}"  th:if="${lightState.group}==6">
-                        <span  th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
-                        <span  th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>
-                        <span  th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>
+                    <div class="f-l light-line" th:each="lightState,user:${lightState}" th:if="${lightState.group}==6">
+                        <span th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
+                        <span th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>
+                        <span th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
             </div>
@@ -135,43 +201,84 @@
                     <div class="pillar-square g1 p-a"></div>
                     <div class="pillar-square g2 p-a"></div>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;44  and  ${user.index}&lt;50 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;44  and  ${user.index}&lt;50 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;44  and  ${user.index}&lt;50"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;44  and  ${user.index}&lt;50 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;44  and  ${user.index}&lt;50 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;44  and  ${user.index}&lt;50"
+                              class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;49  and  ${user.index}&lt;52 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;49  and  ${user.index}&lt;52 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;49  and  ${user.index}&lt;52"   class="disconnected" th:alt="${user.index}"></span>
-                        <span class="air">空调</span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;51  and  ${user.index}&lt;54 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;51   and  ${user.index}&lt;54 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;51   and  ${user.index}&lt;54"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;49  and  ${user.index}&lt;52 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;49  and  ${user.index}&lt;52 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;49  and  ${user.index}&lt;52"
+                              class="disconnected" th:alt="${user.index}"></span>
+                        <span class="air" alt="52.5">空调</span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;51  and  ${user.index}&lt;54 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;51   and  ${user.index}&lt;54 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;51   and  ${user.index}&lt;54"
+                              class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"></span>
                     </div>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;53  and  ${user.index}&lt;59 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;53  and  ${user.index}&lt;59 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;53  and  ${user.index}&lt;59"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;53  and  ${user.index}&lt;59 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;53  and  ${user.index}&lt;59 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;53  and  ${user.index}&lt;59"
+                              class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"></span>
                     </div>
                     <div class="f-l light-line">
 
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;58  and  ${user.index}&lt;61 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;58  and  ${user.index}&lt;61 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;58  and  ${user.index}&lt;61"   class="disconnected" th:alt="${user.index}"></span>
-
-                        <span class="air">空调</span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;60  and  ${user.index}&lt;63 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;60  and  ${user.index}&lt;63 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;60  and  ${user.index}&lt;63"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;58  and  ${user.index}&lt;61 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;58  and  ${user.index}&lt;61 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;58  and  ${user.index}&lt;61"
+                              class="disconnected" th:alt="${user.index}"></span>
+                        <span class="air" alt="61.5">空调</span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;60  and  ${user.index}&lt;63 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;60  and  ${user.index}&lt;63 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;60  and  ${user.index}&lt;63"
+                              class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
                     <div class="f-l light-line">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;62  and  ${user.index}&lt;68 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;62  and  ${user.index}&lt;68 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;62  and  ${user.index}&lt;68"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;62  and  ${user.index}&lt;68 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;62  and  ${user.index}&lt;68 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;62  and  ${user.index}&lt;68"
+                              class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
                 </div>
@@ -180,39 +287,69 @@
                         <p class="f-r num p-a h">H</p>
                         <div class="pillar-square  h1 p-a"></div>
                         <div class="f-l light-line ">
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==0 and ${user.index}&gt;67  and  ${user.index}&lt;70 "   class="on" th:alt="${user.index}"></span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==1 and ${user.index}&gt;67  and  ${user.index}&lt;70 "   class="off" th:alt="${user.index}"></span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==null   and ${user.index}&gt;67  and  ${user.index}&lt;70"   class="disconnected" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==8 and ${lightState.status}==0 and ${user.index}&gt;67  and  ${user.index}&lt;70 "
+                                  class="on" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==8 and ${lightState.status}==1 and ${user.index}&gt;67  and  ${user.index}&lt;70 "
+                                  class="off" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==8 and ${lightState.status}==null   and ${user.index}&gt;67  and  ${user.index}&lt;70"
+                                  class="disconnected" th:alt="${user.index}"></span>
                         </div>
                         <div class="f-l light-line ">
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==0 and ${user.index}&gt;69  and  ${user.index}&lt;72 "   class="on" th:alt="${user.index}"></span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==1 and ${user.index}&gt;69  and  ${user.index}&lt;72 "   class="off" th:alt="${user.index}"></span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==8 and ${lightState.status}==null   and ${user.index}&gt;69  and  ${user.index}&lt;72"   class="disconnected" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==8 and ${lightState.status}==0 and ${user.index}&gt;69  and  ${user.index}&lt;72 "
+                                  class="on" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==8 and ${lightState.status}==1 and ${user.index}&gt;69  and  ${user.index}&lt;72 "
+                                  class="off" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==8 and ${lightState.status}==null   and ${user.index}&gt;69  and  ${user.index}&lt;72"
+                                  class="disconnected" th:alt="${user.index}"></span>
                         </div>
                     </div>
                     <div class="place09 b f-l p-r">
                         <p class="f-r num p-a i">I</p>
                         <div class="pillar-square  I2 p-a"></div>
                         <div class="f-l light-line">
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==0 and ${user.index}&gt;71  and  ${user.index}&lt;75 "   class="on" th:alt="${user.index}"></span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==1 and ${user.index}&gt;71  and  ${user.index}&lt;75 "   class="off" th:alt="${user.index}"></span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==null   and ${user.index}&gt;71  and  ${user.index}&lt;75"   class="disconnected" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==9 and ${lightState.status}==0 and ${user.index}&gt;71  and  ${user.index}&lt;75 "
+                                  class="on" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==9 and ${lightState.status}==1 and ${user.index}&gt;71  and  ${user.index}&lt;75 "
+                                  class="off" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==9 and ${lightState.status}==null   and ${user.index}&gt;71  and  ${user.index}&lt;75"
+                                  class="disconnected" th:alt="${user.index}"></span>
                             <span class="hide"></span>
                         </div>
                         <div class="f-l light-line">
                             <span class="air">空调</span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==0 and ${user.index}&gt;74  and  ${user.index}&lt;78 "   class="on" th:alt="${user.index}"></span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==1 and ${user.index}&gt;74  and  ${user.index}&lt;78 "   class="off" th:alt="${user.index}"></span>
-                            <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==9 and ${lightState.status}==null   and ${user.index}&gt;74  and  ${user.index}&lt;78"   class="disconnected" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==9 and ${lightState.status}==0 and ${user.index}&gt;74  and  ${user.index}&lt;78 "
+                                  class="on" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==9 and ${lightState.status}==1 and ${user.index}&gt;74  and  ${user.index}&lt;78 "
+                                  class="off" th:alt="${user.index}"></span>
+                            <span th:each="lightState,user:${lightState}"
+                                  th:if="${lightState.group}==9 and ${lightState.status}==null   and ${user.index}&gt;74  and  ${user.index}&lt;78"
+                                  class="disconnected" th:alt="${user.index}"></span>
                         </div>
                     </div>
                 </div>
                 <div class="place10 j clearfix  p-r">
                     <p class="f-r num p-a j">J</p>
                     <div class="f-l light-line ">
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==10 and ${lightState.status}==0 and ${user.index}&gt;77  and  ${user.index}&lt;85 "   class="on" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==10 and ${lightState.status}==1 and ${user.index}&gt;77  and  ${user.index}&lt;85 "   class="off" th:alt="${user.index}"></span>
-                        <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==10 and ${lightState.status}==null   and ${user.index}&gt;77  and  ${user.index}&lt;85"   class="disconnected" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==10 and ${lightState.status}==0 and ${user.index}&gt;77  and  ${user.index}&lt;85 "
+                              class="on" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==10 and ${lightState.status}==1 and ${user.index}&gt;77  and  ${user.index}&lt;85 "
+                              class="off" th:alt="${user.index}"></span>
+                        <span th:each="lightState,user:${lightState}"
+                              th:if="${lightState.group}==10 and ${lightState.status}==null   and ${user.index}&gt;77  and  ${user.index}&lt;85"
+                              class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
             </div>
@@ -225,7 +362,7 @@
                     <div class="right ">
                         <div class="line clearfix" style="padding-bottom: 0;">
                             <div class="f-l icon p-a">
-                                <img  src="" alt="" class="total-frame">
+                                <img src="" alt="" class="total-frame">
                             </div>
                             <div class="f-r right-content">
                                 <label class="caption"></label>
@@ -246,12 +383,12 @@
                             </div>
                             <div class="f-r right-content">
                                 <label class=" caption">Scenes</label>
-                                    <select name="" id="" class="frame" >
-                                        <option value="场景一">scence 01</option>
-                                        <option value="场景二">scence 02</option>
-                                        <option value="场景三">scence 03</option>
-                                        <option value="场景四">scence 04</option>
-                                    </select>
+                                <select name="" id="" class="frame">
+                                    <option value="场景一">scence 01</option>
+                                    <option value="场景二">scence 02</option>
+                                    <option value="场景三">scence 03</option>
+                                    <option value="场景四">scence 04</option>
+                                </select>
                             <span class="page">
                             </span>
                             </div>
@@ -262,32 +399,42 @@
             </div>
             <div class="place-list  p-r">
                 <div class=" place-status-list ">
-                    <div class="place-status clearfix line" th:each="placeLNum:${placeLNumList}" >
+                    <div class="place-status clearfix line" th:each="placeLNum:${placeLNumList}">
                         <div class="f-l icon ">
-                            <img   th:src="@{/static/img/1.png}" alt="" th:if="${placeLNum.status==null}">
-                            <img  src="" alt="" th:if="${placeLNum.status!=null}">
+                            <img th:src="@{/static/img/1.png}" alt="" th:if="${placeLNum.status==null}">
+                            <img src="" alt="" th:if="${placeLNum.status!=null}">
                         </div>
                         <div class="f-r right-content">
-                            <label class="caption" th:if="${placeLNum.place}==1">A:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==2">B:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==3">C:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==4">D:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==5">E:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==6">F:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==7">G:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==8">H:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==9">I:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption" th:if="${placeLNum.place}==10">J:Place<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==1">A:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==2">B:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==3">C:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==4">D:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==5">E:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==6">F:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==7">G:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==8">H:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==9">I:Place0<span>[[${placeLNum.place}]]</span></label>
+                            <label class="caption"
+                                   th:if="${placeLNum.place}==10">J:Place<span>[[${placeLNum.place}]]</span></label>
                             <span class="frame on-off clearfix " th:if="${placeLNum.status=='0'}">
-                                 <span class="f-l active" >ON</span>
+                                 <span class="f-l active">ON</span>
                                  <span class="f-l">OFF</span>
                             </span>
                              <span class="frame on-off clearfix " th:if="${placeLNum.status=='1'}">
-                                 <span class="f-l " >ON</span>
+                                 <span class="f-l ">ON</span>
                                  <span class="f-l active">OFF</span>
                             </span>
                              <span class="frame on-off clearfix " th:if="${placeLNum.status==null}">
-                                 <span class="f-l " >ON</span>
+                                 <span class="f-l ">ON</span>
                                  <span class="f-l ">OFF</span>
                             </span>
                         <span class="page">
@@ -375,335 +522,343 @@
 
 <script th:src="@{/static/jquery-3.1.1.min.js}"></script>
 <script th:inline="javascript">
-        //77010416 01 00 32/37 66
-        $('.frame>span').click(function(){
-            $(this).addClass('active').siblings('span').removeClass('active');
-            var groupOrder=parseInt($(this).parent().siblings('label').find('span').text());
+    //77010416 01 00 32/37 66
+    $('.frame>span').click(function () {
+        $(this).addClass('active').siblings('span').removeClass('active');
+        var groupOrder = parseInt($(this).parent().siblings('label').find('span').text());
 
 
-            if($(this).text()=='ON'){
-                var onOffOrder='0037';
-            }else if ($(this).text()=='OFF'){
-                var onOffOrder='0032';
-            }
-            if(groupOrder<=9){
-                var command ='770104160'+groupOrder+onOffOrder+'66';
-            }else if(groupOrder==10){
-                var command ='770104160A'+onOffOrder+'66';
-            }
-            if ($(this).attr("alt")=="total-on"){
-                var command='77010315373766';
-            }else if($(this).attr("alt")=="total-off"){
-                var command='77010315323266';
-            }
+        if ($(this).text() == 'ON') {
+            var onOffOrder = '0037';
+        } else if ($(this).text() == 'OFF') {
+            var onOffOrder = '0032';
+        }
+        if (groupOrder <= 9) {
+            var command = '770104160' + groupOrder + onOffOrder + '66';
+        } else if (groupOrder == 10) {
+            var command = '770104160A' + onOffOrder + '66';
+        }
+        if ($(this).attr("alt") == "total-on") {
+            var command = '77010315373766';
+        } else if ($(this).attr("alt") == "total-off") {
+            var command = '77010315323266';
+        }
 
-            var host = '192.168.16.61';
-            $.post("/sendSocket5", {"command": command, "host": host}, function () {
-            })
+        var host = '192.168.16.61';
+        $.post("/sendSocket5", {"command": command, "host": host}, function () {
         })
-        $("select").change(function () {
-            var command = $.trim($(this).val());
-            var host = '192.168.16.61';
-            $.post("/sendSocket5", {"command": command, "host": host}, function () {
+    })
+    $("select").change(function () {
+        var command = $.trim($(this).val());
+        var host = '192.168.16.61';
+        $.post("/sendSocket5", {"command": command, "host": host}, function () {
 
-            })
         })
-        $(function () {
-            var grouplist=[1,2,3,4,5,6,7,8,9,10];
-            var selector;
-            for(var i=0;i<grouplist.length;i++){
-                var group=grouplist[i];
-                (group>9) ? selector='.place' : selector='.place0';
-                $(selector+group+'  .light-line').each(function(){
-                    $(this).find('span').not(".hide .air").each(function(){
-                        var sIndex=parseInt($(this).attr('alt'));
-                        var pastIndex=sIndex-1;
-                        if($(this).siblings('span[alt='+pastIndex+']')){
-                            $(this).siblings('span[alt='+pastIndex+']').after($(this));
+    })
+    $(function () {
+        var grouplist = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        var selector;
+        for (var i = 0; i < grouplist.length; i++) {
+            var group = grouplist[i];
+            (group > 9) ? selector = '.place' : selector = '.place0';
+            $(selector + group + '  .light-line').each(function () {
+                $(this).find('span').not(".hide ").each(function () {
+                    var sIndex = $(this).attr('alt');
+                    var iIndex = $(this).index();
+                    if ($(this).hasClass('air')) {
+                        sIndex = parseInt(sIndex);
+                        var pastIndex = sIndex - 1.5;
+                    } else {
+                        sIndex = parseInt(sIndex);
+                        var pastIndex = sIndex - 1;
+                    }
+                    if ($(this).siblings('span[alt=' + pastIndex + ']')) {
+                        $(this).siblings('span[alt=' + pastIndex + ']').after($(this));
+                    }
+                })
+            })
+        }
+
+        setInterval(function () {
+            light()
+        }, 2000)
+    })
+    function light() {
+        $.ajax({
+            type: "post",
+            url: "/getMonitor2",
+            dataType: "json",
+            success: function (data) {
+                var group1 = [], group2 = [], group3 = [], group4 = [], group5 = [], group6 = [], group7 = [], group8 = [], group9 = [], group10 = [];
+                var lightState = data.lightState;
+                var placeLNumList = data.placeLNumList;
+                var centerLNumList = data.centerLNumList;
+                var centerLNum = centerLNumList[0].centerLNum;
+                $('.total-page').text(centerLNum);
+                $('.light-line>span').not(".hide").removeClass('disconnected off on')
+                $('.light-line>span').not(".air").removeClass('disconnected off on')
+                $('.total-frame>span').removeClass('active')
+                $(this).find('.icon img').attr('src', '')
+                $.each(lightState, function (i, val) {
+                    var index = i;
+                    var group = val.group;
+                    var status = val.status;
+                    if (group == 1) {
+                        group1.push(status);
+                    } else if (group == 2) {
+                        group2.push(status);
+                    } else if (group == 3) {
+                        group3.push(status);
+                    } else if (group == 4) {
+                        group4.push(status);
+                    } else if (group == 5) {
+                        group5.push(status);
+                    } else if (group == 6) {
+                        group6.push(status);
+                    } else if (group == 7) {
+                        group7.push(status);
+                    } else if (group == 8) {
+                        group8.push(status);
+                    } else if (group == 9) {
+                        group9.push(status);
+                    } else if (group == 10) {
+                        group10.push(status);
+                    }
+                    if (group <= 9) {
+                        $('.place0' + group + '  .light-line').each(function () {
+                            $(this).find('span').not(".hide").each(function () {
+                                var sIndex = $(this).attr('alt');
+                                if (sIndex == index) {
+                                    if (status == 0) {
+                                        $(this).addClass('on')
+                                    } else if (status == 1) {
+                                        $(this).addClass('off')
+                                    } else if (status == null) {
+                                        $(this).addClass('disconnected')
+                                    }
+                                }
+                            })
+                        })
+                    } else {
+                        $('.place' + group + '  .light-line').each(function () {
+                            $(this).find('span').not(".hide").each(function () {
+                                var sIndex = $(this).attr('alt');
+                                if (sIndex == index) {
+                                    if (status == 0) {
+                                        $(this).addClass('on')
+                                    } else if (status == 1) {
+                                        $(this).addClass('off')
+                                    } else if (status == null) {
+                                        $(this).addClass('disconnected')
+                                    }
+                                }
+                            })
+                        })
+                    }
+                })
+                $.each(placeLNumList, function (i, val) {
+                    var place = val.place;
+                    var placeLNum = val.placeLNum;
+                    $('.place-status').each(function () {
+                        var place2 = $(this).find('.caption span').text();
+                        if (place == place2) {
+                            $(this).find('.page>span:first-child').text(placeLNum);
+                            if (place == 1) {
+                                if (group1.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group1)) {
+                                    var state = group1[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group1)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 2) {
+                                if (group2.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group2)) {
+                                    var state = group2[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group2)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 3) {
+                                if (group3.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group3)) {
+                                    var state = group3[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group3)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 4) {
+                                if (group4.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group4)) {
+                                    var state = group4[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group4)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 5) {
+                                if (group5.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group5)) {
+                                    var state = group5[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group5)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 6) {
+                                if (group6.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group6)) {
+                                    var state = group6[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group6)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 7) {
+                                if (group7.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group7)) {
+                                    var state = group7[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group7)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 8) {
+                                if (group8.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group8)) {
+                                    var state = group8[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group8)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 9) {
+                                if (group9.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group9)) {
+                                    var state = group9[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group9)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            } else if (place == 10) {
+                                if (group10.indexOf(null) != -1) {
+                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                                } else if (isAllEqual(group10)) {
+                                    var state = group10[0];
+                                    if (state == 0) {
+                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                                    } else if (state == 1) {
+                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                                    }
+                                    $(this).find('.icon img').attr('src', '')
+                                } else if (!isAllEqual(group10)) {
+                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                                }
+                            }
                         }
                     })
                 })
-            }
-
-            setInterval(function () {
-                light()
-            }, 2000)
-        })
-        function light() {
-            $.ajax({
-                type: "post",
-                url: "/getMonitor2",
-                dataType: "json",
-                success: function (data) {
-                    var group1=[],group2=[],group3=[],group4=[],group5=[],group6=[],group7=[],group8=[],group9=[],group10=[];
-                    var lightState=data.lightState;
-                    var placeLNumList=data.placeLNumList;
-                    var centerLNumList=data.centerLNumList;
-                    var centerLNum= centerLNumList[0].centerLNum;
-                    $('.total-page').text(centerLNum);
-                    $('.light-line>span').not(".hide").removeClass('disconnected off on')
-                    $('.light-line>span').not(".air").removeClass('disconnected off on')
-                    $('.total-frame>span').removeClass('active')
-                    $(this).find('.icon img').attr('src','')
-                    $.each(lightState,function(i,val){
-                         var index=i;
-                         var group=val.group;
-                         var status=val.status;
-                         if(group==1){
-                             group1.push(status);
-                         }else if(group==2){
-                             group2.push(status);
-                         }else if(group==3){
-                            group3.push(status);
-                         }else if(group==4){
-                             group4.push(status);
-                         }else if(group==5){
-                             group5.push(status);
-                         }else if(group==6){
-                             group6.push(status);
-                         }else if(group==7){
-                             group7.push(status);
-                         }else if(group==8){
-                             group8.push(status);
-                         }else if(group==9){
-                             group9.push(status);
-                         }else if(group==10){
-                             group10.push(status);
-                         }
-                        if(group<=9){
-                            $('.place0'+group+'  .light-line').each(function(){
-                                $(this).find('span').not(".hide").each(function(){
-                                    var sIndex=$(this).attr('alt');
-                                    if(sIndex==index){
-                                        if(status==0){
-                                            $(this).addClass('on')
-                                        }else if(status==1){
-                                            $(this).addClass('off')
-                                        }else if(status==null){
-                                            $(this).addClass('disconnected')
-                                        }
-                                    }
-                                })
-                            })
-                        }else{
-                            $('.place'+group+'  .light-line').each(function(){
-                                $(this).find('span').not(".hide").each(function(){
-                                    var sIndex=$(this).attr('alt');
-                                    if(sIndex==index){
-                                        if(status==0){
-                                            $(this).addClass('on')
-                                        }else if(status==1){
-                                            $(this).addClass('off')
-                                        }else if(status==null){
-                                            $(this).addClass('disconnected')
-                                        }
-                                    }
-                                })
-                            })
-                        }
-                    })
-                    $.each(placeLNumList,function(i,val){
-                        var place= val.place;
-                        var placeLNum=val.placeLNum;
-                        $('.place-status').each(function(){
-                            var place2=$(this).find('.caption span').text();
-                            if(place==place2){
-                                $(this).find('.page>span:first-child').text(placeLNum);
-                                if(place==1){
-                                    if(group1.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group1)){
-                                        var state=group1[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group1)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==2){
-                                    if(group2.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group2)){
-                                        var state=group2[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group2)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==3){
-                                    if(group3.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group3)){
-                                        var state=group3[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group3)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==4){
-                                    if(group4.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group4)){
-                                        var state=group4[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group4)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==5){
-                                    if(group5.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group5)){
-                                        var state=group5[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group5)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==6){
-                                    if(group6.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group6)){
-                                        var state=group6[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group6)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==7){
-                                    if(group7.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group7)){
-                                        var state=group7[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group7)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==8){
-                                    if(group8.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group8)){
-                                        var state=group8[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group8)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==9){
-                                    if(group9.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group9)){
-                                        var state=group9[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group9)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }else if(place==10){
-                                    if(group10.indexOf(null)!=-1){
-                                        $(this).find('.icon img').attr('src','/static/img/2.png')
-                                    }else if(isAllEqual(group10)){
-                                        var state=group10[0];
-                                        if(state==0){
-                                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                        }else if(state==1){
-                                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                        }
-                                        $(this).find('.icon img').attr('src','')
-                                    }else if(!isAllEqual(group10)){
-                                        $(this).find('.icon img').attr('src','/static/img/1.png')
-                                    }
-                                }
+                var isExist = '';
+                var isText = '';
+                $('.place-status').each(function () {
+                    var img = $(this).find('img').attr('src');
+                    if (img == '/static/img/2.png') {
+                        isExist = '/static/img/2.png';
+                        return false;
+                    } else if (img == '/static/img/1.png') {
+                        isExist = '/static/img/1.png';
+                        return false;
+                    } else {
+                        isExist = '';
+                        $(this).find('.frame>span').each(function () {
+                            if ($(this).hasClass('active')) {
+                                isText = $(this).text();
+                                return false;
                             }
                         })
-                    })
-                    var isExist='';
-                    var isText='';
-                    $('.place-status').each(function(){
-                        var img=$(this).find('img').attr('src');
-                        if(img=='/static/img/2.png'){
-                            isExist='/static/img/2.png';
-                            return false;
-                        }else if(img=='/static/img/1.png'){
-                            isExist='/static/img/1.png';
-                            return false;
-                        }else{
-                            isExist='';
-                             $(this).find('.frame>span').each(function(){
-                                if($(this).hasClass('active')){
-                                    isText=$(this).text();
-                                    return false;
-                                }
-                            })
-                        }
-                    })
-                    $('.total-frame').attr('src',isExist);
-                    if(isExist==''){
-                        if(isText=='ON'){
-                            $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                        }else if(isText=='OFF'){
-                            $('.total-frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                        }else{
-                            $('.total-frame>span').removeClass('active')
-                        }
+                    }
+                })
+                $('.total-frame').attr('src', isExist);
+                if (isExist == '') {
+                    if (isText == 'ON') {
+                        $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                    } else if (isText == 'OFF') {
+                        $('.total-frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                    } else {
+                        $('.total-frame>span').removeClass('active')
                     }
                 }
-            })
+            }
+        })
+    }
+    function isAllEqual(array) {
+        if (array.length > 0) {
+            return !array.some(function (value, index) {
+                return value !== array[0];
+            });
+        } else {
+            return true;
         }
-        function isAllEqual(array) {
-            if (array.length > 0) {
-                return !array.some(function (value, index) {
-                    return value !== array[0];
-                });
-            } else {
-                return true;
+    }
+    function removeEmptyArrayEle(arr) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == "undefined") {
+                arr.splice(i, 1);
+                i = i - 1;
             }
         }
-        function removeEmptyArrayEle(arr){
-            for(var i = 0; i < arr.length; i++) {
-                if(arr[i] == "undefined") {
-                    arr.splice(i,1);
-                    i = i - 1;
-                }
-            }
-            return arr;
-        };
+        return arr;
+    }
+    ;
 </script>
 </body>
 </html>
