@@ -29,17 +29,14 @@
                         <span class="hide"></span>
                         <span class="air" >空调</span>
                     </div>
-                    <div class="f-l light-line ">
-
+                    <div class="f-l light-line " th:each="lightState,user:${lightState}"  th:if="${lightState.group}==1">
+                        <span class="hide"></span>
+                        <span class="hide"></span>
+                        <span  th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
+                        <span  th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>
+                        <span  th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>
+                        <span class="hide"></span>
                     </div>
-                    <!--<div class="f-l light-line " th:each="lightState,user:${lightState}"  th:if="${lightState.group}==1">-->
-                        <!--<span class="hide"></span>-->
-                        <!--<span class="hide"></span>-->
-                        <!--<span  th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>-->
-                        <!--<span  th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>-->
-                        <!--<span  th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>-->
-                        <!--<span class="hide"></span>-->
-                    <!--</div>-->
                 </div>
                 <div class="place02 b clearfix p-r">
                     <p class="f-r num p-a b">B</p>
