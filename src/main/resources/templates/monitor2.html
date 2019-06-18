@@ -222,7 +222,7 @@
                         <span th:each="lightState,user:${lightState}"
                               th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;49  and  ${user.index}&lt;52"
                               class="disconnected" th:alt="${user.index}"></span>
-                        <span class="air" alt="52.5">空调</span>
+                        <span class="air" alt="空调1">空调</span>
                         <span th:each="lightState,user:${lightState}"
                               th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;51  and  ${user.index}&lt;54 "
                               class="on" th:alt="${user.index}"></span>
@@ -257,7 +257,7 @@
                         <span th:each="lightState,user:${lightState}"
                               th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;58  and  ${user.index}&lt;61"
                               class="disconnected" th:alt="${user.index}"></span>
-                        <span class="air" alt="61.5">空调</span>
+                        <span class="air" alt="空调2">空调</span>
                         <span th:each="lightState,user:${lightState}"
                               th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;60  and  ${user.index}&lt;63 "
                               class="on" th:alt="${user.index}"></span>
@@ -565,20 +565,24 @@
                 $(this).find('span').not(".hide ").each(function () {
                     var sIndex = $(this).attr('alt');
                     var iIndex = $(this).index();
-                    if ($(this).hasClass('air')) {
+                    var pastIndex;
+                    if(!isNaN(sIndex)){
                         sIndex = parseInt(sIndex);
-                        var pastIndex = sIndex - 1.5;
-                    } else {
-                        sIndex = parseInt(sIndex);
-                        var pastIndex = sIndex - 1;
+                        if ($(this).siblings("span[alt=" + (sIndex - 1) + "]")) {
+                            $(this).siblings("span[alt=" + (sIndex - 1) + "]").after($(this));
+                        }
                     }
-                    if ($(this).siblings('span[alt=' + pastIndex + ']')) {
-                        $(this).siblings('span[alt=' + pastIndex + ']').after($(this));
-                    }
+
                 })
             })
         }
-
+       $('.place07 .light-line span').each(function(){
+           if($(this).attr('alt')=='空调1'){
+               $(this).siblings("span[alt=51]").after($(this));
+           }else if($(this).attr('alt')=='空调2'){
+               $(this).siblings("span[alt=60]").after($(this));
+           }
+       })
         setInterval(function () {
             light()
         }, 2000)
@@ -656,6 +660,7 @@
                         })
                     }
                 })
+                console.log(group1,group2,group3,group4,group5,group6,group7,group8,group9,group10)
                 $.each(placeLNumList, function (i, val) {
                     var place = val.place;
                     var placeLNum = val.placeLNum;
