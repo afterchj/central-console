@@ -12,11 +12,8 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
-        if (arg1.equals("7701011B66")) {
-            ConsoleUtil.persistHosts();
-        }
         //客户端主要用来接收服务器发送的消息
-        logger.info("from server 80001:" + arg1);
+        logger.info("from server:" + arg1);
     }
 
 }

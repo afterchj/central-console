@@ -31,7 +31,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
         Channel channel = arg0.channel();
-//        Set<Map> list = new CopyOnWriteArraySet<>();
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             SocketAddress address = ch.remoteAddress();

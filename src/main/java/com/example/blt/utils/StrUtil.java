@@ -15,9 +15,9 @@ public class StrUtil {
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
-    public static Map buildLightInfo(String msg, String ip) {
+    public static Map buildLightInfo(String str, String ip) {
         Map map = new HashMap();
-        String str = msg.replace(" ", "");
+//        String str = msg.replace(" ", "");
         String str1 = "77040F0227";
         map.put("host", ip);
         map.put("status", 1);
@@ -28,7 +28,7 @@ public class StrUtil {
             String vaddr = str.substring(index, index + 8);
             String x = str.substring(index + 10, index + 12);
             String y = str.substring(index + 12, index + 14);
-            if (msg.contains("3232")) {
+            if (str.contains("3232")) {
                 map.put("status", 0);
             } else {
                 map.put("status", 1);
@@ -39,11 +39,10 @@ public class StrUtil {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
             logger.info("result=" + map.get("result"));
         } else if (str.indexOf("77040F01") != -1) {
-            String prefix = str.substring(0, 8);
+//            String prefix = str.substring(0, 8);
             String lmac = str.substring(8, 20).toLowerCase();
             String vaddr = str.substring(20, 28);
             String productId = str.substring(28, 32);
-            System.out.println(prefix + "\t" + lmac + "\t" + vaddr + "\t" + productId);
             map.put("vaddr", vaddr);
             map.put("product_id", productId);
             String[] strArr = buildStr(lmac);
