@@ -35,11 +35,11 @@
 .right{
     width: 100%;
     font-size: .9em;
+    margin: 25px 0 10px 0;
     /* margin-left: 15%; */
 }
-.place-status-list{
 
-}
+
 label,span{
     display: inline-block;
 }
@@ -151,64 +151,36 @@ label,span{
     border: 1px solid #bbb;
 }
 .place09{
-    width: calc(100% - 113px);
+    width: calc(100% - 110px);
     border: 1px solid #bbb;
     border-left: none;
+    margin-left: -3px;
 }
 .place10{
     border: 1px dashed #bbb;
     border-top: none;
 }
+.place-status:last-child{
+    border-bottom: none;
+}
 .light-line span{
-
-width: 12px !important;
-
+    width: 16px !important;
     height: 45px;
     border: 1px solid #aaa;
-    font-size: .7em;
-    min-width: 10px;
+    font-size: 14px;
+    /* min-width: 10px; */
     vertical-align: middle;
     line-height: normal;
-
     margin: 0px 18px;
-    border-color: #8c8c8c;
+    border-color: #bbb;
+    float: left;
+    display: block;
+    text-align: center;
 }
-.d .light-line span{
-    width: calc(100%/4 - 37px);
-}
-.d .light-line{
-    width: 100%;
-    height: calc(100%/4);
-}
-.b .light-line span{
-    width: calc(100%/4 - 37px);
-}
-.b .light-line{
-    width: 100%;
-    height: calc(100%/2);
-}
-.c .light-line span{
-    width: calc(100%/4 - 37px);
-}
-.c .light-line{
-    width: 100%;
-    height: calc(100%/1);
-}
-.j .light-line{
-    width: 100%;
-    height: calc(100%/1);
-}
-.f .light-line {
-    width: 100%;
-    height: calc(100%/8);
-}
-/*.j .light-line span{*/
-    /*width: calc(100%/6 - 42px);*/
-/*}*/
 .light-line{
     width: 100%;
-    height: calc(100%/5);
-    line-height: 75px;
+    height: 47px;
+    margin: 21.5px 0;
     text-align: center;
 }
 .num{
@@ -236,7 +208,7 @@ width: 12px !important;
 .air{
     background-color: #666;
     color: #fff;
-    min-width: 13px !important;
+    /*min-width: 13px !important;*/
 }
 .pillar-square{
     background-color: #666;
@@ -277,11 +249,8 @@ width: 12px !important;
 .light-line .hide{
     visibility: hidden;
 }
-/*.light-on,.light-off,.light-disconnected{*/
-    /**/
-/*}*/
 .light{
-    width: 12px;
+    width: 13px;
     height: 40px;
     line-height: 40px;
     text-align: center;
@@ -351,10 +320,7 @@ width: 12px !important;
     right: 43%;
     top: 0px;
 }
-/*.on-off.on{*/
-    /*background-color: #3598db;*/
-    /*color: #fff;*/
-/*}*/
+
 .on-off >span:first-child.active{
     background-color: #3598db;
     color: #fff;
@@ -363,7 +329,6 @@ width: 12px !important;
 .on-off >span:last-child.active{
     background-color: #3598db;
     color: #fff;
-    /*border-right-color: #3598db;*/
 }
 .light-line span.off{
     background-color: #fff;

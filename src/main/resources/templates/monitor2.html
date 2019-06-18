@@ -141,7 +141,6 @@
                         <span class="hide"> </span>
                     </div>
                     <div class="f-l light-line">
-
                         <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;49  and  ${user.index}&lt;52 "   class="on" th:alt="${user.index}"></span>
                         <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;49  and  ${user.index}&lt;52 "   class="off" th:alt="${user.index}"></span>
                         <span  th:each="lightState,user:${lightState}" th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;49  and  ${user.index}&lt;52"   class="disconnected" th:alt="${user.index}"></span>
@@ -223,10 +222,8 @@
                 <p style="font-size: 15px;font-weight: bold;">The Office
                 <p/>
                 <div class="clearfix ">
-
                     <div class="right ">
-
-                        <div class="line clearfix">
+                        <div class="line clearfix" style="padding-bottom: 0;">
                             <div class="f-l icon p-a">
                                 <img  src="" alt="" class="total-frame">
                             </div>
@@ -265,7 +262,7 @@
             </div>
             <div class="place-list  p-r">
                 <div class=" place-status-list ">
-                    <div class="place-status clearfix line" th:each="placeLNum:${placeLNumList}">
+                    <div class="place-status clearfix line" th:each="placeLNum:${placeLNumList}" >
                         <div class="f-l icon ">
                             <img   th:src="@{/static/img/1.png}" alt="" th:if="${placeLNum.status==null}">
                             <img  src="" alt="" th:if="${placeLNum.status!=null}">
