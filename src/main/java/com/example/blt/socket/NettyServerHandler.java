@@ -2,6 +2,7 @@ package com.example.blt.socket;
 
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
+import com.example.blt.utils.MapUtil;
 import com.example.blt.utils.SpringUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,17 +39,17 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         channel.writeAndFlush(msg);
         logger.info("[" + channel.remoteAddress().toString() + "] receive:" + msg);
         SocketAddress address = channel.remoteAddress();
+        String str = address.toString();
+        String ip = str.substring(1, str.indexOf(":"));
+        Map map = ExecuteTask.pingInfo(msg, ip);
         if (msg.indexOf("77040F0227") != -1) {
-            String str = address.toString();
-            String ip = str.substring(1, str.indexOf(":"));
-            Map map = ExecuteTask.pingInfo(msg, ip);
+            MapUtil.removeEntries(map, new String[]{"lmac", "vaddr"});
             set.add(map);
             ConsoleUtil.saveHosts(set);
+            logger.info("size=" + set.size());
         }
         executorService.submit(() -> {
             Set<Map> set = ConsoleUtil.persistHosts();
-            logger.info("size=" + set.size());
-            Map map = new HashMap();
             map.put("list", set);
             sqlSessionTemplate.selectOne("console.saveUpdate", map);
         });

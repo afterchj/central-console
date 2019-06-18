@@ -48,8 +48,11 @@ public class MainController {
 
     @ResponseBody
     @RequestMapping("/getHost")
-    public Set<Map> showHost(String cmd) {
-        Set<Map> set= ConsoleUtil.persistHosts();
+    public Set<Map> showHost() {
+        Map map = new HashMap();
+        Set<Map> set = ConsoleUtil.persistHosts();
+        map.put("size", set.size());
+        set.add(map);
         return set;
     }
 
@@ -208,7 +211,7 @@ public class MainController {
 
     @RequestMapping(value = "/sendSocket6", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> sendSocket6(String host,  String command) {
+    public Map<String, String> sendSocket6(String host, String command) {
         Map<String, String> map = new HashMap<>();
         String success = "success";
         String cmd1 = host + ":" + command;

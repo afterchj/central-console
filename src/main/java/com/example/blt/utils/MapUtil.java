@@ -12,7 +12,8 @@ import java.util.Set;
 public class MapUtil {
 
     /**
-     *  Map中根据key批量删除键值对
+     * Map中根据key批量删除键值对
+     *
      * @param map
      * @param excludeKeys
      * @param <K>
@@ -34,10 +35,11 @@ public class MapUtil {
     }
 
     public static void main(String[] args) {
-        Set<Map> maps=ConsoleUtil.persistHosts();
-        for (Map map:maps){
-            removeEntries(map,new String[]{"vaddr"});
-            System.out.println(map);
-        }
+        Set<Map> maps = ConsoleUtil.persistHosts();
+        System.out.println(maps.size());
+//        for (Map map : maps) {
+//            removeEntries(map, new String[]{"vaddr"});
+//            System.out.println(map);
+//        }
     }
 }

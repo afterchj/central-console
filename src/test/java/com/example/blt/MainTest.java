@@ -2,6 +2,7 @@ package com.example.blt;
 
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
+import com.example.blt.utils.MapUtil;
 import com.example.blt.utils.SpringUtils;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -87,19 +88,16 @@ public class MainTest {
     @Test
     public void testUpdate() {
         Map map = new HashMap();
-        Set<Map> list = new HashSet<>();
-        Map map1 = new HashMap();
-        map1.put("lmac", "f0:ac:d7:64:10:a8");
-        map1.put("vaddr", "7D000000");
-        Map map2 = new HashMap();
-        map2.put("lmac", "f0:ac:d7:64:10:a9");
-        map2.put("vaddr", "E9010000");
-        list.add(map1);
-        list.add(map2);
 //        ConsoleUtil.saveHosts(list);
-        Set<Map> list1 = ConsoleUtil.persistHosts();
-        logger.info("size=" + list1.size());
-//        map.put("list", list1);
-//        sqlSessionTemplate.selectOne("console.saveUpdate", map);
+        Set<Map> list = ConsoleUtil.persistHosts();
+        map.put("list", list);
+        logger.info("list.size=" + list.size());
+        List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
+        logger.info("list1.size=" + list1.size());
+    }
+
+    @Test
+    public void testRemoveKey() {
+        Set<Map> list = ConsoleUtil.persistHosts();
     }
 }

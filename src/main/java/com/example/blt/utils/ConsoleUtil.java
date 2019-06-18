@@ -31,7 +31,7 @@ public class ConsoleUtil {
             oos = new ObjectOutputStream(new FileOutputStream(file));
             oos.writeObject(list);
         } catch (IOException e) {
-            logger.error("IOException:" + e.getMessage());
+            logger.error("IOException:saveHosts " + e.getMessage());
         } finally {
             IOUtils.closeQuietly(oos);
         }
@@ -48,9 +48,9 @@ public class ConsoleUtil {
             Map map = new HashMap();
             map.put("list", list);
         } catch (IOException e) {
-            logger.error("IOException:" + e.getMessage());
+            logger.error("IOException:persistHosts " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            logger.error("ClassNotFoundException:" + e.getMessage());
+            logger.error("ClassNotFoundException:persistHosts " + e.getMessage());
         } finally {
             IOUtils.closeQuietly(ois);
         }
