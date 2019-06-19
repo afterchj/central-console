@@ -556,7 +556,7 @@
         })
     })
     $(function () {
-        var grouplist = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        var grouplist = [ 2, 3, 4, 5, 6, 7, 8, 9, 10];
         var selector;
         for (var i = 0; i < grouplist.length; i++) {
             var group = grouplist[i];
@@ -572,7 +572,6 @@
                             $(this).siblings("span[alt=" + (sIndex - 1) + "]").after($(this));
                         }
                     }
-
                 })
             })
         }
@@ -660,7 +659,7 @@
                         })
                     }
                 })
-                console.log(group1,group2,group3,group4,group5,group6,group7,group8,group9,group10)
+//                console.log(group1,group2,group3,group4,group5,group6,group7,group8,group9,group10)
                 $.each(placeLNumList, function (i, val) {
                     var place = val.place;
                     var placeLNum = val.placeLNum;

@@ -1,27 +1,31 @@
 .container{
     margin: 30px auto;
     width: 96%;
-    max-width: 1300px;
+    min-width: 1080px;
     text-align: center;
+    max-width: 1120px;
 }
 .right-part{
     border:1px solid #bbb;
 }
 .office{
-    width:100%;
+    width: 100%;
+    min-width: 1080px;
 }
 .left-part{
-    width:65%;
+    width: 72%;
+    min-width: 750px;
     margin-right: 20px;
     min-height: 642px;
 }
 .right-part{
-    width: calc(35% - 44px);
+    width: calc(28% - 42px);
     padding: 20px 10px;
     height: 680px;
+    min-width: 250px;
 }
 .icon{
-    width: 15%;
+    width: 50px;
     text-align: right;
 
 }
@@ -93,10 +97,10 @@ label,span{
     height: 720px;
 }
 .part-one{
-    width: 26%;
+    width: calc(100%/15*4);
 }
 .part-two{
-    width:27%;
+    width: calc(100%/15*4);
 }
 .merge{
     height: calc(100%/8*2);
@@ -106,10 +110,10 @@ label,span{
 }
 
 .part-three{
-    width: 7%;
+    width: calc(100%/15*1);
 }
 .part-four{
-    width:40%;
+    width: calc(100%/15*6);
 }
 .place01{
     border-right: 1px dashed #bbb;
@@ -147,14 +151,14 @@ label,span{
     border-bottom: none;
 }
 .place08{
-    width: 110px;
+    width: 105px;
     border: 1px solid #bbb;
 }
 .place09{
-    width: calc(100% - 110px);
+    width: calc(100% - 103px);
     border: 1px solid #bbb;
     border-left: none;
-    margin-left: -3px;
+    margin-left: -5px;
 }
 .place10{
     border: 1px dashed #bbb;
@@ -164,10 +168,10 @@ label,span{
     border-bottom: none;
 }
 .light-line span{
-    width: 16px !important;
+    width: 13px ;
     height: 45px;
     border: 1px solid #aaa;
-    font-size: 14px;
+    font-size: 13px;
     /* min-width: 10px; */
     vertical-align: middle;
     line-height: normal;
@@ -286,7 +290,7 @@ label,span{
     display: inline;
 }
 .door{
-    width: 65%;
+    width: 72%;
     height: 75px;
     line-height: 75px;
 }
