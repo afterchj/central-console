@@ -45,8 +45,6 @@ public class ConsoleUtil {
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
             list = (Set<Map>) ois.readObject();
-            Map map = new HashMap();
-            map.put("list", list);
         } catch (IOException e) {
             logger.error("IOException:persistHosts " + e.getMessage());
         } catch (ClassNotFoundException e) {

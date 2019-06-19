@@ -92,8 +92,8 @@ public class MainTest {
         Set<Map> list = ConsoleUtil.persistHosts();
         map.put("list", list);
         logger.info("list.size=" + list.size());
-        List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
-        logger.info("list1.size=" + list1.size());
+//        List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
+//        logger.info("list1.size=" + list1.size());
     }
 
     @Test
