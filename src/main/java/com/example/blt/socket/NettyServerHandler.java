@@ -41,8 +41,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         SocketAddress address = channel.remoteAddress();
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
+        Map map = ExecuteTask.pingInfo(msg, ip);
         if (msg.indexOf("77040F0227") != -1) {
-            Map map = ExecuteTask.pingInfo(msg, ip);
             Map params=new HashMap();
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"vaddr"});
@@ -52,9 +52,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
                 ConsoleUtil.saveHosts(set);
             });
             logger.info("size=" + set.size());
-        } else {
-            ExecuteTask.pingInfo(msg, ip);
         }
+//        else {
+//            ExecuteTask.pingInfo(msg, ip);
+//        }
     }
 
 
