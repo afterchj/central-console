@@ -88,7 +88,7 @@ label,span{
     height: calc(100%/8*5);
 }
 .place08,.place09,.place02{
-    height: calc(100%/8*2);
+    height: calc(100%/8*2 - 1px);
 }
 .place03,.place10{
     height: calc(100%/8*1);

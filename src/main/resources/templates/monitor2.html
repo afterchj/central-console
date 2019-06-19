@@ -602,7 +602,6 @@
                 }else {
                     $('.total-page').text("0");
                 }
-//                $('.total-page').text(centerLNum);
                 $('.light-line>span').not(".hide").removeClass('disconnected off on')
                 $('.light-line>span').not(".air").removeClass('disconnected off on')
                 $('.total-frame>span').removeClass('active')
@@ -632,8 +631,9 @@
                     } else if (group == 10) {
                         group10.push(status);
                     }
-                    if (group <= 9) {
-                        $('.place0' + group + '  .light-line').each(function () {
+                    var selector;
+                    (group > 9) ? selector = '.place' : selector = '.place0';
+                        $(selector + group + '  .light-line').each(function () {
                             $(this).find('span').not(".hide").each(function () {
                                 var sIndex = $(this).attr('alt');
                                 if (sIndex == index) {
@@ -647,24 +647,7 @@
                                 }
                             })
                         })
-                    } else {
-                        $('.place' + group + '  .light-line').each(function () {
-                            $(this).find('span').not(".hide").each(function () {
-                                var sIndex = $(this).attr('alt');
-                                if (sIndex == index) {
-                                    if (status == 0) {
-                                        $(this).addClass('on')
-                                    } else if (status == 1) {
-                                        $(this).addClass('off')
-                                    } else if (status == null) {
-                                        $(this).addClass('disconnected')
-                                    }
-                                }
-                            })
-                        })
-                    }
                 })
-//                console.log(group1,group2,group3,group4,group5,group6,group7,group8,group9,group10)
                 $.each(placeLNumList, function (i, val) {
                     var place = val.place;
                     var placeLNum = val.placeLNum;
@@ -858,16 +841,6 @@
             return true;
         }
     }
-    function removeEmptyArrayEle(arr) {
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i] == "undefined") {
-                arr.splice(i, 1);
-                i = i - 1;
-            }
-        }
-        return arr;
-    }
-    ;
 </script>
 </body>
 </html>
