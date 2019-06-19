@@ -2,7 +2,6 @@ package com.example.blt;
 
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
-import com.example.blt.utils.MapUtil;
 import com.example.blt.utils.SpringUtils;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -92,8 +91,8 @@ public class MainTest {
         Set<Map> list = ConsoleUtil.persistHosts();
         map.put("list", list);
         logger.info("list.size=" + list.size());
-//        List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
-//        logger.info("list1.size=" + list1.size());
+        List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
+        logger.info("list1.size=" + list1.size());
     }
 
     @Test
