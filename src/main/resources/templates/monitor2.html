@@ -523,11 +523,15 @@
 <script th:src="@{/static/jquery-3.1.1.min.js}"></script>
 <script th:inline="javascript">
     //77010416 01 00 32/37 66
+    $(function () {
+        init()
+        setInterval(function () {
+            light()
+        }, 2000)
+    })
     $('.frame>span').click(function () {
         $(this).addClass('active').siblings('span').removeClass('active');
         var groupOrder = parseInt($(this).parent().siblings('label').find('span').text());
-
-
         if ($(this).text() == 'ON') {
             var onOffOrder = '0037';
         } else if ($(this).text() == 'OFF') {
@@ -555,7 +559,8 @@
 
         })
     })
-    $(function () {
+
+    function init(){
         var grouplist = [ 2, 3, 4, 5, 6, 7, 8, 9, 10];
         var selector;
         for (var i = 0; i < grouplist.length; i++) {
@@ -575,17 +580,14 @@
                 })
             })
         }
-       $('.place07 .light-line span').each(function(){
-           if($(this).attr('alt')=='空调1'){
-               $(this).siblings("span[alt=51]").after($(this));
-           }else if($(this).attr('alt')=='空调2'){
-               $(this).siblings("span[alt=60]").after($(this));
-           }
-       })
-        setInterval(function () {
-            light()
-        }, 2000)
-    })
+        $('.place07 .light-line span').each(function(){
+            if($(this).attr('alt')=='空调1'){
+                $(this).siblings("span[alt=51]").after($(this));
+            }else if($(this).attr('alt')=='空调2'){
+                $(this).siblings("span[alt=60]").after($(this));
+            }
+        })
+    }
     function light() {
         $.ajax({
             type: "post",
