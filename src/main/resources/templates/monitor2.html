@@ -596,8 +596,13 @@
                 var lightState = data.lightState;
                 var placeLNumList = data.placeLNumList;
                 var centerLNumList = data.centerLNumList;
-                var centerLNum = centerLNumList[0].centerLNum;
-                $('.total-page').text(centerLNum);
+                if (centerLNumList.length>0){
+                    var centerLNum = centerLNumList[0].centerLNum;
+                    $('.total-page').text(centerLNum);
+                }else {
+                    $('.total-page').text("0");
+                }
+//                $('.total-page').text(centerLNum);
                 $('.light-line>span').not(".hide").removeClass('disconnected off on')
                 $('.light-line>span').not(".air").removeClass('disconnected off on')
                 $('.total-frame>span').removeClass('active')
