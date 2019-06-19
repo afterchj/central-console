@@ -1,16 +1,16 @@
 package com.example.blt.utils;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.commons.io.IOUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -19,8 +19,9 @@ public class ConsoleUtil {
 
     private static Logger logger = LoggerFactory.getLogger(ConsoleUtil.class);
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
-    public static void saveHosts(Set<Map> list) {
+    public static void saveHosts(Set list) {
         //Write Obj to File
         File file = new File("/temp/hosts/", "hosts");
         if (!file.getParentFile().exists()) {
@@ -37,14 +38,14 @@ public class ConsoleUtil {
         }
     }
 
-    public static Set<Map> persistHosts() {
+    public static Set persistHosts() {
         File file = new File("/temp/hosts/", "hosts");
         //Read Obj from File
         ObjectInputStream ois = null;
-        Set<Map> list = new HashSet<>();
+        Set list = new HashSet<>();
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
-            list = (Set<Map>) ois.readObject();
+            list = (Set) ois.readObject();
         } catch (IOException e) {
             logger.error("IOException:persistHosts " + e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -55,21 +56,19 @@ public class ConsoleUtil {
         return list;
     }
 
+    public static void saveInfo(Set list) {
+        ValueOperations<String,Set> operations = redisTemplate.opsForValue();
+        operations.set("t_vaddr", list, 1, TimeUnit.DAYS);
+    }
+
+    public static Set getInfo() {
+        return (Set) redisTemplate.opsForValue().get("t_vaddr");
+    }
+
     public static void main(String[] args) {
-        Set<Map> list = new HashSet<>();
-        for (int i = 0; i < 11; i++) {
-            Map map = new HashMap();
-            if (i % 2 == 0) {
-                map.put("vaddr", "1");
-                map.put("lmac", "11");
-            } else {
-                map.put("vaddr", "t" + i);
-                map.put("lmac", "l" + i);
-            }
-            list.add(map);
-        }
-//        saveHosts(list);
-        Set<Map> set = persistHosts();
-        logger.info("lists=" + JSON.toJSONString(set));
+        saveInfo(persistHosts());
+        Set set = getInfo();
+//        saveInfo(set);
+        logger.info("lists=" + set);
     }
 }
