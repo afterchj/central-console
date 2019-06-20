@@ -7,32 +7,32 @@
 
     <!--第二种方式：加载一个properties文件-->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="location" value="classpath:application.properties"/>
+        <property name="location" value="classpath:application.properties"/>
     </bean>
 
     <!-- 第三种方式：加载多个properties文件 -->
     <!--<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">-->
-        <!--<property name="locations">-->
-            <!--<list>-->
-                <!--<value>classpath:jdbc.properties</value>-->
-                <!--<value>classpath:common.properties</value>-->
-            <!--</list>-->
-        <!--</property>-->
-        <!--<property name="fileEncoding" value="UTF-8"/>-->
+    <!--<property name="locations">-->
+    <!--<list>-->
+    <!--<value>classpath:jdbc.properties</value>-->
+    <!--<value>classpath:common.properties</value>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--<property name="fileEncoding" value="UTF-8"/>-->
     <!--</bean>-->
     <!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">-->
-        <!--<property name="properties" ref="configProperties"/>-->
+    <!--<property name="properties" ref="configProperties"/>-->
     <!--</bean>-->
 
     <!-- 阿里 druid数据库连接池 -->
     <bean id="myDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
-        <property name="driverClassName" value="${spring.datasource.driverClassName}" />
-        <property name="url" value="${spring.datasource.url}" />
-        <property name="username" value="${spring.datasource.username}" />
-        <property name="password" value="${spring.datasource.password}" />
-        <property name="initialSize" value="${spring.datasource.initial-size}" />
-        <property name="maxActive" value="${spring.datasource.max-active}" />
-        <property name="minIdle" value="${spring.datasource.min-idle}" />
+        <property name="driverClassName" value="${spring.datasource.driverClassName}"/>
+        <property name="url" value="${spring.datasource.url}"/>
+        <property name="username" value="${spring.datasource.username}"/>
+        <property name="password" value="${spring.datasource.password}"/>
+        <property name="initialSize" value="${spring.datasource.initial-size}"/>
+        <property name="maxActive" value="${spring.datasource.max-active}"/>
+        <property name="minIdle" value="${spring.datasource.min-idle}"/>
         <property name="validationQuery" value="SELECT 'x'"/>
         <property name="testWhileIdle" value="true"/>
         <property name="testOnBorrow" value="false"/>
@@ -72,16 +72,16 @@
 
 
     <!--?<bean name="memcachedClient" destroy-method="shutdown"-->
-          <!--?class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean">-->
-        <!--?<property name="servers">-->
-            <!--?<value>${memcached.url}</value>-->
-        <!--?</property>-->
-        <!--?<property name="sessionLocator">-->
-            <!--?<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"/>-->
-        <!--?</property>-->
-        <!--?<property name="transcoder">-->
-            <!--?<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder"/>-->
-        <!--?</property>-->
+    <!--?class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean">-->
+    <!--?<property name="servers">-->
+    <!--?<value>${memcached.url}</value>-->
+    <!--?</property>-->
+    <!--?<property name="sessionLocator">-->
+    <!--?<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"/>-->
+    <!--?</property>-->
+    <!--?<property name="transcoder">-->
+    <!--?<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder"/>-->
+    <!--?</property>-->
     <!--?</bean>-->
 
     <!-- 配置Jedis的 缓冲池 -->
@@ -92,9 +92,11 @@
 
 
     <!-- redis template definition -->
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-          p:connectionFactory-ref="jedisConnFactory">
-        <property name="defaultSerializer">
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connectionFactory-ref="jedisConnFactory">
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+        </property>
+        <property name="valueSerializer">
             <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
         </property>
     </bean>
