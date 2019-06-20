@@ -371,7 +371,7 @@
                                  <span class="f-l" id="total-off" alt="total-off">OFF</span>
                             </span>
                              <span class="page ">
-                                <span th:text="${centerLNumList[0].centerLNum}" class="total-page"></span>/
+                                <span  th:if="${centerLNumList}!=null" th:text="${centerLNumList[0].centerLNum}" class="total-page"></span>
                                 <span>84</span>
                             </span>
                             </div>
@@ -401,8 +401,7 @@
                 <div class=" place-status-list ">
                     <div class="place-status clearfix line" th:each="placeLNum:${placeLNumList}">
                         <div class="f-l icon ">
-                            <img th:src="@{/static/img/1.png}" alt="" th:if="${placeLNum.status==null}">
-                            <img src="" alt="" th:if="${placeLNum.status!=null}">
+                            <img src="" alt="">
                         </div>
                         <div class="f-r right-content">
                             <label class="caption"
@@ -523,6 +522,7 @@
 <script th:src="@{/static/jquery-3.1.1.min.js}"></script>
 <script th:inline="javascript">
     //77010416 01 00 32/37 66
+
     $(function () {
         init()
         setInterval(function () {
@@ -595,6 +595,11 @@
             dataType: "json",
             success: function (data) {
                 var group1 = [], group2 = [], group3 = [], group4 = [], group5 = [], group6 = [], group7 = [], group8 = [], group9 = [], group10 = [];
+//                var groupLists=[];
+//                for(var i=0;i<10;i++){
+//                    groupLists[i] = new Array();
+//                }
+//                var  groupLists= Array_2(10,'');
                 var lightState = data.lightState;
                 var placeLNumList = data.placeLNumList;
                 var centerLNumList = data.centerLNumList;
@@ -604,14 +609,14 @@
                 }else {
                     $('.total-page').text("0");
                 }
-                $('.light-line>span').not(".hide").removeClass('disconnected off on')
-                $('.light-line>span').not(".air").removeClass('disconnected off on')
+                $('.light-line>span').not(".hide .air").removeClass('disconnected off on')
                 $('.total-frame>span').removeClass('active')
                 $(this).find('.icon img').attr('src', '')
                 $.each(lightState, function (i, val) {
                     var index = i;
                     var group = val.group;
                     var status = val.status;
+//                    groupLists[group-1].push(status);
                     if (group == 1) {
                         group1.push(status);
                     } else if (group == 2) {
@@ -650,185 +655,328 @@
                             })
                         })
                 })
-                $.each(placeLNumList, function (i, val) {
-                    var place = val.place;
-                    var placeLNum = val.placeLNum;
-                    $('.place-status').each(function () {
-                        var place2 = $(this).find('.caption span').text();
-                        if (place == place2) {
-                            $(this).find('.page>span:first-child').text(placeLNum);
-                            if (place == 1) {
-                                if (group1.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group1)) {
-                                    var state = group1[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group1)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 2) {
-                                if (group2.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group2)) {
-                                    var state = group2[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group2)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 3) {
-                                if (group3.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group3)) {
-                                    var state = group3[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group3)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 4) {
-                                if (group4.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group4)) {
-                                    var state = group4[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group4)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 5) {
-                                if (group5.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group5)) {
-                                    var state = group5[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group5)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 6) {
-                                if (group6.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group6)) {
-                                    var state = group6[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group6)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 7) {
-                                if (group7.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group7)) {
-                                    var state = group7[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group7)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 8) {
-                                if (group8.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group8)) {
-                                    var state = group8[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group8)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 9) {
-                                if (group9.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group9)) {
-                                    var state = group9[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group9)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            } else if (place == 10) {
-                                if (group10.indexOf(null) != -1) {
-                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                                } else if (isAllEqual(group10)) {
-                                    var state = group10[0];
-                                    if (state == 0) {
-                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                                    } else if (state == 1) {
-                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                                    }
-                                    $(this).find('.icon img').attr('src', '')
-                                } else if (!isAllEqual(group10)) {
-                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                                }
-                            }
+//                console.log(groupLists)
+                for(var i=0;i<10;i++){
+                    $('.place-status').eq(i).find('.page>span:first-child').text(placeLNumList[i].placeLNum);
+                }
+//                $.each(placeLNumList, function (i, val) {
+//                    var place = val.place;
+//                    var placeLNum = val.placeLNum;
+//                    $('.place-status').each(function () {
+//                        var place2 = $(this).find('.caption span').text();
+//                        if (place == place2) {
+//                            $(this).find('.page>span:first-child').text(placeLNum);
+//                            console.log(group2)
+////                            if (place == 1) {
+////                                if (group1.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group1)) {
+////                                    var state = group1[0];
+////                                    console.log('state',state,isAllEqual(group1));
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group1)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 2) {
+////                                if (group2.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group2)) {
+////                                    var state = group2[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group2)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 3) {
+////                                if (group3.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group3)) {
+////                                    var state = group3[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group3)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 4) {
+////                                if (group4.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group4)) {
+////                                    var state = group4[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group4)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 5) {
+////                                if (group5.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group5)) {
+////                                    var state = group5[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group5)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 6) {
+////                                if (group6.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group6)) {
+////                                    var state = group6[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group6)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 7) {
+////                                if (group7.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group7)) {
+////                                    var state = group7[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group7)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 8) {
+////                                if (group8.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group8)) {
+////                                    var state = group8[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group8)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 9) {
+////                                if (group9.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group9)) {
+////                                    var state = group9[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group9)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            } else if (place == 10) {
+////                                if (group10.indexOf(null) != -1) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+////                                } else if (isAllEqual(group10)) {
+////                                    var state = group10[0];
+////                                    if (state == 0) {
+////                                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+////                                    } else if (state == 1) {
+////                                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+////                                    }else{
+////                                        $(this).find('.frame>span').removeClass('active');
+////                                    }
+////                                    $(this).find('.icon img').attr('src', '')
+////                                } else if (!isAllEqual(group10)) {
+////                                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+////                                }
+////                            }
+//                        }
+//                    })
+//                })
+                $('.place-status').each(function(){
+                    var place2 = $(this).find('.caption span').text();
+                   if(place2 ==1 ){
+                        if(group1.indexOf(null)!=-1){
+                            $(this).find('.icon img').attr('src', '/static/img/2.png')
+                            $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group1)){
+                            $(this).find('.icon img').attr('src', '/static/img/1.png')
+                            $(this).find('.frame>span').removeClass('active');
+                        }else if(isAllEqual(group1) && group1.indexOf('0')!=-1){
+                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                        }else if(isAllEqual(group1) && group1.indexOf('1')!=-1){
+                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
                         }
-                    })
+                   }else if(place2 ==2 ){
+                       if(group2.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group2)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group2) && group2.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group2) && group2.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }else if(place2 ==3 ){
+                       if(group3.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group3)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group3) && group3.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group3) && group3.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }else if(place2 ==4 ){
+                       if(group4.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group4)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group4) && group4.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group4) && group4.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }else if(place2 ==5 ){
+                       if(group5.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group5)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group5) && group5.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group5) && group5.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }else if(place2 ==6 ){
+                       if(group6.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group6)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group6) && group6.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group6) && group6.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }else if(place2 ==7 ){
+                       if(group7.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group7)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group7) && group7.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group7) && group7.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }else if(place2 ==8 ){
+                       if(group8.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group8)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group8) && group8.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group8) && group8.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }else if(place2 ==9 ){
+                       if(group9.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group9)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group9) && group9.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group9) && group9.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }else if(place2 ==10 ){
+                       if(group10.indexOf(null)!=-1){
+                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(!isAllEqual(group10)){
+                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+                           $(this).find('.frame>span').removeClass('active');
+                       }else if(isAllEqual(group10) && group10.indexOf('0')!=-1){
+                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                       }else if(isAllEqual(group10) && group10.indexOf('1')!=-1){
+                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                       }
+                   }
                 })
-                var isExist = '';
-                var isText = '';
+                var isTextArray = [];
+                var isExistArray=[];
                 $('.place-status').each(function () {
                     var img = $(this).find('img').attr('src');
-                    if (img == '/static/img/2.png') {
-                        isExist = '/static/img/2.png';
-                        return false;
-                    } else if (img == '/static/img/1.png') {
-                        isExist = '/static/img/1.png';
-                        return false;
-                    } else {
-                        isExist = '';
-                        $(this).find('.frame>span').each(function () {
-                            if ($(this).hasClass('active')) {
-                                isText = $(this).text();
-                                return false;
-                            }
-                        })
-                    }
+                    var onOff=$(this).find('.frame>span.active').text();
+                    isExistArray.push(img)
+                    isTextArray.push(onOff)
                 })
-                $('.total-frame').attr('src', isExist);
-                if (isExist == '') {
-                    if (isText == 'ON') {
+
+                if(isExistArray.indexOf('/static/img/2.png')!=-1){
+                    $('img.total-frame').attr('src', '/static/img/2.png');
+                }else if(isExistArray.indexOf('/static/img/2.png')==-1 && isExistArray.indexOf('/static/img/1.png')!=-1){
+                    $('img.total-frame').attr('src', '/static/img/1.png');
+                }else{
+                    $('img.total-frame').attr('src', '');
+                }
+                if(isAllEqual(isTextArray)){
+                    if(isTextArray[0]=='ON'){
                         $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                    } else if (isText == 'OFF') {
+                    }else if(isTextArray[0]=='OFF'){
                         $('.total-frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                    } else {
-                        $('.total-frame>span').removeClass('active')
                     }
                 }
             }
@@ -842,6 +990,19 @@
         } else {
             return true;
         }
+    }
+    function Array_2(nRow,nColumn){
+        var array1=new Array(); //定义一维数组
+        for(i=0;i<nRow;i++){
+            //将每一个子元素又定义为数组
+            array1[i]=new Array();
+//----------------------------------------
+            for(n=0;n<nColumn;n++){
+                array1[i][n] = ''; //此时aa[i][n]可以看作是一个二级数组
+            }
+//--------------------------------------
+        }
+        return array1;
     }
 </script>
 </body>
