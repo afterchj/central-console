@@ -8,8 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -56,19 +55,43 @@ public class ConsoleUtil {
         return list;
     }
 
-    public static void saveInfo(Set list) {
-        ValueOperations<String,Set> operations = redisTemplate.opsForValue();
-        operations.set("t_vaddr", list, 1, TimeUnit.DAYS);
+    public static void saveInfo(String key, Set list) {
+        ValueOperations<String, Set> operations = redisTemplate.opsForValue();
+        operations.set(key, list, 1, TimeUnit.MINUTES);
     }
 
-    public static Set getInfo() {
-        return (Set) redisTemplate.opsForValue().get("t_vaddr");
+    public static Set getInfo(String key) {
+        return (Set) redisTemplate.opsForValue().get(key);
+    }
+
+    public static int getLightSize(String... key) {
+        Integer num = 0;
+        if (key.length > 0) {
+            List<Map<String, Object>> list = sqlSessionTemplate.selectList("console.getLights");
+            for (String name : key) {
+                for (Map<String, Object> map : list) {
+                    Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry<String, Object> entry = it.next();
+                        if (entry.getValue().equals(name)) {
+                            num += Integer.valueOf(String.valueOf(map.get("lmacn")));
+                        }
+                    }
+                }
+            }
+        }else {
+            num=sqlSessionTemplate.selectOne("console.getTotal");
+        }
+        return num;
     }
 
     public static void main(String[] args) {
-        saveInfo(persistHosts());
-        Set set = getInfo();
-//        saveInfo(set);
-        logger.info("lists=" + set);
+        System.out.println(getLightSize(new String[]{}));
+//        String key = ConsoleKeys.VADDR.getValue();
+//        String key2 = ConsoleKeys.lMAC.getValue();
+//        saveInfo(key, persistHosts());
+//        saveInfo(key2, persistHosts());
+//        Set set = getInfo(key);
+//        logger.info("lists=" + set);
     }
 }

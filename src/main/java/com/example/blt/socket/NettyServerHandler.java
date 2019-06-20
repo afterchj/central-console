@@ -1,5 +1,6 @@
 package com.example.blt.socket;
 
+import com.example.blt.entity.ConsoleKeys;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.MapUtil;
@@ -30,7 +31,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
     private static Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
     private ExecutorService executorService = Executors.newCachedThreadPool();
-    private static Set<Map> set = new CopyOnWriteArraySet<>();
+    private static Set<Map> vaddrSet = new CopyOnWriteArraySet<>();
+    private static Set<Map> lmacSet = new CopyOnWriteArraySet<>();
 
 
     @Override
@@ -41,17 +43,37 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         SocketAddress address = channel.remoteAddress();
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
+        String vaddr = ConsoleKeys.VADDR.getValue();
+        String lmac = ConsoleKeys.lMAC.getValue();
         Map map = ExecuteTask.pingInfo(msg, ip);
+        Set list1 = ConsoleUtil.getInfo(lmac);
+        Set list2 = ConsoleUtil.getInfo(vaddr);
+        if (list1 == null) {
+            lmacSet.clear();
+        }
+        if (list2 == null) {
+            vaddrSet.clear();
+        }
         if (msg.indexOf("77040F0227") != -1) {
-            Map params=new HashMap();
+            Map params = new HashMap();
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"vaddr"});
-                set.add(map);
-                params.put("list", set);
+                vaddrSet.add(map);
+                params.put("list", vaddrSet);
                 sqlSessionTemplate.selectOne("console.saveUpdate", params);
-                ConsoleUtil.saveHosts(set);
+                ConsoleUtil.saveInfo(vaddr, vaddrSet);
+                logger.info("vaddrSize=" + vaddrSet.size());
             });
-            logger.info("size=" + set.size());
+        } else if (msg.indexOf("77040F01") != -1) {
+            Map params = new HashMap();
+            executorService.submit(() -> {
+                MapUtil.removeEntries(map, new String[]{"lmac"});
+                lmacSet.add(map);
+                params.put("list", lmacSet);
+                sqlSessionTemplate.selectOne("console.saveUpdate2", params);
+                ConsoleUtil.saveInfo(lmac, lmacSet);
+                logger.info("lmacSize=" + lmacSet.size());
+            });
         }
     }
 
@@ -68,7 +90,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         logger.info("[" + channel.remoteAddress().toString() + "] " + "offline");
-
     }
 
     @Override

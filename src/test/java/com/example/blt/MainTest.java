@@ -8,7 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -86,14 +86,23 @@ public class MainTest {
 
     @Test
     public void testUpdate() {
-        Map map = new HashMap();
-//        ConsoleUtil.saveHosts(list);
-        Set<Map> list = ConsoleUtil.persistHosts();
-        map.put("list", list);
-        sqlSessionTemplate.selectList("console.batchInsert", map);
-        logger.info("list.size=" + list.size());
-        List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
-        logger.info("list1.size=" + list1.size());
+//        List<Map> list = sqlSessionTemplate.selectList("console.getLights");
+//        for (Map<String, Object> map : list) {
+//            Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
+//            while (it.hasNext()) {
+//                Map.Entry<String, Object> entry = it.next();
+//                if (entry.getValue().equals("Office")) {
+//                    System.out.println("size= "+map.get("lmacn"));
+//                }
+//            }
+//        }
+        //        ConsoleUtil.saveHosts(list);
+//        Set<Map> list = ConsoleUtil.persistHosts();
+//        map.put("list", list);
+//        sqlSessionTemplate.selectList("console.batchInsert", map);
+//        logger.info("list.size=" + list.size());
+//        List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
+//        logger.info("list1.size=" + list);
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.example.blt.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.ConsoleInfo;
+import com.example.blt.entity.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
@@ -15,10 +16,7 @@ import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
@@ -48,12 +46,23 @@ public class MainController {
 
     @ResponseBody
     @RequestMapping("/getHost")
-    public Set<Map> showHost() {
-        Map map = new HashMap();
-        Set<Map> set = ConsoleUtil.persistHosts();
-        map.put("size", set.size());
-        set.add(map);
-        return set;
+    public Map showHost() {
+        Map map = new LinkedHashMap();
+        new Thread(() -> {
+            Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+            Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+            if (lmacSet != null) {
+                map.put("lmacSize", lmacSet.size());
+                map.put("lmac", lmacSet);
+
+            }
+            if (vaddrSet != null) {
+                map.put("vaddr", lmacSet);
+                map.put("vaddrSize", lmacSet.size());
+            }
+        }).start();
+        map.put("result", "ok");
+        return map;
     }
 
 //    @RequestMapping("/getMemcacheAddress")

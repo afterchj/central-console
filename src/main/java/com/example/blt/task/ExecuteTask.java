@@ -1,10 +1,15 @@
 package com.example.blt.task;
 
 import com.example.blt.netty.ClientMain;
+import com.example.blt.utils.SpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 /**
  * Created by hongjian.chen on 2019/6/17.
@@ -12,6 +17,7 @@ import java.util.concurrent.*;
 public class ExecuteTask {
     private static Logger logger = LoggerFactory.getLogger(ExecuteTask.class);
     private static ExecutorService executorService = Executors.newCachedThreadPool();
+    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
     public static Map pingInfo(String msg, String ip) {
         PingTask task = new PingTask(msg, ip);
