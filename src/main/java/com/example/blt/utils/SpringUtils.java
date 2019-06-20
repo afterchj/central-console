@@ -5,6 +5,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by hongjian.chen on 2019/1/22.
  */

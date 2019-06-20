@@ -53,9 +53,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
             });
             logger.info("size=" + set.size());
         }
-//        else {
-//            ExecuteTask.pingInfo(msg, ip);
-//        }
     }
 
 

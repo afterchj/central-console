@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,10 +18,16 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private ClientMain clientMain = new ClientMain();
 
-//    @Scheduled(cron = "0/30 * * * * ?")
-//    public void cronTest1() {
-//        clientMain.sendCron(8001,"7701011B66", false);
-//    }
+    @Scheduled(cron = "0/30 * * * * ?")
+    public void cronTest1() {
+        clientMain.sendCron(8001, "7701011B66", false);
+        try {
+            new Thread().sleep(5000);
+            clientMain.sendCron(8001, "7701012766", false);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+    }
 
 //    @Scheduled(cron = "0 0/1 * * * ?")
 //    public void cronTest2() {
@@ -30,6 +37,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.info("nettyService starting...");
-        ExecuteTask.pingStatus(true,clientMain);
+        ExecuteTask.pingStatus(true, clientMain);
     }
 }

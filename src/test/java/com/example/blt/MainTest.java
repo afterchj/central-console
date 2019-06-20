@@ -90,6 +90,7 @@ public class MainTest {
 //        ConsoleUtil.saveHosts(list);
         Set<Map> list = ConsoleUtil.persistHosts();
         map.put("list", list);
+        sqlSessionTemplate.selectList("console.batchInsert", map);
         logger.info("list.size=" + list.size());
         List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
         logger.info("list1.size=" + list1.size());
