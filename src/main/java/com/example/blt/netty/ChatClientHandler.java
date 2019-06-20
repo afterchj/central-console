@@ -1,6 +1,5 @@
 package com.example.blt.netty;
 
-import com.example.blt.utils.ConsoleUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
