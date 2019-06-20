@@ -24,7 +24,6 @@ $('.frame>span').click(function () {
     } else if ($(this).attr("alt") == "total-off") {
         var command = '77010315323266';
     }
-
     var host = '192.168.16.61';
     $.post("/sendSocket5", {
         "command": command,
