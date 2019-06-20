@@ -594,12 +594,8 @@
             url: "/getMonitor2",
             dataType: "json",
             success: function (data) {
-                var group1 = [], group2 = [], group3 = [], group4 = [], group5 = [], group6 = [], group7 = [], group8 = [], group9 = [], group10 = [];
-//                var groupLists=[];
-//                for(var i=0;i<10;i++){
-//                    groupLists[i] = new Array();
-//                }
-//                var  groupLists= Array_2(10,'');
+//                var group1 = [], group2 = [], group3 = [], group4 = [], group5 = [], group6 = [], group7 = [], group8 = [], group9 = [], group10 = [];
+                var  groupLists= Array_2(10,'');
                 var lightState = data.lightState;
                 var placeLNumList = data.placeLNumList;
                 var centerLNumList = data.centerLNumList;
@@ -616,28 +612,28 @@
                     var index = i;
                     var group = val.group;
                     var status = val.status;
-//                    groupLists[group-1].push(status);
-                    if (group == 1) {
-                        group1.push(status);
-                    } else if (group == 2) {
-                        group2.push(status);
-                    } else if (group == 3) {
-                        group3.push(status);
-                    } else if (group == 4) {
-                        group4.push(status);
-                    } else if (group == 5) {
-                        group5.push(status);
-                    } else if (group == 6) {
-                        group6.push(status);
-                    } else if (group == 7) {
-                        group7.push(status);
-                    } else if (group == 8) {
-                        group8.push(status);
-                    } else if (group == 9) {
-                        group9.push(status);
-                    } else if (group == 10) {
-                        group10.push(status);
-                    }
+                    groupLists[group-1].push(status);
+//                    if (group == 1) {
+//                        group1.push(status);
+//                    } else if (group == 2) {
+//                        group2.push(status);
+//                    } else if (group == 3) {
+//                        group3.push(status);
+//                    } else if (group == 4) {
+//                        group4.push(status);
+//                    } else if (group == 5) {
+//                        group5.push(status);
+//                    } else if (group == 6) {
+//                        group6.push(status);
+//                    } else if (group == 7) {
+//                        group7.push(status);
+//                    } else if (group == 8) {
+//                        group8.push(status);
+//                    } else if (group == 9) {
+//                        group9.push(status);
+//                    } else if (group == 10) {
+//                        group10.push(status);
+//                    }
                     var selector;
                     (group > 9) ? selector = '.place' : selector = '.place0';
                         $(selector + group + '  .light-line').each(function () {
@@ -656,6 +652,7 @@
                         })
                 })
 //                console.log(groupLists)
+//                console.log('placeLNumList',placeLNumList);
                 for(var i=0;i<10;i++){
                     $('.place-status').eq(i).find('.page>span:first-child').text(placeLNumList[i].placeLNum);
                 }
@@ -834,127 +831,140 @@
 //                })
                 $('.place-status').each(function(){
                     var place2 = $(this).find('.caption span').text();
-                   if(place2 ==1 ){
-                        if(group1.indexOf(null)!=-1){
-                            $(this).find('.icon img').attr('src', '/static/img/2.png')
-                            $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group1)){
-                            $(this).find('.icon img').attr('src', '/static/img/1.png')
-                            $(this).find('.frame>span').removeClass('active');
-                        }else if(isAllEqual(group1) && group1.indexOf('0')!=-1){
-                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                        }else if(isAllEqual(group1) && group1.indexOf('1')!=-1){
-                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                        }
-                   }else if(place2 ==2 ){
-                       if(group2.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group2)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group2) && group2.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group2) && group2.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }else if(place2 ==3 ){
-                       if(group3.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group3)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group3) && group3.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group3) && group3.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }else if(place2 ==4 ){
-                       if(group4.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group4)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group4) && group4.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group4) && group4.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }else if(place2 ==5 ){
-                       if(group5.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group5)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group5) && group5.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group5) && group5.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }else if(place2 ==6 ){
-                       if(group6.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group6)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group6) && group6.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group6) && group6.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }else if(place2 ==7 ){
-                       if(group7.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group7)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group7) && group7.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group7) && group7.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }else if(place2 ==8 ){
-                       if(group8.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group8)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group8) && group8.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group8) && group8.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }else if(place2 ==9 ){
-                       if(group9.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group9)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group9) && group9.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group9) && group9.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }else if(place2 ==10 ){
-                       if(group10.indexOf(null)!=-1){
-                           $(this).find('.icon img').attr('src', '/static/img/2.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(!isAllEqual(group10)){
-                           $(this).find('.icon img').attr('src', '/static/img/1.png')
-                           $(this).find('.frame>span').removeClass('active');
-                       }else if(isAllEqual(group10) && group10.indexOf('0')!=-1){
-                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                       }else if(isAllEqual(group10) && group10.indexOf('1')!=-1){
-                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                       }
-                   }
+                    var grouppart= groupLists[parseInt(place2)-1];
+//                    console.log(grouppart)
+                    if(grouppart.indexOf(null)!=-1){
+                        $(this).find('.icon img').attr('src', '/static/img/2.png')
+                        $(this).find('.frame>span').removeClass('active');
+                    }else if(!isAllEqual(grouppart)){
+                        $(this).find('.icon img').attr('src', '/static/img/1.png')
+                        $(this).find('.frame>span').removeClass('active');
+                    }else if(isAllEqual(grouppart) && grouppart.indexOf('0')!=-1){
+                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                    }else if(isAllEqual(grouppart) && grouppart.indexOf('1')!=-1){
+                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                    }
+//                   if(place2 ==1 ){
+//                        if(group1.indexOf(null)!=-1){
+//                            $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                            $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group1)){
+//                            $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                            $(this).find('.frame>span').removeClass('active');
+//                        }else if(isAllEqual(group1) && group1.indexOf('0')!=-1){
+//                            $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                        }else if(isAllEqual(group1) && group1.indexOf('1')!=-1){
+//                            $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                        }
+//                   }else if(place2 ==2 ){
+//                       if(group2.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group2)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group2) && group2.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group2) && group2.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }else if(place2 ==3 ){
+//                       if(group3.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group3)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group3) && group3.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group3) && group3.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }else if(place2 ==4 ){
+//                       if(group4.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group4)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group4) && group4.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group4) && group4.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }else if(place2 ==5 ){
+//                       if(group5.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group5)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group5) && group5.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group5) && group5.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }else if(place2 ==6 ){
+//                       if(group6.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group6)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group6) && group6.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group6) && group6.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }else if(place2 ==7 ){
+//                       if(group7.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group7)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group7) && group7.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group7) && group7.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }else if(place2 ==8 ){
+//                       if(group8.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group8)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group8) && group8.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group8) && group8.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }else if(place2 ==9 ){
+//                       if(group9.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group9)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group9) && group9.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group9) && group9.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }else if(place2 ==10 ){
+//                       if(group10.indexOf(null)!=-1){
+//                           $(this).find('.icon img').attr('src', '/static/img/2.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(!isAllEqual(group10)){
+//                           $(this).find('.icon img').attr('src', '/static/img/1.png')
+//                           $(this).find('.frame>span').removeClass('active');
+//                       }else if(isAllEqual(group10) && group10.indexOf('0')!=-1){
+//                           $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+//                       }else if(isAllEqual(group10) && group10.indexOf('1')!=-1){
+//                           $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+//                       }
+//                   }
                 })
                 var isTextArray = [];
                 var isExistArray=[];
@@ -992,15 +1002,12 @@
         }
     }
     function Array_2(nRow,nColumn){
-        var array1=new Array(); //定义一维数组
+        var array1=new Array();
         for(i=0;i<nRow;i++){
-            //将每一个子元素又定义为数组
             array1[i]=new Array();
-//----------------------------------------
             for(n=0;n<nColumn;n++){
-                array1[i][n] = ''; //此时aa[i][n]可以看作是一个二级数组
+                array1[i][n] = '';
             }
-//--------------------------------------
         }
         return array1;
     }
