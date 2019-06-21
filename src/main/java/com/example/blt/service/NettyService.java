@@ -4,6 +4,7 @@ import com.example.blt.entity.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -11,6 +12,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,6 +25,8 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private ClientMain clientMain = new ClientMain();
+    @Resource
+    private SqlSessionTemplate sqlSessionTemplate;
 
 //    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest1() {
@@ -39,10 +45,14 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //    }
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
-        Set set = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-        int size = ConsoleUtil.getLightSize("Office");
-        if (null != set && set.size() != size) {
+        Set<Map> set = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+//        int size = ConsoleUtil.getLightSize("Office");
+        if (null != set) {
+            logger.info("lmacSet=" + set);
+            Map params = new HashMap();
+            params.put("list", set);
             clientMain.sendCron(8001, "7701012766", false);
+            sqlSessionTemplate.update("console.saveUpdate2", params);
         }
         logger.info("checkSize...");
     }

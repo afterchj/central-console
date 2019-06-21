@@ -1,6 +1,7 @@
 package com.example.blt;
 
 import com.example.blt.entity.ConsoleInfo;
+import com.example.blt.entity.ConsoleKeys;
 import com.example.blt.entity.HostInfo;
 import com.example.blt.entity.LightInfo;
 import com.example.blt.utils.StrUtil;
@@ -11,11 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Resource;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//随机生成一个端口号
@@ -23,6 +26,9 @@ public class CentralControllerApplicationTests {
 
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
+
+    @Resource
+    private RedisTemplate redisTemplate;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 //    @Autowired
 //    private HostService hostService;
@@ -31,7 +37,21 @@ public class CentralControllerApplicationTests {
 //
 //    @Autowired
 //    private LightService lightService;
-//
+
+    @Test
+    public void testRedis(){
+        ValueOperations<String,Set> operations=redisTemplate.opsForValue();
+        ValueOperations<String,List> operationsList=redisTemplate.opsForValue();
+        Set<Map> lmacSet =operations.get(ConsoleKeys.lMAC.getValue());
+        Set<Map> vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
+        List<Map> vaddr=sqlSessionTemplate.selectList("console.getVaddr");
+        String key1 = ConsoleKeys.VADDR.getValue();
+        String key2 = ConsoleKeys.lMAC.getValue();
+        operationsList.set("test_vaddr",vaddr,1, TimeUnit.MINUTES);
+        List set1 = operationsList.get("test_vaddr");
+        logger.info("lmacSet=" + set1);
+        logger.info("vaddrSet=" + vaddrSet);
+    }
 //    @Test
 //    public void contextLoads() {
 ////        hostService.updateByIp("192.168.56.1", false);

@@ -62,12 +62,13 @@ public class StrUtil {
     }
 
 
-//    public static void main(String args[]) {
-//        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ";
-//        String str1 = "77 04 0F 01 F1 10 64 D7 AC F0 3D 00 00 00 44 4F 01 0A CC CC ";
-//        String str2 = "77 04 0F 01 A8 10 64 D7 AC F0 0D 00 00 00 44 4F 02 0A CC CC  ";
-//        buildLightInfo(str2);
-//    }
+    public static void main(String args[]) {
+        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
+        System.out.println(str);
+//        String str1 = "77040F01A91064D7ACF07D000000444F030ACCCC";
+//        String str2 = "77040F022769000000710032000000000000CC";
+//        buildLightInfo(str,"127.0.0.1");
+    }
 
     public static String[] buildStr(String str) {
         char[] chars = str.toCharArray();

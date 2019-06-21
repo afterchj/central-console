@@ -61,7 +61,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     } else {
                         logger.info("[" + ip + "] receive:" + arg1);
                         ch.writeAndFlush(arg1);
-                        ExecuteTask.pingInfo(arg1, ip);
+//                        ExecuteTask.pingInfo(arg1, ip);
 //                        StrUtil.buildLightInfo(arg1, ip);
                     }
                 }

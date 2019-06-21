@@ -2,18 +2,18 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.entity.ConsoleInfo;
 import com.example.blt.entity.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
-import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SocketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,8 +25,9 @@ import java.util.*;
 
 @RestController
 public class MainController {
-//    @Autowired
-//    private MemCachedClient memCachedClient;
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
     private ClientMain clientMain = new ClientMain();
@@ -49,19 +50,18 @@ public class MainController {
     @RequestMapping("/getHost")
     public Map showHost() {
         Map map = new LinkedHashMap();
-        new Thread(() -> {
-            Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-            Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
-            if (lmacSet != null) {
-                map.put("lmacSize", lmacSet.size());
-                map.put("lmac", lmacSet);
+        ValueOperations<String,Set> operations=redisTemplate.opsForValue();
+        Set<Map> lmacSet =operations.get(ConsoleKeys.lMAC.getValue());
+        Set<Map> vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
+        if (null != lmacSet) {
+            map.put("lmacSize", lmacSet.size());
+            map.put("lmac", lmacSet);
 
-            }
-            if (vaddrSet != null) {
-                map.put("vaddr", lmacSet);
-                map.put("vaddrSize", lmacSet.size());
-            }
-        }).start();
+        }
+        if (null != vaddrSet) {
+            map.put("vaddr", vaddrSet);
+            map.put("vaddrSize", vaddrSet.size());
+        }
         map.put("result", "ok");
         return map;
     }
