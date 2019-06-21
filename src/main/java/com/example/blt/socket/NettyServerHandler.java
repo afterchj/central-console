@@ -45,7 +45,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         String ip = str.substring(1, str.indexOf(":"));
         String vaddr = ConsoleKeys.VADDR.getValue();
         String lmac = ConsoleKeys.lMAC.getValue();
-        Map map = ExecuteTask.pingInfo(msg, ip);
         Set list1 = ConsoleUtil.getInfo(lmac);
         Set list2 = ConsoleUtil.getInfo(vaddr);
         if (list1 == null) {
@@ -55,6 +54,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
             vaddrSet.clear();
         }
         if (msg.indexOf("77040F0227") != -1) {
+            Map map = ExecuteTask.pingInfo(msg, ip);
             Map params = new HashMap();
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"vaddr"});
@@ -65,12 +65,13 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
                 logger.info("vaddrSize=" + vaddrSet.size());
             });
         } else if (msg.indexOf("77040F01") != -1) {
+            Map map = ExecuteTask.pingInfo(msg, ip);
             Map params = new HashMap();
             executorService.submit(() -> {
-                MapUtil.removeEntries(map, new String[]{"lmac"});
+                MapUtil.removeEntries(map, new String[]{"vaddr"});
                 lmacSet.add(map);
                 params.put("list", lmacSet);
-                sqlSessionTemplate.selectOne("console.saveUpdate2", params);
+                sqlSessionTemplate.selectOne("console.saveUpdate", params);
                 ConsoleUtil.saveInfo(lmac, lmacSet);
                 logger.info("lmacSize=" + lmacSet.size());
             });

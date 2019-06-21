@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.ConsoleInfo;
 import com.example.blt.entity.ConsoleKeys;
+import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
@@ -37,8 +38,8 @@ public class MainController {
     }
 
     @RequestMapping("/switch")
-    public String console(ConsoleInfo consoleInfo) {
-        String info = JSON.toJSONString(consoleInfo);
+    public String console(ConsoleVo consoleVo) {
+        String info = JSON.toJSONString(consoleVo);
         ControlTask task = new ControlTask(clientMain, info, true);
         String result = task.executeTask();
         return result;

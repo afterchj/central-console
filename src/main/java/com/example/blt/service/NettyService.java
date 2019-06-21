@@ -37,11 +37,11 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //    public void cronTest2() {
 //        clientMain.sendCron(8001, "7701012766", false);
 //    }
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
         Set set = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         int size = ConsoleUtil.getLightSize("Office");
-        if (null != set && set.size() < size) {
+        if (null != set && set.size() != size) {
             clientMain.sendCron(8001, "7701012766", false);
         }
         logger.info("checkSize...");
