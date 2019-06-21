@@ -1,5 +1,6 @@
 package com.example.blt;
 
+import com.example.blt.entity.ConsoleKeys;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
@@ -8,10 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -86,17 +84,13 @@ public class MainTest {
 
     @Test
     public void testUpdate() {
-//        List<Map> list = sqlSessionTemplate.selectList("console.getLights");
-//        for (Map<String, Object> map : list) {
-//            Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
-//            while (it.hasNext()) {
-//                Map.Entry<String, Object> entry = it.next();
-//                if (entry.getValue().equals("Office")) {
-//                    System.out.println("size= "+map.get("lmacn"));
-//                }
-//            }
-//        }
-        //        ConsoleUtil.saveHosts(list);
+        List<Map> list=sqlSessionTemplate.selectList("console.getLmac");
+        Set<Map> set=new HashSet<>();
+        set.addAll(list);
+        logger.info("list="+set);
+        Map map=new HashMap();
+        map.put("list",set);
+        sqlSessionTemplate.update("console.saveUpdate2", map);
 //        Set<Map> list = ConsoleUtil.persistHosts();
 //        map.put("list", list);
 //        sqlSessionTemplate.selectList("console.batchInsert", map);
@@ -108,5 +102,13 @@ public class MainTest {
     @Test
     public void testRemoveKey() {
         Set<Map> list = ConsoleUtil.persistHosts();
+    }
+
+    @Test
+    public void testRedis(){
+        Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+        logger.info("lmacSet=" + lmacSet);
+        logger.info("vaddrSet=" + vaddrSet);
     }
 }

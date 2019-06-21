@@ -36,44 +36,46 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext arg0, String msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext arg0, String msg) {
         Channel channel = arg0.channel();
         channel.writeAndFlush(msg);
-        logger.info("[" + channel.remoteAddress().toString() + "] receive:" + msg);
         SocketAddress address = channel.remoteAddress();
+        logger.info("[" + address + "] receive:" + msg);
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
-        String vaddr = ConsoleKeys.VADDR.getValue();
-        String lmac = ConsoleKeys.lMAC.getValue();
-        Set list1 = ConsoleUtil.getInfo(lmac);
-        Set list2 = ConsoleUtil.getInfo(vaddr);
-        if (list1 == null) {
+//        Map map = ExecuteTask.pingInfo(msg, ip);
+        String vaddrKey = ConsoleKeys.VADDR.getValue();
+        String lmacKey = ConsoleKeys.lMAC.getValue();
+        Set lmac = ConsoleUtil.getInfo(lmacKey);
+        Set vaddr = ConsoleUtil.getInfo(vaddrKey);
+        if (lmac == null) {
             lmacSet.clear();
         }
-        if (list2 == null) {
-            vaddrSet.clear();
-        }
-        if (msg.indexOf("77040F0227") != -1) {
+        if (msg.indexOf("77040F01") != -1) {
             Map map = ExecuteTask.pingInfo(msg, ip);
-            Map params = new HashMap();
+//            Map params = new HashMap();
+            executorService.submit(() -> {
+                MapUtil.removeEntries(map, new String[]{"lmac"});
+                lmacSet.add(map);
+                logger.info("lmacSize=" + lmacSet.size());
+                ConsoleUtil.saveLmac(lmacKey, lmacSet, 30);
+//                params.put("list", lmacSet);
+//                if (lmacSet.size() == vaddr.size()) {
+//                    sqlSessionTemplate.selectOne("console.saveUpdate2", params);
+//                }
+            });
+        } else if (msg.indexOf("77040F0227") != -1) {
+            Map map = ExecuteTask.pingInfo(msg, ip);
+//            Map params = new HashMap();
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"vaddr"});
                 vaddrSet.add(map);
-                params.put("list", vaddrSet);
-                sqlSessionTemplate.selectOne("console.saveUpdate", params);
-                ConsoleUtil.saveInfo(vaddr, vaddrSet);
+//                params.put("list", vaddrSet);
                 logger.info("vaddrSize=" + vaddrSet.size());
-            });
-        } else if (msg.indexOf("77040F01") != -1) {
-            Map map = ExecuteTask.pingInfo(msg, ip);
-            Map params = new HashMap();
-            executorService.submit(() -> {
-                MapUtil.removeEntries(map, new String[]{"vaddr"});
-                lmacSet.add(map);
-                params.put("list", lmacSet);
-                sqlSessionTemplate.selectOne("console.saveUpdate", params);
-                ConsoleUtil.saveInfo(lmac, lmacSet);
-                logger.info("lmacSize=" + lmacSet.size());
+                ConsoleUtil.saveVaddr(vaddrKey, vaddrSet, 1);
+//                if (lmacSet.size() == vaddrSet.size()) {
+//                    sqlSessionTemplate.selectOne("console.saveUpdate", params);
+//                }
             });
         }
     }
@@ -94,7 +96,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        ctx.close().sync();
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        try {
+            ctx.close().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
