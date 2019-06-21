@@ -371,8 +371,9 @@
                                  <span class="f-l" id="total-off" alt="total-off">OFF</span>
                             </span>
                              <span class="page ">
-                                <span th:if="${centerLNumList}!=null" th:text="${centerLNumList[0].centerLNum}"
-                                      class="total-page"></span>/
+                                <span th:if="${#lists.size(centerLNumList)}&gt;0 " th:text="${centerLNumList[0].centerLNum}"
+                                      class="total-page"></span>
+                                   <span class="total-page" th:if="${#lists.size(centerLNumList)}==0" >0</span>/
                                 <span>84</span>
                             </span>
                             </div>
@@ -400,50 +401,172 @@
             </div>
             <div class="place-list  p-r">
                 <div class=" place-status-list ">
-                    <div class="place-status clearfix line" th:each="placeLNum:${placeLNumList}">
+                    <div class="place-status clearfix line">
                         <div class="f-l icon ">
                             <img src="" alt="">
                         </div>
                         <div class="f-r right-content">
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==1">A:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==2">B:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==3">C:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==4">D:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==5">E:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==6">F:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==7">G:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==8">H:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==9">I:Place0<span>[[${placeLNum.place}]]</span></label>
-                            <label class="caption"
-                                   th:if="${placeLNum.place}==10">J:Place<span>[[${placeLNum.place}]]</span></label>
-                             <span class="frame on-off clearfix ">
+                            <label class="caption">A:Place0<span>1</span></label>
+                             <span class="frame on-off clearfix "  >
                                  <span class="f-l ">ON</span>
                                  <span class="f-l ">OFF</span>
                             </span>
                         <span class="page">
-                            <span th:text="${placeLNum.placeLNum}"></span>/
-                            <span th:if="${placeLNum.place}==1">1</span>
-                            <span th:if="${placeLNum.place}==2">7</span>
-                            <span th:if="${placeLNum.place}==3">4</span>
-                            <span th:if="${placeLNum.place}==4">10</span>
-                            <span th:if="${placeLNum.place}==5">15</span>
-                            <span th:if="${placeLNum.place}==6">8</span>
-                            <span th:if="${placeLNum.place}==7">23</span>
-                            <span th:if="${placeLNum.place}==8">4</span>
-                            <span th:if="${placeLNum.place}==9">6</span>
-                            <span th:if="${placeLNum.place}==10">6</span>
+                            <span >0</span>/
+                            <span >1</span>
                         </span>
                         </div>
                     </div>
+                    <div class="place-status clearfix line">
+                        <div class="f-l icon ">
+                            <img src="" alt="">
+                        </div>
+                        <div class="f-r right-content">
+                            <label class="caption">B:Place0<span>2</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+                            <span >7</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="place-status clearfix line">
+                        <div class="f-l icon ">
+                            <img src="" alt="">
+                        </div>
+                        <div class="f-r right-content">
+                            <label class="caption">C:Place0<span>3</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+                            <span >4</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="place-status clearfix line">
+                        <div class="f-l icon ">
+                            <img src="" alt="">
+                        </div>
+                        <div class="f-r right-content">
+                            <label class="caption">D:Place0<span>4</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+                            <span >10</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="place-status clearfix line">
+                        <div class="f-l icon ">
+                            <img src="" alt="">
+                        </div>
+                        <div class="f-r right-content">
+                            <label class="caption">E:Place0<span>5</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+                            <span >15</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="place-status clearfix line">
+                        <div class="f-l icon ">
+                            <img src="" alt="">
+                        </div>
+                        <div class="f-r right-content">
+                            <label class="caption">F:Place0<span>6</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+                            <span >8</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="place-status clearfix line">
+                        <div class="f-l icon ">
+                            <img src="" alt="">
+                        </div>
+                        <div class="f-r right-content">
+                            <label class="caption">G:Place0<span>7</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+
+                            <span >23</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="place-status clearfix line">
+                    <div class="f-l icon ">
+                        <img src="" alt="">
+                    </div>
+                    <div class="f-r right-content">
+                        <label class="caption">H:Place0<span>8</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+
+                            <span >4</span>
+                        </span>
+                    </div>
+                </div>
+                    <div class="place-status clearfix line">
+                        <div class="f-l icon ">
+                            <img src="" alt="">
+                        </div>
+                        <div class="f-r right-content">
+
+                            <label class="caption">I:Place0<span>9</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+
+                            <span >6</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="place-status clearfix line">
+                        <div class="f-l icon ">
+                            <img src="" alt="">
+                        </div>
+                        <div class="f-r right-content">
+
+                            <label class="caption">J:Place<span>10</span></label>
+                             <span class="frame on-off clearfix "  >
+                                 <span class="f-l ">ON</span>
+                                 <span class="f-l ">OFF</span>
+                            </span>
+                        <span class="page">
+                            <span >0</span>/
+                            <span >6</span>
+                        </span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -513,9 +636,6 @@
 </div>
 
 <script th:src="@{/static/jquery-3.1.1.min.js}"></script>
-<script th:inline="javascript" th:src="@{/static/monitor2.js}">
-
-
-</script>
+<script th:inline="javascript" th:src="@{/static/monitor2.js}"></script>
 </body>
 </html>
