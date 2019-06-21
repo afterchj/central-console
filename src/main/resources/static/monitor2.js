@@ -93,7 +93,9 @@ function light() {
                 var index = i;
                 var group = val.group;
                 var status = val.status;
-                groupLists[group - 1].push(status);
+                if(groupLists[group - 1]){
+                    groupLists[group - 1].push(status);
+                }
                 var selector;
                 (group > 9) ? selector = '.place': selector = '.place0';
                 $(selector + group + '  .light-line').each(function () {
@@ -111,24 +113,36 @@ function light() {
                     })
                 })
             })
-            for (var i = 0; i < 10; i++) {
-                $('.place-status').eq(i).find('.page>span:first-child').text(placeLNumList[i].placeLNum);
-            }
             $('.place-status').each(function () {
+                var that=$(this);
                 var place2 = $(this).find('.caption span').text();
+                $.each(placeLNumList,function(i, val){
+                    var place=val.place;
+                    var placeLNum=val.placeLNum;
+                    if(place2==place){
+                        that.find('.page>span:first-child').text(placeLNum);
+                    }
+                })
                 var grouppart = groupLists[parseInt(place2) - 1];
-                if (grouppart.indexOf(null) != -1) {
-                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                    $(this).find('.frame>span').removeClass('active');
-                } else if (!isAllEqual(grouppart)) {
-                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                    $(this).find('.frame>span').removeClass('active');
-                } else if (isAllEqual(grouppart) && grouppart.indexOf('0') != -1) {
-                    $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                } else if (isAllEqual(grouppart) && grouppart.indexOf('1') != -1) {
-                    $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                }
+                    if(isAllEqual(grouppart) && grouppart.indexOf(null) != -1){
+                        $(this).find('.icon img').attr('src', '/static/img/2.png')
+                        $(this).find('.frame>span').removeClass('active');
+                        $(this).find('.page>span:first-child').text('0');
+                    }else if (!isAllEqual(grouppart) &&  grouppart.indexOf(null) != -1 ) {
+                        $(this).find('.icon img').attr('src', '/static/img/2.png')
+                        $(this).find('.frame>span').removeClass('active');
+                    } else if (!isAllEqual(grouppart)) {
+                        $(this).find('.icon img').attr('src', '/static/img/1.png')
+                        $(this).find('.frame>span').removeClass('active');
+                    } else if (isAllEqual(grouppart) && grouppart.indexOf('0') != -1) {
+                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                        $(this).find('.icon img').attr('src', '')
+                    } else if (isAllEqual(grouppart) && grouppart.indexOf('1') != -1) {
+                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                        $(this).find('.icon img').attr('src', '')
+                    }
             })
+
             var isTextArray = [];
             var isExistArray = [];
             $('.place-status').each(function () {
@@ -148,8 +162,10 @@ function light() {
             if (isAllEqual(isTextArray)) {
                 if (isTextArray[0] == 'ON') {
                     $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                    $('img.total-frame').attr('src', '');
                 } else if (isTextArray[0] == 'OFF') {
                     $('.total-frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                    $('img.total-frame').attr('src', '');
                 }
             }
         }
