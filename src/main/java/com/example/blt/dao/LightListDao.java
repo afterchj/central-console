@@ -56,4 +56,6 @@ public interface LightListDao {
     @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and  (i.y is not null)and d.mname='exhibition' Group by mname")
     List<Map<String,Object>> getExhibitionCenterLNum();//每一楼灯个数
 
+
+
 }
