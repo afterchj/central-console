@@ -25,7 +25,7 @@ $('.frame>span').click(function () {
         var command = '77010315323266';
     }
     var host = '192.168.1.194';
-    $.post("/sendSocket5", {
+    $.post("/sendSocket6", {
         "command": command,
         "host": host
     }, function () {})
