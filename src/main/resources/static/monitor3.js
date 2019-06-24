@@ -104,6 +104,9 @@ function light() {
             }else if(isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1){
                 $('.switch-part.total img').attr('src', '/static/img/2.png')
                 $('.switch-part.total .on-off>div').removeClass('active')
+            }else if (isAllEqual(onOffList) && imgList.indexOf('/static/img/1.png') != -1){
+                $('.switch-part.total img').attr('src', '/static/img/1.png')
+                $('.switch-part.total .on-off>div').removeClass('active')
             }
         }
     })
