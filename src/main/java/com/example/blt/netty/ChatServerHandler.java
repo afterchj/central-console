@@ -2,7 +2,6 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.task.ExecuteTask;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -55,9 +54,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         String cmd = arg1.substring(index + 1);
                         if (ip.equals(to)) {
                             ch.writeAndFlush(cmd);
-                        } else {
-                            ch.writeAndFlush(cmd);
+                            break;
                         }
+//                        else {
+//                            ch.writeAndFlush(cmd);
+//                        }
                     } else {
                         logger.info("[" + ip + "] receive:" + arg1);
                         ch.writeAndFlush(arg1);
