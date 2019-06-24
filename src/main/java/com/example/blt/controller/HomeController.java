@@ -74,6 +74,30 @@ public class HomeController {
         return "monitor2";
     }
 
+    @RequestMapping("/monitor3")
+    public String monitor3(Model model){
+        List<Map<String,Object>> centerLNumList = lightListDao.getExhibitionCenterLNum();
+        List<LightDemo> placeLNumList = lightListDao.getExhibitionPlaceLNum();
+        List<LightDemo> lightState = lightListDao.getExhibitionLightInfo();
+        model.addAttribute("centerLNumList",centerLNumList);//每个楼层灯总个数
+        model.addAttribute("placeLNumList",placeLNumList);//每个区域的灯个数
+        model.addAttribute("lightState",lightState);//所有灯的状态
+        return "monitor3";
+    }
+
+    @RequestMapping(value = "/getMonitor3",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getMonitor3(){
+        Map<String,Object> map = new HashMap<>();
+        List<Map<String,Object>> centerLNumList = lightListDao.getExhibitionCenterLNum();
+        List<LightDemo> placeLNumList = lightListDao.getExhibitionPlaceLNum();
+        List<LightDemo> lightState = lightListDao.getExhibitionLightInfo();
+        map.put("centerLNumList",centerLNumList);
+        map.put("placeLNumList",placeLNumList);
+        map.put("lightState",lightState);
+        return map;
+    }
+
     @RequestMapping(value = "/getMonitor2",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getMonitor2(){
