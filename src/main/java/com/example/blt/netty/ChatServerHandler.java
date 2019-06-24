@@ -49,10 +49,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 } catch (Exception e) {
                     int index = arg1.indexOf(":");
                     if (index != -1) {
-                        logger.info("[" + ip + "] receive cmd:" + arg1);
+
                         String to = arg1.substring(0, index);
                         String cmd = arg1.substring(index + 1);
                         if (ip.equals(to)) {
+                            logger.info("[" + ip + "] receive cmd:" + arg1);
                             ch.writeAndFlush(cmd);
                             break;
                         }
