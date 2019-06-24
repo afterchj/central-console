@@ -152,11 +152,11 @@ public class MainController {
     public Map<String, String> sendSocket4(String host, String command) {
         Map<String, String> map = new HashMap<>();
         String success = "success";
-        String host1 = "192.168.16.70";//茶室
-        String host2 = "192.168.16.69";//活动室
-        String host3 = "192.168.16.72";//客餐厅
-        String host4 = "192.168.16.68";//洽谈室
-        String host5 = "192.168.16.61";//办公大厅
+        String host1 = "192.168.1.191";//茶室
+        String host2 = "192.168.1.192";//活动室
+        String host3 = "192.168.1.193";//客餐厅
+        String host4 = "192.168.1.195";//洽谈室
+        String host5 = "192.168.1.194";//办公大厅
         if (command.equalsIgnoreCase("ON")) {
             //开
             command = "77010315373766";
