@@ -1,0 +1,157 @@
+.light{
+    /*border:1px solid #bbb;*/
+    /*border-radius: 50%;*/
+    /*width:10px;*/
+    height: 50px;
+    position: relative;
+}
+.light-view{
+    border:1px solid #bbb;
+}
+.btn{
+    height: 40px;
+}
+.switch-part>div{
+    height: 100%;
+}
+.switch-part>div:first-child{
+    width:20%;
+}
+.switch-part>div:nth-child(2){
+    width:25%;
+}
+.switch-part>div:nth-child(3){
+    width:30%;
+}
+.switch-part>div:last-child{
+    width:25%;
+}
+.switch-part>div:first-child img{
+    width: 50%;
+    vertical-align: middle;
+}
+.on-off{
+    border: 1px solid #bbb;
+    height: 25px;
+    line-height: 25px;
+    width: calc(100% - 3px);
+    top: 50%;
+    margin-top: -13.5px;
+}
+.on-off>div:first-child{
+    border-right: 1px solid #bbb;
+    width:50%;
+}
+.on-off>div:last-child{
+    width:calc(50% - 3px)
+}
+.on-off>div.active{
+    background-color: #3598db;
+    color: #fff;
+    border-color: #3598db;
+}
+.switch-part{
+    width: 30%;
+    border: 1px solid #bbb;
+    height: 35px;
+    line-height: 35px;
+    margin: 10px 0;
+}
+
+.box{
+
+    margin: 20px 0;
+}
+.box-list{
+    border-bottom: none;
+    width: 99px;
+    /* border: 1px solid #bbb; */
+    border-right: 0;
+    border-top: 0;
+    /* display: flex;
+    flex-direction: row;
+    border: 1px dashed #bbb;
+    flex-wrap: nowrap; */
+}
+.center-box{
+
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #Bbb;
+}
+.lamp{
+    width: 15px;
+    height: 15px;
+    margin: 20px 0;
+    border: 1px solid pink;
+    border-radius: 50%;
+}
+.box-part{
+    /* flex-direction: row; */
+    width: 17px;
+    margin: 0 12.5px;
+    text-align: center;
+    /* flex-wrap: nowrap; */
+    /* flex-wrap: nowrap; */
+}
+.box-1{
+    border: 1px dashed #888;
+}
+
+.hide{
+    visibility: hidden;
+}
+
+.long-lamp{
+    height: calc(30px * 3);
+    width: 80%;
+    margin-left: 10%;
+    /*background-color: #999;*/
+    border-radius: 0;
+    border-color: #bbb;
+}
+.hint>div.f-l {
+    width:300px;
+    text-align:left
+}
+
+.hint>div.f-l>div {
+    height:60px
+}
+
+.hint label {
+    width:45px
+}
+
+.hint label img {
+    width:35px
+}
+
+.hint>div.f-l>div>span {
+    vertical-align:top;
+    display:inline
+}
+.light.off,.lamp.off{
+    background-color: #fff;
+}
+.light.on,.lamp.on{
+    background-color: yellow;
+}
+.light.disconnected,.lamp.disconnected{
+    background-color: red;
+}
+.light{
+    width:15px;
+    height:15px;
+    border-radius: 50%;
+    border:1px solid pink;
+    display: inline-block;
+}
+.on-off.active{
+    background-color: #3598db;
+    color: #fff;
+}
+.on-off{
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+}
