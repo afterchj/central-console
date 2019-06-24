@@ -31,7 +31,7 @@
     border: 2px solid #ccc;
     height: 23px;
     line-height: 23px;
-    width: calc(100% - 3px);
+    width: calc(100% - 2px);
     top: 50%;
     margin-top: -13.5px;
     font-size: 13px;
