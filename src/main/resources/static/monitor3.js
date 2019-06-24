@@ -107,9 +107,9 @@ $('.on-off>div').click(function () {
     $(this).addClass('active').siblings().removeClass('active');
     var groupOrder = parseInt($(this).parent().parent().siblings('.groupOrder').find('.groupName').text());
     if ($(this).text() == 'ON') {
-        var onOffOrder = '0037';
+        var onOffOrder = '3737';
     } else if ($(this).text() == 'OFF') {
-        var onOffOrder = '0032';
+        var onOffOrder = '3232';
     }
     if (groupOrder <= 9) {
         var command = '770104160' + groupOrder + onOffOrder + '66';

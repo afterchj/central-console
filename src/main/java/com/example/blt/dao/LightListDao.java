@@ -38,13 +38,22 @@ public interface LightListDao {
     List<Map<String,Object>> getOfficeCenterLNum();//每一楼灯个数
 
 
-    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0' when i.y is null and i.status ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.Group  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info Group by lmac) i ON d.lmac = i.lmac where d.mname='exhibition' ORDER BY d.mname,lname")
+//    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0' when i.y is null and i.status ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.Group  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info Group by lmac) i ON d.lmac = i.lmac where d.mname='exhibition' ORDER BY d.mname,lname")
+//    List<LightDemo> getExhibitionLightInfo();
+
+    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status is null then null  END AS status,d.Group  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info Group by lmac) i ON d.lmac = i.lmac where d.mname='exhibition' ORDER BY d.mname,lname")
     List<LightDemo> getExhibitionLightInfo();
 
-    @Select("select count(*) as PlaceLNum,d.mname,d.place from f_light_demo d,t_light_info i where d.lmac=i.lmac and (i.y is not null or i.status is not null) and d.mname='exhibition' Group by mname,place")
+//    @Select("select count(*) as PlaceLNum,d.mname,d.place from f_light_demo d,t_light_info i where d.lmac=i.lmac and (i.y is not null or i.status is not null) and d.mname='exhibition' Group by mname,place")
+//    List<LightDemo> getExhibitionPlaceLNum();//每个区域的灯个数
+
+    @Select("select count(*) as PlaceLNum,d.mname,d.place from f_light_demo d,t_light_info i where d.lmac=i.lmac and (i.y is not null) and d.mname='exhibition' Group by mname,place")
     List<LightDemo> getExhibitionPlaceLNum();//每个区域的灯个数
 
-    @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and  (i.y is not null or i.status is not null)and d.mname='exhibition' Group by mname")
+//    @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and  (i.y is not null or i.status is not null)and d.mname='exhibition' Group by mname")
+//    List<Map<String,Object>> getExhibitionCenterLNum();//每一楼灯个数
+
+    @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and  (i.y is not null)and d.mname='exhibition' Group by mname")
     List<Map<String,Object>> getExhibitionCenterLNum();//每一楼灯个数
 
 }
