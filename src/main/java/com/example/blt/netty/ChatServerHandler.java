@@ -28,7 +28,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public static final ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
-    protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
+    protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         Channel channel = arg0.channel();
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
@@ -38,10 +38,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 String ip = str.substring(1, str.indexOf(":"));
                 try {
                     JSONObject jsonObject = JSON.parseObject(arg1);
-                    String cmd = jsonObject.getString("cmd");
+                    String cmd = jsonObject.getString("command");
                     String to = jsonObject.getString("host");
-                    logger.info("[" + ip + "] cmd: " + arg1);
-                    if (to.equals(ip)) {
+                    logger.info("[" + str + "] receive info: " + arg1);
+                    if (ip.equals("127.0.0.1")) {
                         ch.writeAndFlush(cmd);
                     } else {
                         ch.writeAndFlush(cmd);
@@ -49,7 +49,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 } catch (Exception e) {
                     int index = arg1.indexOf(":");
                     if (index != -1) {
-
                         String to = arg1.substring(0, index);
                         String cmd = arg1.substring(index + 1);
                         if (ip.equals(to)) {
@@ -57,14 +56,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             ch.writeAndFlush(cmd);
                             break;
                         }
-//                        else {
-//                            ch.writeAndFlush(cmd);
-//                        }
                     } else {
                         logger.info("[" + ip + "] receive:" + arg1);
-                        ch.writeAndFlush(arg1);
+//                        ch.writeAndFlush(arg1);
 //                        ExecuteTask.pingInfo(arg1, ip);
-//                        StrUtil.buildLightInfo(arg1, ip);
                     }
                 }
             }

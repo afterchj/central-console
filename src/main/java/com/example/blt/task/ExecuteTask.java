@@ -51,4 +51,17 @@ public class ExecuteTask {
         }).start();
     }
 
+    public static String sendCmd(ControlTask task) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        FutureTask<String> futureTask = new FutureTask(task);
+        executor.submit(futureTask);
+        executor.shutdown();
+        String result;
+        try {
+            result = futureTask.get();
+        } catch (Exception e) {
+            result = "fail";
+        }
+        return result;
+    }
 }

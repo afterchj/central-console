@@ -5,15 +5,15 @@ package com.example.blt.entity.vo;
  */
 public class ConsoleVo {
 
-    private String cmd;
+    private String command;
     private String host;
 
-    public String getCmd() {
-        return cmd;
+    public String getCommand() {
+        return command;
     }
 
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     public String getHost() {
