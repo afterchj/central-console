@@ -87,10 +87,11 @@ public class MainTest {
         List<Map> list=sqlSessionTemplate.selectList("console.getLmac");
         Set<Map> set=new HashSet<>();
         set.addAll(list);
+        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(),set,30);
         logger.info("list="+set);
-        Map map=new HashMap();
-        map.put("list",set);
-        sqlSessionTemplate.update("console.saveUpdate2", map);
+//        Map map=new HashMap();
+//        map.put("list",set);
+//        sqlSessionTemplate.update("console.saveUpdate2", map);
 //        Set<Map> list = ConsoleUtil.persistHosts();
 //        map.put("list", list);
 //        sqlSessionTemplate.selectList("console.batchInsert", map);

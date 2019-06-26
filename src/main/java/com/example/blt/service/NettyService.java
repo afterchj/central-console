@@ -2,6 +2,7 @@ package com.example.blt.service;
 
 import com.example.blt.entity.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
+import com.example.blt.rocketmq.Producer;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +30,9 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
 
+    @Resource
+    private Producer producer;
+
 //    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest1() {
 //        clientMain.sendCron(8001, "7701011B66", false);
@@ -38,11 +43,19 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //            logger.error(e.getMessage());
 //        }
 //    }
-
     //    @Scheduled(cron = "0 0/1 * * * ?")
 //    public void cronTest2() {
 //        clientMain.sendCron(8001, "7701012766", false);
 //    }
+
+//    @Scheduled(cron = "0/30 * * * * ?")
+//    public void cronPush() {
+//        String str = "Just is test.";
+//        String txt = "Remote is test.";
+//        Date date=new Date();
+//        producer.push(new String[]{str+date,txt+date});
+//    }
+
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
         Set<Map> set = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
