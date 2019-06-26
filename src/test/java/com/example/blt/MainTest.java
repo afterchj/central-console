@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
 import java.util.*;
 
 /**
@@ -111,5 +112,21 @@ public class MainTest {
         Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         logger.info("lmacSet=" + lmacSet);
         logger.info("vaddrSet=" + vaddrSet);
+    }
+
+    @Test
+    public void testIp(){
+        // TODO Auto-generated method stub
+        InetAddress ia=null;
+        try {
+            ia=ia.getLocalHost();
+            String localname=ia.getHostName();
+            String localip=ia.getHostAddress();
+            logger.info("本机名称是："+ localname);
+            logger.info("本机的ip是 ："+localip);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

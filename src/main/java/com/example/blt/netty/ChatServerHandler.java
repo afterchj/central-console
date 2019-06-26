@@ -40,11 +40,16 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     JSONObject jsonObject = JSON.parseObject(arg1);
                     String cmd = jsonObject.getString("command");
                     String to = jsonObject.getString("host");
-                    logger.info("[" + str + "] receive info: " + arg1);
-                    if (ip.equals("127.0.0.1")) {
+                    if (ip.equals(to)) {
                         ch.writeAndFlush(cmd);
+                        logger.info("[" + str + "] receive info: " + cmd);
+                        break;
                     } else {
-                        ch.writeAndFlush(cmd);
+                        if (!ip.equals("127.0.0.1")) {
+                            ch.writeAndFlush(cmd);
+                            logger.info("[" + str + "] receive info: " + arg1);
+                            break;
+                        }
                     }
                 } catch (Exception e) {
                     int index = arg1.indexOf(":");
@@ -57,9 +62,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             break;
                         }
                     } else {
-                        logger.info("[" + ip + "] receive:" + arg1);
+                        if (!ip.equals("127.0.0.1")) {
+                            logger.info("[" + str + "] receive:" + arg1);
 //                        ch.writeAndFlush(arg1);
 //                        ExecuteTask.pingInfo(arg1, ip);
+                        }
                     }
                 }
             }
