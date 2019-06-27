@@ -1,10 +1,8 @@
 package com.example.blt;
 
-import com.example.blt.entity.ConsoleInfo;
+import com.example.blt.dao.CommandDao;
 import com.example.blt.entity.ConsoleKeys;
-import com.example.blt.entity.HostInfo;
-import com.example.blt.entity.LightInfo;
-import com.example.blt.utils.StrUtil;
+import com.example.blt.service.CommandService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -17,7 +15,9 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
@@ -29,6 +29,9 @@ public class CentralControllerApplicationTests {
 
     @Resource
     private RedisTemplate redisTemplate;
+
+    @Resource
+    CommandService commandService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 //    @Autowired
 //    private HostService hostService;
@@ -39,15 +42,15 @@ public class CentralControllerApplicationTests {
 //    private LightService lightService;
 
     @Test
-    public void testRedis(){
-        ValueOperations<String,Set> operations=redisTemplate.opsForValue();
-        ValueOperations<String,List> operationsList=redisTemplate.opsForValue();
-        Set<Map> lmacSet =operations.get(ConsoleKeys.lMAC.getValue());
+    public void testRedis() {
+        ValueOperations<String, Set> operations = redisTemplate.opsForValue();
+        ValueOperations<String, List> operationsList = redisTemplate.opsForValue();
+        Set<Map> lmacSet = operations.get(ConsoleKeys.lMAC.getValue());
         Set<Map> vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
-        List<Map> vaddr=sqlSessionTemplate.selectList("console.getVaddr");
+        List<Map> vaddr = sqlSessionTemplate.selectList("console.getVaddr");
         String key1 = ConsoleKeys.VADDR.getValue();
         String key2 = ConsoleKeys.lMAC.getValue();
-        operationsList.set("test_vaddr",vaddr,1, TimeUnit.MINUTES);
+        operationsList.set("test_vaddr", vaddr, 1, TimeUnit.MINUTES);
         List set1 = operationsList.get("test_vaddr");
         logger.info("lmacSet=" + set1);
         logger.info("vaddrSet=" + vaddrSet);
@@ -92,5 +95,8 @@ public class CentralControllerApplicationTests {
 //        logger.info("id=" + list.get(0));
 //    }
 
-
+    @Test
+    public void testJpa() {
+        System.out.println("commandDao"+commandService);
+    }
 }

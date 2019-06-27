@@ -20,40 +20,6 @@ public class ConsoleUtil {
     private static Logger logger = LoggerFactory.getLogger(ConsoleUtil.class);
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
     private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
-    public static void saveHosts(Set list) {
-        //Write Obj to File
-        File file = new File("/temp/hosts/", "hosts");
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        ObjectOutputStream oos = null;
-        try {
-            oos = new ObjectOutputStream(new FileOutputStream(file));
-            oos.writeObject(list);
-        } catch (IOException e) {
-            logger.error("IOException:saveHosts " + e.getMessage());
-        } finally {
-            IOUtils.closeQuietly(oos);
-        }
-    }
-
-    public static Set persistHosts() {
-        File file = new File("/temp/hosts/", "hosts");
-        //Read Obj from File
-        ObjectInputStream ois = null;
-        Set list = new HashSet<>();
-        try {
-            ois = new ObjectInputStream(new FileInputStream(file));
-            list = (Set) ois.readObject();
-        } catch (IOException e) {
-            logger.error("IOException:persistHosts " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            logger.error("ClassNotFoundException:persistHosts " + e.getMessage());
-        } finally {
-            IOUtils.closeQuietly(ois);
-        }
-        return list;
-    }
 
     public static void saveVaddr(String key, Set list, int expire) {
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
@@ -96,19 +62,5 @@ public class ConsoleUtil {
             num = sqlSessionTemplate.selectOne("console.getTotal");
         }
         return num;
-    }
-
-    public static void main(String[] args) {
-        List<Map> vaddr=sqlSessionTemplate.selectList("console.getVaddr");
-        System.out.println(getLightSize(new String[]{}));
-        String key1 = ConsoleKeys.VADDR.getValue();
-        String key2 = ConsoleKeys.lMAC.getValue();
-        saveInfo("test_vaddr",vaddr);
-        List set1 = getValueTest("test_vaddr");
-        saveInfo("test_lmac",set1);
-        List set2 = getValueTest("test_lmac");
-//        Set set2 = getInfo(key2);
-        logger.info("lists=" + set1);
-        logger.info("lists=" + set2);
     }
 }
