@@ -2,8 +2,9 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.LightListDao;
-import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
+import com.example.blt.entity.dd.ConsoleKeys;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -105,8 +106,40 @@ public class HomeController {
     @ResponseBody
     public Map<String, Object> getLightOnOrOff() {
         Map<String, Object> map = new HashMap<>();
-        List<LightDemo> lightState = lightListDao.getExhibitionLightInfo();
-        map.put("lightState", lightState);
+        List<LightDemo> lightState = new ArrayList<>();
+//        map.put("lightState", lightState);
+        CommandLight commandInfo = lightListDao.getCommandInfo();
+        String ctype = commandInfo.getCtype();
+        if ("52".equals(ctype)){
+            //遥控器
+            if ("01".equals(commandInfo.getCid())){
+                //全开
+                lightState = lightListDao.getExhibitionFromRemoteByOn();
+            }else if ("02".equals(commandInfo.getCid())){
+                //全关
+                lightState = lightListDao.getExhibitionFromRemoteByOff();
+            }
+        }else if ("C0".equals(ctype)){
+            //pad or 手机 全控
+            if ("37".equals(commandInfo.getY())){
+                //全开
+                lightState = lightListDao.getExhibitionFromRemoteByOn();
+            }else if ("32".equals(commandInfo.getY())){
+                //全关
+                lightState = lightListDao.getExhibitionFromRemoteByOff();
+            }
+        }else if ("C1".equals(ctype)){
+            //pad or 手机 组控
+            int groupId = Integer.valueOf(commandInfo.getCid());
+            String status;
+            if ("37".equals(commandInfo.getY())){
+                status="0";
+            }else {
+                status="1";
+            }
+            lightState = lightListDao.getExhibitionFromPhoneByGroup(groupId,status);
+        }
+        map.put("lightState",lightState);
         return map;
     }
 

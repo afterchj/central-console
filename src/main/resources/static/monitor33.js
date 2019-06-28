@@ -4,9 +4,16 @@
 $(function () {
     light2();
     setInterval(function () {
-        // light();
-        light2();
+        light();
+        // light2();
+        console.log('light')
     }, 500)
+
+    // setInterval(function () {
+    //     // light();
+    //     light2();
+    //     console.log('light2')
+    // }, 10000)
 })
 
 function light2() {
@@ -64,12 +71,14 @@ function light2() {
                     $(this).find('.on-off>div').removeClass('active')
                     $(this).find('.page>span:first-child').text('0');
                 } else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
-                    $(this).find('img').attr('src', 'g')
+                    $(this).find('img').attr('src', '')
                     $(this).find('.on-off>div').removeClass('active')
-                } else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) == -1) {
-                    $(this).find('img').attr('src', '/static/img/1.png')
-                    $(this).find('.on-off>div').removeClass('active')
-                } else if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf('0') != -1) {
+                }
+                // else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) == -1) {
+                //     $(this).find('img').attr('src', '/static/img/1.png')
+                //     $(this).find('.on-off>div').removeClass('active')
+                // }
+                else if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf('0') != -1) {
                     $(this).find('img').attr('src', '')
                     $(this).find('.on-off>div:first-child').addClass('active').siblings().removeClass('active')
                 } else if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf('1') != -1) {
@@ -99,10 +108,12 @@ function light2() {
             } else if (isAllEqual(onOffList) && onOffList.indexOf('OFF') != -1) {
                 $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div:last-child').addClass('active').siblings().removeClass('active')
-            }else if(!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') == -1 && imgList.indexOf('/static/img/1.png') == -1 ) {
-                $('.switch-part.total img').attr('src', '/static/img/1.png')
-                $('.switch-part.total .on-off>div').removeClass('active')
-            }else if(isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1){
+            }
+            // else if(!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') == -1 && imgList.indexOf('/static/img/1.png') == -1 ) {
+            //     $('.switch-part.total img').attr('src', '/static/img/1.png')
+            //     $('.switch-part.total .on-off>div').removeClass('active')
+            // }
+            else if(isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1){
                 $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div').removeClass('active')
             }else if (isAllEqual(onOffList) && imgList.indexOf('/static/img/1.png') != -1){
@@ -115,7 +126,7 @@ function light2() {
 function light() {
     $.ajax({
         type: "post",
-        url: "/getMonitor3",
+        url: "/getLightOnOrOff",
         dataType: "json",
         success: function (data) {
             var lightState = data.lightState;
