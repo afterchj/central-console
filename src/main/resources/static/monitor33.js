@@ -5,7 +5,7 @@ $(function () {
     light()
     setInterval(function () {
         light()
-    }, 2000)
+    }, 500)
 })
 function light() {
     $.ajax({
@@ -40,6 +40,8 @@ function light() {
                             $(this).addClass('on')
                         } else if (status == 1) {
                             $(this).addClass('off')
+                        }else if (status == null) {
+                            $(this).addClass('disconnected')
                         }
                     }
                 })

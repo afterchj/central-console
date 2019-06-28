@@ -5,7 +5,7 @@ $(function () {
     light()
     setInterval(function () {
         light()
-    }, 2000)
+    }, 500) //500ms刷新一次
 })
 function light() {
     $.ajax({
