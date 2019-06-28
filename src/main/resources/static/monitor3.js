@@ -74,7 +74,6 @@ function light() {
                         $(this).find('img').attr('src', '')
                         $(this).find('.on-off>div:last-child').addClass('active').siblings().removeClass('active')
                     }
-
                 })
             var imgList = [];
             var onOffList = [];
