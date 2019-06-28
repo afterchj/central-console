@@ -1,7 +1,6 @@
 package com.example.blt;
 
-import com.example.blt.dao.CommandDao;
-import com.example.blt.entity.ConsoleKeys;
+import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.service.CommandService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

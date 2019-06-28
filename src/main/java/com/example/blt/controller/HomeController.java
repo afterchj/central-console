@@ -2,7 +2,7 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.LightListDao;
-import com.example.blt.entity.ConsoleKeys;
+import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.LightDemo;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;

@@ -1,4 +1,4 @@
-package com.example.blt.entity;
+package com.example.blt.entity.dd;
 
 /**
  * Created by nannan.li on 2019/5/23.
