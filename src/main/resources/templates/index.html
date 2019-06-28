@@ -26,8 +26,6 @@
         } else if (status == '关') {
             $("#" + id).val("77010315323266");
             $("#" + id).text("开")
-        } else {
-            $("#" + id).val("7701011B66");
         }
         $.get("/switch", {"command": $("#" + id).val(), "host": "all"}, function (result) {
             console.log("result", result);

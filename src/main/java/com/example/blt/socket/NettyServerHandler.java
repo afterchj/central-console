@@ -36,6 +36,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String msg) {
+
         Channel channel = arg0.channel();
         channel.writeAndFlush(msg);
         SocketAddress address = channel.remoteAddress();
@@ -50,8 +51,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         if (lmac == null) {
             lmacSet.clear();
         }
+        Map map = ExecuteTask.pingInfo(msg, ip);
         if (msg.indexOf("77040F01") != -1) {
-            Map map = ExecuteTask.pingInfo(msg, ip);
 //            Map params = new HashMap();
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"lmac"});
@@ -64,7 +65,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 //                }
             });
         } else if (msg.indexOf("77040F0227") != -1) {
-            Map map = ExecuteTask.pingInfo(msg, ip);
 //            Map params = new HashMap();
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"vaddr"});

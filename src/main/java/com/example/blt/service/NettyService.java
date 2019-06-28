@@ -60,7 +60,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         Set<Map> set = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != set) {
-            logger.info("lmacSet=" + set);
             Map params = new HashMap();
             params.put("list", set);
             clientMain.sendCron(8001, "7701012766", false);
