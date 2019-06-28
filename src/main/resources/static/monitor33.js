@@ -22,7 +22,7 @@ function light() {
                 $('.switch-part.total .page>span:first-child').text('0');
             }
             var lightGroup = Array_2(4, '');
-            $('.box-part .lamp').not('.hide').removeClass('on off')
+            $('.box-part .lamp').not('.hide').removeClass('on off disconnected ')
             $('.switch-part .on-off>div').removeClass('active')
             $('.switch-part img').attr('src', '')
             $('.switch-part .page>div:first-child').text('0')
