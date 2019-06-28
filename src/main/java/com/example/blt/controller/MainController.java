@@ -2,22 +2,22 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.entity.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
+import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SocketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
@@ -25,9 +25,6 @@ import java.util.*;
 
 @RestController
 public class MainController {
-
-    @Resource
-    private RedisTemplate redisTemplate;
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
     private ClientMain clientMain = new ClientMain();
@@ -42,44 +39,46 @@ public class MainController {
     public String console(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
         ControlTask task = new ControlTask(clientMain, info, true);
-        String result = task.executeTask();
+        String result = ExecuteTask.sendCmd(task);
         return result;
     }
 
+    @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
     @ResponseBody
-    @RequestMapping("/getHost")
-    public Map showHost() {
-        Map map = new LinkedHashMap();
-        ValueOperations<String,Set> operations=redisTemplate.opsForValue();
-        Set<Map> lmacSet =operations.get(ConsoleKeys.lMAC.getValue());
-        Set<Map> vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
-        if (null != lmacSet) {
-            map.put("lmacSize", lmacSet.size());
-            map.put("lmac", lmacSet);
-
+    public Map<String, String> sendSocket4(String host, String command) {
+        String info;
+        Map<String, String> map = new HashMap<>();
+        String result = "success";
+        String host1 = "192.168.1.191";//茶室
+        String host2 = "192.168.1.192";//活动室
+        String host3 = "192.168.1.193";//客餐厅
+        String host4 = "192.168.1.195";//洽谈室
+        String host5 = "192.168.1.194";//办公大厅
+        if (command.equalsIgnoreCase("ON")) {
+            //开
+            command = "77010315373766";
+            map.put("command", command);
+        } else if (command.equalsIgnoreCase("OFF")) {
+            //关
+            command = "77010315323266";
+            map.put("command", command);
         }
-        if (null != vaddrSet) {
-            map.put("vaddr", vaddrSet);
-            map.put("vaddrSize", vaddrSet.size());
+        if (host.equals("all")) {
+            //向所有地址发信息
+            map.put("host", "all");
+            info = JSON.toJSONString(map);
+            ControlTask task = new ControlTask(clientMain, info, true);
+            result = ExecuteTask.sendCmd(task);
+        } else {
+//            String cmd = host + ":" + command;
+            map.put("host", host);
+            info = JSON.toJSONString(map);
+            ControlTask task = new ControlTask(clientMain, info, true);
+            result = ExecuteTask.sendCmd(task);
         }
-        map.put("result", "ok");
+        map.put("success", result);
         return map;
     }
-
-//    @RequestMapping("/getMemcacheAddress")
-//    public Map<String, String> getMemcacheAddress(String address) {
-//        address = "central-console" + address;
-//        String value = (String) memCachedClient.get(address);
-////        System.out.println("value: " + value);
-//        Map<String, String> map = new HashMap<>();
-//        if (value == null) {
-//            value = "1";
-//        } else {
-//            value = "0";
-//        }
-//        map.put("value", value);
-//        return map;
-//    }
 
     @RequestMapping(value = "/sendSocket", method = RequestMethod.POST)
     @ResponseBody
@@ -147,49 +146,49 @@ public class MainController {
         return map;
     }
 
-    @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> sendSocket4(String host, String command) {
-        Map<String, String> map = new HashMap<>();
-        String success = "success";
-        String host1 = "192.168.1.191";//茶室
-        String host2 = "192.168.1.192";//活动室
-        String host3 = "192.168.1.193";//客餐厅
-        String host4 = "192.168.1.195";//洽谈室
-        String host5 = "192.168.1.194";//办公大厅
-        if (command.equalsIgnoreCase("ON")) {
-            //开
-            command = "77010315373766";
-        } else if (command.equalsIgnoreCase("OFF")) {
-            //关
-            command = "77010315323266";
-        }
-        if (host.equals("all")) {
-            //向所有地址发信息
-            String cmd1 = host1 + ":" + command;
-            String cmd2 = host2 + ":" + command;
-            String cmd3 = host3 + ":" + command;
-            String cmd4 = host4 + ":" + command;
-            String cmd5 = host5 + ":" + command;
-            String code1 = SocketUtil.sendCmd2(host1, cmd1);
-            String code2 = SocketUtil.sendCmd2(host2, cmd2);
-            String code3 = SocketUtil.sendCmd2(host3, cmd3);
-            String code4 = SocketUtil.sendCmd2(host4, cmd4);
-            String code5 = SocketUtil.sendCmd2(host5, cmd5);
-            if ("1".equals(code1) || "1".equals(code2) || "1".equals(code3) || "1".equals(code4) || "1".equals(code5)) {
-                //            失败
-                success = "error";
-            }
-        } else {
-            String cmd = host + ":" + command;
-            String code = SocketUtil.sendCmd2(host, cmd);
-            if ("1".equals(code)) {
-                success = "error";
-            }
-        }
-        map.put("success", success);
-        return map;
-    }
+//    @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, String> sendSocket4(String host, String command) {
+//        Map<String, String> map = new HashMap<>();
+//        String success = "success";
+//        String host1 = "192.168.1.191";//茶室
+//        String host2 = "192.168.1.192";//活动室
+//        String host3 = "192.168.1.193";//客餐厅
+//        String host4 = "192.168.1.195";//洽谈室
+//        String host5 = "192.168.1.194";//办公大厅
+//        if (command.equalsIgnoreCase("ON")) {
+//            //开
+//            command = "77010315373766";
+//        } else if (command.equalsIgnoreCase("OFF")) {
+//            //关
+//            command = "77010315323266";
+//        }
+//        if (host.equals("all")) {
+//            //向所有地址发信息
+//            String cmd1 = host1 + ":" + command;
+//            String cmd2 = host2 + ":" + command;
+//            String cmd3 = host3 + ":" + command;
+//            String cmd4 = host4 + ":" + command;
+//            String cmd5 = host5 + ":" + command;
+//            String code1 = SocketUtil.sendCmd2(host1, cmd1);
+//            String code2 = SocketUtil.sendCmd2(host2, cmd2);
+//            String code3 = SocketUtil.sendCmd2(host3, cmd3);
+//            String code4 = SocketUtil.sendCmd2(host4, cmd4);
+//            String code5 = SocketUtil.sendCmd2(host5, cmd5);
+//            if ("1".equals(code1) || "1".equals(code2) || "1".equals(code3) || "1".equals(code4) || "1".equals(code5)) {
+//                //            失败
+//                success = "error";
+//            }
+//        } else {
+//            String cmd = host + ":" + command;
+//            String code = SocketUtil.sendCmd2(host, cmd);
+//            if ("1".equals(code)) {
+//                success = "error";
+//            }
+//        }
+//        map.put("success", success);
+//        return map;
+//    }
 
     @RequestMapping(value = "/sendSocket5", method = RequestMethod.POST)
     @ResponseBody

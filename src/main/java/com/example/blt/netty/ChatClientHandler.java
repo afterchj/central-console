@@ -10,9 +10,9 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
     private static Logger logger = LoggerFactory.getLogger(ChatClientHandler.class);
 
     @Override
-    protected void channelRead0(ChannelHandlerContext arg0, String arg1) throws Exception {
+    protected void channelRead0(ChannelHandlerContext arg0, String arg1){
         //客户端主要用来接收服务器发送的消息
-        logger.info("from server:" + arg1);
+        logger.info(arg0.channel().id() + ": " + arg1);
     }
 
 }

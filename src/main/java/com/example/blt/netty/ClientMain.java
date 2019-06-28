@@ -18,16 +18,15 @@ import java.io.InputStreamReader;
 public class ClientMain {
 
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
-    private static String host = "127.0.0.1";
-    //    private static String host = "192.168.51.95";
-    private static int port = 8001;
+//    private static String host = "127.0.0.1";
+        private static String host = "119.3.49.192";
     Channel channel = null;
 
     public static void main(String[] args) throws IOException {
 //		new ClientMain("122.112.229.195", 8001).run();
 //		new ClientMain("119.3.49.192", 8001).run();
 //        new ClientMain("127.0.0.1", 8001).run();
-        new ClientMain().run(8000);
+        new ClientMain().run(8001);
     }
 
     public void run(int port) throws IOException {

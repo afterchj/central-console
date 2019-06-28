@@ -33,13 +33,4 @@ public class MapUtil {
         }
         return map;
     }
-
-    public static void main(String[] args) {
-        Set<Map> maps = ConsoleUtil.persistHosts();
-        System.out.println(maps.size());
-//        for (Map map : maps) {
-//            removeEntries(map, new String[]{"vaddr"});
-//            System.out.println(map);
-//        }
-    }
 }

@@ -29,7 +29,7 @@
         } else {
             $("#" + id).val("7701011B66");
         }
-        $.get("/switch", {"cmd": $("#" + id).val(), "host": "all"}, function (result) {
+        $.get("/switch", {"command": $("#" + id).val(), "host": "all"}, function (result) {
             console.log("result", result);
         })
     }

@@ -15,6 +15,25 @@
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
 
+    <parameterMap id="commandMapper" type="map">
+        <parameter property="host" mode="IN"/>
+        <parameter property="mesh_id" mode="IN"/>
+        <parameter property="lmac" mode="IN"/>
+        <parameter property="ctype" mode="IN"/>
+        <parameter property="cid" mode="IN"/>
+        <parameter property="x" mode="IN"/>
+        <parameter property="y" mode="IN"/>
+        <parameter property="other" mode="IN"/>
+        <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
+    </parameterMap>
+    <select id="saveConsole" parameterMap="consoleMapper" statementType="CALLABLE">
+        CALL save_light(?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <select id="saveCommand" parameterMap="commandMapper" statementType="CALLABLE">
+        CALL save_blt_console(?,?,?,?,?,?,?,?,?)
+    </select>
+
     <select id="getLights" resultType="map">
         SELECT mname,COUNT(0) lmacn FROM f_light_demo GROUP BY mname
     </select>
@@ -33,9 +52,6 @@
         INSERT INTO f_light_console(ip,msg,log_date) VALUE (#{ip},#{msg},now())
     </insert>
 
-    <select id="saveConsole" parameterMap="consoleMapper" statementType="CALLABLE">
-        CALL save_light(?,?,?,?,?,?,?,?,?,?)
-    </select>
 
     <select id="selectIn" parameterType="map" resultType="map">
         SELECT * FROM t_light_info WHERE vaddr IN

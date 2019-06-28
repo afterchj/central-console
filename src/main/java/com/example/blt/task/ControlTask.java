@@ -34,17 +34,7 @@ public class ControlTask implements Callable<String> {
         return result;
     }
 
-    public String executeTask() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        FutureTask<String> futureTask = new FutureTask(this);
-        executor.submit(futureTask);
-        executor.shutdown();
-        String result;
-        try {
-            result = futureTask.get();
-        } catch (Exception e) {
-            result = "fail";
-        }
-        return result;
-    }
+//    public String executeTask() {
+//
+//    }
 }

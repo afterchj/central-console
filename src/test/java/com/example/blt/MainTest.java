@@ -9,7 +9,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -84,13 +87,14 @@ public class MainTest {
 
     @Test
     public void testUpdate() {
-        List<Map> list=sqlSessionTemplate.selectList("console.getLmac");
-        Set<Map> set=new HashSet<>();
+        List<Map> list = sqlSessionTemplate.selectList("console.getLmac");
+        Set<Map> set = new HashSet<>();
         set.addAll(list);
-        logger.info("list="+set);
-        Map map=new HashMap();
-        map.put("list",set);
-        sqlSessionTemplate.update("console.saveUpdate2", map);
+        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
+        logger.info("list=" + set);
+//        Map map=new HashMap();
+//        map.put("list",set);
+//        sqlSessionTemplate.update("console.saveUpdate2", map);
 //        Set<Map> list = ConsoleUtil.persistHosts();
 //        map.put("list", list);
 //        sqlSessionTemplate.selectList("console.batchInsert", map);
@@ -100,12 +104,22 @@ public class MainTest {
     }
 
     @Test
-    public void testRemoveKey() {
-        Set<Map> list = ConsoleUtil.persistHosts();
+    public void testConsole() {
+        List<Map> vaddr = sqlSessionTemplate.selectList("console.getVaddr");
+        System.out.println(ConsoleUtil.getLightSize(new String[]{}));
+        String key1 = ConsoleKeys.VADDR.getValue();
+        String key2 = ConsoleKeys.lMAC.getValue();
+        ConsoleUtil.saveInfo("test_vaddr", vaddr);
+        List set1 = ConsoleUtil.getValueTest("test_vaddr");
+        ConsoleUtil.saveInfo("test_lmac", set1);
+        List set2 = ConsoleUtil.getValueTest("test_lmac");
+//        Set set2 = getInfo(key2);
+        logger.info("lists=" + set1);
+        logger.info("lists=" + set2);
     }
 
     @Test
-    public void testRedis(){
+    public void testRedis() {
         Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         logger.info("lmacSet=" + lmacSet);

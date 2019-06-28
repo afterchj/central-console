@@ -36,4 +36,5 @@ public class CentralConsoleApplication {
 		return new FrameSpringBeanUtil();
 	}
 
+
 }
