@@ -1,11 +1,11 @@
 /**
- * Created by yuanjie.fang on 2019/6/24.
+ * Created by yuanjie.fang on 2019/6/28.
  */
 $(function () {
     light()
     setInterval(function () {
         light()
-    }, 500) //500ms刷新一次
+    }, 500)
 })
 function light() {
     $.ajax({
@@ -16,13 +16,13 @@ function light() {
             var lightState = data.lightState;
             var placeLNumList = data.placeLNumList;
             var centerLNumList = data.centerLNumList;
-            if(centerLNumList.length > 0){
+            if (centerLNumList.length > 0) {
                 $('.switch-part.total .page>span:first-child').text(centerLNumList[0].centerLNum);
-            }else{
+            } else {
                 $('.switch-part.total .page>span:first-child').text('0');
             }
             var lightGroup = Array_2(4, '');
-            $('.box-part .lamp').not('.hide').removeClass('on off disconnected')
+            $('.box-part .lamp').not('.hide').removeClass('on off disconnected ')
             $('.switch-part .on-off>div').removeClass('active')
             $('.switch-part img').attr('src', '')
             $('.switch-part .page>div:first-child').text('0')
@@ -40,42 +40,43 @@ function light() {
                             $(this).addClass('on')
                         } else if (status == 1) {
                             $(this).addClass('off')
-                        } else if (status == null) {
+                        }else if (status == null) {
                             $(this).addClass('disconnected')
                         }
                     }
                 })
             })
-                $('.switch-part').not('.scene,.total').each(function () {
-                    var that=$(this);
-                    var groupName = parseInt($(this).find('.groupName').text());
-                    $.each(placeLNumList, function (i, val) {
-                        var place = val.place;
-                        var placeLNum = val.placeLNum;
-                        if (place == groupName) {
-                            that.find('.page>span:first-child').text(placeLNum);
-                        }
-                    })
-                    var lightGroupPart = lightGroup[parseInt(groupName) - 1];
-                    if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
-                        $(this).find('img').attr('src', '/static/img/2.png')
-                        $(this).find('.on-off>div').removeClass('active')
-                        $(this).find('.page>span:first-child').text('0');
-                    } else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
-                        $(this).find('img').attr('src', '/static/img/2.png')
-                        $(this).find('.on-off>div').removeClass('active')
-                    } else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) == -1) {
-                        $(this).find('img').attr('src', '/static/img/1.png')
-                        $(this).find('.on-off>div').removeClass('active')
-                    } else if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf('0') != -1) {
-                        $(this).find('img').attr('src', '')
-                        $(this).find('.on-off>div:first-child').addClass('active').siblings().removeClass('active')
-                    } else if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf('1') != -1) {
-                        $(this).find('img').attr('src', '')
-                        $(this).find('.on-off>div:last-child').addClass('active').siblings().removeClass('active')
+            $('.switch-part').not('.scene,.total').each(function () {
+                var that = $(this);
+                var groupName = parseInt($(this).find('.groupName').text());
+                $.each(placeLNumList, function (i, val) {
+                    var place = val.place;
+                    var placeLNum = val.placeLNum;
+                    if (place == groupName) {
+                        that.find('.page>span:first-child').text(placeLNum);
                     }
                 })
-            var imgList = [];
+                var lightGroupPart = lightGroup[parseInt(groupName) - 1];
+                if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
+                    // $(this).find('img').attr('src', '/static/img/2.png')
+                    $(this).find('.on-off>div').removeClass('active')
+                    $(this).find('.page>span:first-child').text('0');
+                } else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
+                    // $(this).find('img').attr('src', '/static/img/2.png')
+                    $(this).find('.on-off>div').removeClass('active')
+                } else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) == -1) {
+                    // $(this).find('img').attr('src', '/static/img/1.png')
+                    $(this).find('.on-off>div').removeClass('active')
+                } else if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf('0') != -1) {
+                    // $(this).find('img').attr('src', '')
+                    $(this).find('.on-off>div:first-child').addClass('active').siblings().removeClass('active')
+                } else if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf('1') != -1) {
+                    // $(this).find('img').attr('src', '')
+                    $(this).find('.on-off>div:last-child').addClass('active').siblings().removeClass('active')
+                }
+
+            })
+            // var imgList = [];
             var onOffList = [];
             $('.switch-part').not('.scene,.total').each(function () {
                 if ($(this).find('.on-off>div.active').text()) {
@@ -83,29 +84,16 @@ function light() {
                 } else {
                     onOffList.push('');
                 }
-                imgList.push($(this).find('img').attr('src'));
+                // imgList.push($(this).find('img').attr('src'));
             })
-            if (!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1) {
-                $('.switch-part.total img').attr('src', '/static/img/2.png')
-                $('.switch-part.total .on-off>div').removeClass('active')
-            } else if (!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') == -1 && imgList.indexOf('/static/img/1.png') != -1) {
-                $('.switch-part.total img').attr('src', '/static/img/1.png')
+            if (!isAllEqual(onOffList)) {
                 $('.switch-part.total .on-off>div').removeClass('active')
             } else if (isAllEqual(onOffList) && onOffList.indexOf('ON') != -1) {
-                $('.switch-part.total img').attr('src', '')
+                // $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div:first-child').addClass('active').siblings().removeClass('active')
             } else if (isAllEqual(onOffList) && onOffList.indexOf('OFF') != -1) {
-                $('.switch-part.total img').attr('src', '')
+                // $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div:last-child').addClass('active').siblings().removeClass('active')
-            }else if(!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') == -1 && imgList.indexOf('/static/img/1.png') == -1 ) {
-                $('.switch-part.total img').attr('src', '/static/img/1.png')
-                $('.switch-part.total .on-off>div').removeClass('active')
-            }else if(isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1){
-                $('.switch-part.total img').attr('src', '/static/img/2.png')
-                $('.switch-part.total .on-off>div').removeClass('active')
-            }else if (isAllEqual(onOffList) && imgList.indexOf('/static/img/1.png') != -1){
-                $('.switch-part.total img').attr('src', '/static/img/1.png')
-                $('.switch-part.total .on-off>div').removeClass('active')
             }
         }
     })
