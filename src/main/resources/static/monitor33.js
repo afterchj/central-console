@@ -3,10 +3,10 @@
  */
 $(function () {
     light2();
-    light();
     setInterval(function () {
-        light()
-    }, 5000)
+        // light();
+        light2();
+    }, 500)
 })
 
 function light2() {
@@ -60,11 +60,11 @@ function light2() {
                 })
                 var lightGroupPart = lightGroup[parseInt(groupName) - 1];
                 if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
-                    $(this).find('img').attr('src', '/static/img/2.png')
+                    $(this).find('img').attr('src', '')
                     $(this).find('.on-off>div').removeClass('active')
                     $(this).find('.page>span:first-child').text('0');
                 } else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
-                    $(this).find('img').attr('src', '/static/img/2.png')
+                    $(this).find('img').attr('src', 'g')
                     $(this).find('.on-off>div').removeClass('active')
                 } else if (!isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) == -1) {
                     $(this).find('img').attr('src', '/static/img/1.png')
@@ -88,7 +88,7 @@ function light2() {
                 imgList.push($(this).find('img').attr('src'));
             })
             if (!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1) {
-                $('.switch-part.total img').attr('src', '/static/img/2.png')
+                $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div').removeClass('active')
             } else if (!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') == -1 && imgList.indexOf('/static/img/1.png') != -1) {
                 $('.switch-part.total img').attr('src', '/static/img/1.png')
@@ -103,7 +103,7 @@ function light2() {
                 $('.switch-part.total img').attr('src', '/static/img/1.png')
                 $('.switch-part.total .on-off>div').removeClass('active')
             }else if(isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1){
-                $('.switch-part.total img').attr('src', '/static/img/2.png')
+                $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div').removeClass('active')
             }else if (isAllEqual(onOffList) && imgList.indexOf('/static/img/1.png') != -1){
                 $('.switch-part.total img').attr('src', '/static/img/1.png')
@@ -254,6 +254,14 @@ function light() {
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(2)').find('.on-off>div:last-child').addClass('active').siblings().removeClass('active');
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(0)').find('img').attr('src', '')
             }
+            if (disconnected==1||twodisconnected==1||thirddisconnected==1||fourdisconnected==1){
+                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '');
+                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+            } else if ((on==1&&off==1)||(twoOn==1&&twoOff==1)||(thirdOn==1&&thirdOff==1)||(fourOn==1&&fourOff==1)){
+                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+            }
+
 
 
             // $('.switch-part').not('.scene,.total').each(function () {
