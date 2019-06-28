@@ -101,6 +101,15 @@ public class HomeController {
         return map;
     }
 
+    @RequestMapping(value = "/getLightOnOrOff", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getLightOnOrOff() {
+        Map<String, Object> map = new HashMap<>();
+        List<LightDemo> lightState = lightListDao.getExhibitionLightInfo();
+        map.put("lightState", lightState);
+        return map;
+    }
+
     @RequestMapping(value = "/getMonitor2", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getMonitor2() {

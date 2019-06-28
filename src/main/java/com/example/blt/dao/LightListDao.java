@@ -56,6 +56,9 @@ public interface LightListDao {
     @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and  (i.y is not null)and d.mname='exhibition' Group by mname")
     List<Map<String,Object>> getExhibitionCenterLNum();//每一楼灯个数
 
+    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32'  THEN '0'  END AS status,d.Group FROM f_light_demo d JOIN (select  lmac,x ,y,status from t_light_info where y is not null Group by lmac) i ON d.lmac = i.lmac where d.mname='exhibition' ORDER BY d.mname,lname")
+    List<LightDemo> getExhibitionLightOnOrOff();
+
 
 
 }
