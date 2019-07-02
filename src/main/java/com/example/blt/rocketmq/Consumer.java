@@ -31,8 +31,12 @@ public class Consumer implements RocketMQListener<String> {
     public void onMessage(String message) {
         //JSONObject jsonObject =  JSON.parseObject(message);
         //OrderPaidEvent orderPaidEvent = JSONObject.parseObject(message, OrderPaidEvent.class);
-        Map map = JSON.parseObject(message);
-        sqlSessionTemplate.selectOne("console.saveConsole", map);
-        logger.info("result=" + map.get("result"));
+        try {
+            Map map = JSON.parseObject(message);
+            sqlSessionTemplate.selectOne("console.saveConsole", map);
+            logger.info("result=" + map.get("result"));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
     }
 }
