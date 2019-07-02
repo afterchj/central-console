@@ -2,8 +2,10 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.entity.dd.Topics;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.netty.ClientMain;
+import com.example.blt.rocketmq.CmdProducer;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
@@ -26,21 +28,23 @@ import java.util.Map;
 @RestController
 public class MainController {
 
+    @Resource
+    private CmdProducer cmdProducer;
     private Logger logger = LoggerFactory.getLogger(MainController.class);
+
     private ClientMain clientMain = new ClientMain();
 
     @RequestMapping("/test")
     public String console(String cmd) {
-        SocketUtil.sendCmd(cmd);
+        cmdProducer.push(Topics.CMD_TOPIC.getTopic(), cmd);
         return "ok";
     }
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(clientMain, info, true);
-        String result = ExecuteTask.sendCmd(task);
-        return result;
+        cmdProducer.push(Topics.CMD_TOPIC.getTopic(), info);
+        return "ok";
     }
 
     @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)

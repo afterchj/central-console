@@ -108,6 +108,4 @@
           p:usePool="true">
     </bean>
 
-    <bean id="rocketMQProducer" class="com.example.blt.service.ProducerService" init-method="init" destroy-method="destroy"></bean>
-
 </beans>

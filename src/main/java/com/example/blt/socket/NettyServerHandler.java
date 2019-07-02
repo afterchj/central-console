@@ -1,5 +1,6 @@
 package com.example.blt.socket;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.task.ExecuteTask;
@@ -28,7 +29,7 @@ import java.util.concurrent.Executors;
  */
 public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
-    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+//    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
     private static Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private static Set<Map> vaddrSet = new CopyOnWriteArraySet<>();
@@ -38,14 +39,12 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String msg) {
-
         Channel channel = arg0.channel();
         channel.writeAndFlush(msg);
         SocketAddress address = channel.remoteAddress();
-        logger.info("[" + address + "] receive:" + msg);
+//        logger.info("[" + address + "] receive:" + msg);
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
-//        Map map = ExecuteTask.pingInfo(msg, ip);
         String vaddrKey = ConsoleKeys.VADDR.getValue();
         String lmacKey = ConsoleKeys.lMAC.getValue();
         Set lmac = ConsoleUtil.getInfo(lmacKey);
@@ -53,49 +52,41 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         if (lmac == null) {
             lmacSet.clear();
         }
+        if (vaddr == null) {
+            vaddrSet.clear();
+        }
         Map map = ExecuteTask.pingInfo(msg, ip);
         if (msg.indexOf("77040F01") != -1) {
-//            Map params = new HashMap();
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"lmac"});
                 lmacSet.add(map);
-                logger.info("lmacSize=" + lmacSet.size());
-                ConsoleUtil.saveLmac(lmacKey, lmacSet, 30);
-//                params.put("list", lmacSet);
-//                if (lmacSet.size() == vaddr.size()) {
-//                    sqlSessionTemplate.selectOne("console.saveUpdate2", params);
-//                }
+                ConsoleUtil.saveLmac(lmacKey, lmacSet, 80);
             });
         } else if (msg.indexOf("77040F0227") != -1) {
-//            Map params = new HashMap();
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"vaddr"});
                 vaddrSet.add(map);
-//                params.put("list", vaddrSet);
-                logger.info("vaddrSize=" + vaddrSet.size());
-                ConsoleUtil.saveVaddr(vaddrKey, vaddrSet, 1);
-//                if (lmacSet.size() == vaddrSet.size()) {
-//                    sqlSessionTemplate.selectOne("console.saveUpdate", params);
-//                }
+                ConsoleUtil.saveVaddr(vaddrKey, vaddrSet, 30);
             });
-        } else {
-            if (msg.indexOf("77010315") != -1) {
-                clientMain.sendCron(8001, msg.substring(0, msg.length() - 2), false);
-            }
+        } else if (msg.indexOf("77010315") != -1) {
+            JSONObject object = new JSONObject();
+            object.put("host", "all");
+            object.put("command", msg.substring(0, msg.length() - 2));
+            clientMain.sendCron(8001, object.toJSONString(), false);
         }
     }
 
 
     //在建立链接时发送信息
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx){
         Channel channel = ctx.channel();
         logger.info("[" + channel.remoteAddress().toString() + "] " + "online");
     }
 
     //退出链接
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx){
         Channel channel = ctx.channel();
         logger.info("[" + channel.remoteAddress().toString() + "] " + "offline");
     }
