@@ -1,6 +1,7 @@
 package com.example.blt.socket;
 
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.netty.ClientMain;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.MapUtil;
@@ -32,6 +33,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private static Set<Map> vaddrSet = new CopyOnWriteArraySet<>();
     private static Set<Map> lmacSet = new CopyOnWriteArraySet<>();
+    private ClientMain clientMain = new ClientMain();
 
 
     @Override
@@ -58,7 +60,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
                 MapUtil.removeEntries(map, new String[]{"lmac"});
                 lmacSet.add(map);
                 logger.info("lmacSize=" + lmacSet.size());
-                ConsoleUtil.saveLmac(lmacKey, lmacSet, 30);
+                ConsoleUtil.saveLmac(lmacKey, lmacSet, 80);
 //                params.put("list", lmacSet);
 //                if (lmacSet.size() == vaddr.size()) {
 //                    sqlSessionTemplate.selectOne("console.saveUpdate2", params);
@@ -76,6 +78,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 //                    sqlSessionTemplate.selectOne("console.saveUpdate", params);
 //                }
             });
+        } else {
+            if (msg.indexOf("77010315") != -1) {
+                clientMain.sendCron(8001, msg.substring(0, msg.length() - 2), false);
+            }
         }
     }
 
