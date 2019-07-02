@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "blt_remote_console_topic", consumerGroup = "my-consumer_test-topic-1")
+@RocketMQMessageListener(topic = "blt_remote_console_topic", consumerGroup = "my-consumer_remote_group")
 public class Consumer implements RocketMQListener<String> {
 
     @Resource
