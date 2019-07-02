@@ -2,6 +2,8 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.LightListDao;
+import com.example.blt.dao.Monitor2Dao;
+import com.example.blt.dao.MonitorDao;
 import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
 import com.example.blt.entity.dd.ConsoleKeys;
@@ -34,6 +36,12 @@ public class HomeController {
 
     @Resource
     private LightListDao lightListDao;
+
+    @Resource
+    private MonitorDao monitorDao;
+
+    @Resource
+    private Monitor2Dao monitor2Dao;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -141,6 +149,98 @@ public class HomeController {
                 lightState = lightListDao.getExhibitionFromPhoneByGroup(groupId,status);
             }
             map.put("lightState",lightState);
+        }
+        return map;
+    }
+
+
+    @RequestMapping(value = "/getMonitorLightStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getMonitorLightStatus() {
+        Map<String, Object> map = new HashMap<>();
+        List<LightDemo> lightState = new ArrayList<>();
+        CommandLight commandInfo = monitorDao.getCommandInfo();
+        if(commandInfo!=null){
+            String status = null;
+            String ctype = commandInfo.getCtype();
+            if ("52".equals(ctype)){
+                //遥控器
+                if ("01".equals(commandInfo.getCid())){
+                    //全开
+                    status="0";
+                }else if ("02".equals(commandInfo.getCid())){
+                    //全关
+                    status="1";
+                }
+                lightState = monitorDao.getMonitorFromRemoteByStatus(status);
+
+            }else if ("C0".equals(ctype)){
+                //pad or 手机 全控
+                if ("37".equals(commandInfo.getY())){
+                    //全开
+                    status="0";
+                }else if ("32".equals(commandInfo.getY())){
+                    //全关
+                    status="1";
+                }
+                lightState = monitorDao.getMonitorFromRemoteByStatus(status);
+            }else if ("C1".equals(ctype)){
+                //pad or 手机 组控
+                int groupId = Integer.valueOf(commandInfo.getCid());
+//                String status;
+                if ("37".equals(commandInfo.getY())){
+                    status="0";
+                }else {
+                    status="1";
+                }
+                lightState = monitorDao.getMonitorFromPhoneByGroup(groupId,status);
+            }
+            map.put("lightState",lightState);
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "/getMonitor2LightStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getMonitor2LightStatus() {
+        List<LightDemo> lightState2 = new ArrayList<>();
+        CommandLight commandInfo = monitor2Dao.getCommandInfo();
+        Map<String, Object> map = new HashMap<>();
+        if(commandInfo!=null){
+            String status = null;
+            String ctype = commandInfo.getCtype();
+            if ("52".equals(commandInfo.getCtype())){
+                //遥控器
+                if ("01".equals(commandInfo.getCid())){
+                    //全开
+                    status="0";
+                }else if ("02".equals(commandInfo.getCid())){
+                    //全关
+                    status="1";
+                }
+                lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status);
+
+            }else if ("C0".equals(commandInfo.getCtype())){
+                //pad or 手机 全控
+                if ("37".equals(commandInfo.getY())){
+                    //全开
+                    status="0";
+                }else if ("32".equals(commandInfo.getY())){
+                    //全关
+                    status="1";
+                }
+                lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status);
+            }else if ("C1".equals(commandInfo.getCtype())){
+                //pad or 手机 组控
+                int groupId = Integer.valueOf(commandInfo.getCid());
+                if ("37".equals(commandInfo.getY())){
+                    status="0";
+                }else {
+                    status="1";
+                }
+                lightState2 = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status);
+            }
+            map.put("lightState",lightState2);
         }
         return map;
     }
