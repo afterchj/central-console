@@ -38,18 +38,16 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String msg) {
-
         Channel channel = arg0.channel();
         channel.writeAndFlush(msg);
         SocketAddress address = channel.remoteAddress();
         logger.info("[" + address + "] receive:" + msg);
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
-//        Map map = ExecuteTask.pingInfo(msg, ip);
         String vaddrKey = ConsoleKeys.VADDR.getValue();
         String lmacKey = ConsoleKeys.lMAC.getValue();
         Set lmac = ConsoleUtil.getInfo(lmacKey);
-        Set vaddr = ConsoleUtil.getInfo(vaddrKey);
+//        Set vaddr = ConsoleUtil.getInfo(vaddrKey);
         if (lmac == null) {
             lmacSet.clear();
         }
@@ -78,10 +76,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 //                    sqlSessionTemplate.selectOne("console.saveUpdate", params);
 //                }
             });
-        } else {
-            if (msg.indexOf("77010315") != -1) {
-                clientMain.sendCron(8001, msg.substring(0, msg.length() - 2), false);
-            }
+        } else if (msg.indexOf("77010315") != -1) {
+            clientMain.sendCron(8001, msg.substring(0, msg.length() - 2), false);
         }
     }
 
