@@ -129,7 +129,7 @@ public class MainTest {
 
     @Test
     public void testRocketMQ() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             ProducerService.pushMsg("Just is test messages " + i);
         }
     }
