@@ -1,11 +1,16 @@
 package com.example.blt.rocketmq;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 
 /**
@@ -15,15 +20,19 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "blt_console_topic", consumerGroup = "my-consumer_test-topic-1")
+@RocketMQMessageListener(topic = "blt_remote_console_topic", consumerGroup = "my-consumer_test-topic-1")
 public class Consumer implements RocketMQListener<String> {
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    @Resource
+    private SqlSessionTemplate sqlSessionTemplate;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onMessage(String message) {
         //JSONObject jsonObject =  JSON.parseObject(message);
         //OrderPaidEvent orderPaidEvent = JSONObject.parseObject(message, OrderPaidEvent.class);
-        log.info("received message: " + message);
+        Map map = JSON.parseObject(message);
+        sqlSessionTemplate.selectOne("console.saveConsole", map);
+        logger.info("result=" + map.get("result"));
     }
 }

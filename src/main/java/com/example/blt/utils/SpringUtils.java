@@ -1,19 +1,17 @@
 package com.example.blt.utils;
 
+import com.example.blt.service.ProducerService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
-
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by hongjian.chen on 2019/1/22.
  */
 public class SpringUtils {
 
-    private static ApplicationContext ctx = null;
+    private static ApplicationContext ctx;
 
     static {
         ctx = new ClassPathXmlApplicationContext("classpath:spring-mybatis.xml");
@@ -27,6 +25,9 @@ public class SpringUtils {
         return (RedisTemplate) ctx.getBean("redisTemplate");
     }
 
+    public static ProducerService getRocketProducer() {
+        return (ProducerService) ctx.getBean("rocketMQProducer");
+    }
 //    public static AmqpTemplate getAmqpTemplate() {
 //        return (AmqpTemplate) ctx.getBean("amqpTemplate");
 //    }
@@ -35,7 +36,8 @@ public class SpringUtils {
 //        return ctx.getBean(MessageProducer.class);
 //    }
 
-    public static void main(String[] args) {
-        System.out.println("redisTemplate="+getRedisTemplate().opsForValue().get("test"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println("redisTemplate=" + getRedisTemplate().opsForValue().get("test"));
+//        System.out.println("rocketMQProducer=" + getRocketProducer());
+//    }
 }

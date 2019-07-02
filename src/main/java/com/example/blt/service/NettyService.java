@@ -55,22 +55,21 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //        producer.push(new String[]{str+date,txt+date});
 //    }
 
-    @Scheduled(cron = "0/20 * * * * ?")
-    public void checkSize() {
-        Set<Map> set = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-//        int size = ConsoleUtil.getLightSize("Office");
-        if (null != set) {
-            Map params = new HashMap();
-            params.put("list", set);
-            clientMain.sendCron(8001, "7701012766", false);
-            sqlSessionTemplate.update("console.saveUpdate2", params);
-        }
-        logger.info("checkSize...");
-    }
+//    @Scheduled(cron = "0/20 * * * * ?")
+//    public void checkSize() {
+//        Set<Map> set = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+//        if (null != set) {
+//            Map params = new HashMap();
+//            params.put("list", set);
+//            clientMain.sendCron(8001, "7701012766", false);
+//            sqlSessionTemplate.update("console.saveUpdate2", params);
+//        }
+//        logger.info("checkSize...");
+//    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.info("nettyService starting...");
-        ExecuteTask.pingStatus(true, clientMain);
+//        ExecuteTask.pingStatus(true, clientMain);
     }
 }

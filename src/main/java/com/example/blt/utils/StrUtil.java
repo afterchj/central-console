@@ -1,5 +1,7 @@
 package com.example.blt.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.example.blt.service.ProducerService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ public class StrUtil {
 
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+//    private static ProducerService producerService = SpringUtils.getRocketProducer();
 
     public static Map buildLightInfo(String str, String ip) {
         Map map = new HashMap();
@@ -37,8 +40,9 @@ public class StrUtil {
             map.put("vaddr", vaddr);
             map.put("x", x);
             map.put("y", y);
-            sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.info("result=" + map.get("result"));
+            ProducerService.pushMsg(JSON.toJSONString(map));
+//            sqlSessionTemplate.selectOne("console.saveConsole", map);
+//            logger.info("result=" + map.get("result"));
         } else if (str.indexOf("77040F01") != -1) {
 //            String prefix = str.substring(0, 8);
             String lmac = str.substring(8, 20).toLowerCase();
@@ -56,9 +60,9 @@ public class StrUtil {
                 }
             }
             map.put("lmac", sortMac.toString());
-            sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.info("result=" + map.get("result"));
-//            logger.info("map=" + JSON.toJSONString(map));
+            ProducerService.pushMsg(JSON.toJSONString(map));
+//            sqlSessionTemplate.selectOne("console.saveConsole", map);
+//            logger.info("result=" + map.get("result"));
         } else {
             int len = str.length();
             if (len >= 22 && len <= 40) {
@@ -140,9 +144,10 @@ public class StrUtil {
                 }
                 break;
         }
+        ProducerService.pushMsg(JSON.toJSONString(map));
 //        amqpTemplate.convertAndSend(ROUTING_KEY, JSON.toJSONString(map));
-        sqlSessionTemplate.selectOne("console.saveCommand", map);
-        logger.info("result=" + map.get("result"));
+//        sqlSessionTemplate.selectOne("console.saveCommand", map);
+//        logger.info("result=" + map.get("result"));
     }
 
     private static void formatStr(String str, String ip) {
@@ -167,8 +172,9 @@ public class StrUtil {
                 }
                 break;
         }
-        sqlSessionTemplate.selectOne("console.saveCommand", map);
-        logger.info("result=" + map.get("result"));
+        ProducerService.pushMsg(JSON.toJSONString(map));
+//        sqlSessionTemplate.selectOne("console.saveCommand", map);
+//        logger.info("result=" + map.get("result"));
     }
 
 }
