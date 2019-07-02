@@ -20,7 +20,7 @@ public class ConsoleUtil {
 
     public static void saveVaddr(String key, Set list, int expire) {
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
-        operations.set(key, list, expire, TimeUnit.HOURS);
+        operations.set(key, list, expire, TimeUnit.SECONDS);
     }
 
     public static void saveLmac(String key, Set list, int expire) {

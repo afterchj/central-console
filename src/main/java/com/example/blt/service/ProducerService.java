@@ -1,11 +1,11 @@
 package com.example.blt.service;
 
-import com.example.blt.entity.dd.Topics;
-import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
 
 /**
  * @author hongjian.chen
@@ -15,23 +15,9 @@ public class ProducerService {
 
     private static Logger logger = LoggerFactory.getLogger(ProducerService.class);
 
-    private DefaultMQProducer defaultMQProducer;
-
-    public void init() throws MQClientException {
-        this.defaultMQProducer = new DefaultMQProducer("local_main_group");
-        defaultMQProducer.setNamesrvAddr("119.3.49.192:9876");
-        defaultMQProducer.setVipChannelEnabled(false);
-        defaultMQProducer.start();
-    }
-
-    public void destroy() {
-        defaultMQProducer.shutdown();
-        // logger.info("rocketMQ生产者[producerGroup: " + producerGroup +
-        // ",instanceName: " + instanceName + "]已停止");
-    }
-
     public static void pushMsg(String... msg) {
         DefaultMQProducer producer = new DefaultMQProducer("blt_local_main_group");
+        producer.setInstanceName(UUID.randomUUID().toString());
         producer.setNamesrvAddr("119.3.49.192:9876");
         producer.setVipChannelEnabled(false);
         try {

@@ -45,11 +45,17 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
-        Set<Map> set = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
 //        int size = ConsoleUtil.getLightSize("Office");
-        if (null != set) {
+        if (null != lmacSet) {
+            if (null != vaddrSet) {
+                if (lmacSet.size() == vaddrSet.size()) {
+                    return;
+                }
+            }
             Map params = new HashMap();
-            params.put("list", set);
+            params.put("list", lmacSet);
             clientMain.sendCron(8001, "7701012766", false);
             sqlSessionTemplate.update("console.saveUpdate2", params);
         }

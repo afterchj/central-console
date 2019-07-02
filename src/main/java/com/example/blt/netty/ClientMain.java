@@ -19,7 +19,7 @@ public class ClientMain {
 
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
     private static String host = "127.0.0.1";
-//    private static String host = "192.168.16.56";
+//    private static String host = "192.168.16.60";
 //        private static String host = "119.3.49.192";
     Channel channel = null;
 
@@ -27,7 +27,7 @@ public class ClientMain {
 //		new ClientMain("122.112.229.195", 8001).run();
 //		new ClientMain("119.3.49.192", 8001).run();
 //        new ClientMain().run(8001);
-        new ClientMain().run(8000);
+        new ClientMain().run(8001);
     }
 
     public void run(int port) throws IOException {
