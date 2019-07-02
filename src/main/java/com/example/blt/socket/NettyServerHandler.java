@@ -33,7 +33,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private static Set<Map> vaddrSet = new CopyOnWriteArraySet<>();
     private static Set<Map> lmacSet = new CopyOnWriteArraySet<>();
-    private ClientMain clientMain=new ClientMain();
+    private ClientMain clientMain = new ClientMain();
 
 
     @Override
@@ -54,10 +54,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
             lmacSet.clear();
         }
         Map map = ExecuteTask.pingInfo(msg, ip);
-        int index = msg.indexOf("77010315");
-        if (index != -1) {
-            clientMain.sendCron(8001, msg.substring(0, msg.length() - 2), false);
-        }
         if (msg.indexOf("77040F01") != -1) {
 //            Map params = new HashMap();
             executorService.submit(() -> {
@@ -82,6 +78,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 //                    sqlSessionTemplate.selectOne("console.saveUpdate", params);
 //                }
             });
+        } else {
+            if (msg.indexOf("77010315") != -1) {
+                clientMain.sendCron(8001, msg.substring(0, msg.length() - 2), false);
+            }
         }
     }
 
