@@ -1,5 +1,7 @@
 package com.example.blt.socket;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.task.ExecuteTask;
@@ -77,7 +79,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 //                }
             });
         } else if (msg.indexOf("77010315") != -1) {
-            clientMain.sendCron(8001, msg.substring(0, msg.length() - 2), false);
+            JSONObject object=new JSONObject();
+            object.put("host","all");
+            object.put("command", msg.substring(0, msg.length() - 2));
+            clientMain.sendCron(8001,object.toJSONString(), false);
         }
     }
 
