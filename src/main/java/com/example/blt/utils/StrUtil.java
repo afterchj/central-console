@@ -20,6 +20,7 @@ public class StrUtil {
 //    private static ProducerService producerService = SpringUtils.getRocketProducer();
 
     public static Map buildLightInfo(String str, String ip) {
+        logger.info("str=" + str);
         Map map = new HashMap();
 //        String str = msg.replace(" ", "");
         String str1 = "77040F0227";
@@ -40,7 +41,7 @@ public class StrUtil {
             map.put("vaddr", vaddr);
             map.put("x", x);
             map.put("y", y);
-            ProducerService.pushMsg(JSON.toJSONString(map));
+            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
 //            sqlSessionTemplate.selectOne("console.saveLight", map);
 //            logger.info("result=" + map.get("result"));
         } else if (str.indexOf("77040F01") != -1) {
@@ -150,7 +151,7 @@ public class StrUtil {
 //        logger.info("result=" + map.get("result"));
     }
 
-    private static void formatStr(String str, String ip) {
+    public static void formatStr(String str, String ip) {
         Map map = new ConcurrentHashMap<>();
         String prefix = str.substring(0, 2);
         map.put("host", ip);

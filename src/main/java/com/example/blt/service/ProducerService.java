@@ -36,10 +36,10 @@ public class ProducerService {
         producer.setVipChannelEnabled(false);
         try {
             producer.start();
-            Message message1 = new Message(msg[0], msg[1].getBytes());
-            producer.send(message1);
+            Message message = new Message(msg[0], msg[1].getBytes());
+            producer.send(message);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.info("error "+e.getMessage());
         } finally {
             producer.shutdown();
         }

@@ -19,7 +19,8 @@ public class StrUtilTest {
         String c52="77 04 10 02 21 69 00 00 00 52 77 65 65 D7 AC F0 00 01 00 85".replace(" ","");
         String c42="77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83".replace(" ","");
 //        StrUtil.buildLightInfo(c52,"127.0.0.1");
-        StrUtil.buildLightInfo(c71,"127.0.0.1");
+//        StrUtil.buildLightInfo(c71,"127.0.0.1");
+        StrUtil.formatStr(c1,"127.0.0.1");
 //        System.out.println(str);
 //        String str = "F0ACD7009501".toLowerCase();
 //        System.out.println("bufferStr=" + StrUtil.buildMac(str));

@@ -2,6 +2,7 @@ package com.example.blt;
 
 import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
@@ -131,7 +132,7 @@ public class MainTest {
 //            Map map = new HashMap();
 //            map.put("topic", "topic_test");
 //            map.put("message", "Just is test messages " + i);
-            ProducerService.pushMsg("Just is test messages " + i);
+            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(),"Just is test messages " + i);
         }
     }
 }
