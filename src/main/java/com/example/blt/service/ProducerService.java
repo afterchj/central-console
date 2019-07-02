@@ -36,10 +36,8 @@ public class ProducerService {
         producer.setVipChannelEnabled(false);
         try {
             producer.start();
-            Message message1 = new Message(Topics.LOCAL_TOPIC.getTopic(), msg[0].getBytes());
-            Message message2 = new Message(Topics.REMOTE_TOPIC.getTopic(), msg[0].getBytes());
+            Message message1 = new Message(msg[0], msg[1].getBytes());
             producer.send(message1);
-            producer.send(message2);
         } catch (Exception e) {
             logger.info(e.getMessage());
         } finally {

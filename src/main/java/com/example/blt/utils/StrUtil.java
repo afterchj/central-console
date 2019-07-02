@@ -1,8 +1,8 @@
 package com.example.blt.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StrUtil {
 
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
-    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+//    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 //    private static ProducerService producerService = SpringUtils.getRocketProducer();
 
     public static Map buildLightInfo(String str, String ip) {
@@ -41,7 +41,7 @@ public class StrUtil {
             map.put("x", x);
             map.put("y", y);
             ProducerService.pushMsg(JSON.toJSONString(map));
-//            sqlSessionTemplate.selectOne("console.saveConsole", map);
+//            sqlSessionTemplate.selectOne("console.saveLight", map);
 //            logger.info("result=" + map.get("result"));
         } else if (str.indexOf("77040F01") != -1) {
 //            String prefix = str.substring(0, 8);
@@ -60,8 +60,8 @@ public class StrUtil {
                 }
             }
             map.put("lmac", sortMac.toString());
-            ProducerService.pushMsg(JSON.toJSONString(map));
-//            sqlSessionTemplate.selectOne("console.saveConsole", map);
+            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+//            sqlSessionTemplate.selectOne("console.saveLight", map);
 //            logger.info("result=" + map.get("result"));
         } else {
             int len = str.length();
@@ -144,9 +144,9 @@ public class StrUtil {
                 }
                 break;
         }
-        ProducerService.pushMsg(JSON.toJSONString(map));
+        ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
 //        amqpTemplate.convertAndSend(ROUTING_KEY, JSON.toJSONString(map));
-//        sqlSessionTemplate.selectOne("console.saveCommand", map);
+//        sqlSessionTemplate.selectOne("console.saveConsole", map);
 //        logger.info("result=" + map.get("result"));
     }
 
@@ -172,8 +172,8 @@ public class StrUtil {
                 }
                 break;
         }
-        ProducerService.pushMsg(JSON.toJSONString(map));
-//        sqlSessionTemplate.selectOne("console.saveCommand", map);
+        ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
+//        sqlSessionTemplate.selectOne("console.saveConsole", map);
 //        logger.info("result=" + map.get("result"));
     }
 
