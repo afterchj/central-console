@@ -20,7 +20,6 @@ public class StrUtil {
 //    private static ProducerService producerService = SpringUtils.getRocketProducer();
 
     public static Map buildLightInfo(String str, String ip) {
-        logger.info("str=" + str);
         Map map = new HashMap();
 //        String str = msg.replace(" ", "");
         String str1 = "77040F0227";
@@ -66,7 +65,6 @@ public class StrUtil {
 //            logger.info("result=" + map.get("result"));
         } else {
             int len = str.length();
-            logger.info("str=" + str + ",len=" + len);
             if (len >= 22 && len <= 40) {
                 tempFormat(str, ip);
             } else if (len > 40) {
