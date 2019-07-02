@@ -7,7 +7,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
 
-public class MyServerIniterHandler extends  ChannelInitializer<SocketChannel> {
+public class MyServerInitialHandler extends  ChannelInitializer<SocketChannel> {
 
 	@Override
 	protected void initChannel(SocketChannel arg0) throws Exception {
