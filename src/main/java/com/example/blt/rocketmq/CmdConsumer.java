@@ -1,16 +1,12 @@
 package com.example.blt.rocketmq;
 
-import com.alibaba.fastjson.JSON;
+import com.example.blt.netty.ClientMain;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.Map;
 
 
 /**
@@ -24,12 +20,13 @@ import java.util.Map;
 public class CmdConsumer implements RocketMQListener<String> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private ClientMain clientMain = new ClientMain();
 
     @Override
     public void onMessage(String message) {
         try {
             logger.info("message=" + message);
-//            Map map = JSON.parseObject(message);
+            clientMain.sendCron(8001, message, false);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
