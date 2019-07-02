@@ -1,6 +1,8 @@
 package com.example.blt;
 
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.dd.Topics;
+import com.example.blt.rocketmq.CmdProducer;
 import com.example.blt.service.CommandService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,9 @@ public class CentralControllerApplicationTests {
     @Resource
     CommandService commandService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Resource
+    private CmdProducer cmdProducer;
 //    @Autowired
 //    private HostService hostService;
 //    @Autowired
@@ -96,6 +101,16 @@ public class CentralControllerApplicationTests {
 
     @Test
     public void testJpa() {
-        System.out.println("commandDao"+commandService);
+        System.out.println("commandDao" + commandService);
+    }
+
+    @Test
+    public void testRocketMQ() {
+        for (int i = 0; i < 10; i++) {
+//            Map map = new HashMap();
+//            map.put("topic", "topic_test");
+//            map.put("message", "Just is test messages " + i);
+            cmdProducer.push(Topics.CMD_TOPIC.getTopic(), "Just is test messages " + i);
+        }
     }
 }
