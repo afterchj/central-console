@@ -65,6 +65,7 @@ public class StrUtil {
 //            logger.info("result=" + map.get("result"));
         } else {
             int len = str.length();
+            logger.info("str=" + str + ",len=" + len);
             if (len >= 22 && len <= 40) {
                 tempFormat(str, ip);
             } else if (len > 40) {
@@ -94,7 +95,6 @@ public class StrUtil {
     public static void tempFormat(String format, String ip) {
         String str = format.substring(18);
         int len = str.length();
-        logger.info("str=" + str + ",len=" + len);
         String prefix = str.substring(0, 2).toUpperCase();
         String tmp = str.substring(2, 4);
         String cid = str.substring(len - 4, len - 2);

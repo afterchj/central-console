@@ -8,12 +8,13 @@ import org.apache.rocketmq.common.message.MessageExt;
 
 public class Main {
 
-    public static void main(String[] args) {
-        consumerMsg();
-    }
+//    public static void main(String[] args) {
+//        consumerMsg();
+//    }
 
     public static void consumerMsg() {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("consumer_group");
+        consumer.setVipChannelEnabled(false);
         consumer.setNamesrvAddr("119.3.49.192:9876");
         try {
             consumer.subscribe("blt_console_topic", "");
@@ -26,6 +27,8 @@ public class Main {
             consumer.start();
         } catch (MQClientException e) {
             e.printStackTrace();
+        } finally {
+            consumer.shutdown();
         }
         System.out.println("Consumer Started.");
     }

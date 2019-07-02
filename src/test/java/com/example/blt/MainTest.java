@@ -1,5 +1,6 @@
 package com.example.blt;
 
+import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
@@ -10,10 +11,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -130,6 +128,9 @@ public class MainTest {
     @Test
     public void testRocketMQ() {
         for (int i = 0; i < 10; i++) {
+//            Map map = new HashMap();
+//            map.put("topic", "topic_test");
+//            map.put("message", "Just is test messages " + i);
             ProducerService.pushMsg("Just is test messages " + i);
         }
     }

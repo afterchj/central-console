@@ -20,19 +20,16 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "blt_remote_console_topic", consumerGroup = "my-consumer_cmd_group")
+@RocketMQMessageListener(topic = "blt_cmd_console_topic", consumerGroup = "my_consumer_cmd_group")
 public class CmdConsumer implements RocketMQListener<String> {
 
-    @Resource
-    private SqlSessionTemplate sqlSessionTemplate;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onMessage(String message) {
         try {
-            Map map = JSON.parseObject(message);
-            sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.info("result=" + map.get("result"));
+            logger.info("message=" + message);
+//            Map map = JSON.parseObject(message);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

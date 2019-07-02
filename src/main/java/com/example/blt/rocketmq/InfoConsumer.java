@@ -20,8 +20,8 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "blt_local_console_topic", consumerGroup = "my-consumer_local_group")
-public class LocalConsumer implements RocketMQListener<String> {
+@RocketMQMessageListener(topic = "blt_remote_console_topic", consumerGroup = "my_consumer_local_group")
+public class InfoConsumer implements RocketMQListener<String> {
 
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
