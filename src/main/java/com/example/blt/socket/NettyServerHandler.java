@@ -1,6 +1,7 @@
 package com.example.blt.socket;
 
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.netty.ClientMain;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.MapUtil;
@@ -32,6 +33,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private static Set<Map> vaddrSet = new CopyOnWriteArraySet<>();
     private static Set<Map> lmacSet = new CopyOnWriteArraySet<>();
+    private ClientMain clientMain=new ClientMain();
 
 
     @Override
@@ -52,6 +54,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
             lmacSet.clear();
         }
         Map map = ExecuteTask.pingInfo(msg, ip);
+        int index = msg.indexOf("77010315");
+        if (index != -1) {
+            clientMain.sendCron(8001, msg.substring(0, msg.length() - 2), false);
+        }
         if (msg.indexOf("77040F01") != -1) {
 //            Map params = new HashMap();
             executorService.submit(() -> {

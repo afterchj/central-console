@@ -2,7 +2,6 @@ package com.example.blt.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.example.blt.service.ProducerService;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StrUtil {
 
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
-    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+//    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 //    private static ProducerService producerService = SpringUtils.getRocketProducer();
 
     public static Map buildLightInfo(String str, String ip) {
@@ -65,6 +64,7 @@ public class StrUtil {
 //            logger.info("result=" + map.get("result"));
         } else {
             int len = str.length();
+            logger.info("str=" + str + ",len=" + len);
             if (len >= 22 && len <= 40) {
                 tempFormat(str, ip);
             } else if (len > 40) {
@@ -94,7 +94,6 @@ public class StrUtil {
     public static void tempFormat(String format, String ip) {
         String str = format.substring(18);
         int len = str.length();
-        logger.info("str=" + str + ",len=" + len);
         String prefix = str.substring(0, 2).toUpperCase();
         String tmp = str.substring(2, 4);
         String cid = str.substring(len - 4, len - 2);

@@ -1,5 +1,6 @@
 package com.example.blt.service;
 
+import com.example.blt.entity.dd.Topics;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
@@ -30,18 +31,17 @@ public class ProducerService {
     }
 
     public static void pushMsg(String... msg) {
-        DefaultMQProducer producer = new DefaultMQProducer("blt_remote_main_group");
+        DefaultMQProducer producer = new DefaultMQProducer("blt_cmd_main_group");
         producer.setVipChannelEnabled(false);
         producer.setNamesrvAddr("119.3.49.192:9876");
         try {
             producer.start();
-            Message message1 = new Message("blt_local_console_topic", msg[0].getBytes());
-            Message message2 = new Message("blt_remote_console_topic", msg[0].getBytes());
-            producer.send(message1);
-            producer.send(message2);
+            Message message = new Message(Topics.CMD_TOPIC.getTopic(), msg[0].getBytes());
+            producer.send(message);
         } catch (Exception e) {
             logger.info(e.getMessage());
+        } finally {
+            producer.shutdown();
         }
-        producer.shutdown();
     }
 }
