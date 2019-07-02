@@ -19,7 +19,7 @@ import java.util.Map;
 @Component
 public class WebSocketTask {
 
-    private WebSocket webSocket = new WebSocket();
+//    private WebSocket webSocket = new WebSocket();
 
     @Resource
     private LightListDao lightListDao;
@@ -37,6 +37,6 @@ public class WebSocketTask {
         jsonObject.put("centerLNumList",centerLNumList);//每个楼层灯总个数
 //        jsonObject.put("placeLState","");//每个区域灯的总开关状态
 //        jsonObject.put("centerLState","lightState");//每个楼层灯的总开关状态
-        webSocket.sendMessage(jsonObject.toJSONString());
+//        webSocket.sendMessage(jsonObject.toJSONString());
     }
 }
