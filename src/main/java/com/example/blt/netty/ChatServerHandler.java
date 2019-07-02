@@ -30,6 +30,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         Channel channel = arg0.channel();
+        logger.info("[" + channel.remoteAddress() + "] receive:" + arg1);
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             SocketAddress address = ch.remoteAddress();
@@ -42,12 +43,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     String to = jsonObject.getString("host");
                     if (ip.equals(to)) {
                         ch.writeAndFlush(cmd);
-                        logger.info("[" + str + "] receive info: " + cmd);
                         break;
                     } else {
                         if (!ip.equals("127.0.0.1")) {
                             ch.writeAndFlush(cmd);
-                            logger.info("[" + str + "] receive info: " + arg1);
                         }
                     }
                 } catch (Exception e) {
@@ -56,13 +55,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         String to = arg1.substring(0, index);
                         String cmd = arg1.substring(index + 1);
                         if (ip.equals(to)) {
-                            logger.info("[" + ip + "] receive cmd:" + arg1);
                             ch.writeAndFlush(cmd);
                             break;
                         }
                     } else {
                         if (!ip.equals("127.0.0.1")) {
-                            logger.info("[" + str + "] receive:" + arg1);
 //                        ch.writeAndFlush(arg1);
 //                        ExecuteTask.pingInfo(arg1, ip);
                         }
