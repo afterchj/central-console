@@ -45,7 +45,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         ch.writeAndFlush(cmd);
                         break;
                     } else {
-                        ch.writeAndFlush(cmd);
+                        if (!ip.equals("127.0.0.1")) {
+                            ch.writeAndFlush(cmd);
+                        }
                     }
                 } catch (Exception e) {
                     int index = arg1.indexOf(":");
@@ -57,8 +59,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             break;
                         }
                     } else {
+                        if (!ip.equals("127.0.0.1")) {
 //                        ch.writeAndFlush(arg1);
 //                        ExecuteTask.pingInfo(arg1, ip);
+                        }
                     }
                 }
             }
