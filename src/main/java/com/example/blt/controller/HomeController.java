@@ -109,37 +109,39 @@ public class HomeController {
         List<LightDemo> lightState = new ArrayList<>();
 //        map.put("lightState", lightState);
         CommandLight commandInfo = lightListDao.getCommandInfo();
-        String ctype = commandInfo.getCtype();
-        if ("52".equals(ctype)){
-            //遥控器
-            if ("01".equals(commandInfo.getCid())){
-                //全开
-                lightState = lightListDao.getExhibitionFromRemoteByOn();
-            }else if ("02".equals(commandInfo.getCid())){
-                //全关
-                lightState = lightListDao.getExhibitionFromRemoteByOff();
+        if(commandInfo!=null){
+            String ctype = commandInfo.getCtype();
+            if ("52".equals(ctype)){
+                //遥控器
+                if ("01".equals(commandInfo.getCid())){
+                    //全开
+                    lightState = lightListDao.getExhibitionFromRemoteByOn();
+                }else if ("02".equals(commandInfo.getCid())){
+                    //全关
+                    lightState = lightListDao.getExhibitionFromRemoteByOff();
+                }
+            }else if ("C0".equals(ctype)){
+                //pad or 手机 全控
+                if ("37".equals(commandInfo.getY())){
+                    //全开
+                    lightState = lightListDao.getExhibitionFromRemoteByOn();
+                }else if ("32".equals(commandInfo.getY())){
+                    //全关
+                    lightState = lightListDao.getExhibitionFromRemoteByOff();
+                }
+            }else if ("C1".equals(ctype)){
+                //pad or 手机 组控
+                int groupId = Integer.valueOf(commandInfo.getCid());
+                String status;
+                if ("37".equals(commandInfo.getY())){
+                    status="0";
+                }else {
+                    status="1";
+                }
+                lightState = lightListDao.getExhibitionFromPhoneByGroup(groupId,status);
             }
-        }else if ("C0".equals(ctype)){
-            //pad or 手机 全控
-            if ("37".equals(commandInfo.getY())){
-                //全开
-                lightState = lightListDao.getExhibitionFromRemoteByOn();
-            }else if ("32".equals(commandInfo.getY())){
-                //全关
-                lightState = lightListDao.getExhibitionFromRemoteByOff();
-            }
-        }else if ("C1".equals(ctype)){
-            //pad or 手机 组控
-            int groupId = Integer.valueOf(commandInfo.getCid());
-            String status;
-            if ("37".equals(commandInfo.getY())){
-                status="0";
-            }else {
-                status="1";
-            }
-            lightState = lightListDao.getExhibitionFromPhoneByGroup(groupId,status);
+            map.put("lightState",lightState);
         }
-        map.put("lightState",lightState);
         return map;
     }
 
