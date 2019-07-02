@@ -1,6 +1,7 @@
 package com.example.blt;
 
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
@@ -130,7 +131,7 @@ public class MainTest {
     @Test
     public void testRocketMQ() {
         for (int i = 0; i < 100; i++) {
-            ProducerService.pushMsg("Just is test messages " + i);
+            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(),"Just is test messages " + i);
         }
     }
 }

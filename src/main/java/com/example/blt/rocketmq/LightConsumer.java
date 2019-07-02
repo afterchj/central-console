@@ -32,7 +32,7 @@ public class LightConsumer implements RocketMQListener<String> {
         try {
             Map map = JSON.parseObject(message);
             sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.info("result=" + JSON.toJSONString(map));
+            logger.info("result=" + map.get("result"));
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
