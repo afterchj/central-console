@@ -9,11 +9,12 @@ import org.apache.rocketmq.common.message.MessageExt;
 public class Main {
 
     public static void main(String[] args) {
-        consumerMsg();
+//        consumerMsg();
     }
 
+
     public static void consumerMsg() {
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("consumer_group");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("remote_consumer_group");
         consumer.setNamesrvAddr("119.3.49.192:9876");
         try {
             consumer.subscribe("blt_console_topic", "");

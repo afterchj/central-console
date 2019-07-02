@@ -18,7 +18,7 @@ public class ProducerService {
     private DefaultMQProducer defaultMQProducer;
 
     public void init() throws MQClientException {
-        this.defaultMQProducer = new DefaultMQProducer("remote_main_group");
+        this.defaultMQProducer = new DefaultMQProducer("local_main_group");
         defaultMQProducer.setNamesrvAddr("119.3.49.192:9876");
         defaultMQProducer.setVipChannelEnabled(false);
         defaultMQProducer.start();
@@ -31,13 +31,13 @@ public class ProducerService {
     }
 
     public static void pushMsg(String... msg) {
-        DefaultMQProducer producer = new DefaultMQProducer("blt_cmd_main_group");
-        producer.setVipChannelEnabled(false);
+        DefaultMQProducer producer = new DefaultMQProducer("blt_local_main_group");
         producer.setNamesrvAddr("119.3.49.192:9876");
+        producer.setVipChannelEnabled(false);
         try {
             producer.start();
-            Message message = new Message(Topics.CMD_TOPIC.getTopic(), msg[0].getBytes());
-            producer.send(message);
+            Message message1 = new Message(msg[0], msg[1].getBytes());
+            producer.send(message1);
         } catch (Exception e) {
             logger.info(e.getMessage());
         } finally {
