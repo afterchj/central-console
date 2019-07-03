@@ -50,7 +50,6 @@ public class ExecuteTask {
             }
         }).start();
     }
-
     public static String sendCmd(ControlTask task) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         FutureTask<String> futureTask = new FutureTask(task);
