@@ -155,7 +155,7 @@
     </dependencies>
 
     <build>
-        <finalName>blt-console</finalName>
+        <finalName>ws-blt</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

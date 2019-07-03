@@ -1,7 +1,9 @@
 package com.example.blt.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.dd.Topics;
+import com.example.blt.netty.ClientMain;
 import com.example.blt.service.ProducerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StrUtil {
 
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
+    private static ClientMain clientMain = new ClientMain();
 //    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 //    private static ProducerService producerService = SpringUtils.getRocketProducer();
 
@@ -102,8 +105,14 @@ public class StrUtil {
         map.put("other", format);
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
+                String flag = str.substring(len - 6, len - 4);
+                if ("01".equals(flag)) {
+                    clientMain.sendCron(8001, Groups.GROUPSA.getOn(), false);
+                } else if ("02".equals(flag)) {
+                    clientMain.sendCron(8001, Groups.GROUPSA.getOff(), false);
+                }
                 map.put("ctype", prefix);
-                map.put("cid", str.substring(len - 6, len - 4));
+                map.put("cid", flag);
                 break;
             case "C0"://pad或手机，C0代表全控，37 37字段是x、y值
                 map.put("ctype", prefix);

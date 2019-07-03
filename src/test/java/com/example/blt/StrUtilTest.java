@@ -23,7 +23,7 @@ public class StrUtilTest {
 //        StrUtil.buildLightInfo(c52,"127.0.0.1");
 //        StrUtil.buildLightInfo(c71,"127.0.0.1");
 //        StrUtil.tempFormat(str,"127.0.0.1");
-        System.out.println(c52);
+        System.out.println(c71 + "\t" + c71.length());
 //        String str = "F0ACD7009501".toLowerCase();
 //        System.out.println("bufferStr=" + StrUtil.buildMac(str));
 //        String str1 = "77040F01A91064D7ACF07D000000444F030ACCCC";
