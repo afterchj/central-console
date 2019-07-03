@@ -59,7 +59,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
             clientMain.sendCron(8001, "7701012766", false);
             sqlSessionTemplate.update("console.saveUpdate2", params);
         }
-        logger.info("checkSize...");
     }
 
     @Override
