@@ -51,30 +51,18 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         ExecuteTask.parseLocalCmd(cmd, ip);
                     } else if (ip.equals(to)) {
                         ch.writeAndFlush(cmd);
-                        break;
                     } else {
                         if (!ip.equals("127.0.0.1")) {
                             ch.writeAndFlush(cmd);
                         }
                     }
                 } catch (Exception e) {
-                    int index = arg1.indexOf(":");
-                    if (index != -1) {
-                        String to = arg1.substring(0, index);
-                        String cmd = arg1.substring(index + 1);
-                        if (ip.equals(to)) {
-                            ch.writeAndFlush(cmd);
-                            break;
-                        }
-                    } else {
-                        ConsoleUtil.cleanSet(lightSet);
-                        Map map = ExecuteTask.pingInfo(arg1, ip);
-                        ExecuteTask.saveInfo(arg1, map, lightSet);
-                        if (!ip.equals("127.0.0.1") && arg1.length() > 9) {
-                            ch.writeAndFlush(arg1);
-                        }
+                    ConsoleUtil.cleanSet(lightSet);
+                    Map map = ExecuteTask.pingInfo(arg1, ip);
+                    ExecuteTask.saveInfo(arg1, map, lightSet);
+                    if (!ip.equals("127.0.0.1") && arg1.length() > 9) {
+                        ch.writeAndFlush(arg1);
                     }
-//                        ExecuteTask.pingInfo(arg1, ip);
                 }
             }
         }
