@@ -181,6 +181,7 @@ public class MonitorController {
         CommandLight commandInfo = monitor2Dao.getCommandInfo();
         List<LightDemo> placeLNumList = monitor2Dao.getPlaceLNum();
         Map<String, Object> map = new HashMap<>();
+        String scenes=null;
         if(commandInfo!=null){
             String status = null;
             String ctype = commandInfo.getCtype();
@@ -214,9 +215,21 @@ public class MonitorController {
                     status="0";
                 }
                 lightState2 = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status);
+            }else if("42".equals(ctype)){
+                if ("01".equals(commandInfo.getCid())){
+                    scenes="场景一";
+                }else if ("02".equals(commandInfo.getCid())){
+                    scenes="场景二";
+                }else if ("03".equals(commandInfo.getCid())){
+                    scenes="场景三";
+                }else if ("04".equals(commandInfo.getCid())){
+                    scenes="场景四";
+                }
             }
             map.put("lightState",lightState2);
             map.put("placeLNumList",placeLNumList);
+            map.put("centerLNumList",84);
+            map.put("scenes",scenes);
         }
         return map;
     }

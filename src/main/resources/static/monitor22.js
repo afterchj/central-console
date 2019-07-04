@@ -25,15 +25,40 @@ $('.frame>span').click(function () {
     } else if ($(this).attr("alt") == "total-off") {
         var command = '77010315323266';
     }
-    var host = '192.168.1.194';
+    console.log('groupOrder',groupOrder)
+    var host = '192.168.16.73';
     $.post("/sendSocket6", {
         "command": command,
         "host": host
     }, function () {})
+    // if (groupOrder!='NaN'){
+    //     var selector;
+    //     (groupOrder > 9) ? selector = '.place': selector = '.place0';
+    //     !$(selector + groupOrder + '  .light-line').find('span').not(".hide .air").each(function () {
+    //         $(this).removeClass('disconnected off on');
+    //         if (onOffOrder == '0037'){
+    //             $(this).addClass('on');
+    //         }else {
+    //             $(this).addClass('off');
+    //         }
+    //
+    //     });
+    // }else {
+    //     $('.light-line span').not(".hide .air").each(function () {
+    //         if (command == '77010315373766'){
+    //             $(this).removeClass('disconnected off on');
+    //             $(this).addClass('on');
+    //         }else if (command = '77010315323266'){
+    //             $(this).removeClass('disconnected off on');
+    //             $(this).addClass('off');
+    //         }
+    //     });
+    // }
+
 })
 $("select").change(function () {
     var command = $.trim($(this).val());
-    var host = '192.168.1.194';
+    var host = '192.168.16.73';
     $.post("/sendSocket5", {
         "command": command,
         "host": host
@@ -182,10 +207,16 @@ function light2() {
             var groupLists = Array_2(10, '');
             var lightState = data.lightState;
             var placeLNumList = data.placeLNumList;
-            // var centerLNumList = data.centerLNumList;
+            var scenes = data.scenes;
+            // console.log('lightState.length',lightState.length);
+            if (scenes!=null){
+                $('select').val(scenes);
+            }
+
+            var centerLNumList = data.centerLNumList;
             // if (centerLNumList.length > 0) {
             //     var centerLNum = centerLNumList[0].centerLNum;
-            //     $('.total-page').text(centerLNum);
+                $('.total-page').text(centerLNumList);
             // } else {
             //     $('.total-page').text("0");
             // }
@@ -229,55 +260,60 @@ function light2() {
                     var place=val.place;
                     var placeLNum=val.placeLNum;
                     if(place2==place){
-                        that.find('.page>span:first-child').text("");
+                        // that.find('.page>span:first-child').text("");
                         that.find('.page>span:first-child').text($.trim(parseInt(placeLNum)));
                     }
                 })
-                var grouppart = groupLists[parseInt(place2) - 1];
-                if(isAllEqual(grouppart) && grouppart.indexOf(null) != -1){
-                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                    $(this).find('.frame>span').removeClass('active');
-                    $(this).find('.page>span:first-child').text('0');
-                }else if (!isAllEqual(grouppart) &&  grouppart.indexOf(null) != -1 ) {
-                    $(this).find('.icon img').attr('src', '/static/img/2.png')
-                    $(this).find('.frame>span').removeClass('active');
-                } else if (!isAllEqual(grouppart)) {
-                    $(this).find('.icon img').attr('src', '/static/img/1.png')
-                    $(this).find('.frame>span').removeClass('active');
-                } else if (isAllEqual(grouppart) && grouppart.indexOf('0') != -1) {
-                    $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                    $(this).find('.icon img').attr('src', '')
-                } else if (isAllEqual(grouppart) && grouppart.indexOf('1') != -1) {
-                    $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
-                    $(this).find('.icon img').attr('src', '')
+                if (lightState.length>0){
+                    var grouppart = groupLists[parseInt(place2) - 1];
+                    if(isAllEqual(grouppart) && grouppart.indexOf(null) != -1){
+                        $(this).find('.icon img').attr('src', '/static/img/2.png')
+                        $(this).find('.frame>span').removeClass('active');
+                        $(this).find('.page>span:first-child').text('0');
+                    }else if (!isAllEqual(grouppart) &&  grouppart.indexOf(null) != -1 ) {
+                        $(this).find('.icon img').attr('src', '/static/img/2.png')
+                        $(this).find('.frame>span').removeClass('active');
+                    } else if (!isAllEqual(grouppart)) {
+                        $(this).find('.icon img').attr('src', '/static/img/1.png')
+                        $(this).find('.frame>span').removeClass('active');
+                    } else if (isAllEqual(grouppart) && grouppart.indexOf('0') != -1) {
+                        $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                        $(this).find('.icon img').attr('src', '')
+                    } else if (isAllEqual(grouppart) && grouppart.indexOf('1') != -1) {
+                        $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                        $(this).find('.icon img').attr('src', '')
+                    }
                 }
-            })
 
-            var isTextArray = [];
-            var isExistArray = [];
-            $('.place-status').each(function () {
-                var img = $(this).find('img').attr('src');
-                var onOff = $(this).find('.frame>span.active').text();
-                isExistArray.push(img)
-                isTextArray.push(onOff)
             })
+            if (lightState.length>0){
+                var isTextArray = [];
+                var isExistArray = [];
+                $('.place-status').each(function () {
+                    var img = $(this).find('img').attr('src');
+                    var onOff = $(this).find('.frame>span.active').text();
+                    isExistArray.push(img)
+                    isTextArray.push(onOff)
+                })
 
-            if (isExistArray.indexOf('/static/img/2.png') != -1) {
-                $('img.total-frame').attr('src', '/static/img/2.png');
-            } else if (isExistArray.indexOf('/static/img/2.png') == -1 && isExistArray.indexOf('/static/img/1.png') != -1) {
-                $('img.total-frame').attr('src', '/static/img/1.png');
-            } else {
-                $('img.total-frame').attr('src', '');
-            }
-            if (isAllEqual(isTextArray)) {
-                if (isTextArray[0] == 'ON') {
-                    $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
-                    $('img.total-frame').attr('src', '');
-                } else if (isTextArray[0] == 'OFF') {
-                    $('.total-frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                if (isExistArray.indexOf('/static/img/2.png') != -1) {
+                    $('img.total-frame').attr('src', '/static/img/2.png');
+                } else if (isExistArray.indexOf('/static/img/2.png') == -1 && isExistArray.indexOf('/static/img/1.png') != -1) {
+                    $('img.total-frame').attr('src', '/static/img/1.png');
+                } else {
                     $('img.total-frame').attr('src', '');
                 }
+                if (isAllEqual(isTextArray)) {
+                    if (isTextArray[0] == 'ON') {
+                        $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                        $('img.total-frame').attr('src', '');
+                    } else if (isTextArray[0] == 'OFF') {
+                        $('.total-frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                        $('img.total-frame').attr('src', '');
+                    }
+                }
             }
+
         }
     })
 }
