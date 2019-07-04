@@ -251,7 +251,8 @@ function light2() {
                         }
                     // })
                 })
-            })
+            });
+
             $('.place-status').each(function () {
                 var that=$(this);
                 var place2 = $(this).find('.caption span').text();
@@ -304,6 +305,7 @@ function light2() {
                     $('img.total-frame').attr('src', '');
                 }
                 if (isAllEqual(isTextArray)) {
+
                     if (isTextArray[0] == 'ON') {
                         $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
                         $('img.total-frame').attr('src', '');
@@ -311,6 +313,10 @@ function light2() {
                         $('.total-frame>span:last-child').addClass('active').siblings('span').removeClass('active');
                         $('img.total-frame').attr('src', '');
                     }
+
+                }
+                if (isTextArray.indexOf('ON')!=-1&&isTextArray.indexOf("OFF")!=-1){
+                    $('img.total-frame').attr('src', '/static/img/1.png');
                 }
             }
 

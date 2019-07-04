@@ -215,7 +215,7 @@ public class MonitorController {
                     status="0";
                 }
                 lightState2 = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status);
-            }else if("42".equals(ctype)){
+            }else if("42".equals(ctype)||"".equals(ctype)){
                 if ("01".equals(commandInfo.getCid())){
                     scenes="场景一";
                 }else if ("02".equals(commandInfo.getCid())){
@@ -225,6 +225,27 @@ public class MonitorController {
                 }else if ("04".equals(commandInfo.getCid())){
                     scenes="场景四";
                 }
+            }else if ("".equals(ctype)){
+                //web 全开全关
+                if ("32".equals(commandInfo.getY())){
+                    //全关
+                    status="1";
+                }else {
+                    //全开
+                    status="0";
+                }
+                lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status);
+
+            }else if ("".equals(ctype)){
+                //web 单组开关
+                int groupId = Integer.valueOf(commandInfo.getCid());
+                if ("32".equals(commandInfo.getY())){
+                    status="1";
+                }else {
+                    status="0";
+                }
+                lightState2 = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status);
+
             }
             map.put("lightState",lightState2);
             map.put("placeLNumList",placeLNumList);

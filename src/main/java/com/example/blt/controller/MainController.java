@@ -2,6 +2,7 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.dao.Monitor2Dao;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
@@ -28,6 +29,9 @@ public class MainController {
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
     private ClientMain clientMain = new ClientMain();
+
+    @Resource
+    private Monitor2Dao monitor2Dao;
 
     @RequestMapping("/test")
     public String console(String cmd) {
