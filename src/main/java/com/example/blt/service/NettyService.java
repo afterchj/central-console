@@ -1,5 +1,6 @@
 package com.example.blt.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.task.ExecuteTask;
@@ -47,17 +48,20 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     public void checkSize() {
         Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        JSONObject object = new JSONObject();
+        object.put("host", "all");
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
             if (null != vaddrSet) {
                 if (lmacSet.size() == vaddrSet.size()) {
+                    Map params = new HashMap();
+                    params.put("list", lmacSet);
+                    object.put("command", "7701012766");
+                    sqlSessionTemplate.update("console.saveUpdate2", params);
                     return;
                 }
             }
-            Map params = new HashMap();
-            params.put("list", lmacSet);
-            clientMain.sendCron(8001, "7701012766", false);
-            sqlSessionTemplate.update("console.saveUpdate2", params);
+            clientMain.sendCron(8001, object.toJSONString(), false);
         }
     }
 

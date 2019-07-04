@@ -1,6 +1,5 @@
 package com.example.blt;
 
-import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
@@ -128,11 +127,16 @@ public class MainTest {
 
     @Test
     public void testRocketMQ() {
-        for (int i = 0; i < 10; i++) {
+//        ExecuteTask.parseLocalCmd("7701041601373766", "127.0.0.1");
+//        ExecuteTask.parseLocalCmd("77010315323266", "127.0.0.1");
+        ExecuteTask.parseLocalCmd("7701021908", "127.0.0.1");
+        ExecuteTask.parseLocalCmd("7701011B66", "127.0.0.1");
+        ExecuteTask.parseLocalCmd("7701012766", "127.0.0.1");
+//        for (int i = 0; i < 10; i++) {
 //            Map map = new HashMap();
 //            map.put("topic", "topic_test");
 //            map.put("message", "Just is test messages " + i);
-            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(),"Just is test messages " + i);
-        }
+//            ProducerService.pushMsg(Topics.CMD_LOCAL.getTopic(), "Just is test messages " + i);
+//        }
     }
 }

@@ -30,9 +30,11 @@ public class MainController {
     private ClientMain clientMain = new ClientMain();
 
     @RequestMapping("/test")
-    public String console(String cmd) {
-        SocketUtil.sendCmd(cmd);
-        return "ok";
+    public String ping(ConsoleVo consoleVo) {
+        String info = JSON.toJSONString(consoleVo);
+        ControlTask task = new ControlTask(clientMain, info, true);
+        String result = ExecuteTask.sendCmd(task);
+        return result;
     }
 
     @RequestMapping("/switch")

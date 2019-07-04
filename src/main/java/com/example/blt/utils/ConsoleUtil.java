@@ -1,12 +1,16 @@
 package com.example.blt.utils;
 
+import com.example.blt.entity.dd.ConsoleKeys;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,12 +32,24 @@ public class ConsoleUtil {
         operations.set(key, list, expire, TimeUnit.SECONDS);
     }
 
-    public static void saveInfo(String key,List list) {
+    public static void saveInfo(String key, List list) {
         ValueOperations<String, List> operations = redisTemplate.opsForValue();
         operations.set(key, list, 30, TimeUnit.SECONDS);
     }
+
     public static Set getInfo(String key) {
-        return  (Set) redisTemplate.opsForValue().get(key);
+        return (Set) redisTemplate.opsForValue().get(key);
+    }
+
+    public static void cleanSet(Set set) {
+        Set lmac = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set vaddr = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+        if (lmac == null) {
+            set.clear();
+        }
+        if (vaddr == null) {
+            set.clear();
+        }
     }
 
     public static List getValueTest(String key) {
