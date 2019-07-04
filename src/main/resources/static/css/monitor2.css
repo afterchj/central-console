@@ -398,7 +398,7 @@ label,span {
 }
 
 .light-line span.on {
-    background-color:#ff0
+    background-color:#ff0!important;
 }
 
 .light-line span.disconnected {

@@ -4,7 +4,8 @@ $(function () {
     light()
     setInterval(function () {
         light2()
-    }, 500)
+    }, 500);
+
 })
 $('.frame>span').click(function () {
     $(this).addClass('active').siblings('span').removeClass('active');
@@ -180,7 +181,7 @@ function light2() {
         success: function (data) {
             var groupLists = Array_2(10, '');
             var lightState = data.lightState;
-            // var placeLNumList = data.placeLNumList;
+            var placeLNumList = data.placeLNumList;
             // var centerLNumList = data.centerLNumList;
             // if (centerLNumList.length > 0) {
             //     var centerLNum = centerLNumList[0].centerLNum;
@@ -223,13 +224,15 @@ function light2() {
             $('.place-status').each(function () {
                 var that=$(this);
                 var place2 = $(this).find('.caption span').text();
-                // $.each(placeLNumList,function(i, val){
-                //     var place=val.place;
-                //     var placeLNum=val.placeLNum;
-                //     if(place2==place){
-                //         that.find('.page>span:first-child').text(placeLNum);
-                //     }
-                // })
+
+                $.each(placeLNumList,function(i, val){
+                    var place=val.place;
+                    var placeLNum=val.placeLNum;
+                    if(place2==place){
+                        that.find('.page>span:first-child').text("");
+                        that.find('.page>span:first-child').text($.trim(parseInt(placeLNum)));
+                    }
+                })
                 var grouppart = groupLists[parseInt(place2) - 1];
                 if(isAllEqual(grouppart) && grouppart.indexOf(null) != -1){
                     $(this).find('.icon img').attr('src', '/static/img/2.png')

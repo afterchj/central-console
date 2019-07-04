@@ -205,6 +205,7 @@ public class HomeController {
     public Map<String, Object> getMonitor2LightStatus() {
         List<LightDemo> lightState2 = new ArrayList<>();
         CommandLight commandInfo = monitor2Dao.getCommandInfo();
+        List<LightDemo> placeLNumList = monitor2Dao.getPlaceLNum();
         Map<String, Object> map = new HashMap<>();
         if(commandInfo!=null){
             String status = null;
@@ -222,25 +223,26 @@ public class HomeController {
 
             }else if ("C0".equals(commandInfo.getCtype())){
                 //pad or 手机 全控
-                if ("37".equals(commandInfo.getY())){
-                    //全开
-                    status="0";
-                }else if ("32".equals(commandInfo.getY())){
+                if ("32".equals(commandInfo.getY())){
                     //全关
                     status="1";
+                }else {
+                    //全开
+                    status="0";
                 }
                 lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status);
             }else if ("C1".equals(commandInfo.getCtype())){
                 //pad or 手机 组控
                 int groupId = Integer.valueOf(commandInfo.getCid());
-                if ("37".equals(commandInfo.getY())){
-                    status="0";
-                }else {
+                if ("32".equals(commandInfo.getY())){
                     status="1";
+                }else {
+                    status="0";
                 }
                 lightState2 = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status);
             }
             map.put("lightState",lightState2);
+            map.put("placeLNumList",placeLNumList);
         }
         return map;
     }
