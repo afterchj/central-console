@@ -3,7 +3,7 @@ $(function () {
     init()
     light()
     setInterval(function () {
-        light()
+        light2()
     }, 500)
 })
 $('.frame>span').click(function () {
@@ -141,6 +141,113 @@ function light() {
                         $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
                         $(this).find('.icon img').attr('src', '')
                     }
+            })
+
+            var isTextArray = [];
+            var isExistArray = [];
+            $('.place-status').each(function () {
+                var img = $(this).find('img').attr('src');
+                var onOff = $(this).find('.frame>span.active').text();
+                isExistArray.push(img)
+                isTextArray.push(onOff)
+            })
+
+            if (isExistArray.indexOf('/static/img/2.png') != -1) {
+                $('img.total-frame').attr('src', '/static/img/2.png');
+            } else if (isExistArray.indexOf('/static/img/2.png') == -1 && isExistArray.indexOf('/static/img/1.png') != -1) {
+                $('img.total-frame').attr('src', '/static/img/1.png');
+            } else {
+                $('img.total-frame').attr('src', '');
+            }
+            if (isAllEqual(isTextArray)) {
+                if (isTextArray[0] == 'ON') {
+                    $('.total-frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                    $('img.total-frame').attr('src', '');
+                } else if (isTextArray[0] == 'OFF') {
+                    $('.total-frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                    $('img.total-frame').attr('src', '');
+                }
+            }
+        }
+    })
+}
+
+function light2() {
+    $.ajax({
+        type: "post",
+        url: "/getMonitor2LightStatus",
+        dataType: "json",
+        success: function (data) {
+            var groupLists = Array_2(10, '');
+            var lightState = data.lightState;
+            // var placeLNumList = data.placeLNumList;
+            // var centerLNumList = data.centerLNumList;
+            // if (centerLNumList.length > 0) {
+            //     var centerLNum = centerLNumList[0].centerLNum;
+            //     $('.total-page').text(centerLNum);
+            // } else {
+            //     $('.total-page').text("0");
+            // }
+            // $('.light-line>span').not(".hide .air").removeClass('disconnected off on')
+            $('.total-frame>span').removeClass('active')
+            $(this).find('.icon img').attr('src', '');
+            $.each(lightState, function (i, val) {
+                var index = i;
+                var group = val.group;
+                var status = val.status;
+                var lname = val.lname;
+                if(groupLists[group - 1]){
+                    groupLists[group - 1].push(status);
+                }
+                // var selector;
+                // (group > 9) ? selector = '.place': selector = '.place0';
+                $('.light-line span').not(".hide").each(function () {
+                    // $(this).find('span').not(".hide").each(function () {
+                    //     $(this).attr('alt');
+                        var weblname =$(this).attr('alt')
+                        if (parseInt(lname) == (parseInt(weblname)+1)) {
+                            if (status == 0) {
+                                $(this).removeClass('off disconnected')
+                                $(this).addClass('on')
+                            } else if (status == 1) {
+                                $(this).removeClass('on disconnected')
+                                $(this).addClass('off')
+                            }
+                            // else if (status == null) {
+                            //     $(this).addClass('disconnected')
+                            // }
+                        }
+                    // })
+                })
+            })
+            $('.place-status').each(function () {
+                var that=$(this);
+                var place2 = $(this).find('.caption span').text();
+                // $.each(placeLNumList,function(i, val){
+                //     var place=val.place;
+                //     var placeLNum=val.placeLNum;
+                //     if(place2==place){
+                //         that.find('.page>span:first-child').text(placeLNum);
+                //     }
+                // })
+                var grouppart = groupLists[parseInt(place2) - 1];
+                if(isAllEqual(grouppart) && grouppart.indexOf(null) != -1){
+                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                    $(this).find('.frame>span').removeClass('active');
+                    $(this).find('.page>span:first-child').text('0');
+                }else if (!isAllEqual(grouppart) &&  grouppart.indexOf(null) != -1 ) {
+                    $(this).find('.icon img').attr('src', '/static/img/2.png')
+                    $(this).find('.frame>span').removeClass('active');
+                } else if (!isAllEqual(grouppart)) {
+                    $(this).find('.icon img').attr('src', '/static/img/1.png')
+                    $(this).find('.frame>span').removeClass('active');
+                } else if (isAllEqual(grouppart) && grouppart.indexOf('0') != -1) {
+                    $(this).find('.frame>span:first-child').addClass('active').siblings('span').removeClass('active');
+                    $(this).find('.icon img').attr('src', '')
+                } else if (isAllEqual(grouppart) && grouppart.indexOf('1') != -1) {
+                    $(this).find('.frame>span:last-child').addClass('active').siblings('span').removeClass('active');
+                    $(this).find('.icon img').attr('src', '')
+                }
             })
 
             var isTextArray = [];

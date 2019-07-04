@@ -6,7 +6,7 @@ $(function () {
     setInterval(function () {
         light();
         // light2();
-        console.log('light')
+        // console.log('light')
     }, 500)
 
     // setInterval(function () {
@@ -354,7 +354,7 @@ $('.on-off>div').click(function () {
 })
 $("select").change(function () {
     var command = $.trim($(this).val());
-    var host = '192.168.1.73';
+    var host = '192.168.16.73';
     $.post("/sendSocket5", {
         "command": command,
         "host": host

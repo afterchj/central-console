@@ -218,6 +218,8 @@
                         <span th:each="placeLNum:${placeLNumList}"
                               th:if="${placeLNum.mname=='5楼'} and ${placeLNum.place==4} "
                               th:text="${placeLNum.PlaceLNum}"></span>
+                        <!--<span th:each="placeLNum:${placeLNumList}"-->
+                              <!--th:text="(${placeLNum.mname=='5楼'} and ${placeLNum.place==4})?${placeLNum.PlaceLNum}:'0'"></span>-->
                         /12</span>
                 </div>
             </div>
@@ -278,8 +280,7 @@
                 <div class="light-foot clearfix">
                     <span class="status f-l" id="four-oneplace-state">ON</span>
                     <span class="num f-r" id="four-oneplace-num">
-                        <span th:each="placeLNum:${placeLNumList}"
-                              th:if="${placeLNum.mname=='4楼'} and ${placeLNum.place==1} "
+                        <span th:each="placeLNum:${placeLNumList}" th:if="${placeLNum.mname=='4楼'} and ${placeLNum.place==1}"
                               th:text="${placeLNum.PlaceLNum}"></span>
                         /12</span>
                 </div>

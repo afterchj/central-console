@@ -24,7 +24,7 @@ public interface Monitor2Dao {
             " mname,lname")
     List<LightDemo> getMonitorFromRemoteByStatus(@Param("status") String status);
 
-    @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname ='Office'' and" +
+    @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname ='Office' and" +
             " d.group=#{group} ORDER BY mname,lname")
     List<LightDemo> getMonitorFromPhoneByGroup(@Param("group") int groupId, @Param("status") String status);
 }
