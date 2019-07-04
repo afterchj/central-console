@@ -22,9 +22,13 @@ public interface Monitor2Dao {
 
     @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname ='Office' ORDER BY" +
             " mname,lname")
-    List<LightDemo> getMonitorFromRemoteByStatus(@Param("status") String status);
+    List<LightDemo> getMonitorFromRemoteByStatus(@Param("status") String status);//全开全关
 
-    @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname ='Office'' and" +
+    @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname ='Office' and" +
             " d.group=#{group} ORDER BY mname,lname")
-    List<LightDemo> getMonitorFromPhoneByGroup(@Param("group") int groupId, @Param("status") String status);
+    List<LightDemo> getMonitorFromPhoneByGroup(@Param("group") int groupId, @Param("status") String status);//单组全开全关
+
+    @Select("select count(*) as PlaceLNum,place from f_light_demo where mname ='Office' Group by mname,place")
+    List<LightDemo> getPlaceLNum();//每个区域的灯个数
+
 }

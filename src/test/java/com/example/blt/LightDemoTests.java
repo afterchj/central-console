@@ -31,4 +31,18 @@ public class LightDemoTests {
         exhibitionFromPhoneByGroup.stream().forEach(System.out::println);
     }
 
+    @Test
+    public void test3(){
+        String command = "7701041609003766";
+        String group = command.substring(9,10);
+        String state = command.substring(12,14);
+        String type = command.substring(6,8);
+        System.out.println(group+" : "+state+" : "+command.length()+" : "+type);
+        command="77010315373766";
+        group = command.substring(6,8);
+        state = command.substring(10,12);
+        type = command.substring(6,8);
+        System.out.println(group+" : "+state+" : "+command.length()+" : "+type);
+    }
+
 }
