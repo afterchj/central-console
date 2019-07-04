@@ -130,10 +130,10 @@ function light() {
         dataType: "json",
         success: function (data) {
             var lightState = data.lightState;
-            // var placeLNumList = data.placeLNumList;
-            // var centerLNumList = data.centerLNumList;
+            var placeLNumList = data.placeLNumList;
+            var centerLNumList = data.centerLNumList;
             // if (centerLNumList.length > 0) {
-            //     $('.switch-part.total .page>span:first-child').text(centerLNumList[0].centerLNum);
+                $('.switch-part.total .page>span:first-child').text(centerLNumList);
             // } else {
             //     $('.switch-part.total .page>span:first-child').text('0');
             // }
@@ -168,6 +168,11 @@ function light() {
             })
             //group01
             var on=0,off=0,disconnected=0;
+            var totalStatus = new Array();
+            var group1DisNum = new Array();
+            var group2DisNum = new Array();
+            var group3DisNum = new Array();
+            var group4DisNum = new Array();
             $(".box.clearfix").find('.box-1.f-l.clearfix:eq(0)').find('div.lamp').not('.hide').each(function () {
                 if ($(this).hasClass('on')){
                     on=1;
@@ -175,21 +180,26 @@ function light() {
                     off=1;
                 }else if ($(this).hasClass('disconnected')){
                     disconnected=1;
+                    group1DisNum.push(1);
                 }
                 // console.log($(this).attr('class'))
             });
             if (disconnected==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(0)').find('img').attr('src', '')
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                totalStatus.push('dis');
             }else if (on==1&&off==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                totalStatus.push('diff');
             }else if (on==1&&off==0){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(2)').find('.on-off>div:first-child').addClass('active').siblings().removeClass('active');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(0)').find('img').attr('src', '')
+                totalStatus.push('on');
             }else if (on==0&&off==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(2)').find('.on-off>div:last-child').addClass('active').siblings().removeClass('active');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(0)').find('img').attr('src', '')
+                totalStatus.push('off');
             }
             //group02
             var twoOn=0,twoOff=0,twodisconnected=0;
@@ -200,21 +210,26 @@ function light() {
                     twoOff=1;
                 }else if ($(this).hasClass('disconnected')){
                     twodisconnected=1;
+                    group2DisNum.push(1);
                 }
             });
 
             if (twodisconnected==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(0)').find('img').attr('src', '')
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                totalStatus.push('dis');
             }else if (twoOn==1&&twoOff==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                totalStatus.push('diff');
             }else if (twoOn==1&&twoOff==0){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(2)').find('.on-off>div:first-child').addClass('active').siblings().removeClass('active');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(0)').find('img').attr('src', '')
+                totalStatus.push('on');
             }else if (twoOn==0&&twoOff==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(2)').find('.on-off>div:last-child').addClass('active').siblings().removeClass('active');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(0)').find('img').attr('src', '')
+                totalStatus.push('off');
             }
 
             //group03
@@ -226,20 +241,25 @@ function light() {
                     thirdOff=1;
                 }else if ($(this).hasClass('disconnected')){
                     thirddisconnected=1;
+                    group3DisNum.push(1);
                 }
             });
             if (thirddisconnected==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(0)').find('img').attr('src', '')
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                totalStatus.push('dis');
             }else if (thirdOn==1&&thirdOff==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                totalStatus.push('diff');
             }else if (thirdOn==1&&thirdOff==0){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(2)').find('.on-off>div:first-child').addClass('active').siblings().removeClass('active');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(0)').find('img').attr('src', '')
+                totalStatus.push('on');
             }else if (thirdOn==0&&thirdOff==1){
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(2)').find('.on-off>div:last-child').addClass('active').siblings().removeClass('active');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(0)').find('img').attr('src', '')
+                totalStatus.push('off');
             }
             //group04
             var fourOn=0,fourOff=0,fourdisconnected=0;;
@@ -250,41 +270,95 @@ function light() {
                     fourOff=1;
                 }else if ($(this).hasClass('disconnected')){
                     fourdisconnected=1;
+                    group4DisNum.push(1);
                 }
             });
             if (thirddisconnected==1){
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(0)').find('img').attr('src', '');
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                totalStatus.push('dis');
             }else if (fourOn==1&&fourOff==1){
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                totalStatus.push('diff');
             }else if (fourOn==1&&fourOff==0){
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(2)').find('.on-off>div:first-child').addClass('active').siblings().removeClass('active');
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(0)').find('img').attr('src', '')
+                totalStatus.push('on');
             }else if (fourOn==0&&fourOff==1){
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(2)').find('.on-off>div:last-child').addClass('active').siblings().removeClass('active');
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(0)').find('img').attr('src', '')
+                totalStatus.push('off');
             }
-            if (disconnected==1||twodisconnected==1||thirddisconnected==1||fourdisconnected==1){
+
+            // if (disconnected==1||twodisconnected==1||thirddisconnected==1||fourdisconnected==1){
+            //     $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '');
+            //     $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+            // } else if ((on==1&&off==1)||(twoOn==1&&twoOff==1)||(thirdOn==1&&thirdOff==1)||(fourOn==1&&fourOff==1)){
+            //     $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+            //     $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+            // }
+            var groupStatusOn = 'on';
+            var groupStatusOff = 'off';
+            $.each(totalStatus,function (key,value) {
+                // console.log(value)
+                if (value=='dis'){
+                    $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '');
+                    $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                    return false;
+                }
+                if (value=='diff'){
+                    $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+                    $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
+                    return false;
+                }
+                if (value=='on'){
+                    groupStatusOff = 'on';
+                }
+                if (value=='off'){
+                    groupStatusOn = 'off';
+                }
+            });
+            if (groupStatusOn == 'on' && groupStatusOff=='on'){
                 $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '');
-                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
-            } else if ((on==1&&off==1)||(twoOn==1&&twoOff==1)||(thirdOn==1&&thirdOff==1)||(fourOn==1&&fourOff==1)){
+                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div:first-child').addClass('active').siblings().removeClass('active');
+            }else if (groupStatusOn == 'off' &&groupStatusOff=='off'){
+                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '');
+                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div:last-child').addClass('active').siblings().removeClass('active');
+            }else if (groupStatusOn=='off'&&groupStatusOff=='on'){
                 $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
                 $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
             }
 
 
+            $('.switch-part').not('.scene,.total').each(function () {
+                var that = $(this);
+                var groupName = parseInt($(this).find('.groupName').text());
+                $.each(placeLNumList, function (i, val) {
+                    var place = val.place;
+                    var placeLNum = val.placeLNum;
+                    // if (place == groupName){
+                    //     switch (place){
+                    //         case 1:
+                    //             that.find('.page>span:first-child').text((placeLNum-group1DisNum.size()));
+                    //             break;
+                    //         case 2:
+                    //             that.find('.page>span:first-child').text((placeLNum-group2DisNum.size()));
+                    //             break;
+                    //         case 3:
+                    //             that.find('.page>span:first-child').text((placeLNum-group3DisNum.size()));
+                    //             break;
+                    //         case 4:
+                    //             that.find('.page>span:first-child').text((placeLNum-group4DisNum.size()));
+                    //             break;
+                    //     }
+                    // }
 
-            // $('.switch-part').not('.scene,.total').each(function () {
-            //     var that = $(this);
-            //     var groupName = parseInt($(this).find('.groupName').text());
-            //     // $.each(placeLNumList, function (i, val) {
-            //     //     var place = val.place;
-            //     //     var placeLNum = val.placeLNum;
-            //     //     if (place == groupName) {
-            //     //         that.find('.page>span:first-child').text(placeLNum);
-            //     //     }
-            //     // })
+                    if (place == groupName) {
+                        that.find('.page>span:first-child').text(placeLNum);
+                    }
+                })
+            })
             //     // var lightGroupPart = lightGroup[parseInt(groupName) - 1];
             //     // if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
             //     //     // $(this).find('img').attr('src', '/static/img/2.png')
