@@ -2,6 +2,8 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.task.ExecuteTask;
+import com.example.blt.utils.ConsoleUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * 服务器主要的业务逻辑
@@ -26,6 +31,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     private static Logger logger = LoggerFactory.getLogger(ChatServerHandler.class);
     //保存所有活动的用户
     public static final ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private static Set<Map> lightSet = new CopyOnWriteArraySet<>();
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
@@ -41,6 +47,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     JSONObject jsonObject = JSON.parseObject(arg1);
                     String cmd = jsonObject.getString("command");
                     String to = jsonObject.getString("host");
+                    if (ip.equals("127.0.0.1") && cmd.length() > 9) {
+                        ExecuteTask.parseLocalCmd(cmd, ip);
+                        break;
+                    }
                     if (ip.equals(to)) {
                         ch.writeAndFlush(cmd);
                         break;
@@ -59,6 +69,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             break;
                         }
                     } else {
+                        ConsoleUtil.cleanSet(lightSet);
+                        Map map = ExecuteTask.pingInfo(arg1, ip);
+                        ExecuteTask.saveInfo(arg1, map, lightSet);
                         if (!ip.equals("127.0.0.1") && arg1.length() > 9) {
                             ch.writeAndFlush(arg1);
                         }

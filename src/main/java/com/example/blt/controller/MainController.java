@@ -34,9 +34,11 @@ public class MainController {
     private Monitor2Dao monitor2Dao;
 
     @RequestMapping("/test")
-    public String console(String cmd) {
-        SocketUtil.sendCmd(cmd);
-        return "ok";
+    public String ping(ConsoleVo consoleVo) {
+        String info = JSON.toJSONString(consoleVo);
+        ControlTask task = new ControlTask(clientMain, info, true);
+        String result = ExecuteTask.sendCmd(task);
+        return result;
     }
 
     @RequestMapping("/switch")
@@ -217,7 +219,11 @@ public class MainController {
             command = "7701021908";
         }
         String cmd = host + ":" + command;
-        SocketUtil.sendCmd2(host, cmd);
+        map.put("command", command);
+        map.put("host", host);
+        ControlTask task = new ControlTask(clientMain, JSON.toJSONString(map), true);
+        ExecuteTask.sendCmd(task);
+//        SocketUtil.sendCmd2(host, cmd);
         map.put("success", success);
         return map;
     }
@@ -228,8 +234,12 @@ public class MainController {
         Map<String, String> map = new HashMap<>();
         String success = "success";
         String cmd1 = host + ":" + command;
-        String code1 = SocketUtil.sendCmd2(host, cmd1);
-        if ("1".equals(code1)) {
+//        String code1 = SocketUtil.sendCmd2(host, cmd1);
+        map.put("command", command);
+        map.put("host", host);
+        ControlTask task = new ControlTask(clientMain, JSON.toJSONString(map), true);
+        String code = ExecuteTask.sendCmd(task);
+        if ("fail".equals(code)) {
 //            失败
             success = "error";
         }

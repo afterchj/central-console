@@ -1,5 +1,6 @@
 package com.example.blt.utils;
 
+import com.example.blt.entity.dd.ConsoleKeys;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,16 @@ public class ConsoleUtil {
     public static Set getInfo(String key) {
         return  (Set) redisTemplate.opsForValue().get(key);
     }
-
+    public static void cleanSet(Set set) {
+        Set lmac = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set vaddr = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+        if (lmac == null) {
+            set.clear();
+        }
+        if (vaddr == null) {
+            set.clear();
+        }
+    }
     public static List getValueTest(String key) {
         return (List) redisTemplate.opsForValue().get(key);
     }
