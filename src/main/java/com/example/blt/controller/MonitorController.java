@@ -113,7 +113,12 @@ public class MonitorController {
                 }
             }else if ("C1".equals(ctype)){
                 //pad or 手机 组控
-                int groupId = Integer.valueOf(commandInfo.getCid());
+                int groupId;
+                if ("0A".equals(commandInfo.getCid())){
+                    groupId=10;
+                }else {
+                    groupId = Integer.valueOf(commandInfo.getCid());
+                }
                 String status;
                 if ("37".equals(commandInfo.getY())){
                     status="0";
@@ -209,7 +214,7 @@ public class MonitorController {
             }else if ("C1".equals(commandInfo.getCtype())){
                 //pad or 手机 组控
                 int groupId;
-                if (commandInfo.getCid().contains("A")){
+                if ("0A".equals(commandInfo.getCid())){
                     groupId = 10;
                 }else {
                     groupId = Integer.valueOf(commandInfo.getCid());
