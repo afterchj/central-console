@@ -208,7 +208,13 @@ public class MonitorController {
                 lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status);
             }else if ("C1".equals(commandInfo.getCtype())){
                 //pad or 手机 组控
-                int groupId = Integer.valueOf(commandInfo.getCid());
+                int groupId;
+                if (commandInfo.getCid().contains("A")){
+                    groupId = 10;
+                }else {
+                    groupId = Integer.valueOf(commandInfo.getCid());
+                }
+
                 if ("32".equals(commandInfo.getY())){
                     status="1";
                 }else {
