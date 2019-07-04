@@ -49,9 +49,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     String to = jsonObject.getString("host");
                     if (ip.equals("127.0.0.1") && cmd.length() > 9) {
                         ExecuteTask.parseLocalCmd(cmd, ip);
-                        break;
-                    }
-                    if (ip.equals(to)) {
+                    } else if (ip.equals(to)) {
                         ch.writeAndFlush(cmd);
                         break;
                     } else {
