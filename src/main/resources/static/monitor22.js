@@ -315,9 +315,9 @@ function light2() {
                     }
 
                 }
-                if (isTextArray.indexOf('ON')!=-1&&isTextArray.indexOf("OFF")!=-1){
-                    $('img.total-frame').attr('src', '/static/img/1.png');
-                }
+                // if (isTextArray.indexOf('ON')!=-1&&isTextArray.indexOf("OFF")!=-1){
+                //     $('img.total-frame').attr('src', '/static/img/1.png');
+                // }
             }
 
         }
