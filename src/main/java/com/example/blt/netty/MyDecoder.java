@@ -48,15 +48,15 @@ public class MyDecoder extends ByteToMessageDecoder {
         return sb.toString();
     }
 
-    public static String toHexString1(byte[] b) {
+    public static String toHexString(byte[] b) {
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < b.length; ++i) {
-            buffer.append(toHexString1(b[i]));
+            buffer.append(toHexString(b[i]));
         }
         return buffer.toString();
     }
 
-    public static String toHexString1(byte b) {
+    public static String toHexString(byte b) {
         String s = Integer.toHexString(b & 0xFF);
         if (s.length() == 1) {
             return "0" + s;
