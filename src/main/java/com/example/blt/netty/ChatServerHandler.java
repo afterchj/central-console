@@ -36,7 +36,15 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         Channel channel = arg0.channel();
-        logger.info("[" + channel.remoteAddress() + "] receive:" + arg1);
+        try {
+            JSONObject info = JSON.parseObject(arg1);
+            String command = info.getString("command");
+            if (command.length() > 9) {
+                ExecuteTask.parseLocalCmd(command, "127.0.0.1");
+            }
+        } catch (Exception e) {
+        }
+        logger.warn("[" + channel.remoteAddress() + "] receive:" + arg1);
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             SocketAddress address = ch.remoteAddress();
@@ -47,9 +55,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     JSONObject jsonObject = JSON.parseObject(arg1);
                     String cmd = jsonObject.getString("command");
                     String to = jsonObject.getString("host");
-                    if (ip.equals("127.0.0.1") && cmd.length() > 9) {
-                        ExecuteTask.parseLocalCmd(cmd, ip);
-                    } else if (ip.equals(to)) {
+                    if (ip.equals(to)) {
                         ch.writeAndFlush(cmd);
                     } else {
                         if (!ip.equals("127.0.0.1")) {
@@ -59,7 +65,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 } catch (Exception e) {
                     ConsoleUtil.cleanSet(lightSet);
                     Map map = ExecuteTask.pingInfo(arg1, ip);
-                    ExecuteTask.saveInfo(arg1, map, lightSet);
+                    ExecuteTask.saveInfo(arg1, map, lightSet, false);
                     if (!ip.equals("127.0.0.1") && arg1.length() > 9) {
                         ch.writeAndFlush(arg1);
                     }
@@ -86,7 +92,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String str = channel.remoteAddress().toString();
         String ip = str.substring(1, str.indexOf(":"));
-        logger.info("[" + ip + "] " + "online");
+        logger.warn("[" + ip + "] " + "online");
     }
 
     //退出链接
@@ -95,7 +101,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String str = channel.remoteAddress().toString();
         String ip = str.substring(1, str.indexOf(":"));
-        logger.info("[" + ip + "] " + "offline");
+        logger.warn("[" + ip + "] " + "offline");
     }
 
     @Override
@@ -103,7 +109,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         String str = channel.remoteAddress().toString();
         String ip = str.substring(1, str.indexOf(":"));
-        logger.info("[" + ip + "]" + cause.toString());
+        logger.warn("[" + ip + "]" + cause.toString());
         ctx.close().sync();
     }
 }

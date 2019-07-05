@@ -97,7 +97,7 @@ public class MainController {
             command = "2";
         }
         String cmd = host + ":" + command;
-        logger.info("cmd=" + command);
+        logger.warn("cmd=" + command);
         String code = SocketUtil.sendCmd2(host, cmd);
         if ("1".equals(code)) {
 //            失败
@@ -118,7 +118,7 @@ public class MainController {
         } else if ("关".equals(command)) {
             command = "2";
         }
-        logger.info("cmd=" + command);
+        logger.warn("cmd=" + command);
         String cmd1 = host1 + ":" + command;
         String cmd2 = host2 + ":" + command;
         String code1 = SocketUtil.sendCmd2(host1, cmd1);
@@ -142,7 +142,7 @@ public class MainController {
         Map<String, String> map = new HashMap<>();
         String success = "success";
         String cmd = host + ":" + command;
-        logger.info("cmd=" + command);
+        logger.warn("cmd=" + command);
         String code = SocketUtil.sendCmd2(host, cmd);
         if ("1".equals(code)) {
 //            失败
