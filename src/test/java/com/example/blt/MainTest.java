@@ -1,5 +1,6 @@
 package com.example.blt;
 
+import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
@@ -90,16 +91,16 @@ public class MainTest {
         Set<Map> set = new HashSet<>();
         set.addAll(list);
         ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
-        logger.info("list=" + set);
+        logger.warn("list=" + set);
 //        Map map=new HashMap();
 //        map.put("list",set);
 //        sqlSessionTemplate.update("console.saveUpdate2", map);
 //        Set<Map> list = ConsoleUtil.persistHosts();
 //        map.put("list", list);
 //        sqlSessionTemplate.selectList("console.batchInsert", map);
-//        logger.info("list.size=" + list.size());
+//        logger.warn("list.size=" + list.size());
 //        List<Map> list1 = sqlSessionTemplate.selectList("console.selectIn", map);
-//        logger.info("list1.size=" + list);
+//        logger.warn("list1.size=" + list);
     }
 
     @Test
@@ -113,30 +114,31 @@ public class MainTest {
         ConsoleUtil.saveInfo("test_lmac", set1);
         List set2 = ConsoleUtil.getValueTest("test_lmac");
 //        Set set2 = getInfo(key2);
-        logger.info("lists=" + set1);
-        logger.info("lists=" + set2);
+        logger.warn("lists=" + set1);
+        logger.warn("lists=" + set2);
     }
 
     @Test
     public void testRedis() {
         Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
-        logger.info("lmacSet=" + lmacSet);
-        logger.info("vaddrSet=" + vaddrSet);
+        logger.warn("lmacSet=" + lmacSet);
+        logger.warn("vaddrSet=" + vaddrSet);
     }
 
     @Test
     public void testRocketMQ() {
-//        ExecuteTask.parseLocalCmd("7701041601373766", "127.0.0.1");
-//        ExecuteTask.parseLocalCmd("77010315323266", "127.0.0.1");
-        ExecuteTask.parseLocalCmd("7701021908", "127.0.0.1");
-        ExecuteTask.parseLocalCmd("7701011B66", "127.0.0.1");
-        ExecuteTask.parseLocalCmd("7701012766", "127.0.0.1");
+        String c0="77010315323266";
+        String c1="7701041601373766";
+        String c2="7701021906";
+        ExecuteTask.parseLocalCmd(c0,"127.0.0.1");
+        ExecuteTask.parseLocalCmd(c1,"127.0.0.1");
+        ExecuteTask.parseLocalCmd(c2,"127.0.0.1");
 //        for (int i = 0; i < 10; i++) {
 //            Map map = new HashMap();
 //            map.put("topic", "topic_test");
 //            map.put("message", "Just is test messages " + i);
-//            ProducerService.pushMsg(Topics.CMD_LOCAL.getTopic(), "Just is test messages " + i);
+//            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(),"Just is test messages " + i);
 //        }
     }
 }

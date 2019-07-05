@@ -21,11 +21,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
-    //    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
     private static Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
-    //    private ExecutorService executorService = Executors.newCachedThreadPool();
     private static Set<Map> lightSet = new CopyOnWriteArraySet<>();
-    //    private static Set<Map> lmacSet = new CopyOnWriteArraySet<>();
 
 
     @Override
@@ -33,28 +30,27 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = arg0.channel();
         channel.writeAndFlush(msg);
         SocketAddress address = channel.remoteAddress();
-//        logger.info("[" + address + "] receive:" + msg);
+//        logger.warn("[" + address + "] receive:" + msg);
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
         ConsoleUtil.cleanSet(lightSet);
         Map map = ExecuteTask.pingInfo(msg, ip);
-        ExecuteTask.saveInfo(msg, map, lightSet);
-
+        ExecuteTask.saveInfo(msg, map, lightSet,true);
     }
 
 
     //在建立链接时发送信息
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
+    public void channelActive(ChannelHandlerContext ctx){
         Channel channel = ctx.channel();
-        logger.info("[" + channel.remoteAddress().toString() + "] " + "online");
+        logger.warn("[" + channel.remoteAddress().toString() + "] " + "online");
     }
 
     //退出链接
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
+    public void channelInactive(ChannelHandlerContext ctx){
         Channel channel = ctx.channel();
-        logger.info("[" + channel.remoteAddress().toString() + "] " + "offline");
+        logger.warn("[" + channel.remoteAddress().toString() + "] " + "offline");
     }
 
     @Override

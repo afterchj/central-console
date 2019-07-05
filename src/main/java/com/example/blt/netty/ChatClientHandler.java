@@ -12,7 +12,7 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1){
         //客户端主要用来接收服务器发送的消息
-        logger.info(arg0.channel().remoteAddress()+ ": " + arg1);
+        logger.warn(arg0.channel().remoteAddress()+ ": " + arg1);
     }
 
 }

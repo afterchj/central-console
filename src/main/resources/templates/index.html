@@ -11,8 +11,8 @@
     $(function () {
         $("#show").html("jquery文件加载成功！");
         $("#test").click(function () {
-            $.get("/test", {"command": $("#txt").val(), "host": "all"}, function (result) {
-                console.log("result", result,"value="+$("#txt").val());
+            $.get("/test",{"command": $("#txt").val(), "host": "all"}, function (result) {
+                console.log("result", result);
             })
         })
     });
@@ -33,7 +33,7 @@
     }
 </script>
 <body>
-<h1>Welcome come to Spring Boot world!</h1>
+<h1>Welcome to Spring Boot world!</h1>
 <p id="show"></p>
 <p>
     <label for="btn1">一键控制：</label>

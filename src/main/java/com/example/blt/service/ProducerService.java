@@ -25,7 +25,7 @@ public class ProducerService {
             Message message = new Message(msg[0], msg[1].getBytes());
             producer.send(message);
         } catch (Exception e) {
-            logger.info("error "+e.getMessage());
+            logger.warn("error "+e.getMessage());
         } finally {
             producer.shutdown();
         }
