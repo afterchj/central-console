@@ -11,7 +11,7 @@
     $(function () {
         $("#show").html("jquery文件加载成功！");
         $("#test").click(function () {
-            $.get("/test", {"cmd": $("#txt").val()}, function (result) {
+            $.get("/test",{"command": $("#test").val(), "host": "all"}, function (result) {
                 console.log("result", result);
             })
         })

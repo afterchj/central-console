@@ -25,7 +25,7 @@ public class StrUtil {
         String str1 = "77040F0227";
         map.put("host", ip);
         map.put("status", 1);
-        map.put("other", str);
+//        map.put("other", str);
         if (str.indexOf(str1) != -1) {
             map.put("host", ip);
             int index = str1.length();
@@ -99,7 +99,7 @@ public class StrUtil {
         String cid = str.substring(len - 4, len - 2);
         Map map = new ConcurrentHashMap<>();
         map.put("host", ip);
-        map.put("other", format);
+//        map.put("other", format);
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
                 map.put("ctype", prefix);
@@ -155,7 +155,7 @@ public class StrUtil {
         map.put("host", ip);
         map.put("lmac", str.substring(2, 14));
         map.put("mesh_id", str.substring(14, 22));
-        map.put("other", str);
+//        map.put("other", str);
         switch (prefix) {
             case "02":
                 map.put("cid", str.substring(34, 36));

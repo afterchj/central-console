@@ -34,7 +34,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private static Set<Map> vaddrSet = new CopyOnWriteArraySet<>();
     private static Set<Map> lmacSet = new CopyOnWriteArraySet<>();
-    private ClientMain clientMain = new ClientMain();
+    private static Set<Map> lightSet = new CopyOnWriteArraySet<>();
 
 
     @Override
@@ -45,35 +45,38 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 //        logger.info("[" + address + "] receive:" + msg);
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
-        String vaddrKey = ConsoleKeys.VADDR.getValue();
-        String lmacKey = ConsoleKeys.lMAC.getValue();
-        Set lmac = ConsoleUtil.getInfo(lmacKey);
-        Set vaddr = ConsoleUtil.getInfo(vaddrKey);
-        if (lmac == null) {
-            lmacSet.clear();
-        }
-        if (vaddr == null) {
-            vaddrSet.clear();
-        }
+        ConsoleUtil.cleanSet(lightSet);
         Map map = ExecuteTask.pingInfo(msg, ip);
-        if (msg.indexOf("77040F01") != -1) {
-            executorService.submit(() -> {
-                MapUtil.removeEntries(map, new String[]{"lmac"});
-                lmacSet.add(map);
-                ConsoleUtil.saveLmac(lmacKey, lmacSet, 80);
-            });
-        } else if (msg.indexOf("77040F0227") != -1) {
-            executorService.submit(() -> {
-                MapUtil.removeEntries(map, new String[]{"vaddr"});
-                vaddrSet.add(map);
-                ConsoleUtil.saveVaddr(vaddrKey, vaddrSet, 30);
-            });
-        } else if (msg.indexOf("77010315") != -1) {
-            JSONObject object = new JSONObject();
-            object.put("host", "all");
-            object.put("command", msg.substring(0, msg.length() - 2));
-            clientMain.sendCron(8001, object.toJSONString(), false);
-        }
+        ExecuteTask.saveInfo(msg, map, lightSet,true);
+//        String vaddrKey = ConsoleKeys.VADDR.getValue();
+//        String lmacKey = ConsoleKeys.lMAC.getValue();
+//        Set lmac = ConsoleUtil.getInfo(lmacKey);
+//        Set vaddr = ConsoleUtil.getInfo(vaddrKey);
+//        if (lmac == null) {
+//            lmacSet.clear();
+//        }
+//        if (vaddr == null) {
+//            vaddrSet.clear();
+//        }
+//        Map map = ExecuteTask.pingInfo(msg, ip);
+//        if (msg.indexOf("77040F01") != -1) {
+//            executorService.submit(() -> {
+//                MapUtil.removeEntries(map, new String[]{"lmac"});
+//                lmacSet.add(map);
+//                ConsoleUtil.saveLmac(lmacKey, lmacSet, 80);
+//            });
+//        } else if (msg.indexOf("77040F0227") != -1) {
+//            executorService.submit(() -> {
+//                MapUtil.removeEntries(map, new String[]{"vaddr"});
+//                vaddrSet.add(map);
+//                ConsoleUtil.saveVaddr(vaddrKey, vaddrSet, 30);
+//            });
+//        } else if (msg.indexOf("77010315") != -1) {
+//            JSONObject object = new JSONObject();
+//            object.put("host", "all");
+//            object.put("command", msg.substring(0, msg.length() - 2));
+//            clientMain.sendCron(8001, object.toJSONString(), false);
+//        }
     }
 
 
