@@ -36,6 +36,13 @@ public class HomeController {
         return "index";
     }
 
+//
+//    @RequestMapping("/newIndex")
+//    public String newIndex() {
+//        return "newMonitor/index";
+//    }
+
+
     @RequestMapping("/welcome")
     public String welcome() {
         return "welcome";
@@ -49,6 +56,11 @@ public class HomeController {
     @RequestMapping("/newIndex")
     public String newIndex() {
         return "newMonitor/index";
+    }
+
+    @RequestMapping("/newIndex/noEnergy")
+    public String noEnergy() {
+        return "newMonitor/noEnergy";
     }
 
     @Resource
