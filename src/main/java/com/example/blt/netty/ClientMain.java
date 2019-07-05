@@ -19,6 +19,7 @@ public class ClientMain {
 
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
 //    private static String host = "127.0.0.1";
+//    private static String host = "192.168.51.97";
     private static String host = "192.168.16.60";
 //        private static String host = "119.3.49.192";
     Channel channel = null;

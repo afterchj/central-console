@@ -54,7 +54,7 @@ public class ExecuteTask {
         }
         if (flag) {
             if (msg.indexOf("77010315") != -1) {
-                logger.info("receive:" + msg);
+                logger.warn("cmd: " + msg);
                 JSONObject object = new JSONObject();
                 object.put("host", "all");
                 object.put("command", msg.substring(0, msg.length() - 2));
@@ -90,32 +90,39 @@ public class ExecuteTask {
 
     public static void parseLocalCmd(String str, String ip) {
         executorService.submit(() -> {
-            String prefix = str.substring(0, 8);
-            Map map = new ConcurrentHashMap<>();
-            map.put("host", ip);
-            map.put("other", str);
-            String cmd = str.substring(prefix.length());
-            String cid = cmd.substring(0, 2);
-            switch (prefix) {
-                case "77010416":
-                    map.put("ctype", "C1");
-                    map.put("x", cmd.substring(2, 4));
-                    map.put("y", cmd.substring(4, 6));
-                    map.put("cid", cid);
-                    break;
-                case "77010315":
-                    map.put("ctype", "C0");
-                    map.put("x", cmd.substring(0, 2));
-                    map.put("y", cmd.substring(2, 4));
-                    break;
-                case "77010219":
-                    map.put("ctype", "42");
-                    map.put("cid", cid);
-                    break;
-                default:
-                    return;
+            Map map = new ConcurrentHashMap();
+            try {
+                int len = str.length();
+                String prefix = str.substring(0, 8);
+                map.put("host", ip);
+//            map.put("other", str);
+                String cmd = str.substring(prefix.length());
+                String cid = cmd.substring(0, 2);
+                String x = str.substring(len - 6, len - 4);
+                String y = str.substring(len - 4, len - 2);
+                switch (prefix) {
+                    case "77010416":
+                        map.put("ctype", "C1");
+                        map.put("x", x);
+                        map.put("y", y);
+                        map.put("cid", cid);
+                        break;
+                    case "77010315":
+                        map.put("ctype", "C0");
+                        map.put("x", x);
+                        map.put("y", y);
+                        break;
+                    case "77010219":
+                        map.put("ctype", "42");
+                        map.put("cid", cid);
+                        break;
+                    default:
+                        return;
+                }
+                ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (Exception e) {
+                logger.error(e.getMessage());
             }
-            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
         });
     }
 

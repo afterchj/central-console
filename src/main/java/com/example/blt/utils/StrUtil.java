@@ -42,7 +42,7 @@ public class StrUtil {
             map.put("y", y);
             ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
 //            sqlSessionTemplate.selectOne("console.saveLight", map);
-//            logger.info("result=" + map.get("result"));
+//            logger.warn("result=" + map.get("result"));
         } else if (str.indexOf("77040F01") != -1) {
 //            String prefix = str.substring(0, 8);
             String lmac = str.substring(8, 20).toLowerCase();
@@ -62,7 +62,7 @@ public class StrUtil {
             map.put("lmac", sortMac.toString());
             ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
 //            sqlSessionTemplate.selectOne("console.saveLight", map);
-//            logger.info("result=" + map.get("result"));
+//            logger.warn("result=" + map.get("result"));
         } else {
             int len = str.length();
             if (len >= 22 && len <= 40) {
@@ -146,7 +146,7 @@ public class StrUtil {
         ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
 //        amqpTemplate.convertAndSend(ROUTING_KEY, JSON.toJSONString(map));
 //        sqlSessionTemplate.selectOne("console.saveConsole", map);
-//        logger.info("result=" + map.get("result"));
+//        logger.warn("result=" + map.get("result"));
     }
 
     public static void formatStr(String str, String ip) {
@@ -173,7 +173,7 @@ public class StrUtil {
         }
         ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
 //        sqlSessionTemplate.selectOne("console.saveConsole", map);
-//        logger.info("result=" + map.get("result"));
+//        logger.warn("result=" + map.get("result"));
     }
 
 }

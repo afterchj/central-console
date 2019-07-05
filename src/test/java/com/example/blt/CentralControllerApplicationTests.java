@@ -51,8 +51,8 @@ public class CentralControllerApplicationTests {
         String key2 = ConsoleKeys.lMAC.getValue();
         operationsList.set("test_vaddr", vaddr, 1, TimeUnit.MINUTES);
         List set1 = operationsList.get("test_vaddr");
-        logger.info("lmacSet=" + set1);
-        logger.info("vaddrSet=" + vaddrSet);
+        logger.warn("lmacSet=" + set1);
+        logger.warn("vaddrSet=" + vaddrSet);
     }
 //    @Test
 //    public void contextLoads() {
@@ -90,8 +90,8 @@ public class CentralControllerApplicationTests {
 //    public void testList() {
 //        HostInfo s = hostService.getByIp("192.168.51.95");
 //        List<LightInfo> list = lightService.getByHostInfo(s);
-//        logger.info("size=" + list.size() + ",id=" + list.get(0));
-//        logger.info("id=" + list.get(0));
+//        logger.warn("size=" + list.size() + ",id=" + list.get(0));
+//        logger.warn("id=" + list.get(0));
 //    }
 
     @Test
