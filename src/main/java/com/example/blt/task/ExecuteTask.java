@@ -54,7 +54,6 @@ public class ExecuteTask {
         }
         if (flag) {
             if (msg.indexOf("77010315") != -1) {
-                logger.warn("cmd: " + msg);
                 JSONObject object = new JSONObject();
                 object.put("host", "all");
                 object.put("command", msg.substring(0, msg.length() - 2));
@@ -117,9 +116,9 @@ public class ExecuteTask {
                         map.put("cid", cid);
                         break;
                     default:
-                        return;
+                        break;
                 }
-                ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
+                ProducerService.pushMsg(Topics.LOCAL_TOPIC.getTopic(), JSON.toJSONString(map));
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }

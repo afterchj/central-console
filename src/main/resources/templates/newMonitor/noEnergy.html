@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/static/swiper/css/swiper.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/new/style/global.css}"/>
+    <link rel="stylesheet" th:href="@{/static/new/style/style.css}"/>
+    <title>智能照明控制中心(无耗能)</title>
+    <style>
+
+        .swiper-container {
+            width: 100%;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background:  #fff;
+            height: 150px;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .swiper-title{
+            text-align: center;
+            position: absolute;
+            bottom: 25px;
+            width: 100%;
+            line-height: 20px;
+            color: #333;
+            font-size: 13px;
+            color: #555;
+        }
+        .swiper-title-top{
+            text-align: center;
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            line-height: 20px;
+            color: #333;
+            font-size: 13px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="common/head::head"></div>
+<div class="total-container p-r">
+    <div th:replace="common/left::left('noEnergy1')"></div>
+    <div class="main_box noEnergy">
+        <div class="page1">
+            <p class="hint">
+                实时数据更新于2019-10-10 10:00
+            </p>
+            <!--<div class="chart clearfix">-->
+            <!--<div class="card electric f-l  clearfix">-->
+            <!--<div class="clearfix min-title">-->
+            <!--<div class="f-l">-->
+            <!--实时用电333-->
+            <!--</div>-->
+            <!--<div class="f-r">-->
+            <!--<a href="">历史用电</a>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="clearfix electric-detail">-->
+            <!--<div class="f-l">-->
+            <!--<div>当日用电</div>-->
+            <!--<div><img th:src="@{/static/new/img/1.png}" alt=""></div>-->
+            <!--<div>136.05KWh</div>-->
+            <!--</div>-->
+            <!--<div class="f-r">-->
+            <!--<div>昨日用电</div>-->
+            <!--<div><img th:src="@{/static/new/img/1.png}" alt=""></div>-->
+            <!--<div>106.05KWh</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="totail-rate">-->
+            <!--<div>日同比</div>-->
+            <!--<div>↑ 28.29%</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="card energy f-l">-->
+
+            <!--</div>-->
+            <!--<div class="card  bulb f-l p-r">-->
+            <!--<div class="min-title">-->
+            <!--灯泡平均使用情况-->
+            <!--</div>-->
+            <!--<div class="">-->
+            <!--<div class="clearfix  rate-cricle">-->
+            <!--<div class="f-l">-->
+            <!--<canvas id="floor-1"></canvas>-->
+            <!--<p>1层</p>-->
+            <!--</div>-->
+            <!--<div class="f-l">-->
+            <!--<canvas id="floor-2"></canvas>-->
+            <!--<p>2层</p>-->
+            <!--</div>-->
+            <!--<div class="f-l">-->
+            <!--<canvas id="floor-3"></canvas>-->
+            <!--<p>3层</p>-->
+            <!--</div>-->
+            <!--<div class="f-l">-->
+            <!--<canvas id="floor-4"></canvas>-->
+            <!--<p>4层</p>-->
+            <!--</div>-->
+            <!--<div class="f-l">-->
+            <!--<canvas id="floor-5"></canvas>-->
+            <!--<p>5层</p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<p class="rate-hint p-a">红色角标：当前楼层出现使用率达90%的灯泡</p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="clearfix ">
+                <div class="real-time-status clearfix  f-l card">
+                    <div class="f-l p-r blue">
+                        <div class="middle p-a ">
+                            <p class="floor">实时状态</p>
+                            <p>（<span class="error">10</span>）</p>
+                        </div>
+                    </div>
+                    <div class="f-l p-r">
+                        <div class="middle p-a">
+                            <p>开关不一致</p>
+                            <p><img th:src="@{/static/new/img/switch-un.png}" alt=""></p>
+                            <p><span class="error">5</span></p>
+                        </div>
+                    </div>
+                    <div class="f-l p-r">
+                        <div class="middle p-a">
+                            <p>异常状态（故障）</p>
+                            <p><img th:src="@{/static/new/img/switch-abnormal.png}" alt=""></p>
+                            <p><span class="error">5</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lifetime-hint f-l clearfix blue card">
+                    <div class="lifetime-title f-l p-r">
+                        <div class="middle p-a blue">
+                            <p class="floor">灯泡寿命警示</p>
+                            <p>（<span class="error">5</span>）</p>
+                        </div>
+                    </div>
+                    <div class="f-l p-r light-hint-list">
+                        <div class="swiper-container ">
+                            <div class="clearfix  swiper-wrapper ">
+                                <div class="f-l swiper-slide">
+                                    <p class="swiper-title-top">区域1-组2</p>
+                                    <canvas id="floor-1"></canvas>
+                                    <br>
+                                    <p class="swiper-title">灯1</p>
+                                </div>
+                                <div class="f-l swiper-slide" >
+                                    <p class="swiper-title-top">区域1-组2</p>
+                                    <canvas id="floor-2"></canvas>
+                                    <p class="swiper-title">灯2</p>
+                                </div>
+                                <div class="f-l swiper-slide" >
+                                    <p class="swiper-title-top">区域2-组2</p>
+                                    <canvas id="floor-3"></canvas>
+                                    <p class="swiper-title">灯3</p>
+                                </div>
+                                <div class="f-l swiper-slide" >
+                                    <p class="swiper-title-top">区域2-组2</p>
+                                    <canvas id="floor-4"></canvas>
+                                    <p class="swiper-title">灯4</p>
+                                </div>
+                                <div class="f-l swiper-slide" >
+                                    <p class="swiper-title-top">区域3-组2</p>
+                                    <canvas id="floor-5"></canvas>
+                                    <p class="swiper-title">灯5</p>
+                                </div>
+                            </div>
+                            <!-- 如果需要分页器 -->
+                            <div class="swiper-pagination"></div>
+
+                            <!-- 如果需要导航按钮 -->
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status card">
+                <div class="title  clearfix">
+                    <div class="f-l">运行详情</div>
+                    <div class="f-r clearfix">
+                        <div class="f-l right">
+                            <span><img th:src="@{/static/new/img/normal.png}" alt=""></span>
+                            <span>正常</span>
+                        </div>
+                        <div class="f-l right">
+                            <span><img th:src="@{/static/new/img/switch-un.png}" alt=""></span>
+                            <span>开关不一致</span>
+                        </div>
+                        <div class="f-l right">
+                            <span><img th:src="@{/static/new/img/switch-abnormal.png}" alt=""></span>
+                            <span>异常状态（故障）</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="search  clearfix">
+                    <div class="f-l  floor-levels p-r">
+                        <div class="middle p-a">
+                            <p class="floor">实验室-1层</p>
+                            <p>（<span >48</span> / <span>48</span>）</p>
+                        </div>
+
+                    </div>
+                    <div class="f-l img-levels p-r">
+                        <div class="clearfix middle p-a">
+                            <div class="f-l">
+                                <p><img th:src="@{/static/new/img/switch-un.png}" alt=""></p>
+                                <p>当前状态</p>
+                            </div>
+                            <div class="f-l">
+                                <p><img th:src="@{/static/new/img/1.png}" alt=""></p>
+                                <p>无场景应用</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="f-l switch-levels p-r">
+                        <div class="middle p-a">
+                            <p><img th:src="@{/static/new/img/on-off-black.png}" alt=""></p>
+                            <p>开关</p>
+                        </div>
+
+                    </div>
+                    <div class="f-l select-levels p-r">
+                        <div class="middle p-a">
+                            <label >场景：</label>
+                            <select name="" id="">
+                                <option value="">场景1</option>
+                                <option value="">场景2</option>
+                                <option value="">场景3</option>
+                                <option value="">场景4</option>
+                                <option value="">场景5</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="f-l select-btn p-r">
+                        <div class="middle p-a">
+                            <button type="button">应用场景</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="content ">
+                    <div class="clearfix">
+                        <div class="on-off f-l">
+                            <div class="clearfix btn green">
+                                <div class="f-l">1层</div>
+                                <div class="f-l">
+                                    <span>故障：</span><span>0</span>
+                                </div>
+                                <div class="f-l">
+                                    <div class="img">
+                                        <img th:src="@{/static/new/img/on-off-white.png}" alt="">
+                                        <div class="min-font">开关</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="light-list f-l clearfix">
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="on-off f-l">
+                            <div class="clearfix btn green">
+                                <div class="f-l">2层</div>
+                                <div class="f-l">
+                                    <span>故障：</span><span class="error">4</span>
+                                </div>
+                                <div class="f-l">
+                                    <div class="img">
+                                        <img th:src="@{/static/new/img/on-off-white.png}" alt="">
+                                        <div class="min-font">开关</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="light-list f-l clearfix">
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="on-off f-l">
+                            <div class="clearfix btn green">
+                                <div class="f-l">3层</div>
+                                <div class="f-l">
+                                    <span>故障：</span><span class="error">2</span>
+                                </div>
+                                <div class="f-l">
+                                    <div class="img">
+                                        <img th:src="@{/static/new/img/on-off-white.png}" alt="">
+                                        <div class="min-font">开关</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="light-list f-l clearfix">
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="on-off f-l">
+                            <div class="clearfix btn green">
+                                <div class="f-l">4层</div>
+                                <div class="f-l">
+                                    <span>故障：</span><span>0</span>
+                                </div>
+                                <div class="f-l">
+                                    <div class="img">
+                                        <img th:src="@{/static/new/img/on-off-white.png}" alt="">
+                                        <div class="min-font">开关</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="light-list f-l clearfix">
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="on-off f-l">
+                            <div class="clearfix btn green">
+                                <div class="f-l">5层</div>
+                                <div class="f-l">
+                                    <span>故障：</span><span class="error">2</span>
+                                </div>
+                                <div class="f-l">
+                                    <div class="img">
+                                        <img th:src="@{/static/new/img/on-off-white.png}" alt="">
+                                        <div class="min-font">开关</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="light-list f-l clearfix">
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                            <div class="place f-l">
+                                <div class="place-title">
+                                    <div class="clearfix ">
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a ">
+                                                <p class="max">组1</p>
+                                                <p>(<span>4</span>/ <span>4</span>)</p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r r-line">
+                                            <div class="middle p-a">
+                                                <p><img th:src="@{/static/new/img/normal-white.png}" alt=""></p>
+                                            </div>
+                                        </div>
+                                        <div class="f-l p-r">
+                                            <div class="middle p-a min">
+                                                <p><img th:src="@{/static/new/img/on-off-white.png}" alt=""></p>
+                                                <p>开关</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="place-content">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="clearfix">
+                                            <div class="f-l p-r r-min-line">
+                                                <div class="middle p-a ">
+                                                    灯1
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r r-min-line" >
+                                                <div class="middle p-a yellow">
+                                                    Y
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="middle p-a">
+                                                    <img th:src="@{/static/new/img/on-off-black.png}" alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--<div><img th:src="@{/static/new/img/normal.png}" alt=""></div>-->
+                                    <!--<div><p>正常</p></div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/static/new/js/jquery.min.js}"></script>
+<!--<script type="text/javascript" th:src="@{/static/new/js/jquery.mousewheel.min.js}"></script>-->
+<script type="text/javascript" th:src="@{/static/swiper/js/swiper.min.js}"></script>
+<script type="text/javascript" th:src="@{/static/new/js/index.js}"></script>
+<script type="text/javascript" th:src="@{/static/new/js/waterbubble.min.js}"></script>
+<script>
+    $(function () {
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay: true,//可选选项，自动滑动
+            direction: 'horizontal',
+            slidesPerView: 3,
+//            slidesPerColumn: 2,
+//            slidesPerColumnFill: 'row',
+
+            // 如果需要前进后退按钮
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+
+        })
+        $('#floor-1').waterbubble({
+            txt: '60%',
+            textColor: '#333',
+            wave: true,
+            radius: 26,
+            lineWidth: 2,
+            data: 0.6,
+            waterColor: '#FF4646',
+            font: ' 14px arial',
+            animation: true
+        });
+        $('#floor-2').waterbubble({
+            txt: '50%',
+            textColor: '#333',
+            wave: true,
+            radius: 26,
+            lineWidth: 2,
+            data: 0.5,
+            waterColor: '#FF4646',
+            font: ' 14px arial',
+            animation: true
+        });
+        $('#floor-3').waterbubble({
+            txt: '70%',
+            textColor: '#333',
+            wave: true,
+            radius: 26,
+            lineWidth: 2,
+            data: 0.7,
+            waterColor: '#FF4646',
+            font: ' 14px arial',
+            animation: true
+        });
+        $('#floor-4').waterbubble({
+            txt: '80%',
+            textColor: '#333',
+            wave: true,
+            radius: 26,
+            lineWidth: 2,
+            data: 0.8,
+            waterColor: '#FF4646',
+            font: ' 14px arial',
+            animation: true
+        });
+        $('#floor-5').waterbubble({
+            txt: '20%',
+            textColor: '#333',
+            wave: true,
+            radius: 26,
+            lineWidth: 2,
+            data: 0.2,
+            waterColor: '#FF4646',
+            font: ' 14px arial',
+            animation: true
+        });
+    });
+</script>
+</body>
+</html>

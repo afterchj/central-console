@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "blt_cmd_local_topic", consumerGroup = "my_consumer_local_group")
+@RocketMQMessageListener(topic = "save_blt_console_local_topic", consumerGroup = "my_local_console_group")
 public class LocalConsumer implements RocketMQListener<String> {
 
     @Resource
@@ -29,13 +29,12 @@ public class LocalConsumer implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String message) {
-        logger.info("message=" + message);
-//        try {
-//            Map map = JSON.parseObject(message);
-//            sqlSessionTemplate.selectOne("console.saveConsole", map);
-//            logger.info("result=" + map.get("result"));
-//        } catch (Exception e) {
-//            logger.error(e.getMessage());
-//        }
+        try {
+            Map map = JSON.parseObject(message);
+            sqlSessionTemplate.selectOne("console.saveConsole", map);
+            logger.warn("result=" + map.get("result"));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
     }
 }
