@@ -7,6 +7,7 @@ package com.example.blt.entity.dd;
 public enum Topics {
 
     CONSOLE_TOPIC("save_blt_console_topic"),
+    LOCAL_TOPIC("save_blt_console_local_topic"),
     CMD_TOPIC("blt_cmd_console_topic"),
     LIGHT_TOPIC("save_light_topic");
     private String topic;
