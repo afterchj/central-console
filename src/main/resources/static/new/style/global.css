@@ -10,12 +10,19 @@ time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    vertical-align: baseline;
-    font-size: 14px;
-}
 
+}
+blockquote, body, button, dd, div, dl, dt, form, h1, h2, h3, h4, h5, h6, input, li, ol, p, pre, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+body{
+    font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+    /*font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;*/
+    vertical-align: baseline;
+    /*font-size: 14px;*/
+}
 blockquote, q {
     quotes: none;
 }
@@ -138,4 +145,26 @@ button{
     line-height: 25px;
     width: 30px !important;
     border: 1px solid #eee;
+}
+.long-line:after{
+    position: absolute;
+    display: inline-block;
+    content: '';
+    width: 1px;
+    height: 65%;
+    background-color: #e6e6e6;
+    text-align: right;
+    right: 0;
+    top: 17%;
+}
+.r-line:after{
+    position: absolute;
+    display: inline-block;
+    content: '';
+    width: 1px;
+    height: 30px;
+    background-color: #fff;
+    text-align: right;
+    right: 0;
+    top: 10%;
 }
