@@ -48,16 +48,18 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         }
 //        ConsoleUtil.cleanSet(lightSet);
         //当有用户发送消息的时候，对其他用户发送信息
-        for (Channel ch : group) {
-            SocketAddress address = ch.remoteAddress();
-            String str = address.toString();
-            String ip = str.substring(1, str.indexOf(":"));
-            if (address != null) {
-                if (ip.equals(to)) {
-                    ch.writeAndFlush(cmd);
-                } else {
-                    if (!ip.equals("127.0.0.1")) {
+        if (cmd.length() > 9) {
+            for (Channel ch : group) {
+                SocketAddress address = ch.remoteAddress();
+                String str = address.toString();
+                String ip = str.substring(1, str.indexOf(":"));
+                if (address != null) {
+                    if (ip.equals(to)) {
                         ch.writeAndFlush(cmd);
+                    } else {
+                        if (!ip.equals("127.0.0.1")) {
+                            ch.writeAndFlush(cmd);
+                        }
                     }
                 }
             }

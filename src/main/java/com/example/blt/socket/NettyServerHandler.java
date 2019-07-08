@@ -42,15 +42,15 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx){
-        Channel channel = ctx.channel();
-        logger.warn("[" + channel.remoteAddress().toString() + "] " + "online");
+//        Channel channel = ctx.channel();
+//        logger.warn("[" + channel.remoteAddress().toString() + "] " + "online");
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx){
-        Channel channel = ctx.channel();
-        logger.warn("[" + channel.remoteAddress().toString() + "] " + "offline");
+//        Channel channel = ctx.channel();
+//        logger.warn("[" + channel.remoteAddress().toString() + "] " + "offline");
     }
 
     @Override

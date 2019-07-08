@@ -62,7 +62,7 @@ public class ExecuteTask {
         }
     }
 
-    public static void pingStatus(boolean delay, ClientMain clientMain) {
+    public static void pingStatus(boolean delay) {
         new Thread(() -> {
             JSONObject object = new JSONObject();
             object.put("host", "all");
@@ -75,11 +75,11 @@ public class ExecuteTask {
             }
             for (int i = 0; i < 3; i++) {
                 object.put("command", "7701011B66");
-                clientMain.sendCron(8001, object.toJSONString());
+                new ClientMain().sendCron(8001, object.toJSONString());
                 try {
                     new Thread().sleep(5000);
                     object.put("command", "7701012766");
-                    clientMain.sendCron(8001, object.toJSONString());
+                    new ClientMain().sendCron(8001, object.toJSONString());
                 } catch (InterruptedException e) {
                     logger.error(e.getMessage());
                 }
