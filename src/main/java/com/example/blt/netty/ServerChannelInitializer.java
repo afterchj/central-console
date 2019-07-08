@@ -22,7 +22,7 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
         //IdleStateHandler心跳机制,如果超时触发Handle中userEventTrigger()方法
         pipeline.addLast("idleStateHandler", new IdleStateHandler(5, 0, 0, TimeUnit.MINUTES));
         //字符串编解码器
-//        pipeline.addLast(new StringDecoder(), new StringEncoder());
+        pipeline.addLast(new StringEncoder());
         //修改了这里
         pipeline.addLast("decoder", new MyDecoder());
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 4, 4, -8, 0));

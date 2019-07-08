@@ -1,5 +1,8 @@
 package com.example.blt.netty;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.example.blt.task.ExecuteTask;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -20,19 +23,27 @@ public class MyDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) {
 
-//创建字节数组,buffer.readableBytes可读字节长度
+        //创建字节数组,buffer.readableBytes可读字节长度
         byte[] b = new byte[buffer.readableBytes()];
-//复制内容到字节数组b
+        //复制内容到字节数组b
         buffer.readBytes(b);
-//字节数组转字符串
+        //字节数组转字符串
         String str = new String(b);
         SocketAddress addr = ctx.channel().remoteAddress();
         String temp = addr.toString();
-        String ips = temp.substring(1, temp.indexOf(":"));
-        if (!"127.0.0.1".equals(ips)) {
-            out.add(bytesToHexString(b));
-        } else {
+        String ip = temp.substring(1, temp.indexOf(":"));
+        if ("127.0.0.1".equals(ip)) {
             out.add(str);
+            try {
+                JSONObject info = JSON.parseObject(str);
+                String command = info.getString("command");
+                if (command.length() > 9) {
+                    ExecuteTask.parseLocalCmd(command, ip);
+                }
+            } catch (Exception e) {
+            }
+        } else {
+            out.add(bytesToHexString(b));
         }
     }
 

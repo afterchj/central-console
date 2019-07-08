@@ -35,4 +35,10 @@ public class StrUtilTest {
     public void testUUID() {
         System.out.println(UUID.randomUUID().toString());
     }
+
+    @Test
+    public void testStr(){
+        String str="3737303130333135333733373636";
+        System.out.println(str.replace("3",""));
+    }
 }
