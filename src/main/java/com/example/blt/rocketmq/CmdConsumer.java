@@ -26,7 +26,7 @@ public class CmdConsumer implements RocketMQListener<String> {
     public void onMessage(String message) {
         try {
             logger.warn("message=" + message);
-            clientMain.sendCron(8001, message, false);
+            clientMain.sendCron(8001, message);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

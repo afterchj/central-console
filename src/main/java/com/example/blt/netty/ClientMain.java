@@ -18,9 +18,10 @@ import java.io.InputStreamReader;
 public class ClientMain {
 
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
-//    private static String host = "127.0.0.1";
-    private static String host = "192.168.16.60";
-//        private static String host = "119.3.49.192";
+    //    private static String host = "127.0.0.1";
+//    private static String host = "192.168.16.60";
+    private static String host = "192.168.51.97";
+    //        private static String host = "119.3.49.192";
     Channel channel = null;
 
     public static void main(String[] args) throws IOException {
@@ -45,16 +46,14 @@ public class ClientMain {
         }
     }
 
-    public void sendCron(int port,String str, boolean flag) {
+    public void sendCron(int port, String str) {
         Channel channel = getChannel(port);
         //向服务端发送内容
         channel.writeAndFlush(str);
-        if (flag) {
-            try {
-                channel.closeFuture();
-            } catch (Exception e1) {
-                logger.error("Exception=" + e1);
-            }
+        try {
+            channel.closeFuture();
+        } catch (Exception e1) {
+            logger.error("Exception=" + e1);
         }
     }
 

@@ -14,19 +14,17 @@ public class ControlTask implements Callable<String> {
 
     private ClientMain clientMain;
     private String val;
-    private boolean flag;
 
-    public ControlTask(ClientMain clientMain, String val, boolean flag) {
+    public ControlTask(ClientMain clientMain, String val) {
         this.clientMain = clientMain;
         this.val = val;
-        this.flag = flag;
     }
 
     @Override
     public String call() {
         String result;
         try {
-            clientMain.sendCron(8001,val, flag);
+            clientMain.sendCron(8001,val);
             result = "ok";
         } catch (Exception e) {
             result = "fail";

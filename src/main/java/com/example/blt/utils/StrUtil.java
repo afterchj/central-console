@@ -107,9 +107,9 @@ public class StrUtil {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
                 String flag = str.substring(len - 6, len - 4);
                 if ("01".equals(flag)) {
-                    clientMain.sendCron(8001, Groups.GROUPSA.getOn(), false);
+                    clientMain.sendCron(8001, Groups.GROUPSA.getOn());
                 } else if ("02".equals(flag)) {
-                    clientMain.sendCron(8001, Groups.GROUPSA.getOff(), false);
+                    clientMain.sendCron(8001, Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", flag);

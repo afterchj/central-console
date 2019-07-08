@@ -36,7 +36,7 @@ public class MainController {
     @RequestMapping("/test")
     public String ping(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(clientMain, info, true);
+        ControlTask task = new ControlTask(clientMain, info);
         String result = ExecuteTask.sendCmd(task);
         return result;
     }
@@ -44,7 +44,7 @@ public class MainController {
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(clientMain, info, true);
+        ControlTask task = new ControlTask(clientMain, info);
         String result = ExecuteTask.sendCmd(task);
         return result;
     }
@@ -73,13 +73,13 @@ public class MainController {
             //向所有地址发信息
             map.put("host", "all");
             info = JSON.toJSONString(map);
-            ControlTask task = new ControlTask(clientMain, info, true);
+            ControlTask task = new ControlTask(clientMain, info);
             result = ExecuteTask.sendCmd(task);
         } else {
 //            String cmd = host + ":" + command;
             map.put("host", host);
             info = JSON.toJSONString(map);
-            ControlTask task = new ControlTask(clientMain, info, true);
+            ControlTask task = new ControlTask(clientMain, info);
             result = ExecuteTask.sendCmd(task);
         }
         map.put("success", result);
@@ -221,7 +221,7 @@ public class MainController {
         String cmd = host + ":" + command;
         map.put("command", command);
         map.put("host", host);
-        ControlTask task = new ControlTask(clientMain, JSON.toJSONString(map), true);
+        ControlTask task = new ControlTask(clientMain, JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
 //        SocketUtil.sendCmd2(host, cmd);
         map.put("success", success);
@@ -237,7 +237,7 @@ public class MainController {
 //        String code1 = SocketUtil.sendCmd2(host, cmd1);
         map.put("command", command);
         map.put("host", host);
-        ControlTask task = new ControlTask(clientMain, JSON.toJSONString(map), true);
+        ControlTask task = new ControlTask(clientMain, JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
         if ("fail".equals(code)) {
 //            失败

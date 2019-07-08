@@ -61,7 +61,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     return;
                 }
             }
-            clientMain.sendCron(8001, object.toJSONString(), false);
+            clientMain.sendCron(8001, object.toJSONString());
         }
     }
 
