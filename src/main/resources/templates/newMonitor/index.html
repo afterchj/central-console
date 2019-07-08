@@ -10,14 +10,14 @@
     <title>智能照明控制中心</title>
     <style>
 
-        .swiper-container {
+        .waterbubble .swiper-container {
             width: 100%;
             height: auto;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .swiper-slide {
+        .waterbubble .swiper-slide {
             text-align: center;
             font-size: 18px;
             background: #fff;
@@ -37,15 +37,37 @@
             align-items: center;
         }
 
-        .swiper-title {
+        .waterbubble .swiper-title {
             text-align: center;
             position: absolute;
             bottom: 0;
             width: 100%;
             line-height: 20px;
-            color: #333;
-            font-size: 12px;
+            font-size: 14px;
             color: #666;
+        }
+        .swiper-container .place-title{
+            position: absolute;
+            top: 0;
+            width: 70%;
+            line-height: 20px;
+            font-size: 14px;
+            color: #fff;
+            margin-left: 15%;
+        }
+        .swiper-container .place-content{
+            position: absolute;
+            top: 56px;
+            width: 70%;
+            color: #666;
+            font-size: 12px;
+            height: calc(170px - 56px - 40px);
+            padding: 20px 0;
+            margin-left: 15%;
+
+        }
+        .light-list .swiper-slide{
+            height: 170px;
         }
     </style>
 
@@ -61,7 +83,7 @@
             </p>
             <div class="chart clearfix">
                 <div class="card electric f-l  clearfix">
-                    <div class="clearfix min-title blue">
+                    <div class="clearfix min-title">
                         <div class="f-l">
                             实时用电
                         </div>
@@ -90,11 +112,11 @@
 
                 </div>
                 <div class="card  bulb f-l p-r">
-                    <div class="min-title blue">
+                    <div class="min-title ">
                         灯泡平均使用情况
                     </div>
                     <div>
-                        <div class="swiper-container ">
+                        <div class="swiper-container waterbubble">
                             <div class="clearfix  swiper-wrapper rate-cricle">
                                 <div class="f-l swiper-slide">
                                     <canvas id="floor-1"></canvas>
@@ -140,10 +162,6 @@
 
 
                             </div>
-                            <!-- 如果需要分页器 -->
-                            <div class="swiper-pagination"></div>
-
-                            <!-- 如果需要导航按钮 -->
                             <div class="swiper-button-prev"></div>
                             <div class="swiper-button-next"></div>
                         </div>
@@ -182,53 +200,107 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="light-list f-l clearfix swiper-container ">
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域1</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域2</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域3</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
-                                    <div><p>开关不一致</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域4</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
-                                            th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
-                                    <div>
-                                        <p>
-                                            开关不一致
-                                            异常状态（故障）
-                                        </p>
+                        <div class="light-list f-l  ">
+                            <div class="swiper-container light-swiper">
+                                <div class="swiper-wrapper clearfix ">
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域1</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域2</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域3</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
+                                            <div><p>开关不一致</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域4</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
+                                                    th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
+                                            <div>
+                                                <p>
+                                                    开关不一致
+                                                    异常状态（故障）
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域5</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域6</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域7</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
+                                            <div><p>开关不一致</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域8</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
+                                                    th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
+                                            <div>
+                                                <p>
+                                                    开关不一致
+                                                    异常状态（故障）
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
                             </div>
+
                         </div>
                     </div>
                     <div class="clearfix">
@@ -246,53 +318,61 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="light-list f-l clearfix">
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域1</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域2</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域3</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
-                                    <div><p>开关不一致</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域4</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
-                                            th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
-                                    <div>
-                                        <p>
-                                            开关不一致
-                                            异常状态（故障）
-                                        </p>
+                        <div class="light-list f-l  ">
+                            <div class="swiper-container light-swiper">
+                                <div class="swiper-wrapper clearfix ">
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域1</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域2</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域3</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
+                                            <div><p>开关不一致</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域4</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
+                                                    th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
+                                            <div>
+                                                <p>
+                                                    开关不一致
+                                                    异常状态（故障）
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
                             </div>
+
                         </div>
                     </div>
                     <div class="clearfix">
@@ -310,53 +390,61 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="light-list f-l clearfix">
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域1</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域2</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域3</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
-                                    <div><p>开关不一致</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域4</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
-                                            th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
-                                    <div>
-                                        <p>
-                                            开关不一致
-                                            异常状态（故障）
-                                        </p>
+                        <div class="light-list f-l  ">
+                            <div class="swiper-container light-swiper">
+                                <div class="swiper-wrapper clearfix ">
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域1</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域2</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域3</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
+                                            <div><p>开关不一致</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域4</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
+                                                    th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
+                                            <div>
+                                                <p>
+                                                    开关不一致
+                                                    异常状态（故障）
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
                             </div>
+
                         </div>
                     </div>
                     <div class="clearfix">
@@ -374,53 +462,61 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="light-list f-l clearfix">
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域1</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域2</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域3</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
-                                    <div><p>开关不一致</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域4</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
-                                            th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
-                                    <div>
-                                        <p>
-                                            开关不一致
-                                            异常状态（故障）
-                                        </p>
+                        <div class="light-list f-l  ">
+                            <div class="swiper-container light-swiper">
+                                <div class="swiper-wrapper clearfix ">
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域1</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域2</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域3</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
+                                            <div><p>开关不一致</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域4</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
+                                                    th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
+                                            <div>
+                                                <p>
+                                                    开关不一致
+                                                    异常状态（故障）
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
                             </div>
+
                         </div>
                     </div>
                     <div class="clearfix">
@@ -438,53 +534,61 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="light-list f-l clearfix">
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域1</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域2</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域3</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
-                                    <div><p>开关不一致</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域4</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
-                                            th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
-                                    <div>
-                                        <p>
-                                            开关不一致
-                                            异常状态（故障）
-                                        </p>
+                        <div class="light-list f-l  ">
+                            <div class="swiper-container light-swiper">
+                                <div class="swiper-wrapper clearfix ">
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域1</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域2</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域3</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
+                                            <div><p>开关不一致</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域4</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
+                                                    th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
+                                            <div>
+                                                <p>
+                                                    开关不一致
+                                                    异常状态（故障）
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
                             </div>
+
                         </div>
                     </div>
                     <div class="clearfix">
@@ -502,307 +606,63 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="light-list f-l clearfix">
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域1</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域2</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
-                                    <div><p>正常</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域3</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
-                                    <div><p>开关不一致</p></div>
-                                </div>
-                            </div>
-                            <div class="place f-l">
-                                <div class="place-title">
-                                    <div>区域4</div>
-                                    <div>(<span>12</span><span>/</span><span>12</span>)</div>
-                                </div>
-                                <div class="place-content">
-                                    <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
-                                            th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
-                                    <div>
-                                        <p>
-                                            开关不一致
-                                            异常状态（故障）
-                                        </p>
+                        <div class="light-list f-l  ">
+                            <div class="swiper-container light-swiper">
+                                <div class="swiper-wrapper clearfix ">
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域1</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域2</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/normal.png}" alt=""></div>
+                                            <div><p>正常</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域3</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""></div>
+                                            <div><p>开关不一致</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="place f-l swiper-slide">
+                                        <div class="place-title">
+                                            <div>区域4</div>
+                                            <div>(<span>12</span><span>/</span><span>12</span>)</div>
+                                        </div>
+                                        <div class="place-content">
+                                            <div><img th:src="@{/static/new/img/switch-un.png}" alt=""><img
+                                                    th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>
+                                            <div>
+                                                <p>
+                                                    开关不一致
+                                                    异常状态（故障）
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
                             </div>
+
                         </div>
                     </div>
-                    <!--<div class="clearfix">-->
-                    <!--<div class="on-off f-l">-->
-                    <!--<div class="clearfix btn">-->
-                    <!--<div class="f-l">7层</div>-->
-                    <!--<div class="f-l">-->
-                    <!--<span>故障：</span><span class="error">2</span>-->
-                    <!--</div>-->
-                    <!--<div class="f-l">-->
-                    <!--<div class="img">-->
-                    <!--<img th:src="@{/static/new/img/on-off-black.png}"  alt="">-->
-                    <!--<div class="min-font">开关</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="light-list f-l clearfix">-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域1</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/normal.png}"  alt=""></div>-->
-                    <!--<div><p>正常</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域2</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/normal.png}"  alt=""></div>-->
-                    <!--<div><p>正常</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域3</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/switch-un.png}"  alt=""></div>-->
-                    <!--<div><p>开关不一致</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域4</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/switch-un.png}"  alt=""><img th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>-->
-                    <!--<div>-->
-                    <!--<p>-->
-                    <!--开关不一致-->
-                    <!--异常状态（故障）-->
-                    <!--</p>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="clearfix">-->
-                    <!--<div class="on-off f-l">-->
-                    <!--<div class="clearfix btn">-->
-                    <!--<div class="f-l">8层</div>-->
-                    <!--<div class="f-l">-->
-                    <!--<span>故障：</span><span class="error">2</span>-->
-                    <!--</div>-->
-                    <!--<div class="f-l">-->
-                    <!--<div class="img">-->
-                    <!--<img th:src="@{/static/new/img/on-off-black.png}"  alt="">-->
-                    <!--<div class="min-font">开关</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="light-list f-l clearfix">-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域1</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/normal.png}"  alt=""></div>-->
-                    <!--<div><p>正常</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域2</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/normal.png}"  alt=""></div>-->
-                    <!--<div><p>正常</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域3</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/switch-un.png}"  alt=""></div>-->
-                    <!--<div><p>开关不一致</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域4</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/switch-un.png}"  alt=""><img th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>-->
-                    <!--<div>-->
-                    <!--<p>-->
-                    <!--开关不一致-->
-                    <!--异常状态（故障）-->
-                    <!--</p>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="clearfix">-->
-                    <!--<div class="on-off f-l">-->
-                    <!--<div class="clearfix btn">-->
-                    <!--<div class="f-l">9层</div>-->
-                    <!--<div class="f-l">-->
-                    <!--<span>故障：</span><span class="error">2</span>-->
-                    <!--</div>-->
-                    <!--<div class="f-l">-->
-                    <!--<div class="img">-->
-                    <!--<img th:src="@{/static/new/img/on-off-black.png}"  alt="">-->
-                    <!--<div class="min-font">开关</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="light-list f-l clearfix">-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域1</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/normal.png}"  alt=""></div>-->
-                    <!--<div><p>正常</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域2</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/normal.png}"  alt=""></div>-->
-                    <!--<div><p>正常</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域3</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/switch-un.png}"  alt=""></div>-->
-                    <!--<div><p>开关不一致</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域4</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/switch-un.png}"  alt=""><img th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>-->
-                    <!--<div>-->
-                    <!--<p>-->
-                    <!--开关不一致-->
-                    <!--异常状态（故障）-->
-                    <!--</p>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="clearfix">-->
-                    <!--<div class="on-off f-l">-->
-                    <!--<div class="clearfix btn">-->
-                    <!--<div class="f-l">10层</div>-->
-                    <!--<div class="f-l">-->
-                    <!--<span>故障：</span><span class="error">2</span>-->
-                    <!--</div>-->
-                    <!--<div class="f-l">-->
-                    <!--<div class="img">-->
-                    <!--<img th:src="@{/static/new/img/on-off-black.png}"  alt="">-->
-                    <!--<div class="min-font">开关</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="light-list f-l clearfix">-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域1</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/normal.png}"  alt=""></div>-->
-                    <!--<div><p>正常</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域2</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/normal.png}"  alt=""></div>-->
-                    <!--<div><p>正常</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域3</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/switch-un.png}"  alt=""></div>-->
-                    <!--<div><p>开关不一致</p></div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="place f-l">-->
-                    <!--<div class="place-title">-->
-                    <!--<div>区域4</div>-->
-                    <!--<div>(<span>12</span><span>/</span><span>12</span>)</div>-->
-                    <!--</div>-->
-                    <!--<div class="place-content">-->
-                    <!--<div><img th:src="@{/static/new/img/switch-un.png}"  alt=""><img th:src="@{/static/new/img/switch-abnormal.png}" alt=""></div>-->
-                    <!--<div>-->
-                    <!--<p>-->
-                    <!--开关不一致-->
-                    <!--异常状态（故障）-->
-                    <!--</p>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -817,12 +677,26 @@
 <script>
 
     $(function () {
-        var mySwiper = new Swiper('.swiper-container', {
+        var mySwiper1 = new Swiper('.waterbubble', {
             autoplay: true,//可选选项，自动滑动
             direction: 'horizontal',
             slidesPerView: 3,
             slidesPerColumn: 2,
             slidesPerColumnFill: 'row',
+
+            // 如果需要前进后退按钮
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+
+        })
+        var mySwiper2 = new Swiper('.light-swiper', {
+            autoplay: true,//可选选项，自动滑动
+            direction: 'horizontal',
+            slidesPerView :4,
+//            slidesPerColumn: 2,
+//            slidesPerColumnFill: 'row',
 
             // 如果需要前进后退按钮
             navigation: {

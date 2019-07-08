@@ -168,10 +168,10 @@ html,body{
 	color: #666;
 }
 .min-title{
-	height: 40px;
+	height: 45px;
 	border-bottom: 1px solid #ddd;
-	line-height: 40px;
-	font-size: 14px;
+	line-height: 45px;
+	font-size: 15px;
 	padding: 0 10px;
 	font-weight: bold;
 	color: #323232;
@@ -223,7 +223,7 @@ html,body{
 	height: 50px;
 	border-bottom: 1px solid #ddd;
 	line-height: 50px;
-	font-size: 14px;
+	font-size: 15px;
 	padding: 0 10px;
 	font-weight: bold;
 	color: #323232;
@@ -249,7 +249,7 @@ html,body{
 	text-align: center;
 }
 .btn{
-	border: 1px solid #ccc;
+	border: 1px solid #C9C9C9;
 	width: 250px;
 	height: 55px;
 	line-height: 55px;
@@ -258,13 +258,13 @@ html,body{
 	text-align: center;
 }
 .btn>div:first-child{
-	border-right: 1px solid #ccc;
+	border-right: 1px solid #C9C9C9;
 	height: 100%;
 	width: 30%;
 	font-weight: bold;
 }
 .btn>div:last-child{
-	border-left: 1px solid #ccc;
+	border-left: 1px solid #C9C9C9;
 	height: 100%;
 	width: 30%;
 }
@@ -297,7 +297,7 @@ html,body{
 .place{
 	width: 15%;
 	font-size: 15px;
-	margin: 20px 40px;
+	margin: 20px 0;
 }
 .place-title{
 	background-color: #63D1C4;
@@ -410,35 +410,25 @@ html,body{
 .img-levels>div>div{
 	width:50%;
 }
-.search .middle{
-	/*width: 100%;*/
-	/*top: 50%;*/
-	/*left: 50%;*/
-	/*transform: translate(-50%, -50%);*/
-}
-.img-levels:after,.floor-levels:after,.switch-levels:after{
-	position: absolute;
-	display: inline-block;
-	content: '';
-	width: 2px;
-	height: 40px;
-	background-color: #ddd;
-	text-align: right;
-	right: 0;
-	top: 20%;
-}
+
+/*.img-levels:after,.floor-levels:after,.switch-levels:after{*/
+	/*position: absolute;*/
+	/*display: inline-block;*/
+	/*content: '';*/
+	/*width: 2px;*/
+	/*height: 40px;*/
+	/*background-color: #ddd;*/
+	/*text-align: right;*/
+	/*right: 0;*/
+	/*top: 20%;*/
+/*}*/
 .noEnergy .place-title>div.clearfix>div.f-l{
 	height: 100%;
 }
 .noEnergy .place-title img{
 	width: 25px;
 }
-.noEnergy .place-title .middle{
-	/*width: 100%;*/
-	/*top: 50%;*/
-	/*left: 50%;*/
-	/*transform: translate(-50%, -50%);*/
-}
+
 .noEnergy  .place-title>div.clearfix{
 	height: 100%;
 }
@@ -455,17 +445,7 @@ html,body{
 .max{
 	font-size: 15px !important;
 }
-.r-line:after{
-	position: absolute;
-	display: inline-block;
-	content: '';
-	width: 1px;
-	height: 30px;
-	background-color: #fff;
-	text-align: right;
-	right: 0;
-	top: 10%;
-}
+
 .noEnergy .place-title>div.clearfix>div.f-l:first-child{
 	width:35%;
 }
