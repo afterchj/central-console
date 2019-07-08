@@ -12,7 +12,7 @@ public class ClientInitialHandler extends ChannelInitializer<SocketChannel> {
 	@Override
 	protected void initChannel(SocketChannel arg0){
 		ChannelPipeline pipeline = arg0.pipeline();
-		pipeline.addLast("stringD", new MyDecoder());
+		pipeline.addLast("stringD", new StringDecoder());
 		pipeline.addLast("stringC", new StringEncoder());
 		pipeline.addLast("http", new HttpClientCodec());
 		pipeline.addLast("chat", new ChatClientHandler());

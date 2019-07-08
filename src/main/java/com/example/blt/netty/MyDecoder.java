@@ -33,7 +33,7 @@ public class MyDecoder extends ByteToMessageDecoder {
         String temp = addr.toString();
         String ip = temp.substring(1, temp.indexOf(":"));
         if ("127.0.0.1".equals(ip)) {
-            out.add(str);
+            out.add(str+" ");
             try {
                 JSONObject info = JSON.parseObject(str);
                 String command = info.getString("command");

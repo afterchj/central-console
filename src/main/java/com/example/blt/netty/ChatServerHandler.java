@@ -2,8 +2,6 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.task.ExecuteTask;
-import com.example.blt.utils.ConsoleUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -36,34 +34,35 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         Channel channel = arg0.channel();
-        logger.warn("[" + channel.remoteAddress() + "] receive:" + arg1);
+        String cmd;
+        String to;
+        try {
+            JSONObject jsonObject = JSON.parseObject(arg1);
+            cmd = jsonObject.getString("command");
+            to = jsonObject.getString("host");
+        } catch (Exception e) {
+            to = channel.remoteAddress().toString();
+            cmd = arg1;
+//            Map map = ExecuteTask.pingInfo(arg1, "127.0.0.1");
+//            ExecuteTask.saveInfo(arg1, map, lightSet, false);
+        }
+//        ConsoleUtil.cleanSet(lightSet);
         //当有用户发送消息的时候，对其他用户发送信息
         for (Channel ch : group) {
             SocketAddress address = ch.remoteAddress();
+            String str = address.toString();
+            String ip = str.substring(1, str.indexOf(":"));
             if (address != null) {
-                String str = address.toString();
-                String ip = str.substring(1, str.indexOf(":"));
-                try {
-                    JSONObject jsonObject = JSON.parseObject(arg1);
-                    String cmd = jsonObject.getString("command");
-                    String to = jsonObject.getString("host");
-                    if (ip.equals(to)) {
+                if (ip.equals(to)) {
+                    ch.writeAndFlush(cmd);
+                } else {
+                    if (!ip.equals("127.0.0.1")) {
                         ch.writeAndFlush(cmd);
-                    } else {
-                        if (!ip.equals("127.0.0.1")) {
-                            ch.writeAndFlush(cmd);
-                        }
-                    }
-                } catch (Exception e) {
-                    ConsoleUtil.cleanSet(lightSet);
-                    Map map = ExecuteTask.pingInfo(arg1, ip);
-                    ExecuteTask.saveInfo(arg1, map, lightSet, false);
-                    if (!ip.equals("127.0.0.1") && arg1.length() > 9) {
-                        ch.writeAndFlush(arg1);
                     }
                 }
             }
         }
+        logger.warn("[" + to + "] receive :" + cmd);
     }
 
     @Override

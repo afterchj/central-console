@@ -50,13 +50,14 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         JSONObject object = new JSONObject();
         object.put("host", "all");
+        object.put("command", "7701012766");
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
             if (null != vaddrSet) {
                 if (lmacSet.size() == vaddrSet.size()) {
+                    logger.warn("size=" + lmacSet.size());
                     Map params = new HashMap();
                     params.put("list", lmacSet);
-                    object.put("command", "7701012766");
                     sqlSessionTemplate.update("console.saveUpdate2", params);
                     return;
                 }
