@@ -52,7 +52,7 @@ public class HexConvert {
 
     public static void main(String[] args) {
 
-        String hex = "w\u0004\u000F\u0001\uFFEF\uFFBFﾽBmￗﾬ\uFFEF\uFFBFﾽ\uFFEF\uFFBFﾽ   \u0001\u0002\uFFEF\uFFBFﾽ\uFFEF\uFFBFﾽ";
+        String hex = "3737303130333135333233323636";
         String hex1 = "w\u0004\u000F\u0001zDm\u05EC�\u0001  \u0001\u0002��w\u0004\u000F\u0001�Bm\u05EC�   \u0001\u0002��";
         String str = "77040F01EFBFBD426DD7ACEFBFBDEFBFBD2020200102EFBFBDEFBFBD";
         String hexStr=bytesHexToString(hex.getBytes());

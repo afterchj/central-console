@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StrUtil {
 
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
-    private static ClientMain clientMain = new ClientMain();
 //    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 //    private static ProducerService producerService = SpringUtils.getRocketProducer();
 
@@ -101,7 +100,7 @@ public class StrUtil {
         String cid = str.substring(len - 4, len - 2);
         Map map = new ConcurrentHashMap<>();
         map.put("host", ip);
-        map.put("other", format.substring(0,22));
+        map.put("other", format.substring(0, 22));
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
                 //7704100221F505000052456365D7ACF0000200CCCC
@@ -110,11 +109,11 @@ public class StrUtil {
                     flag = true;
                     cmd = str.substring(len - 8, len - 6);
                 }
-                logger.warn("flag=" +flag + ",str=" + cmd);
+                logger.warn("flag=" + flag + ",str=" + cmd);
                 if ("01".equals(cmd)) {
-                    clientMain.sendCron(AddrUtil.getIp(flag), Groups.GROUPSA.getOn());
-                } else if ("02".equals(flag)) {
-                    clientMain.sendCron(AddrUtil.getIp(flag),Groups.GROUPSA.getOff());
+                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
+                } else if ("02".equals(cmd)) {
+                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", flag);

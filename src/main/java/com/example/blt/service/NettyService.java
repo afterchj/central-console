@@ -25,23 +25,22 @@ import java.util.Set;
 public class NettyService implements ApplicationListener<ContextRefreshedEvent> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private ClientMain clientMain = new ClientMain();
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
 
 //    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest1() {
-//        clientMain.sendCron(8001, "7701011B66", false);
+//      ClientMain.sendCron(8001, "7701011B66", false);
 //        try {
 //            new Thread().sleep(5000);
-//            clientMain.sendCron(8001, "7701012766", false);
+//          ClientMain.sendCron(8001, "7701012766", false);
 //        } catch (InterruptedException e) {
 //            logger.error(e.getMessage());
 //        }
 //    }
     //    @Scheduled(cron = "0 0/1 * * * ?")
 //    public void cronTest2() {
-//        clientMain.sendCron(8001, "7701012766", false);
+//      ClientMain.sendCron(8001, "7701012766", false);
 //    }
 
     @Scheduled(cron = "0/20 * * * * ?")
@@ -53,7 +52,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         object.put("command", "7701012766");
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
-            clientMain.sendCron(object.toJSONString());
             logger.warn("lmacSize=" + lmacSet.size());
             if (null != vaddrSet) {
                 logger.warn("vaddrSize=" + lmacSet.size());
@@ -61,8 +59,10 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     Map params = new HashMap();
                     params.put("list", lmacSet);
                     sqlSessionTemplate.update("console.saveUpdate2", params);
+                    return;
                 }
             }
+            ClientMain.sendCron(object.toJSONString());
         }
     }
 

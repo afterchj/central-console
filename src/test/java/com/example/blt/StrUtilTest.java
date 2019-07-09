@@ -18,7 +18,6 @@ import java.util.UUID;
 public class StrUtilTest {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private ClientMain clientMain = new ClientMain();
 
     @Test
     public void test() {
@@ -33,7 +32,7 @@ public class StrUtilTest {
 //        StrUtil.buildLightInfo(c52,"127.0.0.1");
 //        StrUtil.buildLightInfo(c71,"127.0.0.1");
 //        StrUtil.tempFormat(str,"127.0.0.1");
-        System.out.println(c71 + "\t" + c71.length());
+        System.out.println(c52 + "\t" + c52.length());
 //        String str = "F0ACD7009501".toLowerCase();
 //        System.out.println("bufferStr=" + StrUtil.buildMac(str));
 //        String str1 = "77040F01A91064D7ACF07D000000444F030ACCCC";
@@ -64,9 +63,9 @@ public class StrUtilTest {
                 }
                 logger.warn("flag=" + flag);
                 if ("01".equals(flag)) {
-                    clientMain.sendCron(Groups.GROUPSA.getOn());
+                  ClientMain.sendCron(Groups.GROUPSA.getOn());
                 } else if ("02".equals(flag)) {
-                    clientMain.sendCron(Groups.GROUPSA.getOff());
+                  ClientMain.sendCron(Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", flag);

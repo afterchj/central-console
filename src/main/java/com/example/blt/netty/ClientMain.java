@@ -22,18 +22,17 @@ public class ClientMain {
     private final static String HOST = "127.0.0.1";
     private final static int PORT = 8001;
 
-//        private static String host = "192.168.56.1";
+    //        private static String host = "192.168.56.1";
 //        private static String host = "192.168.16.60";
 //        private static String host = "192.168.51.97";
 //        private static String host = "119.3.49.192";
-    private Channel channel = null;
 
     public static void main(String[] args) throws IOException {
-//        new ClientMain().run(AddrUtil.getIp(true), 8001);
-        new ClientMain().run("192.168.16.60", 8001);
+//      ClientMain().run(AddrUtil.getIp(true), 8001);
+        run("192.168.16.60", 8001);
     }
 
-    public void run(String host, int port) throws IOException {
+    public static void run(String host, int port) throws IOException {
         Channel channel = getChannel(host, port);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         logger.warn("请输入指令：");
@@ -48,7 +47,7 @@ public class ClientMain {
         }
     }
 
-    public void sendCron(String str) {
+    public static void sendCron(String str) {
         Channel channel = getChannel(HOST, PORT);
         //向服务端发送内容
         channel.writeAndFlush(str);
@@ -59,7 +58,7 @@ public class ClientMain {
         }
     }
 
-    public void sendCron(String... str) {
+    public static void sendCron(String... str) {
         Channel channel = getChannel(str[0], PORT);
         //向服务端发送内容
         channel.writeAndFlush(str[1]);
@@ -71,10 +70,8 @@ public class ClientMain {
     }
 
 
-    private Channel getChannel(String host, int port) {
-        if (channel != null) {
-            return channel;
-        }
+    private static Channel getChannel(String host, int port) {
+        Channel channel = null;
         //设置一个worker线程，使用
         EventLoopGroup worker = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();

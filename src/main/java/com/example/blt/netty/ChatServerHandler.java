@@ -46,6 +46,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
         } catch (Exception e) {
+            if (arg1.indexOf("CCCC") != -1) {
+                arg1 = arg1.substring(0, arg1.length() - 2);
+            }
             to = addr;
             cmd = arg1;
             Map map = ExecuteTask.pingInfo(arg1, host);
@@ -54,7 +57,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         int len = cmd.length();
 //        ConsoleUtil.cleanSet(lightSet);
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len < 36) {
+        if (len > 9 && len < 18) {
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
                 if (address != null) {

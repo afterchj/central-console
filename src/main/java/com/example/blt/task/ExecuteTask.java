@@ -24,7 +24,7 @@ import java.util.concurrent.FutureTask;
 public class ExecuteTask {
     private static Logger logger = LoggerFactory.getLogger(ExecuteTask.class);
     private static ExecutorService executorService = Executors.newCachedThreadPool();
-//    private static ClientMain clientMain = new ClientMain();
+//    private staticClientMainClientMain =ClientMain();
 //    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
     public static Map pingInfo(String msg, String ip) {
@@ -57,7 +57,7 @@ public class ExecuteTask {
                 JSONObject object = new JSONObject();
                 object.put("host", "all");
                 object.put("command", msg.substring(0, msg.length() - 2));
-                new ClientMain().sendCron(object.toJSONString());
+                ClientMain.sendCron(object.toJSONString());
             }
         }
     }
@@ -75,11 +75,11 @@ public class ExecuteTask {
             }
             for (int i = 0; i < 3; i++) {
                 object.put("command", "7701011B66");
-                new ClientMain().sendCron(object.toJSONString());
+                ClientMain.sendCron(object.toJSONString());
                 try {
                     new Thread().sleep(5000);
                     object.put("command", "7701012766");
-                    new ClientMain().sendCron(object.toJSONString());
+                    ClientMain.sendCron(object.toJSONString());
                 } catch (InterruptedException e) {
                     logger.error(e.getMessage());
                 }
