@@ -195,7 +195,7 @@ public class MonitorController {
         }
         map.put("lightState",lightState);
         map.put("placeLNumList",placeLNumList);
-//        map.put("centerLNumList",84);
+        map.put("centerLNumList",480);
         map.put("scenes",scenes);
         return map;
     }
