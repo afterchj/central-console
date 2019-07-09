@@ -101,7 +101,7 @@ public class StrUtil {
         String cid = str.substring(len - 4, len - 2);
         Map map = new ConcurrentHashMap<>();
         map.put("host", ip);
-//        map.put("other", format);
+        map.put("other", format.substring(0,22));
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
                 //7704100221F505000052456365D7ACF0000200CCCC

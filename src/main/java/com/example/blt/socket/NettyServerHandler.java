@@ -27,38 +27,34 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String msg) {
+        ConsoleUtil.cleanSet(lightSet);
         Channel channel = arg0.channel();
         channel.writeAndFlush(msg);
         SocketAddress address = channel.remoteAddress();
 //        logger.warn("[" + address + "] receive:" + msg);
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
-        ConsoleUtil.cleanSet(lightSet);
         Map map = ExecuteTask.pingInfo(msg, ip);
-        ExecuteTask.saveInfo(msg, map, lightSet,true);
+        ExecuteTask.saveInfo(msg, map, lightSet, true);
     }
 
 
     //在建立链接时发送信息
     @Override
-    public void channelActive(ChannelHandlerContext ctx){
+    public void channelActive(ChannelHandlerContext ctx) {
 //        Channel channel = ctx.channel();
 //        logger.warn("[" + channel.remoteAddress().toString() + "] " + "online");
     }
 
     //退出链接
     @Override
-    public void channelInactive(ChannelHandlerContext ctx){
+    public void channelInactive(ChannelHandlerContext ctx) {
 //        Channel channel = ctx.channel();
 //        logger.warn("[" + channel.remoteAddress().toString() + "] " + "offline");
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        try {
-            ctx.close().sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws InterruptedException {
+        ctx.close().sync();
     }
 }

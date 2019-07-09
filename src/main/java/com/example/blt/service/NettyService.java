@@ -53,16 +53,16 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         object.put("command", "7701012766");
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
+            clientMain.sendCron(object.toJSONString());
+            logger.warn("lmacSize=" + lmacSet.size());
             if (null != vaddrSet) {
+                logger.warn("vaddrSize=" + lmacSet.size());
                 if (lmacSet.size() == vaddrSet.size()) {
-                    logger.warn("size=" + lmacSet.size());
                     Map params = new HashMap();
                     params.put("list", lmacSet);
                     sqlSessionTemplate.update("console.saveUpdate2", params);
-                    return;
                 }
             }
-            clientMain.sendCron(object.toJSONString());
         }
     }
 
