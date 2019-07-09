@@ -120,7 +120,7 @@ public class MonitorController {
         Map<String, Object> map = new HashMap<>();
         List<LightDemo> lightState = new ArrayList<>();
         String scenes=null;
-        CommandLight commandInfo = monitor2Dao.getCommandInfo();
+        CommandLight commandInfo = monitor4Dao.getCommandInfo();
         List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
         if(commandInfo!=null){
             String ctype = commandInfo.getCtype();
