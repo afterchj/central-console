@@ -39,18 +39,18 @@ public class CentralConsoleApplication {
     }
 
 
-    @Bean
-    public WebSocketClient webSocketClient() {
-        try {
-            WSClient webSocketClient = new WSClient(new URI
-                    ("ws://122.112.229.195:8083/ws/webSocket"));
+//    @Bean
+//    public WebSocketClient webSocketClient() {
+//        try {
 //            WSClient webSocketClient = new WSClient(new URI
-//                    ("ws://localhost:8083/ws/webSocket"));
-            webSocketClient.connect();
-            return webSocketClient;
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//                    ("ws://122.112.229.195:8083/ws/webSocket"));
+////            WSClient webSocketClient = new WSClient(new URI
+////                    ("ws://localhost:8083/ws/webSocket"));
+//            webSocketClient.connect();
+//            return webSocketClient;
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

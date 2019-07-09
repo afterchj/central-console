@@ -27,19 +27,19 @@ public class WSClient extends WebSocketClient {
     @Override
     public void onMessage(String s) {
 //        logger.info("-------- 接收到服务端数据： " + s + "--------");
-        try {
-             JSONObject jsonStr = JSONObject.parseObject(s);
-            if (jsonStr.get("method") != null) {
-                MainController mainController = new MainController();
-                if("sendSocket4".equals(jsonStr.get("method"))) {
-                    mainController.sendSocket4(String.valueOf(jsonStr.get("host")), String.valueOf(jsonStr.get("command")));
-                }else if("sendSocket5".equals(jsonStr.get("method"))){
-                    mainController.sendSocket5(String.valueOf(jsonStr.get("host")), String.valueOf(jsonStr.get("command")));
-                }
-            }
-        } catch (Exception e) {
-            logger.info("-------- 无法解析： " + s + "--------");
-        }
+//        try {
+//             JSONObject jsonStr = JSONObject.parseObject(s);
+//            if (jsonStr.get("method") != null) {
+//                MainController mainController = new MainController();
+//                if("sendSocket4".equals(jsonStr.get("method"))) {
+//                    mainController.sendSocket4(String.valueOf(jsonStr.get("host")), String.valueOf(jsonStr.get("command")));
+//                }else if("sendSocket5".equals(jsonStr.get("method"))){
+//                    mainController.sendSocket5(String.valueOf(jsonStr.get("host")), String.valueOf(jsonStr.get("command")));
+//                }
+//            }
+//        } catch (Exception e) {
+//            logger.info("-------- 无法解析： " + s + "--------");
+//        }
     }
 
     @Override
