@@ -27,8 +27,8 @@ public class LightDemoTests {
 
     @Test
     public void test2(){
-        List<LightDemo> exhibitionFromPhoneByGroup = lightListDao.getExhibitionFromPhoneByGroup(1, "0");
-        exhibitionFromPhoneByGroup.stream().forEach(System.out::println);
+//        List<LightDemo> exhibitionFromPhoneByGroup = lightListDao.getExhibitionFromPhoneByGroup(1, "0");
+//        exhibitionFromPhoneByGroup.stream().forEach(System.out::println);
     }
 
     @Test

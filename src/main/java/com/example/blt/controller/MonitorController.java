@@ -120,7 +120,7 @@ public class MonitorController {
         Map<String, Object> map = new HashMap<>();
         List<LightDemo> lightState = new ArrayList<>();
         String scenes=null;
-        CommandLight commandInfo = monitor4Dao.getCommandInfo();
+        CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
         List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
         if(commandInfo!=null){
             String ctype = commandInfo.getCtype();
@@ -207,27 +207,30 @@ public class MonitorController {
         Map<String, Object> map = new HashMap<>();
         List<LightDemo> lightState = new ArrayList<>();
 //        map.put("lightState", lightState);
-        CommandLight commandInfo = lightListDao.getCommandInfo();
+        CommandLight commandInfo = monitor4Dao.getCommandInfo("1");
         if(commandInfo!=null){
             String ctype = commandInfo.getCtype();
+            String status = null;
             if ("52".equals(ctype)){
                 //遥控器
                 if ("01".equals(commandInfo.getCid())){
                     //全开
-                    lightState = lightListDao.getExhibitionFromRemoteByOn();
+                    status = "0";
                 }else if ("02".equals(commandInfo.getCid())){
                     //全关
-                    lightState = lightListDao.getExhibitionFromRemoteByOff();
+                    status = "1";
                 }
+                lightState = monitor2Dao.getMonitorFromRemoteByStatus(status,"exhibition");
             }else if ("C0".equals(ctype)){
                 //pad or 手机 全控
                 if ("37".equals(commandInfo.getY())){
                     //全开
-                    lightState = lightListDao.getExhibitionFromRemoteByOn();
+                    status = "0";
                 }else if ("32".equals(commandInfo.getY())){
                     //全关
-                    lightState = lightListDao.getExhibitionFromRemoteByOff();
+                    status = "1";
                 }
+                lightState = monitor2Dao.getMonitorFromRemoteByStatus(status,"exhibition");
             }else if ("C1".equals(ctype)){
                 //pad or 手机 组控
                 int groupId;
@@ -236,13 +239,12 @@ public class MonitorController {
                 }else {
                     groupId = Integer.valueOf(commandInfo.getCid());
                 }
-                String status;
                 if ("37".equals(commandInfo.getY())){
                     status="0";
                 }else {
                     status="1";
                 }
-                lightState = lightListDao.getExhibitionFromPhoneByGroup(groupId,status);
+                lightState =  monitor4Dao.getMonitorFromPhoneByGroup(groupId,status,"exhibition");
             }
             map.put("lightState",lightState);
         }
@@ -253,7 +255,7 @@ public class MonitorController {
     @ResponseBody
     public Map<String, Object> getMonitor2LightStatus() {
         List<LightDemo> lightState2 = new ArrayList<>();
-        CommandLight commandInfo = monitor2Dao.getCommandInfo();
+        CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
         List<LightDemo> placeLNumList = monitor2Dao.getPlaceLNum("Office");
         Map<String, Object> map = new HashMap<>();
         String scenes=null;
@@ -295,7 +297,7 @@ public class MonitorController {
                 }else {
                     status="0";
                 }
-                lightState2 = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status,"Office");
+                lightState2 = monitor4Dao.getMonitorFromPhoneByGroup(groupId,status,"Office");
             }else if("42".equals(ctype)||"".equals(ctype)){
                 if ("01".equals(commandInfo.getCid())){
                     scenes="场景一";
@@ -325,8 +327,7 @@ public class MonitorController {
                 }else {
                     status="0";
                 }
-                lightState2 = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status,"Office");
-
+                lightState2 = monitor4Dao.getMonitorFromPhoneByGroup(groupId,status,"Office");
             }
             map.put("lightState",lightState2);
             map.put("placeLNumList",placeLNumList);

@@ -64,16 +64,6 @@ public interface LightListDao {
     @Select("select cid,ctype,x,y from t_command_info where ctype is not null order by id desc limit 1")
     CommandLight getCommandInfo();
 
-    @Select("select  lmac ,mname,lname,'0' as status,d.group from f_light_demo d where mname='exhibition' ORDER BY mname,lname")
-    List<LightDemo> getExhibitionFromRemoteByOn();
-
-    @Select("select  lmac ,mname,lname,'1' as status,d.group from f_light_demo d where mname='exhibition' ORDER BY mname,lname")
-    List<LightDemo> getExhibitionFromRemoteByOff();
-
-    @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname='exhibition' and" +
-            " d.group=#{group} ORDER BY mname,lname")
-    List<LightDemo> getExhibitionFromPhoneByGroup(@Param("group") int groupId, @Param("status") String status);
-
 
 
 }
