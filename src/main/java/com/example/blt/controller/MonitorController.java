@@ -121,7 +121,7 @@ public class MonitorController {
         List<LightDemo> lightState = new ArrayList<>();
         String scenes=null;
         CommandLight commandInfo = monitor2Dao.getCommandInfo();
-        List<LightDemo> placeLNumList = monitor2Dao.getPlaceLNum("intelligence");
+        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
         if(commandInfo!=null){
             String ctype = commandInfo.getCtype();
             String status = null;
@@ -134,7 +134,7 @@ public class MonitorController {
                     //全关
                     status="1";
                 }
-                    lightState = monitor2Dao.getMonitorFromRemoteByStatus(status,"intelligence");
+                    lightState = monitor4Dao.getMonitorFromRemoteByStatus(status,"intelligence");
             }else if ("C0".equals(ctype)){
                 //pad or 手机 全控
                 if ("32".equals(commandInfo.getY())){
@@ -144,7 +144,7 @@ public class MonitorController {
                     //全开
                     status="0";
                 }
-                lightState = monitor2Dao.getMonitorFromRemoteByStatus(status,"intelligence");
+                lightState = monitor4Dao.getMonitorFromRemoteByStatus(status,"intelligence");
             }else if ("C1".equals(ctype)){
                 //pad or 手机 组控
                 int groupId;
@@ -158,7 +158,7 @@ public class MonitorController {
                 }else {
                     status="1";
                 }
-                lightState = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status,"intelligence");
+                lightState = monitor4Dao.getMonitorFromPhoneByGroup(groupId,status,"intelligence");
             }else if("42".equals(ctype)||"".equals(ctype)){
                 if ("01".equals(commandInfo.getCid())){
                     scenes="场景一";
@@ -178,7 +178,7 @@ public class MonitorController {
                     //全开
                     status="0";
                 }
-                lightState = monitor2Dao.getMonitorFromRemoteByStatus(status,"intelligence");
+                lightState = monitor4Dao.getMonitorFromRemoteByStatus(status,"intelligence");
 
             }else if ("".equals(ctype)){
                 //web 单组开关
@@ -188,7 +188,7 @@ public class MonitorController {
                 }else {
                     status="0";
                 }
-                lightState = monitor2Dao.getMonitorFromPhoneByGroup(groupId,status,"intelligence");
+                lightState = monitor4Dao.getMonitorFromPhoneByGroup(groupId,status,"intelligence");
 
             }
             map.put("lightState",lightState);

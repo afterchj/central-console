@@ -22,9 +22,9 @@ public interface Monitor2Dao {
 
     @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname =#{mname} ORDER BY" +
             " mname,lname")
-    List<LightDemo> getMonitorFromRemoteByStatus(@Param("status") String status,@Param("mname") String mname);//全开全关
+    List<LightDemo>  getMonitorFromRemoteByStatus(@Param("status") String status,@Param("mname") String mname);//全开全关
 
-    @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname =#{Office} and" +
+    @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname =#{mname} and" +
             " d.group=#{group} ORDER BY mname,lname")
     List<LightDemo> getMonitorFromPhoneByGroup(@Param("group") int groupId, @Param("status") String status,@Param("mname") String mname);//单组全开全关
 
