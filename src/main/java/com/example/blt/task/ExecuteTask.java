@@ -43,7 +43,7 @@ public class ExecuteTask {
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"lmac"});
                 set.add(map);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), set, 80);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), set, 60);
             });
         } else if (msg.indexOf("77040F0227") != -1) {
             executorService.submit(() -> {
@@ -57,7 +57,7 @@ public class ExecuteTask {
                 JSONObject object = new JSONObject();
                 object.put("host", "all");
                 object.put("command", msg.substring(0, msg.length() - 2));
-                new ClientMain().sendCron(8001, object.toJSONString());
+                new ClientMain().sendCron(object.toJSONString());
             }
         }
     }
@@ -75,11 +75,11 @@ public class ExecuteTask {
             }
             for (int i = 0; i < 3; i++) {
                 object.put("command", "7701011B66");
-                new ClientMain().sendCron(8001, object.toJSONString());
+                new ClientMain().sendCron(object.toJSONString());
                 try {
                     new Thread().sleep(5000);
                     object.put("command", "7701012766");
-                    new ClientMain().sendCron(8001, object.toJSONString());
+                    new ClientMain().sendCron(object.toJSONString());
                 } catch (InterruptedException e) {
                     logger.error(e.getMessage());
                 }

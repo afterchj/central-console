@@ -68,10 +68,8 @@ public class StrUtil {
 //            logger.warn("result=" + map.get("result"));
         } else {
             int len = str.length();
-            if (len >= 22 && len <= 40) {
+            if (len >= 22) {
                 tempFormat(str, ip);
-            } else if (len > 40) {
-                formatStr(str, ip);
             }
         }
         return map;
@@ -95,6 +93,7 @@ public class StrUtil {
     }
 
     public static void tempFormat(String format, String ip) {
+        boolean flag = false;
         String str = format.substring(18);
         int len = str.length();
         String prefix = str.substring(0, 2).toUpperCase();
@@ -105,11 +104,17 @@ public class StrUtil {
 //        map.put("other", format);
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
-                String flag = str.substring(len - 6, len - 4);
-                if ("01".equals(flag)) {
-                    clientMain.sendCron(8001, Groups.GROUPSA.getOn());
+                //7704100221F505000052456365D7ACF0000200CCCC
+                String cmd = str.substring(len - 6, len - 4);
+                if (format.length() > 40) {
+                    flag = true;
+                    cmd = str.substring(len - 8, len - 6);
+                }
+                logger.warn("flag=" +flag + ",str=" + cmd);
+                if ("01".equals(cmd)) {
+                    clientMain.sendCron(AddrUtil.getIp(flag), Groups.GROUPSA.getOn());
                 } else if ("02".equals(flag)) {
-                    clientMain.sendCron(8001, Groups.GROUPSA.getOff());
+                    clientMain.sendCron(AddrUtil.getIp(flag),Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", flag);

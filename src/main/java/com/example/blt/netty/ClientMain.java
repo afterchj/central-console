@@ -1,5 +1,6 @@
 package com.example.blt.netty;
 
+import com.example.blt.utils.AddrUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -18,21 +19,25 @@ import java.io.InputStreamReader;
 public class ClientMain {
 
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
-    private static String host = "127.0.0.1";
+
+    private final static String HOST = "127.0.0.1";
+    private final static int PORT = 8001;
+
+    //    private static String host = "192.168.56.1";
     //    private static String host = "192.168.16.60";
 //    private static String host = "192.168.51.97";
     //        private static String host = "119.3.49.192";
-    Channel channel = null;
+    private Channel channel = null;
 
     public static void main(String[] args) throws IOException {
 //		new ClientMain("122.112.229.195", 8001).run();
 //		new ClientMain("119.3.49.192", 8001).run();
 //        new ClientMain().run(8001);
-        new ClientMain().run(8001);
+        new ClientMain().run(AddrUtil.getIp(true), 8001);
     }
 
-    public void run(int port) throws IOException {
-        Channel channel = getChannel(port);
+    public void run(String host, int port) throws IOException {
+        Channel channel = getChannel(host, port);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         logger.warn("请输入指令：");
         while (true) {
@@ -46,8 +51,8 @@ public class ClientMain {
         }
     }
 
-    public void sendCron(int port, String str) {
-        Channel channel = getChannel(port);
+    public void sendCron(String str) {
+        Channel channel = getChannel(HOST, PORT);
         //向服务端发送内容
         channel.writeAndFlush(str);
         try {
@@ -57,7 +62,19 @@ public class ClientMain {
         }
     }
 
-    public Channel getChannel(int port) {
+    public void sendCron(String... str) {
+        Channel channel = getChannel(str[0], PORT);
+        //向服务端发送内容
+        channel.writeAndFlush(str[1]);
+        try {
+            channel.closeFuture();
+        } catch (Exception e1) {
+            logger.error("Exception=" + e1);
+        }
+    }
+
+
+    private Channel getChannel(String host, int port) {
         if (channel != null) {
             return channel;
         }

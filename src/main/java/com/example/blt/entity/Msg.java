@@ -10,7 +10,6 @@ public class Msg {
     private static int i;
     static {
         i=3;
-        System.out.println(i);
     }
 
     private String msg;
