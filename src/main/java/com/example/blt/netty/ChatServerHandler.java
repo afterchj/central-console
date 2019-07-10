@@ -54,7 +54,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         int len = cmd.length();
 //        ConsoleUtil.cleanSet(lightSet);
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len < 18) {
+        if (len > 9 && len < 21) {
+            ExecuteTask.parseLocalCmd(cmd, host);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
                 if (address != null) {

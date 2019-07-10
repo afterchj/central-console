@@ -33,14 +33,6 @@ public class MyDecoder extends ByteToMessageDecoder {
         String ip = addr.substring(1, addr.indexOf(":"));
         if ("127.0.0.1".equals(ip)) {
             out.add(str);
-            try {
-                JSONObject info = JSON.parseObject(str);
-                String command = info.getString("command");
-                if (command.length() > 9) {
-                    ExecuteTask.parseLocalCmd(command, ip);
-                }
-            } catch (Exception e) {
-            }
         } else {
             out.add(bytesToHexString(b));
         }

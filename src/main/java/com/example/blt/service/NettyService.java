@@ -41,10 +41,10 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //            logger.error(e.getMessage());
 //        }
 //    }
-    @Scheduled(cron = "0/30 * * * * ?")
-    public void cronTest2() {
-        webSocket.sendMessage("success");
-    }
+//    @Scheduled(cron = "0/30 * * * * ?")
+//    public void cronTest2() {
+//        webSocket.sendMessage("success");
+//    }
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
@@ -72,6 +72,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.warn("nettyService starting...");
-        ExecuteTask.pingStatus(true);
+//        ExecuteTask.pingStatus(true);
     }
 }

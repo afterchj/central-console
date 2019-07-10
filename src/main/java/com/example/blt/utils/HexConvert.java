@@ -33,7 +33,20 @@ public class HexConvert {
         }
         return sb.toString();
     }
-
+    /**
+     * @param src 16进制字符串
+     * @return 字节数组
+     * @throws
+     * @Title:hexString2String
+     * @Description:16进制字符串转字符串
+     */
+    public static String hexStringToString(String src) {
+        String temp = "";
+        for (int i = 0; i < src.length() / 2; i++) {
+            temp = temp + (char) Integer.valueOf(src.substring(i * 2, i * 2 + 2), 16).byteValue();
+        }
+        return temp;
+    }
     /**
      * @param strPart 字符串
      * @return 16进制字符串
@@ -54,10 +67,9 @@ public class HexConvert {
 
         String hex = "3737303130333135333233323636";
         String hex1 = "w\u0004\u000F\u0001zDm\u05EC�\u0001  \u0001\u0002��w\u0004\u000F\u0001�Bm\u05EC�   \u0001\u0002��";
-        String str = "77040F01EFBFBD426DD7ACEFBFBDEFBFBD2020200102EFBFBDEFBFBD";
-        String hexStr=bytesHexToString(hex.getBytes());
-        System.out.println("len="+hexStr.length());
-        System.out.println("str=" + hexStr);
+        String str=hexStringToString(hex);
+        System.out.println("len="+str.length());
+        System.out.println("str=" + str);
         System.out.println(str.length());
         System.out.println("hex=" + stringToHexString(str));
     }
