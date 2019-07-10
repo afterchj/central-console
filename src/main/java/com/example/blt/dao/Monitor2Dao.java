@@ -17,8 +17,6 @@ import java.util.List;
 @Mapper
 public interface Monitor2Dao {
 
-    @Select("select id,cid,ctype,x,y from t_command_info where ctype is not null order by id desc limit 1")
-    CommandLight getCommandInfo();
 
     @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname =#{mname} ORDER BY" +
             " mname,lname")
@@ -27,7 +25,7 @@ public interface Monitor2Dao {
     @Select("select count(*) as PlaceLNum,place from f_light_demo where mname =#{mname} Group by mname,place")
     List<LightDemo> getPlaceLNum(@Param("mname") String mname);//每个区域的灯个数
 
-    @Select("select id from t_command_info where ctype is not null order by id desc limit 1")
-    int getCommandId();
+    @Select("select id from t_command_info where ctype is not null and SUBSTRING_INDEX(SUBSTRING_INDEX(host,'.',-2),'.',1)=#{host} order by id desc limit 1")
+    int getCommandId(@Param("host") String host);
 
 }

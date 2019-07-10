@@ -21,8 +21,8 @@ public class LightDemoTests {
     @Test
     public void test() {
 
-        CommandLight officeLightInfo = lightListDao.getCommandInfo();
-        System.out.println(officeLightInfo.toString());
+//        CommandLight officeLightInfo = lightListDao.getCommandInfo();
+//        System.out.println(officeLightInfo.toString());
     }
 
     @Test

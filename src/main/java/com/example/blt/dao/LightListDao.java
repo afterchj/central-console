@@ -3,7 +3,6 @@ package com.example.blt.dao;
 import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -60,10 +59,6 @@ public interface LightListDao {
 
     @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32'  THEN '0'  END AS status,d.Group FROM f_light_demo d JOIN (select  lmac,x ,y,status from t_light_info where y is not null Group by lmac) i ON d.lmac = i.lmac where d.mname='exhibition' ORDER BY d.mname,lname")
     List<LightDemo> getExhibitionLightOnOrOff();
-
-    @Select("select cid,ctype,x,y from t_command_info where ctype is not null order by id desc limit 1")
-    CommandLight getCommandInfo();
-
 
 
 }

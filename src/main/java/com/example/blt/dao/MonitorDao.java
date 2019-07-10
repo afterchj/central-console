@@ -17,9 +17,6 @@ import java.util.List;
 @Mapper
 public interface MonitorDao {
 
-    @Select("select cid,ctype,x,y from t_command_info where ctype is not null order by id desc limit 1")
-    CommandLight getCommandInfo();
-
     @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname like '%楼' ORDER BY" +
             " mname,lname")
     List<LightDemo> getMonitorFromRemoteByStatus(@Param("status") String status);
