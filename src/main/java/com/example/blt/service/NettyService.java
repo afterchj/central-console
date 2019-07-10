@@ -1,6 +1,7 @@
 package com.example.blt.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.task.ExecuteTask;
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.TextMessage;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -27,8 +29,9 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
+    private WebSocket webSocket = new WebSocket();
 
-//    @Scheduled(cron = "0/30 * * * * ?")
+    //    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest1() {
 //      ClientMain.sendCron(8001, "7701011B66", false);
 //        try {
@@ -38,10 +41,10 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //            logger.error(e.getMessage());
 //        }
 //    }
-    //    @Scheduled(cron = "0 0/1 * * * ?")
-//    public void cronTest2() {
-//      ClientMain.sendCron(8001, "7701012766", false);
-//    }
+    @Scheduled(cron = "0/30 * * * * ?")
+    public void cronTest2() {
+        webSocket.sendMessage("success");
+    }
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {

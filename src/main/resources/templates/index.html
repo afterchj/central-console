@@ -8,17 +8,34 @@
     <script th:src="@{/static/jquery.js}" type="text/javascript"></script>
 </head>
 <script type="text/javascript">
+    let socket;
     $(function () {
         $("#show").html("jquery文件加载成功！");
+        if (typeof (WebSocket) == "undefined") {
+            console.log("遗憾：您的浏览器不支持WebSocket");
+        } else {
+            socket = new WebSocket("ws://127.0.0.1:8080/ws/webSocket");
+            //连接打开事件
+            socket.onopen = function () {
+                console.log("Socket 已打开！");
+            };
+            //收到消息事件
+            socket.onmessage = function (result) {
+                console.log("type", typeof result, "receive", result.data);
+            }
+        }
         $("#test").click(function () {
-            $.get("/test",{"command": $("#txt").val(), "host": "all"}, function (result) {
+            let cmd = $("#txt").val();
+            $.get("/test", {"command": cmd, "host": "all"}, function (result) {
                 console.log("result", result);
-            })
-        })
+            });
+            socket.send(cmd);
+        });
     });
+
     function sendCmd(id) {
         console.log("id", id);
-        var status = $("#" + id).text();
+        let status = $("#" + id).text();
         console.log("value", status);
         if (status == '开') {
             $("#" + id).val("77010315373766");

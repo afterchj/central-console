@@ -1,5 +1,7 @@
 package com.example.blt.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -16,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 @ServerEndpoint(value = "/ws/webSocket")
 public class WebSocket {
+    private Logger logger = LoggerFactory.getLogger(WebSocket.class);
     //每个客户端都会有相应的session,服务端可以发送相关消息
     private Session session;
     //J.U.C包下线程安全的类，主要用来存放每个客户端对应的webSocket连接
@@ -33,8 +36,8 @@ public class WebSocket {
     public void onOpen(Session session) {
         this.session = session;
         copyOnWriteArraySet.add(this);
-        System.out.println("websocket有新的连接, 总数:"+ copyOnWriteArraySet.size());
-//        sendMessage(value);
+        logger.warn("websocket有新的连接, 总数:" + copyOnWriteArraySet.size());
+//        sendMessage(session.getId());
     }
 
     /**
@@ -48,7 +51,7 @@ public class WebSocket {
     @OnClose
     public void onClose() {
         copyOnWriteArraySet.remove(this);
-        System.out.println("websocket连接断开, 总数:"+ copyOnWriteArraySet.size());
+        logger.warn("websocket连接断开, 总数:" + copyOnWriteArraySet.size());
     }
 
     /**
@@ -61,7 +64,7 @@ public class WebSocket {
      */
     @OnMessage
     public void onMessage(String message) {
-        System.out.println("websocket收到客户端发来的消息:"+message);
+        logger.warn("websocket收到客户端" + session.getId() + "发来的消息:" + message);
     }
 
     /**
@@ -74,17 +77,16 @@ public class WebSocket {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        System.out.println("发生错误：" + error.getMessage() + "; sessionId:" + session.getId());
-        error.printStackTrace();
+        logger.warn("发生错误：" + error.getMessage() + "; sessionId:" + session.getId());
     }
 
-    public void sendMessage(Object object){
+    public void sendMessage(Object object) {
         //遍历客户端
         for (WebSocket webSocket : copyOnWriteArraySet) {
-            System.out.println("websocket广播消息：" + object.toString());
+            logger.warn("websocket广播消息：" + object.toString());
             try {
                 //服务器主动推送
-                webSocket.session.getBasicRemote().sendObject(object) ;
+                webSocket.session.getBasicRemote().sendObject(object);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -102,7 +104,7 @@ public class WebSocket {
     public void sendMessage(String message) {
         //遍历客户端
         for (WebSocket webSocket : copyOnWriteArraySet) {
-//            System.out.println("websocket广播消息：" + message);
+//             logger.warn("websocket广播消息：" + message);
             try {
                 //服务器主动推送
                 webSocket.session.getBasicRemote().sendText(message);
@@ -133,7 +135,7 @@ public class WebSocket {
         if (session != null) {
             tempWebSocket.session.getBasicRemote().sendText(message);
         } else {
-            System.out.println("没有找到你指定ID的会话：{}"+ "; sessionId:" + sessionId);
+            logger.warn("没有找到你指定ID的会话：{}" + "; sessionId:" + sessionId);
         }
     }
 
