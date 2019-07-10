@@ -231,63 +231,70 @@ public class MonitorController {
         return map;
     }
 
+    private int commandId=0;
+
     @RequestMapping(value = "/getMonitor2LightStatus", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getMonitor2LightStatus() {
         List<LightDemo> lightState2 = new ArrayList<>();
+        int id = monitor2Dao.getCommandId();
         CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
         List<LightDemo> placeLNumList = monitor2Dao.getPlaceLNum("Office");
         Map<String, Object> map = new HashMap<>();
         String scenes=null;
         if(commandInfo!=null){
-            String status = null;
-            String ctype = commandInfo.getCtype();
-            if ("52".equals(commandInfo.getCtype())){
-                //遥控器
-                if ("01".equals(commandInfo.getCid())){
-                    //全开
-                    status="0";
-                }else if ("02".equals(commandInfo.getCid())){
-                    //全关
-                    status="1";
-                }
-                lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status,"Office");
+            if (commandId<id){
+                commandId=id;
+                String status = null;
+                String ctype = commandInfo.getCtype();
+                if ("52".equals(commandInfo.getCtype())){
+                    //遥控器
+                    if ("01".equals(commandInfo.getCid())){
+                        //全开
+                        status="0";
+                    }else if ("02".equals(commandInfo.getCid())){
+                        //全关
+                        status="1";
+                    }
+                    lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status,"Office");
 
-            }else if ("C0".equals(commandInfo.getCtype())){
-                //pad or 手机 全控
-                if ("32".equals(commandInfo.getY())){
-                    //全关
-                    status="1";
-                }else {
-                    //全开
-                    status="0";
-                }
-                lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status,"Office");
-            }else if ("C1".equals(commandInfo.getCtype())){
-                //pad or 手机 组控
-                int groupId;
-                if ("0A".equals(commandInfo.getCid())){
-                    groupId = 10;
-                }else {
-                    groupId = Integer.valueOf(commandInfo.getCid());
+                }else if ("C0".equals(commandInfo.getCtype())){
+                    //pad or 手机 全控
+                    if ("32".equals(commandInfo.getY())){
+                        //全关
+                        status="1";
+                    }else {
+                        //全开
+                        status="0";
+                    }
+                    lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status,"Office");
+                }else if ("C1".equals(commandInfo.getCtype())){
+                    //pad or 手机 组控
+                    int groupId;
+                    if ("0A".equals(commandInfo.getCid())){
+                        groupId = 10;
+                    }else {
+                        groupId = Integer.valueOf(commandInfo.getCid());
+                    }
+
+                    if ("32".equals(commandInfo.getY())){
+                        status="1";
+                    }else {
+                        status="0";
+                    }
+                    lightState2 = monitor4Dao.getMonitorFromPhoneByGroup(groupId,status,"Office");
+                }else if("42".equals(ctype)){
+                    if ("01".equals(commandInfo.getCid())){
+                        scenes="场景一";
+                    }else if ("02".equals(commandInfo.getCid())){
+                        scenes="场景二";
+                    }else if ("03".equals(commandInfo.getCid())){
+                        scenes="场景三";
+                    }else if ("04".equals(commandInfo.getCid())){
+                        scenes="场景四";
+                    }
                 }
 
-                if ("32".equals(commandInfo.getY())){
-                    status="1";
-                }else {
-                    status="0";
-                }
-                lightState2 = monitor4Dao.getMonitorFromPhoneByGroup(groupId,status,"Office");
-            }else if("42".equals(ctype)){
-                if ("01".equals(commandInfo.getCid())){
-                    scenes="场景一";
-                }else if ("02".equals(commandInfo.getCid())){
-                    scenes="场景二";
-                }else if ("03".equals(commandInfo.getCid())){
-                    scenes="场景三";
-                }else if ("04".equals(commandInfo.getCid())){
-                    scenes="场景四";
-                }
             }
             map.put("lightState",lightState2);
             map.put("placeLNumList",placeLNumList);
