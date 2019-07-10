@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.Monitor2Dao;
 import com.example.blt.entity.vo.ConsoleVo;
-import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
@@ -28,15 +27,11 @@ import java.util.Map;
 public class MainController {
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
-    @Resource
-    private Monitor2Dao monitor2Dao;
 
     @RequestMapping("/test")
-    public String ping(ConsoleVo consoleVo) {
-        String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(info);
-        String result = ExecuteTask.sendCmd(task);
-        return result;
+    public String ping() {
+        ExecuteTask.pingStatus(false,1);
+        return "ok";
     }
 
     @RequestMapping("/switch")

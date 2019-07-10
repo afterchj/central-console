@@ -26,11 +26,11 @@
         <parameter property="other" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
-    <select id="saveLight" parameterMap="lightMapper" statementType="CALLABLE">
+    <select id="saveLight" parameterMap="lightMapper" resultType="map" statementType="CALLABLE">
         CALL save_light(?,?,?,?,?,?,?,?,?,?)
     </select>
 
-    <select id="saveConsole" parameterMap="commandMapper" statementType="CALLABLE">
+    <select id="saveConsole" parameterMap="commandMapper" resultType="map" statementType="CALLABLE">
         CALL save_blt_console(?,?,?,?,?,?,?,?,?)
     </select>
 

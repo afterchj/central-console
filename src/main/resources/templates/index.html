@@ -10,11 +10,13 @@
 <script type="text/javascript">
     let socket;
     $(function () {
+        let url = location.host;
+        console.log(location.href, url);
         $("#show").html("jquery文件加载成功！");
         if (typeof (WebSocket) == "undefined") {
             console.log("遗憾：您的浏览器不支持WebSocket");
         } else {
-            socket = new WebSocket("ws://127.0.0.1:8080/ws/webSocket");
+            socket = new WebSocket("ws://" + url + "/ws/webSocket");
             //连接打开事件
             socket.onopen = function () {
                 console.log("Socket 已打开！");

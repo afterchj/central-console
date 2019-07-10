@@ -52,6 +52,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             ExecuteTask.saveInfo(arg1, map, lightSet, false);
         }
         int len = cmd.length();
+        if (len > 22) {
+            logger.error("[" + to + "] receive :" + cmd);
+        } else {
+            logger.warn("[" + to + "] receive :" + cmd);
+        }
 //        ConsoleUtil.cleanSet(lightSet);
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len < 21) {
@@ -71,7 +76,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 }
             }
         }
-        logger.warn("[" + to + "] receive :" + cmd);
     }
 
     @Override
@@ -90,19 +94,18 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        logger.warn("[" + channel.remoteAddress().toString() + "] " + "online");
+//        logger.warn("[" + channel.remoteAddress().toString() + "] " + "online");
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        logger.warn("[" + channel.remoteAddress().toString() + "] " + "offline");
+//        logger.warn("[" + channel.remoteAddress().toString() + "] " + "offline");
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        Channel channel = ctx.channel();
         ctx.close().sync();
     }
 }

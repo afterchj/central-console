@@ -13,7 +13,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.TextMessage;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -72,6 +71,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.warn("nettyService starting...");
-//        ExecuteTask.pingStatus(true);
+//        ExecuteTask.pingStatus(true, 3);
     }
 }

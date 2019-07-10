@@ -1,9 +1,6 @@
 package com.example.blt;
 
-import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.ConsoleKeys;
-import com.example.blt.entity.dd.Topics;
-import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
@@ -66,6 +63,14 @@ public class MainTest {
 //    }
     @Test
     public void testStr() {
+        Map map = new HashMap();
+        map.put("host", "127.0.0.1");
+        map.put("ctype", "C0");
+        map.put("x", "32");
+        map.put("y", "32");
+        map.put("other", "77010315323266");
+        sqlSessionTemplate.selectOne("console.saveConsole",map);
+        System.out.println("result=" + map.get("result"));
         String str = "77040F0227E9010000713232000000000000CC";
         String str1 = "77040F0227";
         int index = str1.length();
@@ -128,12 +133,12 @@ public class MainTest {
 
     @Test
     public void testRocketMQ() {
-        String c0="77010315323266";
-        String c1="7701041601373766";
-        String c2="7701021906";
-        ExecuteTask.parseLocalCmd(c0,"127.0.0.1");
-        ExecuteTask.parseLocalCmd(c1,"127.0.0.1");
-        ExecuteTask.parseLocalCmd(c2,"127.0.0.1");
+        String c0 = "77010315323266";
+        String c1 = "7701041601373766";
+        String c2 = "7701021906";
+        ExecuteTask.parseLocalCmd(c0, "127.0.0.1");
+        ExecuteTask.parseLocalCmd(c1, "127.0.0.1");
+        ExecuteTask.parseLocalCmd(c2, "127.0.0.1");
 //        for (int i = 0; i < 10; i++) {
 //            Map map = new HashMap();
 //            map.put("topic", "topic_test");

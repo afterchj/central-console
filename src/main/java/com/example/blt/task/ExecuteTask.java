@@ -62,7 +62,7 @@ public class ExecuteTask {
         }
     }
 
-    public static void pingStatus(boolean delay) {
+    public static void pingStatus(boolean delay, int times) {
         new Thread(() -> {
             JSONObject object = new JSONObject();
             object.put("host", "all");
@@ -73,7 +73,7 @@ public class ExecuteTask {
             } catch (InterruptedException e) {
                 logger.error(e.getMessage());
             }
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < times; i++) {
                 object.put("command", "7701011B66");
                 ClientMain.sendCron(object.toJSONString());
                 try {
@@ -91,25 +91,22 @@ public class ExecuteTask {
         executorService.submit(() -> {
             Map map = new ConcurrentHashMap();
             try {
-                int len = str.length();
                 String prefix = str.substring(0, 8);
                 map.put("host", ip);
-//            map.put("other", str);
+                map.put("other", str);
                 String cmd = str.substring(prefix.length());
                 String cid = cmd.substring(0, 2);
-                String x = str.substring(len - 6, len - 4);
-                String y = str.substring(len - 4, len - 2);
                 switch (prefix) {
                     case "77010416":
                         map.put("ctype", "C1");
-                        map.put("x", x);
-                        map.put("y", y);
+                        map.put("x", cmd.substring(2, 4));
+                        map.put("y", cmd.substring(4, 6));
                         map.put("cid", cid);
                         break;
                     case "77010315":
                         map.put("ctype", "C0");
-                        map.put("x", x);
-                        map.put("y", y);
+                        map.put("x", cmd.substring(0, 2));
+                        map.put("y", cmd.substring(2, 4));
                         break;
                     case "77010219":
                         map.put("ctype", "42");
