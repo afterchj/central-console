@@ -56,7 +56,7 @@ public class ExecuteTask {
             if (msg.indexOf("77010315") != -1) {
                 JSONObject object = new JSONObject();
                 object.put("host", "all");
-                object.put("command", msg.substring(0, msg.length() - 2));
+                object.put("command", msg);
                 ClientMain.sendCron(object.toJSONString());
             }
         }

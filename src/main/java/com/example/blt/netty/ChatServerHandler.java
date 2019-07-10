@@ -46,9 +46,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
         } catch (Exception e) {
-            if (arg1.indexOf("CCCC") != -1) {
-                arg1 = arg1.substring(0, arg1.length() - 2);
-            }
             to = addr;
             cmd = arg1;
             Map map = ExecuteTask.pingInfo(arg1, host);
