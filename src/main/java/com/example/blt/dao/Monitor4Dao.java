@@ -33,6 +33,9 @@ public interface Monitor4Dao {
     @Select("select mname,count(*) as PlaceLNum,place from f_light_demo where other =#{other} Group by mname,place ORDER BY mname,place")
     List<LightDemo> getPlaceLNum(@Param("other") String other);//每个楼层每个区域的灯个数
 
+    @Select("select count(*) as centerLNum,mname from f_light_demo d where d.other=#{other} Group by mname")
+    List<LightDemo> getCenterLNum(@Param("other") String other);//每个楼层的灯个数
+
 
     @Select("select  lmac ,mname,lname,#{status} as status,d.place,d.group from f_light_demo d where other ='intelligence' ORDER BY" +
             " mname,d.group")

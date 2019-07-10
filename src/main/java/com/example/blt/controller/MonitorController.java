@@ -122,6 +122,7 @@ public class MonitorController {
         String scenes=null;
         CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
         List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
+        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
         if(commandInfo!=null){
             String ctype = commandInfo.getCtype();
             String status = null;
@@ -174,7 +175,7 @@ public class MonitorController {
         }
         map.put("lightState",lightState);
         map.put("placeLNumList",placeLNumList);
-        map.put("centerLNumList",480);
+        map.put("centerLNumList",centerLNumList);
         map.put("scenes",scenes);
         return map;
     }
