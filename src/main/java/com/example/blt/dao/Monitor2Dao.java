@@ -17,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface Monitor2Dao {
 
-    @Select("select cid,ctype,x,y from t_command_info where ctype is not null order by id desc limit 1")
+    @Select("select id,cid,ctype,x,y from t_command_info where ctype is not null order by id desc limit 1")
     CommandLight getCommandInfo();
 
     @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname =#{mname} ORDER BY" +

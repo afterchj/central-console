@@ -7,11 +7,19 @@ package com.example.blt.entity;
  * @create: 2019-06-28 16:37
  **/
 public class CommandLight {
-
+    private int id;
     private String cid;
     private String ctype;
     private String x;
     private String y;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCid() {
         return cid;
