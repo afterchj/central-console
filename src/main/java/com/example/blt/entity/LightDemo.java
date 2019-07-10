@@ -15,6 +15,7 @@ public class LightDemo {
     private Integer PlaceLNum;//区域中灯个数
     private String status;
     private Integer group;
+    private String y;
 
     public Integer getGroup() {
         return group;
@@ -72,6 +73,14 @@ public class LightDemo {
         this.lname = lname;
     }
 
+    public String getY() {
+        return y;
+    }
+
+    public void setY(String y) {
+        this.y = y;
+    }
+
     @Override
     public String toString() {
         return "LightDemo{" +
@@ -82,6 +91,7 @@ public class LightDemo {
                 ", PlaceLNum=" + PlaceLNum +
                 ", status='" + status + '\'' +
                 ", Group=" + group +
+                ", y=" + y +
                 '}';
     }
 }
