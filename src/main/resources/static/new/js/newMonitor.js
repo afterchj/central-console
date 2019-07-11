@@ -97,55 +97,63 @@ function operation(lightState, placeLNumList, centerLNumList) {
         var mname = item.mname;
         var placeList = item.placeList;
 
-        //右侧数据展示
-        var left = '<div class="on-off f-l"><div class="clearfix btn"><div class="f-l mname">' + mname + '</div>' +
-            ' <div class="f-l"> <span>故障：</span><span>0</span> </div> ' +
-            '<div class="f-l"> <div class="img"> <img src="/static/new/img/on-off-black.png" alt=""> ' +
-            '<div class="min-font">开关</div> </div> </div> </div> </div>';
+
         var rightList = '';
-        for (var j = 0; j < placeList.length; j++) {
-            var groupList = placeList[j].groupList;
-            for (var k = 0; k < groupList.length; k++) {
-                var lightList = groupList[k].lightList;
-                $.each(lightList, function (i, item3) {
-                    var status = item3.status;
+        $.each(placeList, function (i, item2) {
+            var groupList = item2.groupList;
+            $.each(groupList, function (i, item3) {
+                var lightList = item3.lightList;
+                $.each(lightList, function (i, item4) {
+                    var status = item4.status;
                     var state = statusM1(status).state;
                     var img = statusM1(status).img;
                 })
-                var status = groupList[k].groupState = jsonIsEqual(lightList, 'status');
+                var status = item3.groupState = jsonIsEqual(lightList, 'status');
                 var state = statusM(status).state;
-                if(status==0 || status==1){
-                    groupList[k].groupNum=groupList[k].groupTotal;
-                }else if(status == 12 || status==2){
-                    var sumTotal=  sum(lightList,'status',12)+sum(lightList,'status',2);
-                    groupList[k].groupNum=  parseInt(groupList[k].groupTotal)-sumTotal;
-                }
-            }
+                var img = statusM(status).img;
+                var img = statusM(status, 'blue').img;
 
-        var status = placeList[j].placeLNumState = jsonIsEqual1(groupList, 'groupState');
-        var state = statusM(status).state;
-        var img = statusM(status).img;
-            if(status==0 || status==1){
-                placeList[j].placeLNum=placeList[j].placeLNumTotal;
-            }else if(status == 12 || status==2){
-                var sumTotal=  sum(groupList,'status',12)+sum(groupList,'status',2);
-                placeList[j].placeLNum=  parseInt(placeList[j].placeLNumTotal)-sumTotal;
-            }
+                item3.groupNum=item3.groupTotal-sum(lightList,'status',null);
+                // if(status==0 || status==1){
+                //     groupList[k].groupNum=groupList[k].groupTotal;
+                // }else if(status == 12 || status==2){
+                //     var sumTotal=  sum(lightList,'status',12)+sum(lightList,'status',2);
+                //     groupList[k].groupNum=  parseInt(groupList[k].groupTotal)-sumTotal;
+                // }
+            })
+             var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
+             var state = statusM(status).state;
+             var img = statusM(status).img;
+            item2.placeLNum=sum(groupList,'groupNum',1);
+            // if(status==0 || status==1){
+            //     placeList[j].placeLNum=placeList[j].placeLNumTotal;
+            // }else if(status == 12 || status==2){
+            //     var sumTotal=  sum(groupList,'status',12)+sum(groupList,'status',2);
+            //     placeList[j].placeLNum=  parseInt(placeList[j].placeLNumTotal)-sumTotal;
+            // }
         rightList += '<div class="place f-l swiper-slide"> <div class="place-title"> ' +
-            '<div>区域<span class="placeName">' + placeList[j].place + '</span></div> <div>(<span class="p-num">' + placeList[j].placeLNum + '</span><span>/</span><span>' + placeList[j].placeLNumTotal + '</span>)</div></div> ' +
+            '<div>区域<span class="placeName">' + item2.place + '</span></div> <div>(<span class="p-num">' + item2.placeLNum + '</span><span>/</span><span>' + item2.placeLNumTotal + '</span>)</div></div> ' +
             '<div class="place-content"><div class="img-place">' + img + '</div><div><p class="p-status">' + state + '</p></div> </div></div>'
 
-        }
+        })
         // console.log(' rightList', rightList);
+
+        // if(status==0 || status==1){
+        //     item.centerLNum=item.centerLNumTotal;
+        // }else if(status == 12 || status==2){
+        //     var sumTotal=  sum(placeList,'placeLNumState',12)+sum(placeList,'placeLNumState',2);
+        //     item.centerLNum=  parseInt(item.centerLNumTotal)-sumTotal;
+        // }
         var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState')
         var state = statusM(status).state;
         var img = statusM(status).img;
-        if(status==0 || status==1){
-            item.centerLNum=item.centerLNumTotal;
-        }else if(status == 12 || status==2){
-            var sumTotal=  sum(placeList,'placeLNumState',12)+sum(placeList,'placeLNumState',2);
-            item.centerLNum=  parseInt(item.centerLNumTotal)-sumTotal;
-        }
+        item.centerLNum=sum(placeList,'placeLNum',1);
+        var sumTotal=parseInt(item.centerLNumTotal)-sum(placeList,'placeLNum',1);
+        //右侧数据展示
+        var left = '<div class="on-off f-l"><div class="clearfix btn"><div class="f-l mname">' + mname + '</div>' +
+            ' <div class="f-l"> <span>故障：</span><span>'+sumTotal+'</span> </div> ' +
+            '<div class="f-l"> <div class="img"> <img src="/static/new/img/on-off-black.png" alt=""> ' +
+            '<div class="min-font">开关</div> </div> </div> </div> </div>';
     var right = '<div class="light-list f-l  "><div class="swiper-container light-swiper"><div class="swiper-wrapper clearfix ">' + rightList + '<div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
     var content = '<div class="clearfix">' + left + right + '</div>';
     $('.content').append(content);
@@ -156,8 +164,8 @@ function operation(lightState, placeLNumList, centerLNumList) {
     // var img = statusM(status).img;
 
     leftNav += '<li><a href="/newIndex/noEnergy"><div class="clearfix"><div class="f-l p-r">' +
-        '<div class="nav-l p-a"><div class="floor">实验室-' + mname + '</div>' +
-        '<div class="switch-hint">(<span class=" center-LNum">' + centerLNum + '</span> / <span class="">' + centerLNumTotal + '</span>)</div>' +
+        '<div class="nav-l p-a"><div class="floor">实验室-' + item.mname + '</div>' +
+        '<div class="switch-hint">(<span class=" center-LNum">' + item.centerLNum + '</span> / <span class="">' + item.centerLNumTotal + '</span>)</div>' +
         '</div></div><div class="f-l p-r"><div class="nav-r p-a"><div class="left-img">' +
         img + '</div><div class="switch-hint">' + state + '</div></div></div></div></a></li>';
 })
