@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @program: central-console
@@ -39,8 +40,11 @@ public class MonitorController {
     @Resource
     private Monitor4Dao monitor4Dao;
 
-    private int commandId = 0;
-    private int newCommandId = 0;
+//    private int commandId = 0;
+//    private int newCommandId = 0;
+    //Integer原子操作
+    private AtomicInteger commandId = new AtomicInteger(0);
+    private AtomicInteger newCommandId = new AtomicInteger(0);
 
 
     @RequestMapping("/monitor")
@@ -129,8 +133,9 @@ public class MonitorController {
         List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
         List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
         if (commandInfo != null) {
-            if (newCommandId < id) {
-                newCommandId = id;
+            if (newCommandId.get() < id) {
+                newCommandId.set(id);
+//                newCommandId = id;
                 String ctype = commandInfo.getCtype();
                 String status = null;
                 if ("52".equals(ctype)) {
@@ -249,8 +254,9 @@ public class MonitorController {
         Map<String, Object> map = new HashMap<>();
         String scenes = null;
         if (commandInfo != null) {
-            if (commandId < id) {
-                commandId = id;
+            if (commandId.get() < id) {
+                commandId.set(id);
+//                commandId = id;
                 String status = null;
                 String ctype = commandInfo.getCtype();
                 if ("52".equals(commandInfo.getCtype())) {
