@@ -8,9 +8,9 @@
  * @param {string} slidesPerColumnFill - 参数b默认值为row
  */
 function swiper(classaName, slidesPerView, slidesPerColumn, slidesPerColumnFill) {
-    slidesPerView ? slidesPerView : slidesPerView=1;
-    slidesPerColumn ? slidesPerColumn : slidesPerColumn=1;
-    slidesPerColumnFill ? slidesPerColumnFill :slidesPerColumnFill= 'row';
+    slidesPerView ? slidesPerView : slidesPerView = 1;
+    slidesPerColumn ? slidesPerColumn : slidesPerColumn = 1;
+    slidesPerColumnFill ? slidesPerColumnFill : slidesPerColumnFill = 'row';
     new Swiper(classaName, {
         autoplay: true,
         direction: 'horizontal',
@@ -35,15 +35,15 @@ function swiper(classaName, slidesPerView, slidesPerColumn, slidesPerColumnFill)
  * @param {bool} animation- 参数b默认值为true
  */
 function waterbubbleS(id, txt, textColor, wave, radius, data, lineWidth, waterColor, font, animation) {
-    txt? txt : txt='0%';
-    textColor ? textColor : textColor='#333';
-    wave ? wave :wave= true;
-    radius ? radius : radius=26;
-    data ? data : data=0;
-    lineWidth ? lineWidth : lineWidth=2;
-    waterColor ? waterColor :waterColor= '#64D1C4';
-    font ? font :font= '14px arial';
-    animation ? animation : animation=true;
+    txt ? txt : txt = '0%';
+    textColor ? textColor : textColor = '#333';
+    wave ? wave : wave = true;
+    radius ? radius : radius = 26;
+    data ? data : data = 0;
+    lineWidth ? lineWidth : lineWidth = 2;
+    waterColor ? waterColor : waterColor = '#64D1C4';
+    font ? font : font = '14px arial';
+    animation ? animation : animation = true;
     // console.log(id, txt, textColor, wave, radius, data, lineWidth, waterColor, font, animation)
     $(id).waterbubble({
         txt: txt,
@@ -85,76 +85,77 @@ function Array2(nRow, nColumn) {
 /**
  * @param {array} 数组去重
  */
-function unique(array){
+function unique(array) {
     var r = [];
-    for(var i = 0, l = array.length; i<l; i++){
-        for(var j = i + 1; j < l; j++)
-            if(array[i] == array[j]) j == ++i;
+    for (var i = 0, l = array.length; i < l; i++) {
+        for (var j = i + 1; j < l; j++)
+            if (array[i] == array[j]) j == ++i;
         r.push(array[i]);
     }
     return r;
 
 }
 
-function sort(json,field){
+function sort(json, field) {
     json.sort(function (a, b) {
-        return extractNum(a[field])- extractNum(b[field]);
+        return extractNum(a[field]) - extractNum(b[field]);
     });
     return json;
 }
-function extractNum(str){
-    var result= str.replace(/[^0-9]/ig,"");
+function extractNum(str) {
+    var result = str.replace(/[^0-9]/ig, "");
     return result;
 }
-function jsonIsEqual(json,field){
-    var array=[];
-    // var result;
-    $.each(json,function (i,item) {
+
+function sum(json, field,m) {
+
+    var array = [];
+    $.each(json, function (i, item) {
         array.push(item[field]);
     })
-    if(array.indexOf(null)!=-1 && isAllEqual(array)){
-        //异常
-        return "2"
-    }else if(array.indexOf(null)==-1 && isAllEqual(array)){
-        //正常且开关灯一致
-        return "0"
-    }else if(array.indexOf(null)!=-1 && !isAllEqual(array)){
-        //异常常且开关灯不一致
-        return "12"
-    }else if(array.indexOf(null)==-1 && !isAllEqual(array)){
-        //开关灯不一致
-        return "1"
+    if(m==null){
+        console.log(array)
+        return timesSum(array,null);
+    }else{
+        return sumTotal(array)
     }
+
 }
-function jsonIsEqual1(json,field){
-    var array=[];
-    $.each(json,function (i,item) {
-        array.push(item[field]);
-    })
-    if(array.indexOf('0')!=-1 && isAllEqual(array)){
-        return '0';
-    }else if(array.indexOf('2')!=-1 && isAllEqual(array)){
-        return '2';
-    }else if(array.indexOf('12')!=-1 && isAllEqual(array)){
-        return "12"
-    }else if(array.indexOf("1")==-1 && !isAllEqual(array)){
-        return "1"
-    }
+function sumTotal(arr) {
+    return arr.reduce(function(prev, curr, idx, arr){
+        return prev + curr;
+    });
 }
-function sum(json,field,m) {
-    var sum=0;
-    var array=[];
-    $.each(json,function (i,item) {
-        array.push(item[field]);
-    }) 
-    for(var i=0;i<array.length;i++){
-        if(array[i]==m){
-            sum++;
+
+
+function timesSum(arr,m){
+    times=0;//m是数组中的元素，times用来统计出现的次数
+// for循环遍历arr数组
+    for(var i=0;i<arr.length;i++){
+        if(arr[i]==m){
+            times++;//数组中有相同值就加1
         }
     }
-    console.log('sum',sum);
-    return sum;
+    return times;
+    console.log('次数',times);//这是打印出的出现的次数
 }
+function sum2(json, field,m) {
+
+    var array = [];
+    var arrayNew = [];
+    $.each(json, function (i, item) {
+        array.push(item[field]);
+    })
+    $.each(array,function(i,item){
+        if(item==m){
+            arrayNew.push(item);
+        }
+    })
+    return arrayNew.reduce(function (prev, cur) {
+        return prev + cur;
+    }, 0);
+}
+
 $(".nave li").click(function () {
     $(this).addClass('active').siblings().removeClass('active');
     var imgUrl = $(this).find('img').attr('src');
@@ -183,15 +184,15 @@ $(".nave li").hover(function () {
 })
 //lightState灯状态数据转换
 function lightStateM(lightState) {
-    var floorName = [], groupName = [], placeName = [],lightName=[], obj1 = {};
+    var floorName = [], groupName = [], placeName = [], lightName = [], obj1 = {};
     $.each(lightState, function (i, item) {
         var mname = item.mname;
         var group = item.group;
         var place = item.place;
         var status = item.status;
-        var lname=item.lname;
-        var lmac=item.lmac;
-        var y=item.y;
+        var lname = item.lname;
+        var lmac = item.lmac;
+        var y = item.y;
         if (!obj1[mname]) {
             var floorList = {
                 mname: mname,
@@ -217,17 +218,17 @@ function lightStateM(lightState) {
             group: group,
             // groupTotal: 4,
             // groupState: "2",
-            lightList:[]
+            lightList: []
         }
         groupName.push(groupList)
-        var lightList={
-            mname:mname,
+        var lightList = {
+            mname: mname,
             place: place,
             group: group,
-            lname:lname,
-            lmac:lmac,
+            lname: lname,
+            lmac: lmac,
             status: status,
-            y:y
+            y: y
         }
         lightName.push(lightList)
     })
@@ -265,7 +266,7 @@ function lightStateM(lightState) {
                                 groupNum: 0,
                                 groupTotal: 4,
                                 groupState: "2",
-                                lightList:[]
+                                lightList: []
                             }
                             placeArr[n].groupList.push(newGroup)
                             obj3[item2.group] = true;
@@ -283,19 +284,19 @@ function lightStateM(lightState) {
                 // var obj3 = {};
                 for (var n = 0; n < placeArr.length; n++) {
                     if (placeArr[n].place == item2.place) {
-                        var groupArr=placeArr[n].groupList;
+                        var groupArr = placeArr[n].groupList;
 
-                        for(var m=0;m<groupArr.length;m++){
+                        for (var m = 0; m < groupArr.length; m++) {
                             if (groupArr[m].group == item2.group) {
                                 if (!obj4[item2.lname]) {
-                                    var newLight= {
+                                    var newLight = {
                                         mname: item2.mname,
                                         place: item2.place,
                                         group: item2.group,
-                                        lname:item2.lname,
-                                        lmac:item2.lmac,
+                                        lname: item2.lname,
+                                        lmac: item2.lmac,
                                         status: item2.status,
-                                        y:item2.y,
+                                        y: item2.y,
                                     }
                                     groupArr[m].lightList.push(newLight)
                                     obj4[item2.lname] = true;
@@ -347,86 +348,139 @@ function placeLNumListM(placeLNumList) {
     })
     return floorName;
 }
-function statusM(status,blue) {
-    var img, state,warning=false;
+
+function jsonIsEqual(json, field) {
+    var array = [];
+    // var result;
+    $.each(json, function (i, item) {
+        array.push(item[field]);
+    })
+
+    if (array.indexOf(null) != -1) {
+        //异常
+        if (isAllEqual(filterArr(array, null))) {
+            //除了异常是否一致,一致,则只有异常
+            return "2"
+        } else {
+            //异常不一致
+            return "12"
+        }
+    } else if (isAllEqual(array)) {
+        //正常
+        return "0"
+    } else {
+        //开关灯不一致
+        return "1"
+    }
+    // if(array.indexOf(null)!=-1 && isAllEqual(array)){
+    //     //异常
+    //     return "2"
+    // }else if(array.indexOf(null)==-1 && isAllEqual(array)){
+    //     //正常且开关灯一致
+    //     return "0"
+    // }else if(array.indexOf(null)!=-1 && !isAllEqual(array)){
+    //     //异常常且开关灯不一致
+    //     return "12"
+    // }else if(array.indexOf(null)==-1 && !isAllEqual(array)){
+    //     //开关灯不一致
+    //     return "1"
+    // }
+}
+var arr = [null, null, null];
+console.log('filterArr()', filterArr(arr, null));
+function filterArr(array, field) {
+    var newArr = array.filter(function (item) {
+        return item != field;
+    });
+    return newArr;
+}
+function jsonIsEqual1(json, field) {
+    var array = [];
+    $.each(json, function (i, item) {
+        array.push(item[field]);
+    })
+    // if (array.indexOf('0') != -1 && isAllEqual(array)) {
+    //     return '0';
+    // } else if (array.indexOf('2') != -1 && isAllEqual(array)) {
+    //     return '2';
+    // } else if (array.indexOf('12') != -1 && isAllEqual(array)) {
+    //     return "12"
+    // } else if (array.indexOf("1") == -1 && !isAllEqual(array)) {
+    //     return "1"
+    // }
+    if (array.indexOf('12') != -1) {
+        //异常开关灯不一致
+        return "12"
+    } else if (array.indexOf('2') != -1) {
+        if (filterArr(array, '2').indexOf('1') == -1) {
+            //除了异常是否一致,一致,则只有异常
+            return "2"
+        } else {
+            return "12"
+        }
+    } else if (array.indexOf('1') != -1) {
+        //开关灯不一致
+        return "1"
+    } else if (array.indexOf('0') != -1) {
+        //正常
+        return "0"
+    }
+}
+function statusM(status, blue) {
+    var img, state, warning = false;
     if (status == 0) {
         //正常
         state = '正常';
-        if(blue=='blue'){
+        if (blue == 'blue') {
             img = '<img src="/static/new/img/normal-white.png" alt="">';
-        }else{
+        } else {
             img = '<img src="/static/new/img/normal.png" alt="">';
         }
-        warning=false;
+        warning = false;
     } else if (status == 1) {
         //开关灯状态不一致
         state = '开关灯不一致';
         img = '<img src="/static/new/img/switch-un.png" alt="">';
-        warning=false;
+        warning = false;
     } else if (status == 2) {
         //异常
         state = '异常';
         img = '<img src="/static/new/img/switch-abnormal.png" alt="">';
-        warning=true;
+        warning = true;
     } else if (status == 12) {
         //开关灯状态不一致且异常
         state = '开关灯状态不一致异常状态（故障）';
         img = '<img src="/static/new/img/switch-un.png" alt=""><img src="/static/new/img/switch-abnormal.png" alt="">';
-        warning=true;
+        warning = true;
     }
     return obj = {
         img: img,
         state: state,
-        warning:warning
+        warning: warning
     }
 }
-function statusM1(status,blue) {
-    var img, state,warning=false;
-    if(status == 0){
+function statusM1(status, blue) {
+    var img, state, warning = false;
+    if (status == 0) {
         state = '开';
-        if(blue=='blue'){
+        if (blue == 'blue') {
             img = '<img src="/static/new/img/normal-white.png" alt="">';
-        }else{
+        } else {
             img = '<img src="/static/new/img/normal.png" alt="">';
         }
-        warning=false;
-    }else if(status == 1){
+        warning = false;
+    } else if (status == 1) {
         state = '关';
         img = '<img src="/static/new/img/switch-un.png" alt="">';
-        warning=false;
-    }else if(status == null){
+        warning = false;
+    } else if (status == null) {
         state = '异常';
         img = '<img src="/static/new/img/switch-abnormal.png" alt="">';
-        warning=false;
+        warning = false;
     }
-    // if (status == 0) {
-    //     //正常
-    //     state = '正常';
-    //     if(blue=='blue'){
-    //         img = '<img src="/static/new/img/normal-white.png" alt="">';
-    //     }else{
-    //         img = '<img src="/static/new/img/normal.png" alt="">';
-    //     }
-    //     warning=false;
-    // } else if (status == 1) {
-    //     //开关灯状态不一致
-    //     state = '开关灯不一致';
-    //     img = '<img src="/static/new/img/switch-un.png" alt="">';
-    //     warning=false;
-    // } else if (status == 2) {
-    //     //异常
-    //     state = '异常';
-    //     img = '<img src="/static/new/img/switch-abnormal.png" alt="">';
-    //     warning=true;
-    // } else if (status == 12) {
-    //     //开关灯状态不一致且异常
-    //     state = '开关灯状态不一致异常状态（故障）';
-    //     img = '<img src="/static/new/img/switch-un.png" alt=""><img src="/static/new/img/switch-abnormal.png" alt="">';
-    //     warning=true;
-    // }
     return obj = {
         img: img,
         state: state,
-        warning:warning
+        warning: warning
     }
 }
