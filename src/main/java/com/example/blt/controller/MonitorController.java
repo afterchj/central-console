@@ -208,7 +208,7 @@ public class MonitorController {
                             lightDemo.setMname("10楼");
                             break;
                     }
-                    lightDemo.setGroup(groupId);
+                    lightDemo.setGroupId(groupId);
                     lightDemo.setStatus(status);
                     lightDemo.setOther("group");
                     List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfoByPlace(lightDemo.getMname(), groupId);
@@ -225,7 +225,6 @@ public class MonitorController {
                     }
                 }
                 map.put("lightDemo", lightDemo);
-                System.out.println(lightDemo.getOther());
             }
 //            map.put("placeLNumList", placeLNumList);
 //            map.put("centerLNumList", centerLNumList);

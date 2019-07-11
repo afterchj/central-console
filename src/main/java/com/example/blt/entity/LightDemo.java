@@ -14,16 +14,16 @@ public class LightDemo {
     private Integer place;//区域
     private Integer PlaceLNum;//区域中灯个数
     private String status;
-    private Integer group;
+    private Integer groupId;
     private String y;
     private String other;
 
-    public Integer getGroup() {
-        return group;
+    public Integer getGroupId() {
+        return groupId;
     }
 
-    public void setGroup(Integer group) {
-        this.group = group;
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public String getStatus() {
@@ -99,7 +99,7 @@ public class LightDemo {
                 ", place=" + place +
                 ", PlaceLNum=" + PlaceLNum +
                 ", status='" + status + '\'' +
-                ", Group=" + group +
+                ", groupId=" + groupId +
                 ", y=" + y +
                 ", other=" + other +
                 '}';
