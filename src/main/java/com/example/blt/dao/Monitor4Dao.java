@@ -27,7 +27,7 @@ public interface Monitor4Dao {
     List<LightDemo> getIntelligencePlaceLNum();//每一层每个区域的正常状态灯个数
 
 
-    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.place,d.Group,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy1 Group by lmac) i ON d.lmac = i.lmac where d.other='intelligence' ORDER BY d.mname,d.group")
+    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy1 Group by lmac) i ON d.lmac = i.lmac where d.other='intelligence' ORDER BY d.mname,d.groupId")
     List<LightDemo> getIntelligenceLightInfo();
 
     @Select("select mname,count(*) as PlaceLNum,place from f_light_demo where other =#{other} Group by mname,place ORDER BY mname,place")
@@ -37,15 +37,15 @@ public interface Monitor4Dao {
     List<LightDemo> getCenterLNum(@Param("other") String other);//每个楼层的灯个数
 
 
-    @Select("select  lmac ,mname,lname,#{status} as status,d.place,d.group from f_light_demo d where other ='intelligence' ORDER BY" +
-            " mname,d.group")
+    @Select("select  lmac ,mname,lname,#{status} as status,d.place,d.groupId from f_light_demo d where other ='intelligence' ORDER BY" +
+            " mname,d.groupId")
     List<LightDemo>  getMonitorFromRemoteByStatus(@Param("status") String status,@Param("other") String other);//全开全关
 
-    @Select("select  lmac ,mname,lname,#{status} as status,d.place,d.group from f_light_demo d where other =#{other} and" +
-            " d.group=#{group} ORDER BY mname,lname")
+    @Select("select  lmac ,mname,lname,#{status} as status,d.place,d.groupId from f_light_demo d where other =#{other} and" +
+            " d.groupId=#{group} ORDER BY mname,lname")
     List<LightDemo> getMonitorFromPhoneByGroup(@Param("group") int groupId, @Param("status") String status,@Param("other") String other);//单组全开全关
 
-    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.place,d.Group,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy1 Group by lmac) i ON d.lmac = i.lmac where d.other='intelligence' and mname=#{mname} and place= (select place from f_light_demo ld where ld.mname=#{mname} and ld.group=#{group} limit 1) ORDER BY d.group")
+    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy1 Group by lmac) i ON d.lmac = i.lmac where d.other='intelligence' and mname=#{mname} and place= (select place from f_light_demo ld where ld.mname=#{mname} and ld.groupId=#{group} limit 1) ORDER BY d.groupId")
     List<LightDemo> getIntelligenceLightInfoByPlace(@Param("mname") String mname,@Param("group") int group);
 
 }
