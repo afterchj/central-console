@@ -5,7 +5,9 @@ package com.example.blt.entity.dd;
  */
 public enum ConsoleKeys {
 
-    lMAC("l_lmac"), VADDR("l_vaddr"),;
+    lMAC("l_lmac"),
+    VADDR("l_vaddr"),
+    LSIZE("l_size");
 
     ConsoleKeys(String value) {
         this.value = value;

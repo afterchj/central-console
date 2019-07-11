@@ -27,11 +27,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     private static Logger logger = LoggerFactory.getLogger(ChatServerHandler.class);
     //保存所有活动的用户
     public static final ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-//    private static Set<Map> lightSet = new CopyOnWriteArraySet<>();
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
-//        ConsoleUtil.cleanSet(lightSet);
         Channel channel = arg0.channel();
         String addr = channel.remoteAddress().toString();
         String host = addr.substring(1, addr.indexOf(":"));
@@ -42,12 +40,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
         } catch (Exception e) {
-            to = addr;
+            to = host;
             cmd = arg1;
-//            ExecuteTask.saveInfo(arg1, map, lightSet, false);
         }
         int len = cmd.length();
-//        ConsoleUtil.cleanSet(lightSet);
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len < 21) {
             ExecuteTask.parseLocalCmd(cmd, host);
@@ -56,18 +52,16 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 if (address != null) {
                     String str = address.toString();
                     String ip = str.substring(1, str.indexOf(":"));
-                    if (ip.equals(to)) {
-                        ch.writeAndFlush(cmd);
-                        break;
-                    } else {
-                        if (!ip.equals("127.0.0.1")) {
-                            if (cmd.indexOf("77020315") != -1) {
-                                ch.writeAndFlush(cmd.replace("02", "01"));
-                            }
-                            if (ip.equals(host)) {
-                                ch.writeAndFlush(cmd);
-                                break;
-                            }
+                    if (!ip.equals("127.0.0.1")) {
+                        if (to.equals("all")) {
+                            ch.writeAndFlush(cmd);
+                        }
+                        if (cmd.indexOf("77020315") != -1) {
+                            ch.writeAndFlush(cmd.replace("02", "01"));
+                        }
+                        if (ip.equals(to)) {
+                            ch.writeAndFlush(cmd);
+                            break;
                         }
                     }
                 }

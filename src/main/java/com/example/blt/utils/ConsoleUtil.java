@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,9 +31,9 @@ public class ConsoleUtil {
         operations.set(key, list, expire, TimeUnit.SECONDS);
     }
 
-    public static void saveInfo(String key, List list) {
-        ValueOperations<String, List> operations = redisTemplate.opsForValue();
-        operations.set(key, list, 30, TimeUnit.SECONDS);
+    public static void saveInfo(String key, Integer size) {
+        ValueOperations<String, Integer> operations = redisTemplate.opsForValue();
+        operations.set(key, size, 50, TimeUnit.SECONDS);
     }
 
     public static Set getInfo(String key) {
@@ -52,8 +51,8 @@ public class ConsoleUtil {
         }
     }
 
-    public static List getValueTest(String key) {
-        return (List) redisTemplate.opsForValue().get(key);
+    public static Object getValue(String key) {
+        return redisTemplate.opsForValue().get(key);
     }
 
     public static int getLightSize(String... key) {
@@ -62,13 +61,8 @@ public class ConsoleUtil {
             List<Map<String, Object>> list = sqlSessionTemplate.selectList("console.getLights");
             for (String name : key) {
                 for (Map<String, Object> map : list) {
-                    Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry<String, Object> entry = it.next();
-                        if (entry.getValue().equals(name)) {
-                            num += Integer.valueOf(String.valueOf(map.get("lmacn")));
-                        }
-                    }
+                    System.out.println(map.get("mname") + "\t" + map.get(name));
+                    num += Integer.valueOf(String.valueOf(map.get(name)));
                 }
             }
         } else {

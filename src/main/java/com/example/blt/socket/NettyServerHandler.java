@@ -31,7 +31,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
         ExecuteTask.pingInfo(ip, msg);
-        ExecuteTask.translateCmd(msg);
 //        ExecuteTask.saveInfo(msg, map, lightSet, true);
     }
 

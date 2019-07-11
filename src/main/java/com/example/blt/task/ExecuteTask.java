@@ -43,13 +43,13 @@ public class ExecuteTask {
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"lmac"});
                 set.add(map);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), set, 60);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), set, 80);
             });
         } else if (msg.indexOf("77040F0227") != -1) {
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"vaddr"});
                 set.add(map);
-                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
+                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 20);
             });
         }
     }

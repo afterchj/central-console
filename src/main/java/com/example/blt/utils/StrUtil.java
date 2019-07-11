@@ -41,7 +41,7 @@ public class StrUtil {
                 int index = str1.length();
                 String vaddr = str.substring(index, index + 8);
                 vaddrSet.add(vaddr);
-                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 30);
+                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 20);
                 String x = str.substring(index + 10, index + 12);
                 String y = str.substring(index + 12, index + 14);
                 if (str.contains("3232")) {
@@ -65,7 +65,7 @@ public class StrUtil {
                 String mac = sortMac(lmac);
                 map.put("lmac", mac);
                 lmacSet.add(mac);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 60);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 80);
                 ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
 //            sqlSessionTemplate.selectOne("console.saveLight", map);
 //            logger.warn("result=" + map.get("result"));
@@ -163,7 +163,6 @@ public class StrUtil {
     }
 
     public static void tempFormat(String format, String ip) {
-        boolean flag = false;
         String str = format.substring(18);
         int len = str.length();
         String prefix = str.substring(0, 2).toUpperCase();
@@ -175,12 +174,12 @@ public class StrUtil {
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
                 //7704100221F505000052456365D7ACF0000200CCCC
-                String cmd = str.substring(len - 6, len - 4);
-                if ("01".equals(cmd)) {
-                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
-                } else if ("02".equals(cmd)) {
-                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
-                }
+//                String cmd = str.substring(len - 6, len - 4);
+//                if ("01".equals(cmd)) {
+//                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
+//                } else if ("02".equals(cmd)) {
+//                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
+//                }
                 map.put("ctype", prefix);
                 map.put("cid", cid);
                 break;

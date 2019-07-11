@@ -14,8 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,6 +46,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     public void checkSize() {
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+        Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
         JSONObject object = new JSONObject();
         object.put("host", "all");
         object.put("command", "7701012766");
@@ -55,10 +54,10 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         if (null != lmacSet) {
             logger.warn("lmacSize=" + lmacSet.size());
             if (null != vaddrSet) {
-                logger.warn("vaddrSize=" + vaddrSet.size());
-                if (lmacSet.size() == vaddrSet.size()) {
-//                    Map params = new HashMap();
-//                    params.put("list", lmacSet);
+                logger.warn("size=" + size + ",vaddrSize=" + vaddrSet.size());
+                if (size == null) {
+                    ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), vaddrSet.size());
+                } else if (size == vaddrSet.size()) {
                     sqlSessionTemplate.update("console.saveUpdate2", lmacSet);
                     return;
                 }
