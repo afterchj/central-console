@@ -2,6 +2,7 @@
  * Created by yuanjie.fang on 2019/7/10.
  */
 $(function () {
+
     init();
     realTime();
     // setInterval(function () {
@@ -101,7 +102,7 @@ function operation2(lightDemo, other, floor) {
             var img= statusM1(statusAll,1).img;
             $(this).find('.img-place').attr('src',img);
         })
-    }else if(other=='groupId'){
+    }else if(other=='group'){
         var mname=lightDemo.mname;
         var groupId=lightDemo.groupId;
         var status=lightDemo.status;
@@ -109,7 +110,9 @@ function operation2(lightDemo, other, floor) {
         console.log(mname,groupId,status,img)
         if(extractNum(mname)==floor){
             console.log('楼层',mname);
-            $('.content .place:contains("组"+groupId)').parent().parent().next().find('img').replaceWith(img);
+            console.log($('.content .max:contains("组"+groupId)').parent().parent().next().find('img').html())
+
+            // $('.content .max[text='组'+groupId']'+).parent().parent().next().find('img').replaceWith(img);
             // $('.content .place:contains(is)').each(function () {
             //     console.log($(this).find('.max').text());
             //    if(group==extractNum($(this).find('.max').text())){
@@ -147,8 +150,8 @@ function upLight(url) {
             //json数据格式转换调用方法
             lightState = lightStateM(lightState);
             placeLNumList = placeLNumListM(placeLNumList);
-            console.log('data原始lightState ', lightState);
-            console.log('data原始placeLNumList ', placeLNumList);
+            // console.log('data原始lightState ', lightState);
+            // console.log('data原始placeLNumList ', placeLNumList);
             operation(lightState, placeLNumList, centerLNumList, floor)
         }
     })
