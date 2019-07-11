@@ -1,18 +1,13 @@
 package com.example.blt;
 
-import com.example.blt.config.WSClient;
 import com.example.blt.netty.ServerMain;
 import com.example.blt.socket.NettyServer;
 import com.example.blt.utils.FrameSpringBeanUtil;
-import org.java_websocket.client.WebSocketClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @SpringBootApplication
 @EnableScheduling

@@ -4,6 +4,7 @@ import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @create: 2019-06-14 14:01
  **/
 @Mapper
+@Scope
 public interface LightListDao {
 
     @Select("select * from f_light_demo")

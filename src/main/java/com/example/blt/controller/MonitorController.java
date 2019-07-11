@@ -40,6 +40,7 @@ public class MonitorController {
     private Monitor4Dao monitor4Dao;
 
     private int commandId = 0;
+    private int newCommandId = 0;
 
 
     @RequestMapping("/monitor")
@@ -128,8 +129,8 @@ public class MonitorController {
         List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
         List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
         if (commandInfo != null) {
-            if (commandId < id) {
-                commandId = id;
+            if (newCommandId < id) {
+                newCommandId = id;
                 String ctype = commandInfo.getCtype();
                 String status = null;
                 if ("52".equals(ctype)) {
