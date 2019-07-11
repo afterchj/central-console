@@ -54,38 +54,50 @@ function realTime() {
         type: "POST",
         success: function (data) {
             console.log('更新', data);
-            var lightState=data.lightState;
-            var lightDemo=data.lightDemo;
-            var other=lightDemo.other;
-            console.log('转换后的',lightState);
-            if(lightDemo!=null){
+            if (data.lightDemo && data.lightDemo.other != null) {
+                var lightDemo = data.lightDemo;
+                var other = data.lightDemo.other;
                 // lightState = sort(lightState, 'mname');
                 // lightState=sort(lightState, 'lname');
                 // lightState = lightStateM(lightState);
+                var floor =getUrlParams('floor');
+                console.log('floor',floor);
 
-                var floor='1楼';
-                // operation2(lightState,lightDemo,other,floor)
+                operation2( lightDemo, other, floor)
             }
-
         }
     })
 }
-
-function operation2(lightState){
-    $.each(lightState,function(i,item1){
-        var placeList = item1.placeList;
-        $.each(placeList,function(i,item2){
-            var groupList = item2.groupList;
-            $.each(groupList,function(i,item3){
-                var lightList = item3.lightList;
-                $.each(lightList,function(i,item4){
-                    var status = item4.status;
-
-                })
-            })
+function operation2(lightDemo, other, floor) {
+    if (other == 'all') {
+        var statusAll = lightDemo.status;
+        $('.content>.clearfix .place').each(function () {
+           var src= $(this).find('.img-place').attr('src',src);
+           var img= statusM1(statusAll,1).img;
+            $(this).find('.img-place').attr('src',img);
         })
-    })
+    }else if(other=='group'){
+        var mname=lightDemo.mname;
+        var groupId=lightDemo.groupId;
+        var status=lightDemo.status;
+        var img= statusM1(status,1).img;
+    }
 }
+// function operation2(lightState){
+//     $.each(lightState,function(i,item1){
+//         var placeList = item1.placeList;
+//         $.each(placeList,function(i,item2){
+//             var groupList = item2.groupList;
+//             $.each(groupList,function(i,item3){
+//                 var lightList = item3.lightList;
+//                 $.each(lightList,function(i,item4){
+//                     var status = item4.status;
+//
+//                 })
+//             })
+//         })
+//     })
+// }
 
 //巡检
 function upLight(url) {
@@ -110,11 +122,11 @@ function upLight(url) {
                 lightState = sort(lightState, 'mname');
 
             }
-
+            console.log('lightState', lightState);
             //json数据格式转换调用方法
             lightState = lightStateM(lightState);
             placeLNumList = placeLNumListM(placeLNumList);
-            console.log('lightState',lightState);
+            console.log('lightState', lightState);
             operation(lightState, placeLNumList, centerLNumList)
         }
     })
@@ -173,7 +185,7 @@ function operation(lightState, placeLNumList, centerLNumList) {
         //右侧数据展示
         var left = '<div class="on-off f-l"><div class="clearfix btn"><div class="f-l mname">' + mname + '</div>' +
             ' <div class="f-l"> <span>故障：</span><span>' + sumTotal + '</span> </div> ' +
-            '<div class="f-l"> <div class="img"> <img src="/static/new/img/on-off-black.png" alt="" class="toggle-button"> ' +
+            '<div class="f-l"> <div class="img"> <img src="/static/new/img/on-off-black.png" alt="" class="toggle-button centerL-btn click-btn"> ' +
             '<div class="min-font">开关</div> </div> </div> </div> </div>';
         var right = '<div class="light-list f-l  "><div class="swiper-container light-swiper"><div class="swiper-wrapper clearfix ">' + rightList + '<div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
         var content = '<div class="clearfix">' + left + right + '</div>';
@@ -181,8 +193,8 @@ function operation(lightState, placeLNumList, centerLNumList) {
 
 
         //左侧导航
-        leftNav += '<li><a href="/newIndex/noEnergy"><div class="clearfix"><div class="f-l p-r">' +
-            '<div class="nav-l p-a"><div class="floor">实验室-' + item.mname + '</div>' +
+        leftNav += '<li><a href="javascript:void(0);"><div class="clearfix"><div class="f-l p-r">' +
+            '<div class="nav-l p-a"><div class="floor">实验室-<span>' + item.mname + '</span></div>' +
             '<div class="switch-hint">(<span class=" center-LNum">' + item.centerLNum + '</span> / <span class="">' + item.centerLNumTotal + '</span>)</div>' +
             '</div></div><div class="f-l p-r"><div class="nav-r p-a"><div class="left-img">' +
             img + '</div><div class="switch-hint">' + state + '</div></div></div></div></a></li>';

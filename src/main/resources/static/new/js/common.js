@@ -122,9 +122,11 @@ function sum(json, field,m) {
 
 }
 function sumTotal(arr) {
-    return arr.reduce(function(prev, curr, idx, arr){
-        return prev + curr;
-    });
+    if(arr.length>0){
+        return arr.reduce(function(prev, curr, idx, arr){
+            return prev + curr;
+        });
+    }
 }
 
 
@@ -139,7 +141,11 @@ function timesSum(arr,m){
 }
 
 
-$(".nave li").click(function () {
+// $(".nave li").click(function () {
+//
+// })
+$(".nave").on('click', "li", function(){
+
     $(this).addClass('active').siblings().removeClass('active');
     var imgUrl = $(this).find('img').attr('src');
     if (imgUrl) {
@@ -150,6 +156,10 @@ $(".nave li").click(function () {
                 $(this).find('img').attr('src', '/static/new/img/normal.png')
             }
         }
+    }
+    var floor=extractNum($(this).find('.floor span').text());
+    if(floor){
+        location.href="/newIndex/noEnergy?floor="+floor;
     }
 })
 $(".nave li").hover(function () {
@@ -165,12 +175,43 @@ $(".nave li").hover(function () {
         }
     }
 })
+
+function getUrlParams(name) { // 不传name返回所有值，否则返回对应值
+    var url = window.location.search;
+    if (url.indexOf('?') == 1) { return false; }
+    url = url.substr(1);
+    url = url.split('&');
+    var name = name || '';
+    var nameres;
+    // 获取全部参数及其值
+    for(var i=0;i<url.length;i++) {
+        var info = url[i].split('=');
+        var obj = {};
+        obj[info[0]] = decodeURI(info[1]);
+        url[i] = obj;
+    }
+    // 如果传入一个参数名称，就匹配其值
+    if (name) {
+        for(var i=0;i<url.length;i++) {
+            for (const key in url[i]) {
+                if (key == name) {
+                    nameres = url[i][key];
+                }
+            }
+        }
+    } else {
+        nameres = url;
+    }
+    // 返回结果
+    return nameres;
+}
+
 //lightState灯状态数据转换
 function lightStateM(lightState) {
     var floorName = [], groupName = [], placeName = [], lightName = [], obj1 = {};
     $.each(lightState, function (i, item) {
         var mname = item.mname;
-        var group = item.group;
+        var groupId = item.groupId;
         var place = item.place;
         var status = item.status;
         var lname = item.lname;
@@ -198,17 +239,17 @@ function lightStateM(lightState) {
         var groupList = {
             mname: mname,
             place: place,
-            group: group,
+            groupId: groupId,
             // groupTotal: 4,
             // groupState: "2",
             lightList: []
         }
         groupName.push(groupList)
-       
+
         var lightList = {
             mname: mname,
             place: place,
-            group: group,
+            groupId: groupId,
             lname: lname,
             lmac: lmac,
             status: status,
@@ -244,18 +285,18 @@ function lightStateM(lightState) {
 
                 for (var n = 0; n < placeArr.length; n++) {
                     if (placeArr[n].place == item2.place) {
-                        if (!obj3[item2.group]) {
+                        if (!obj3[item2.groupId]) {
                             var newGroup = {
                                 mname: item2.mname,
                                 place: item2.place,
-                                group: item2.group,
+                                groupId: item2.groupId,
                                 groupNum: 0,
                                 groupTotal: 4,
                                 groupState: "2",
                                 lightList: []
                             }
                             placeArr[n].groupList.push(newGroup)
-                            obj3[item2.group] = true;
+                            obj3[item2.groupId] = true;
                         }
                     }
                 }
@@ -273,12 +314,12 @@ function lightStateM(lightState) {
                         var groupArr = placeArr[n].groupList;
 
                         for (var m = 0; m < groupArr.length; m++) {
-                            if (groupArr[m].group == item2.group) {
+                            if (groupArr[m].groupId == item2.groupId) {
                                 if (!obj4[item2.lname]) {
                                     var newLight = {
                                         mname: item2.mname,
                                         place: item2.place,
-                                        group: item2.group,
+                                        groupId: item2.groupId,
                                         lname: item2.lname,
                                         lmac: item2.lmac,
                                         status: item2.status,
@@ -425,20 +466,21 @@ function statusM1(status, blue) {
     var img, state, warning = false;
     if (status == 0) {
         state = '开';
-        if (blue == 'blue') {
-            img = '<img src="/static/new/img/normal-white.png" alt="">';
-        } else {
-            img = '<img src="/static/new/img/normal.png" alt="">';
-        }
+        img = '<img src="/static/new/img/light-on.PNG" alt="">';
+        // if (blue == 'blue') {
+        //     img = '<img src="/static/new/img/light-on.PNG" alt="">';
+        // } else {
+        //     img = '<img src="/static/new/img/normal.png" alt="">';
+        // }
         warning = false;
     } else if (status == 1) {
         state = '关';
-        img = '<img src="/static/new/img/switch-un.png" alt="">';
-        warning = false;
+        img = '<img src="/static/new/img/light-off.PNG" alt="">';
+        warning = true;
     } else if (status == null) {
         state = '异常';
         img = '<img src="/static/new/img/switch-abnormal.png" alt="">';
-        warning = false;
+        warning = true;
     }
     return obj = {
         img: img,
@@ -446,10 +488,7 @@ function statusM1(status, blue) {
         warning: warning
     }
 }
-$(".content").on('click', ".toggle-button", function(){
-    var src=$(this).attr('src');
-    console.log('src',src);
-    if(src=='/static/new/img/on-off-black.png'){
-        // $(this).attr('src','');
-    }
+
+$(".content").on('click', ".btn", function(){
+
 })
