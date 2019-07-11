@@ -2,10 +2,14 @@
  * Created by yuanjie.fang on 2019/7/10.
  */
 $(function () {
-    init()
+    init();
+    realTime();
     // setInterval(function () {
     //     realTime()
     // }, 500)
+    // setInterval(function () {
+    //     init();
+    // }, 100000)
 })
 
 /**
@@ -25,8 +29,58 @@ function init() {
     waterbubbleS('#floor-5', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
     upLight("/getNewMonitor")
 }
+//更新开关状态方法
 function realTime() {
-    upLight("/getNewMonitorLightStatus")
+    $.ajax({
+        url: '/getNewMonitorLightStatus',
+        dataType: "json",
+        async: true,
+        type: "POST",
+        success: function (data) {
+            console.log('更新', data);
+            var lightState=data.lightState;
+            if(lightState.length!=0){
+                lightState = sort(lightState, 'mname');
+                lightState=sort(lightState, 'lname');
+                lightState = lightStateM(lightState);
+
+            }
+            console.log('转换后的',lightState)
+            operation2(lightState)
+        }
+    })
+}
+function operation2(lightState,floor){
+    $.each(lightState,function(i,item1){
+        var placeList = item1.placeList;
+        $('.content>.clearfix').each(function(){
+            var that=$(this);
+            if(item1.mname==floor){
+                $.each(placeList,function(i,item2){
+                    var groupList = item2.groupList;
+                    if(item2.place==extractNum(that.find('.mname').text())){
+                        $.each(groupList,function(i,item3){
+                            var lightList = item3.lightList;
+                            that.find('.place').each(function(){
+                                var that2=$(this);
+                                if(item3.group==extractNum($(this).find('.max').text())){
+                                    $.each(lightList,function(i,item4){
+                                        var status = item4.status;
+                                        var y=item4.y;
+                                        that2.find('.place-content>ul>li').each(function(){
+                                            if(item4.lname==extractNum($(this).find('.light-name').text())){
+                                                $(this).find('.yellow').text(item4.y);
+                                            }
+                                        })
+                                    })
+                                }
+                            })
+                        })
+                    }
+                })
+            }
+        })
+    })
 }
 
 function upLight(url) {
@@ -91,7 +145,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                         } else {
                             hint = '';
                         }
-                        lightContent += '<li class="clearfix"> <div class="f-l p-r r-min-line"><div class="middle p-a ">灯' + item4.lname + '</div></div><div class="f-l p-r r-min-line"><div class="middle p-a yellow ' + hint + '">' + item4.y + '</div></div>' +
+                        lightContent += '<li class="clearfix"> <div class="f-l p-r r-min-line"><div class="middle p-a light-name">灯' + item4.lname + '</div></div><div class="f-l p-r r-min-line"><div class="middle p-a yellow ' + hint + '">' + item4.y + '</div></div>' +
                             ' <div class="f-l p-r"><div class="middle p-a"><img src="/static/new/img/on-off-black.png" alt=""></div></div></li>';
                     })
 

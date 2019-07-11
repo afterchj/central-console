@@ -9,6 +9,7 @@ html,body{
 	height: 100%;
 	background-color: #EDECEC;
 	color: #333;
+	min-width: 1680px;
 }
 .head{
 	width: 100%;

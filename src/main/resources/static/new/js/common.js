@@ -446,3 +446,10 @@ function statusM1(status, blue) {
         warning: warning
     }
 }
+$(".content").on('click', ".toggle-button", function(){
+    var src=$(this).attr('src');
+    console.log('src',src);
+    if(src=='/static/new/img/on-off-black.png'){
+        // $(this).attr('src','');
+    }
+})
