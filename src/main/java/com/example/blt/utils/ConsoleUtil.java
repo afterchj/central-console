@@ -41,11 +41,14 @@ public class ConsoleUtil {
         return (Set) redisTemplate.opsForValue().get(key);
     }
 
-    public static void cleanSet(Set set) {
+    public static void cleanSet(Set lmacSet, Set vaddrSet) {
         Set lmac = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddr = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
-        if (lmac == null || vaddr == null) {
-            set.clear();
+        if (lmac == null) {
+            lmacSet.clear();
+        }
+        if (vaddr == null) {
+            vaddrSet.clear();
         }
     }
 

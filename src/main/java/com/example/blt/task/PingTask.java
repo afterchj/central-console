@@ -12,17 +12,17 @@ import java.util.concurrent.Callable;
 public class PingTask implements Callable<Object> {
 
     Map map = new HashMap();
-    private String msg;
     private String ip;
+    private String[] msg;
 
-    public PingTask(String msg, String ip) {
+    public PingTask(String ip, String... msg) {
         this.msg = msg;
         this.ip = ip;
     }
 
     @Override
     public Object call() {
-        map = StrUtil.buildLightInfo(msg, ip);
+        StrUtil.buildLightInfo(ip, msg);
         return map;
     }
 }

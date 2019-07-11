@@ -40,10 +40,10 @@
         let status = $("#" + id).text();
         console.log("value", status);
         if (status == '开') {
-            $("#" + id).val("77010315373766");
+            $("#" + id).val("77020315373766");
             $("#" + id).text("关")
         } else if (status == '关') {
-            $("#" + id).val("77010315323266");
+            $("#" + id).val("77020315323266");
             $("#" + id).text("开")
         }
         $.get("/switch", {"command": $("#" + id).val(), "host": "all"}, function (result) {

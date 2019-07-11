@@ -1,6 +1,7 @@
 package com.example.blt.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.netty.ClientMain;
@@ -10,7 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Created by hongjian.chen on 2019/6/14.
@@ -18,61 +21,116 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StrUtil {
 
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
+    private static Set<String> lmacSet = new CopyOnWriteArraySet<>();
+    private static Set<String> vaddrSet = new CopyOnWriteArraySet<>();
+
 //    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 //    private static ProducerService producerService = SpringUtils.getRocketProducer();
 
-    public static Map buildLightInfo(String str, String ip) {
-        Map map = new HashMap();
+    public static void buildLightInfo(String ip, String... array) {
+        ConsoleUtil.cleanSet(lmacSet, vaddrSet);
+        for (String str : array) {
+            Map map = new HashMap();
 //        String str = msg.replace(" ", "");
-        String str1 = "77040F0227";
-        map.put("host", ip);
-        map.put("status", 1);
-//        map.put("other", str);
-        if (str.indexOf(str1) != -1) {
+            String str1 = "77040F0227";
             map.put("host", ip);
-            int index = str1.length();
-            String vaddr = str.substring(index, index + 8);
-            String x = str.substring(index + 10, index + 12);
-            String y = str.substring(index + 12, index + 14);
-            if (str.contains("3232")) {
-                map.put("status", 0);
-            } else {
-                map.put("status", 1);
-            }
-            map.put("vaddr", vaddr);
-            map.put("x", x);
-            map.put("y", y);
-            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+            map.put("status", 1);
+//            map.put("other", str);
+            if (str.indexOf(str1) != -1) {
+                map.put("host", ip);
+                int index = str1.length();
+                String vaddr = str.substring(index, index + 8);
+                vaddrSet.add(vaddr);
+                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 30);
+                String x = str.substring(index + 10, index + 12);
+                String y = str.substring(index + 12, index + 14);
+                if (str.contains("3232")) {
+                    map.put("status", 0);
+                } else {
+                    map.put("status", 1);
+                }
+                map.put("vaddr", vaddr);
+                map.put("x", x);
+                map.put("y", y);
+                ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
 //            sqlSessionTemplate.selectOne("console.saveLight", map);
 //            logger.warn("result=" + map.get("result"));
-        } else if (str.indexOf("77040F01") != -1) {
+            } else if (str.indexOf("77040F01") != -1) {
 //            String prefix = str.substring(0, 8);
-            String lmac = str.substring(8, 20).toLowerCase();
-            String vaddr = str.substring(20, 28);
-            String productId = str.substring(28, 32);
-            map.put("vaddr", vaddr);
-            map.put("product_id", productId);
-            String[] strArr = buildMac(lmac).split(":");
-            StringBuffer sortMac = new StringBuffer();
-            for (int i = strArr.length - 1; i >= 0; i--) {
-                if (i != 0) {
-                    sortMac.append(strArr[i] + ":");
-                } else {
-                    sortMac.append(strArr[i]);
+                String lmac = str.substring(8, 20).toLowerCase();
+                String vaddr = str.substring(20, 28);
+                String productId = str.substring(28, 32);
+                map.put("vaddr", vaddr);
+                map.put("product_id", productId);
+                String mac = sortMac(lmac);
+                map.put("lmac", mac);
+                lmacSet.add(mac);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 60);
+                ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+//            sqlSessionTemplate.selectOne("console.saveLight", map);
+//            logger.warn("result=" + map.get("result"));
+            } else {
+                int len = str.length();
+                if (len >= 36) {
+                    tempFormat(str, ip);
                 }
             }
-            map.put("lmac", sortMac.toString());
-            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-//            sqlSessionTemplate.selectOne("console.saveLight", map);
-//            logger.warn("result=" + map.get("result"));
-        } else {
-            int len = str.length();
-            if (len >= 22) {
-                tempFormat(str, ip);
-            }
         }
-        return map;
     }
+
+//    public static Map buildLightInfo(String ip, String str) {
+//        Map map = new HashMap();
+////        String str = msg.replace(" ", "");
+//        String str1 = "77040F0227";
+//        map.put("host", ip);
+//        map.put("status", 1);
+////        map.put("other", str);
+//        if (str.indexOf(str1) != -1) {
+//            map.put("host", ip);
+//            int index = str1.length();
+//            String vaddr = str.substring(index, index + 8);
+//
+//            String x = str.substring(index + 10, index + 12);
+//            String y = str.substring(index + 12, index + 14);
+//            if (str.contains("3232")) {
+//                map.put("status", 0);
+//            } else {
+//                map.put("status", 1);
+//            }
+//            map.put("vaddr", vaddr);
+//            map.put("x", x);
+//            map.put("y", y);
+//            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+////            sqlSessionTemplate.selectOne("console.saveLight", map);
+////            logger.warn("result=" + map.get("result"));
+//        } else if (str.indexOf("77040F01") != -1) {
+////            String prefix = str.substring(0, 8);
+//            String lmac = str.substring(8, 20).toLowerCase();
+//            String vaddr = str.substring(20, 28);
+//            String productId = str.substring(28, 32);
+//            map.put("vaddr", vaddr);
+//            map.put("product_id", productId);
+//            String[] strArr = buildMac(lmac).split(":");
+//            StringBuffer sortMac = new StringBuffer();
+//            for (int i = strArr.length - 1; i >= 0; i--) {
+//                if (i != 0) {
+//                    sortMac.append(strArr[i] + ":");
+//                } else {
+//                    sortMac.append(strArr[i]);
+//                }
+//            }
+//            map.put("lmac", sortMac.toString());
+//            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+////            sqlSessionTemplate.selectOne("console.saveLight", map);
+////            logger.warn("result=" + map.get("result"));
+//        } else {
+//            int len = str.length();
+//            if (len >= 22) {
+//                tempFormat(str, ip);
+//            }
+//        }
+//        return map;
+//    }
 
     public static String buildMac(String str) {
         char[] chars = str.toCharArray();
@@ -91,6 +149,19 @@ public class StrUtil {
         return buffer.toString();
     }
 
+    public static String sortMac(String lmac) {
+        String[] strArr = buildMac(lmac).split(":");
+        StringBuffer sortMac = new StringBuffer();
+        for (int i = strArr.length - 1; i >= 0; i--) {
+            if (i != 0) {
+                sortMac.append(strArr[i] + ":");
+            } else {
+                sortMac.append(strArr[i]);
+            }
+        }
+        return sortMac.toString();
+    }
+
     public static void tempFormat(String format, String ip) {
         boolean flag = false;
         String str = format.substring(18);
@@ -100,23 +171,18 @@ public class StrUtil {
         String cid = str.substring(len - 4, len - 2);
         Map map = new ConcurrentHashMap<>();
         map.put("host", ip);
-        map.put("other", format.substring(0, 22));
+        map.put("other", format);
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
                 //7704100221F505000052456365D7ACF0000200CCCC
                 String cmd = str.substring(len - 6, len - 4);
-                if (format.length() > 40) {
-                    flag = true;
-                    cmd = str.substring(len - 8, len - 6);
-                }
-                logger.warn("flag=" + flag + ",str=" + cmd);
                 if ("01".equals(cmd)) {
                     ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
                 } else if ("02".equals(cmd)) {
                     ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
-                map.put("cid", flag);
+                map.put("cid", cid);
                 break;
             case "C0"://pad或手机，C0代表全控，37 37字段是x、y值
                 map.put("ctype", prefix);
@@ -159,7 +225,7 @@ public class StrUtil {
         ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
 //        amqpTemplate.convertAndSend(ROUTING_KEY, JSON.toJSONString(map));
 //        sqlSessionTemplate.selectOne("console.saveConsole", map);
-//        logger.warn("result=" + map.get("result"));
+//        logger.warn("result=" + JSON.toJSONString(map));
     }
 
     public static void formatStr(String str, String ip) {
@@ -189,4 +255,7 @@ public class StrUtil {
 //        logger.warn("result=" + map.get("result"));
     }
 
+//    public static void main(String[] args) {
+//        tempFormat("77041002216501000052456365D7ACF0000200","");
+//    }
 }

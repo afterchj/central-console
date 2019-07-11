@@ -37,7 +37,7 @@
     <select id="getLights" resultType="map">
         SELECT mname,COUNT(0) lmacn FROM f_light_demo GROUP BY mname
     </select>
-    <select id="getVaddr" resultType="map">
+    <select id="getVaddr" resultType="string">
         SELECT vaddr FROM t_light_info
     </select>
 
@@ -74,10 +74,10 @@
         </foreach>
     </update>
 
-    <update id="saveUpdate2" parameterType="map">
+    <update id="saveUpdate2" parameterType="list">
         UPDATE t_light_info SET log_date=now(),`status`=NULL ,x=NULL ,y=NULL WHERE lmac NOT IN
-        <foreach collection="list" index="index" item="info" separator="," open="(" close=")">
-            #{info.lmac}
+        <foreach collection="collection" index="index" item="info" separator="," open="(" close=")">
+            #{info}
         </foreach>
     </update>
 

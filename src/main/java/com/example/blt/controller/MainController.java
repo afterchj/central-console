@@ -2,7 +2,6 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.dao.Monitor2Dao;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
@@ -29,9 +28,15 @@ public class MainController {
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @RequestMapping("/test")
-    public String ping() {
-        ExecuteTask.pingStatus(false,1);
-        return "ok";
+    public String ping(ConsoleVo consoleVo) {
+        String info = JSON.toJSONString(consoleVo);
+        ControlTask task = new ControlTask(info);
+        String result = ExecuteTask.sendCmd(task);
+        int index = consoleVo.getCommand().indexOf("770101");
+        if (index == -1) {
+            ExecuteTask.pingStatus(true, 1);
+        }
+        return result;
     }
 
     @RequestMapping("/switch")

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
-import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -47,8 +46,8 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
-        Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-        Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         JSONObject object = new JSONObject();
         object.put("host", "all");
         object.put("command", "7701012766");
@@ -56,11 +55,11 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         if (null != lmacSet) {
             logger.warn("lmacSize=" + lmacSet.size());
             if (null != vaddrSet) {
-                logger.warn("vaddrSize=" + lmacSet.size());
+                logger.warn("vaddrSize=" + vaddrSet.size());
                 if (lmacSet.size() == vaddrSet.size()) {
-                    Map params = new HashMap();
-                    params.put("list", lmacSet);
-                    sqlSessionTemplate.update("console.saveUpdate2", params);
+//                    Map params = new HashMap();
+//                    params.put("list", lmacSet);
+                    sqlSessionTemplate.update("console.saveUpdate2", lmacSet);
                     return;
                 }
             }

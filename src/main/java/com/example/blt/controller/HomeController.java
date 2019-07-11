@@ -88,8 +88,8 @@ public class HomeController {
     public Map showHost() {
         Map map = new LinkedHashMap();
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
-        Set<Map> lmacSet = operations.get(ConsoleKeys.lMAC.getValue());
-        Set<Map> vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
+        Set lmacSet = operations.get(ConsoleKeys.lMAC.getValue());
+        Set vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
         if (null != lmacSet) {
             map.put("lmacSize", lmacSet.size());
             map.put("lmac", lmacSet);

@@ -27,14 +27,14 @@ public class ExecuteTask {
 //    private staticClientMainClientMain =ClientMain();
 //    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
-    public static Map pingInfo(String msg, String ip) {
-        PingTask task = new PingTask(msg, ip);
+    public static void pingInfo(String ip, String... msg) {
+        PingTask task = new PingTask(ip, msg);
         FutureTask futureTask = new FutureTask(task);
         executorService.submit(futureTask);
         try {
-            return (Map) futureTask.get();
+            futureTask.get();
         } catch (Exception e) {
-            return null;
+            logger.error(e.getMessage());
         }
     }
 
@@ -52,13 +52,14 @@ public class ExecuteTask {
                 ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
             });
         }
-        if (flag) {
-            if (msg.indexOf("77010315") != -1) {
-                JSONObject object = new JSONObject();
-                object.put("host", "all");
-                object.put("command", msg);
-                ClientMain.sendCron(object.toJSONString());
-            }
+    }
+
+    public static void translateCmd(String msg) {
+        if (msg.indexOf("77010315") != -1) {
+            JSONObject object = new JSONObject();
+            object.put("host", "all");
+            object.put("command", msg);
+            ClientMain.sendCron(object.toJSONString());
         }
     }
 

@@ -48,6 +48,7 @@ public class StrUtilTest {
     @Test
     public void testStr() {
         String strs = "7704100221F505000052456365D7ACF0000200CCCC";
+        System.out.println(strs.indexOf("770101"));
         String str = strs.substring(18);
         int len = str.length();
         String prefix = str.substring(0, 2).toUpperCase();
@@ -109,5 +110,25 @@ public class StrUtilTest {
                 break;
         }
         logger.warn(strs.length() + "\n" + JSON.toJSONString(map));
+    }
+
+    @Test
+    public void testA(){
+        String on="77020315323266";
+        System.out.println(on.replace("02","01"));
+        String strs = "77041002216501000052456365D7ACF0000200CCCC";
+        System.out.println(strs.length()+"\t"+strs.indexOf("770101"));
+        System.out.println("77040F0227FD020000713232000000000000CC".length());
+        System.out.println("77040F0152406DD7ACF06900000008200102CCCC".length()+"\t"+"77040F0227A9000000710013000000000000CCCC".length());
+        String strA="77040F0152406DD7ACF06900000008200102CCCC77040F011D406DD7ACF06902000008200102CCCC77040F015E3F6DD7ACF06901000008200102CCCC77040F019B446DD7ACF02900000008200102CCCC77040F01BF406DD7ACF00900000008200102CCCC77040F010D3F6DD7ACF0A900000008200102CCCC77040F01103F6DD7ACF0E900000008200102CCCC";
+        String strB="77040F0227A9000000710013000000000000CCCC77040F022719000000710013000000000000CCCC77040F0227A9010000710013000000000000CCCC77040F0227E9000000710013000000000000CCCC77040F0227D9000000710013000000000000CCCC77040F022739000000710013000000000000CCCC77040F022759000000710013000000000000CCCC77040F0227A9020000710013000000000000CCCC77040F022799000000710013000000000000CCCC77040F0227F9000000710013000000000000CCCC77040F0227A9030000710013000000000000CCCC";
+        System.out.println("len="+strA.length());
+        System.out.println("len="+strB.length());
+        String[] arrA=strA.split("CCCC");
+        String[] arrB=strB.split("CCCC");
+        String[] arr=strs.split("CCCC");
+        System.out.println(arr[0].length()+"\t"+arr[0]);
+        System.out.println(arrA.length+"\t"+arrA[0]);
+        System.out.println(arrB.length+"\t"+arrB[0]);
     }
 }

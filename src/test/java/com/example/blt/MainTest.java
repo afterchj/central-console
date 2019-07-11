@@ -69,7 +69,7 @@ public class MainTest {
         map.put("x", "32");
         map.put("y", "32");
         map.put("other", "77010315323266");
-        sqlSessionTemplate.selectOne("console.saveConsole",map);
+        sqlSessionTemplate.selectOne("console.saveConsole", map);
         System.out.println("result=" + map.get("result"));
         String str = "77040F0227E9010000713232000000000000CC";
         String str1 = "77040F0227";
@@ -86,17 +86,19 @@ public class MainTest {
 //        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
         String str = "77040F0227E9010000713232000000000000CC";
 //        StrUtil.buildLightInfo(str,"127.0.0.1");
-        ExecuteTask.pingInfo(str, "127.0.0.1");
+        ExecuteTask.pingInfo("127.0.0.1", str);
         System.out.println(str);
     }
 
     @Test
     public void testUpdate() {
-        List<Map> list = sqlSessionTemplate.selectList("console.getLmac");
-        Set<Map> set = new HashSet<>();
-        set.addAll(list);
-        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
-        logger.warn("list=" + set);
+        List addr = sqlSessionTemplate.selectList("console.getVaddr");
+        Set list = new HashSet(addr);
+        sqlSessionTemplate.update("console.saveUpdate2", list);
+//        Set<Map> set = new HashSet<>();
+//        set.addAll(list);
+        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), list, 30);
+        logger.warn("set=" + list.size());
 //        Map map=new HashMap();
 //        map.put("list",set);
 //        sqlSessionTemplate.update("console.saveUpdate2", map);

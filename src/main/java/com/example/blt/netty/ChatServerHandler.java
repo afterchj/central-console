@@ -3,7 +3,6 @@ package com.example.blt.netty;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.task.ExecuteTask;
-import com.example.blt.utils.ConsoleUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,9 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * 服务器主要的业务逻辑
@@ -31,11 +27,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     private static Logger logger = LoggerFactory.getLogger(ChatServerHandler.class);
     //保存所有活动的用户
     public static final ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    private static Set<Map> lightSet = new CopyOnWriteArraySet<>();
+//    private static Set<Map> lightSet = new CopyOnWriteArraySet<>();
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
-        ConsoleUtil.cleanSet(lightSet);
+//        ConsoleUtil.cleanSet(lightSet);
         Channel channel = arg0.channel();
         String addr = channel.remoteAddress().toString();
         String host = addr.substring(1, addr.indexOf(":"));
@@ -48,15 +44,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         } catch (Exception e) {
             to = addr;
             cmd = arg1;
-            Map map = ExecuteTask.pingInfo(arg1, host);
-            ExecuteTask.saveInfo(arg1, map, lightSet, false);
+//            ExecuteTask.saveInfo(arg1, map, lightSet, false);
         }
         int len = cmd.length();
-        if (len > 22) {
-            logger.error("[" + to + "] receive :" + cmd);
-        } else {
-            logger.warn("[" + to + "] receive :" + cmd);
-        }
 //        ConsoleUtil.cleanSet(lightSet);
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len < 21) {
@@ -68,13 +58,26 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     String ip = str.substring(1, str.indexOf(":"));
                     if (ip.equals(to)) {
                         ch.writeAndFlush(cmd);
+                        break;
                     } else {
                         if (!ip.equals("127.0.0.1")) {
-                            ch.writeAndFlush(cmd);
+                            if (cmd.indexOf("77020315") != -1) {
+                                ch.writeAndFlush(cmd.replace("02", "01"));
+                            }
+                            if (ip.equals(host)) {
+                                ch.writeAndFlush(cmd);
+                                break;
+                            }
                         }
                     }
                 }
             }
+        }
+        if (len >= 38) {
+            logger.error("[" + to + "] receive :" + cmd);
+            ExecuteTask.pingInfo(host, arg1.split("CCCCC"));
+        } else {
+            logger.warn("[" + to + "] receive :" + cmd);
         }
     }
 
