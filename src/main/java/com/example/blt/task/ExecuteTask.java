@@ -24,17 +24,17 @@ import java.util.concurrent.FutureTask;
 public class ExecuteTask {
     private static Logger logger = LoggerFactory.getLogger(ExecuteTask.class);
     private static ExecutorService executorService = Executors.newCachedThreadPool();
-//    private static ClientMain clientMain = new ClientMain();
+//    private staticClientMainClientMain =ClientMain();
 //    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
-    public static Map pingInfo(String msg, String ip) {
-        PingTask task = new PingTask(msg, ip);
+    public static void pingInfo(String ip, String... msg) {
+        PingTask task = new PingTask(ip, msg);
         FutureTask futureTask = new FutureTask(task);
         executorService.submit(futureTask);
         try {
-            return (Map) futureTask.get();
+            futureTask.get();
         } catch (Exception e) {
-            return null;
+            logger.error(e.getMessage());
         }
     }
 
@@ -49,20 +49,21 @@ public class ExecuteTask {
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"vaddr"});
                 set.add(map);
-                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
+                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 20);
             });
-        }
-        if (flag) {
-            if (msg.indexOf("77010315") != -1) {
-                JSONObject object = new JSONObject();
-                object.put("host", "all");
-                object.put("command", msg.substring(0, msg.length() - 2));
-                new ClientMain().sendCron(8001, object.toJSONString(), false);
-            }
         }
     }
 
-    public static void pingStatus(boolean delay, ClientMain clientMain) {
+    public static void translateCmd(String msg) {
+        if (msg.indexOf("77010315") != -1) {
+            JSONObject object = new JSONObject();
+            object.put("host", "all");
+            object.put("command", msg);
+            ClientMain.sendCron(object.toJSONString());
+        }
+    }
+
+    public static void pingStatus(boolean delay, int times) {
         new Thread(() -> {
             JSONObject object = new JSONObject();
             object.put("host", "all");
@@ -73,13 +74,13 @@ public class ExecuteTask {
             } catch (InterruptedException e) {
                 logger.error(e.getMessage());
             }
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < times; i++) {
                 object.put("command", "7701011B66");
-                clientMain.sendCron(8001, object.toJSONString(), false);
+                ClientMain.sendCron(object.toJSONString());
                 try {
                     new Thread().sleep(5000);
                     object.put("command", "7701012766");
-                    clientMain.sendCron(8001, object.toJSONString(), false);
+                    ClientMain.sendCron(object.toJSONString());
                 } catch (InterruptedException e) {
                     logger.error(e.getMessage());
                 }
@@ -91,25 +92,22 @@ public class ExecuteTask {
         executorService.submit(() -> {
             Map map = new ConcurrentHashMap();
             try {
-                int len = str.length();
                 String prefix = str.substring(0, 8);
                 map.put("host", ip);
-//            map.put("other", str);
+                map.put("other", str);
                 String cmd = str.substring(prefix.length());
                 String cid = cmd.substring(0, 2);
-                String x = str.substring(len - 6, len - 4);
-                String y = str.substring(len - 4, len - 2);
                 switch (prefix) {
                     case "77010416":
                         map.put("ctype", "C1");
-                        map.put("x", x);
-                        map.put("y", y);
+                        map.put("x", cmd.substring(2, 4));
+                        map.put("y", cmd.substring(4, 6));
                         map.put("cid", cid);
                         break;
                     case "77010315":
                         map.put("ctype", "C0");
-                        map.put("x", x);
-                        map.put("y", y);
+                        map.put("x", cmd.substring(0, 2));
+                        map.put("y", cmd.substring(2, 4));
                         break;
                     case "77010219":
                         map.put("ctype", "42");

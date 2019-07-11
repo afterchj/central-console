@@ -20,13 +20,12 @@ import org.springframework.stereotype.Service;
 public class CmdConsumer implements RocketMQListener<String> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private ClientMain clientMain = new ClientMain();
 
     @Override
     public void onMessage(String message) {
         try {
             logger.warn("message=" + message);
-            clientMain.sendCron(8001, message, false);
+          ClientMain.sendCron(message);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

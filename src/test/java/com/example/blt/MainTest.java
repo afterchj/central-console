@@ -1,9 +1,6 @@
 package com.example.blt;
 
-import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.ConsoleKeys;
-import com.example.blt.entity.dd.Topics;
-import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
@@ -66,6 +63,14 @@ public class MainTest {
 //    }
     @Test
     public void testStr() {
+        Map map = new HashMap();
+        map.put("host", "127.0.0.1");
+        map.put("ctype", "C0");
+        map.put("x", "32");
+        map.put("y", "32");
+        map.put("other", "77010315323266");
+        sqlSessionTemplate.selectOne("console.saveConsole", map);
+        System.out.println("result=" + map.get("result"));
         String str = "77040F0227E9010000713232000000000000CC";
         String str1 = "77040F0227";
         int index = str1.length();
@@ -81,17 +86,19 @@ public class MainTest {
 //        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
         String str = "77040F0227E9010000713232000000000000CC";
 //        StrUtil.buildLightInfo(str,"127.0.0.1");
-        ExecuteTask.pingInfo(str, "127.0.0.1");
+        ExecuteTask.pingInfo("127.0.0.1", str);
         System.out.println(str);
     }
 
     @Test
     public void testUpdate() {
-        List<Map> list = sqlSessionTemplate.selectList("console.getLmac");
-        Set<Map> set = new HashSet<>();
-        set.addAll(list);
-        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
-        logger.warn("list=" + set);
+        List addr = sqlSessionTemplate.selectList("console.getVaddr");
+        Set list = new HashSet(addr);
+        sqlSessionTemplate.update("console.saveUpdate2", list);
+//        Set<Map> set = new HashSet<>();
+//        set.addAll(list);
+        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), list, 30);
+        logger.warn("set=" + list.size());
 //        Map map=new HashMap();
 //        map.put("list",set);
 //        sqlSessionTemplate.update("console.saveUpdate2", map);
@@ -106,16 +113,13 @@ public class MainTest {
     @Test
     public void testConsole() {
         List<Map> vaddr = sqlSessionTemplate.selectList("console.getVaddr");
-        System.out.println(ConsoleUtil.getLightSize(new String[]{}));
+        System.out.println("light=" + ConsoleUtil.getLightSize("lmacn"));
         String key1 = ConsoleKeys.VADDR.getValue();
         String key2 = ConsoleKeys.lMAC.getValue();
-        ConsoleUtil.saveInfo("test_vaddr", vaddr);
-        List set1 = ConsoleUtil.getValueTest("test_vaddr");
-        ConsoleUtil.saveInfo("test_lmac", set1);
-        List set2 = ConsoleUtil.getValueTest("test_lmac");
+        ConsoleUtil.saveInfo("test_vaddr", vaddr.size());
+        Integer size = (Integer) ConsoleUtil.getValue("test_vadd");
+        System.out.println("size=" + size);
 //        Set set2 = getInfo(key2);
-        logger.warn("lists=" + set1);
-        logger.warn("lists=" + set2);
     }
 
     @Test
@@ -128,12 +132,12 @@ public class MainTest {
 
     @Test
     public void testRocketMQ() {
-        String c0="77010315323266";
-        String c1="7701041601373766";
-        String c2="7701021906";
-        ExecuteTask.parseLocalCmd(c0,"127.0.0.1");
-        ExecuteTask.parseLocalCmd(c1,"127.0.0.1");
-        ExecuteTask.parseLocalCmd(c2,"127.0.0.1");
+        String c0 = "77010315323266";
+        String c1 = "7701041601373766";
+        String c2 = "7701021906";
+        ExecuteTask.parseLocalCmd(c0, "127.0.0.1");
+        ExecuteTask.parseLocalCmd(c1, "127.0.0.1");
+        ExecuteTask.parseLocalCmd(c2, "127.0.0.1");
 //        for (int i = 0; i < 10; i++) {
 //            Map map = new HashMap();
 //            map.put("topic", "topic_test");

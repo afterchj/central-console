@@ -1,8 +1,9 @@
 package com.example.blt.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
-import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -13,8 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,46 +23,52 @@ import java.util.Set;
 public class NettyService implements ApplicationListener<ContextRefreshedEvent> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private ClientMain clientMain = new ClientMain();
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
+    private WebSocket webSocket = new WebSocket();
 
-//    @Scheduled(cron = "0/30 * * * * ?")
+    //    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest1() {
-//        clientMain.sendCron(8001, "7701011B66", false);
+//      ClientMain.sendCron(8001, "7701011B66", false);
 //        try {
 //            new Thread().sleep(5000);
-//            clientMain.sendCron(8001, "7701012766", false);
+//          ClientMain.sendCron(8001, "7701012766", false);
 //        } catch (InterruptedException e) {
 //            logger.error(e.getMessage());
 //        }
 //    }
-    //    @Scheduled(cron = "0 0/1 * * * ?")
+//    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest2() {
-//        clientMain.sendCron(8001, "7701012766", false);
+//        webSocket.sendMessage("success");
 //    }
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
-        Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-        Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+        Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
+        JSONObject object = new JSONObject();
+        object.put("host", "all");
+        object.put("command", "7701012766");
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
+            logger.warn("lmacSize=" + lmacSet.size());
             if (null != vaddrSet) {
-                if (lmacSet.size() == vaddrSet.size()) {
+                logger.warn("size=" + size + ",vaddrSize=" + vaddrSet.size());
+                if (size == null) {
+                    ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), vaddrSet.size());
+                } else if (size == vaddrSet.size()) {
+                    sqlSessionTemplate.update("console.saveUpdate2", lmacSet);
                     return;
                 }
             }
-            Map params = new HashMap();
-            params.put("list", lmacSet);
-            clientMain.sendCron(8001, "7701012766", false);
-            sqlSessionTemplate.update("console.saveUpdate2", params);
+            ClientMain.sendCron(object.toJSONString());
         }
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.warn("nettyService starting...");
-        ExecuteTask.pingStatus(true, clientMain);
+//        ExecuteTask.pingStatus(true, 3);
     }
 }

@@ -30,7 +30,7 @@ public class ServerMain {
         bootstrap.group(acceptor, worker);//设置循环线程组，前者用于处理客户端连接事件，后者用于处理网络IO
         bootstrap.channel(NioServerSocketChannel.class);//用于构造socketchannel工厂
 //        bootstrap.handler(new ChatServerHandler());
-        bootstrap.childHandler(new ServerIniterHandler());//为处理accept客户端的channel中的pipeline添加自定义处理函数
+        bootstrap.childHandler(new ServerChannelInitializer());//为处理accept客户端的channel中的pipeline添加自定义处理函数
         try {
             // 服务器绑定端口监听
             final ChannelFuture bind = bind(bootstrap, port);

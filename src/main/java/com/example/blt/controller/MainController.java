@@ -2,9 +2,7 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.dao.Monitor2Dao;
 import com.example.blt.entity.vo.ConsoleVo;
-import com.example.blt.netty.ClientMain;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
@@ -28,23 +26,23 @@ import java.util.Map;
 public class MainController {
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
-    private ClientMain clientMain = new ClientMain();
-
-    @Resource
-    private Monitor2Dao monitor2Dao;
 
     @RequestMapping("/test")
     public String ping(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(clientMain, info, true);
+        ControlTask task = new ControlTask(info);
         String result = ExecuteTask.sendCmd(task);
+        int index = consoleVo.getCommand().indexOf("770101");
+        if (index == -1) {
+            ExecuteTask.pingStatus(true, 1);
+        }
         return result;
     }
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(clientMain, info, true);
+        ControlTask task = new ControlTask(info);
         String result = ExecuteTask.sendCmd(task);
         return result;
     }
@@ -73,13 +71,13 @@ public class MainController {
             //向所有地址发信息
             map.put("host", "all");
             info = JSON.toJSONString(map);
-            ControlTask task = new ControlTask(clientMain, info, true);
+            ControlTask task = new ControlTask(info);
             result = ExecuteTask.sendCmd(task);
         } else {
 //            String cmd = host + ":" + command;
             map.put("host", host);
             info = JSON.toJSONString(map);
-            ControlTask task = new ControlTask(clientMain, info, true);
+            ControlTask task = new ControlTask(info);
             result = ExecuteTask.sendCmd(task);
         }
         map.put("success", result);
@@ -221,7 +219,7 @@ public class MainController {
         String cmd = host + ":" + command;
         map.put("command", command);
         map.put("host", host);
-        ControlTask task = new ControlTask(clientMain, JSON.toJSONString(map), true);
+        ControlTask task = new ControlTask(JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
 //        SocketUtil.sendCmd2(host, cmd);
         map.put("success", success);
@@ -237,7 +235,7 @@ public class MainController {
 //        String code1 = SocketUtil.sendCmd2(host, cmd1);
         map.put("command", command);
         map.put("host", host);
-        ControlTask task = new ControlTask(clientMain, JSON.toJSONString(map), true);
+        ControlTask task = new ControlTask(JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
         if ("fail".equals(code)) {
 //            失败
