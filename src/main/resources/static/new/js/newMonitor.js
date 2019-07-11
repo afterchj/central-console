@@ -55,12 +55,18 @@ function realTime() {
         success: function (data) {
             console.log('更新', data);
             var lightState=data.lightState;
-            if(lightState.length!=0){
-                lightState = sort(lightState, 'mname');
-                lightState = lightStateM(lightState);
+            var lightDemo=data.lightDemo;
+            var other=lightDemo.other;
+            console.log('转换后的',lightState);
+            if(lightDemo!=null){
+                // lightState = sort(lightState, 'mname');
+                // lightState=sort(lightState, 'lname');
+                // lightState = lightStateM(lightState);
+
+                var floor='1楼';
+                // operation2(lightState,lightDemo,other,floor)
             }
-            console.log('转换后的',lightState)
-            operation2(lightState)
+
         }
     })
 }

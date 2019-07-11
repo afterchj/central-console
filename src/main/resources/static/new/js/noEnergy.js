@@ -39,48 +39,69 @@ function realTime() {
         success: function (data) {
             console.log('更新', data);
             var lightState=data.lightState;
-            if(lightState.length!=0){
-                lightState = sort(lightState, 'mname');
-                lightState=sort(lightState, 'lname');
-                lightState = lightStateM(lightState);
+            var lightDemo=data.lightDemo;
+            var other=lightDemo.other;
+            console.log('转换后的',lightState);
+            if(lightDemo!=null){
+                // lightState = sort(lightState, 'mname');
+                // lightState=sort(lightState, 'lname');
+                // lightState = lightStateM(lightState);
 
+                var floor='1楼';
+                operation2(lightState,lightDemo,other,floor)
             }
-            console.log('转换后的',lightState)
-            operation2(lightState)
+
         }
     })
 }
-function operation2(lightState,floor){
-    $.each(lightState,function(i,item1){
-        var placeList = item1.placeList;
+function operation2(lightState,lightDemo,other,floor){
+    if(other=='all'){
+        var statusAll=lightDemo.status;
+        console.log('statusAll',statusAll);
         $('.content>.clearfix').each(function(){
-            var that=$(this);
-            if(item1.mname==floor){
-                $.each(placeList,function(i,item2){
-                    var groupList = item2.groupList;
-                    if(item2.place==extractNum(that.find('.mname').text())){
-                        $.each(groupList,function(i,item3){
-                            var lightList = item3.lightList;
-                            that.find('.place').each(function(){
-                                var that2=$(this);
-                                if(item3.group==extractNum($(this).find('.max').text())){
-                                    $.each(lightList,function(i,item4){
-                                        var status = item4.status;
-                                        var y=item4.y;
-                                        that2.find('.place-content>ul>li').each(function(){
-                                            if(item4.lname==extractNum($(this).find('.light-name').text())){
-                                                $(this).find('.yellow').text(item4.y);
-                                            }
-                                        })
-                                    })
-                                }
-                            })
-                        })
-                    }
-                })
-            }
+
         })
-    })
+        // $.each(lightState,function(i,item1){
+        //     var placeList = item1.placeList;
+        //     $('.content>.clearfix').each(function(){
+        //         var that=$(this);
+        //         if(item1.mname==floor){
+        //             $.each(placeList,function(i,item2){
+        //                 var groupList = item2.groupList;
+        //                 if(item2.place==extractNum(that.find('.mname').text())){
+        //                     $.each(groupList,function(i,item3){
+        //                         var lightList = item3.lightList;
+        //
+        //                         that.find('.place').each(function(){
+        //                             var that2=$(this);
+        //                             var status = item3.groupState = jsonIsEqual(lightList, 'status');
+        //                             var state = statusM(status).state;
+        //                             var img = statusM(status, 'blue').img;
+        //                             item3.groupNum=parseInt(item3.groupTotal)-sum(lightList,'status',null);
+        //                             if(item3.group==extractNum($(this).find('.max').text())){
+        //                                 $.each(lightList,function(i,item4){
+        //                                     // var status = item4.status;
+        //                                     var y=item4.y;
+        //                                     item4.status=statusAll;
+        //                                     that2.find('.place-content>ul>li').each(function(){
+        //                                         if(item4.lname==extractNum($(this).find('.light-name').text())){
+        //                                             $(this).find('.yellow').text(item4.y);
+        //                                         }
+        //                                     })
+        //                                 })
+        //                             }
+        //                         })
+        //                     })
+        //                 }
+        //             })
+        //         }
+        //     })
+        // })
+    }
+
+}
+function lightAlter(other,status){
+
 }
 
 function upLight(url) {
