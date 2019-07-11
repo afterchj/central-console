@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @program: central-console
@@ -39,8 +40,11 @@ public class MonitorController {
     @Resource
     private Monitor4Dao monitor4Dao;
 
-    private int commandId = 0;
-    private int newCommandId = 0;
+//    private int commandId = 0;
+//    private int newCommandId = 0;
+    //Integer原子操作
+    private AtomicInteger commandId = new AtomicInteger(0);
+    private AtomicInteger newCommandId = new AtomicInteger(0);
 
 
     @RequestMapping("/monitor")
@@ -122,16 +126,16 @@ public class MonitorController {
     @ResponseBody
     public Map<String, Object> getNewMonitorLightStatus() {
         Map<String, Object> map = new HashMap<>();
+        List<LightDemo> lightState = new ArrayList<>();
+        int id = monitor2Dao.getCommandId("16");
         String scenes = null;
         CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
-//        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
-//        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
+        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
+        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
         if (commandInfo != null) {
-            int id = commandInfo.getId();
-            if (newCommandId < id) {
-                newCommandId = id;
-                LightDemo lightDemo = new LightDemo();
-                System.out.println(id);
+            if (newCommandId.get() < id) {
+                newCommandId.set(id);
+//                newCommandId = id;
                 String ctype = commandInfo.getCtype();
                 String status = null;
                 if ("52".equals(ctype)) {
@@ -143,8 +147,7 @@ public class MonitorController {
                         //全关
                         status = "1";
                     }
-                    lightDemo.setStatus(status);
-                    lightDemo.setOther("all");
+                    lightState = monitor4Dao.getMonitorFromRemoteByStatus(status, "intelligence");
                 } else if ("C0".equals(ctype)) {
                     //pad or 手机 全控
                     if ("32".equals(commandInfo.getY())) {
@@ -154,8 +157,7 @@ public class MonitorController {
                         //全开
                         status = "0";
                     }
-                    lightDemo.setStatus(status);
-                    lightDemo.setOther("all");
+                    lightState = monitor4Dao.getMonitorFromRemoteByStatus(status, "intelligence");
                 } else if ("C1".equals(ctype)) {
                     //pad or 手机 组控
                     int groupId;
@@ -169,41 +171,7 @@ public class MonitorController {
                     } else {
                         status = "1";
                     }
-                    switch (commandInfo.getHost()) {
-                        case "192.168.16.103":
-                            lightDemo.setMname("1楼");
-                            break;
-                        case "192.168.16.68":
-                            lightDemo.setMname("2楼");
-                            break;
-                        case "192.168.16.66":
-                            lightDemo.setMname("3楼");
-                            break;
-                        case "192.168.16.70":
-                            lightDemo.setMname("4楼");
-                            break;
-                        case "192.168.16.71":
-                            lightDemo.setMname("5楼");
-                            break;
-                        case "192.168.16.72":
-                            lightDemo.setMname("6楼");
-                            break;
-                        case "192.168.16.73":
-                            lightDemo.setMname("7楼");
-                            break;
-                        case "192.168.16.80":
-                            lightDemo.setMname("8楼");
-                            break;
-                        case "192.168.16.79":
-                            lightDemo.setMname("9楼");
-                            break;
-                        case "192.168.16.76":
-                            lightDemo.setMname("10楼");
-                            break;
-                    }
-                    lightDemo.setGroup(groupId);
-                    lightDemo.setStatus(status);
-                    lightDemo.setOther("group");
+                    lightState = monitor4Dao.getMonitorFromPhoneByGroup(groupId, status, "intelligence");
                 } else if ("42".equals(ctype)) {
                     if ("01".equals(commandInfo.getCid())) {
                         scenes = "场景一";
@@ -215,10 +183,10 @@ public class MonitorController {
                         scenes = "场景四";
                     }
                 }
-                map.put("lightDemo", lightDemo);
             }
-//            map.put("placeLNumList", placeLNumList);
-//            map.put("centerLNumList", centerLNumList);
+            map.put("lightState", lightState);
+            map.put("placeLNumList", placeLNumList);
+            map.put("centerLNumList", centerLNumList);
             map.put("scenes", scenes);
         }
         return map;
@@ -286,8 +254,9 @@ public class MonitorController {
         Map<String, Object> map = new HashMap<>();
         String scenes = null;
         if (commandInfo != null) {
-            if (commandId < id) {
-                commandId = id;
+            if (commandId.get() < id) {
+                commandId.set(id);
+//                commandId = id;
                 String status = null;
                 String ctype = commandInfo.getCtype();
                 if ("52".equals(commandInfo.getCtype())) {

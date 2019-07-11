@@ -23,11 +23,6 @@ function init() {
     waterbubbleS('#floor-3', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
     waterbubbleS('#floor-4', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
     waterbubbleS('#floor-5', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
-    // waterbubbleS('#floor-6', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    // waterbubbleS('#floor-7', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    // waterbubbleS('#floor-8', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    // waterbubbleS('#floor-9', '60%', pDefault, pDefault, 26, 0.6, pDefault, pDefault, pDefault, pDefault)
-    // waterbubbleS('#floor-10', '40%', pDefault, pDefault, 26, 0.4, pDefault, pDefault, pDefault, pDefault)
     upLight("/getNewMonitor")
 }
 function realTime() {
@@ -54,6 +49,7 @@ function upLight(url) {
             }
             if (lightState.length > 0) {
                 lightState = sort(lightState, 'mname');
+                lightState=sort(lightState, 'lname');
             }
 
             //json数据格式转换调用方法
@@ -74,9 +70,6 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
         var centerLNumTotal = item.centerLNumTotal;
         var mname = item.mname;
         var placeList = item.placeList;
-        console.log('placeList', placeList);
-        console.log('lightState', lightState);
-
         if (item.mname == fmname) {
             $.each(placeList, function (i, item2) {
                 var groupList = item2.groupList;
@@ -88,16 +81,10 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                     var lightList = item3.lightList;
                     var lightContent = '';
                     $.each(lightList, function (i, item4) {
-                        // var status = item3.status = jsonIsEqual(lightList, 'status');
-                        // var state = statusM(status).state;
                         var status = item4.status;
-
                         var state = statusM1(status).state;
                         var img = statusM1(status).img;
-                        // var status = item3.status;
                         var warning = statusM1(status).warning;
-                        // var img = statusM1(status, 'blue').img;
-
                         var hint = '';
                         if (warning) {
                             hint = 'active';
@@ -112,28 +99,13 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                     var state = statusM(status).state;
                     var img = statusM(status, 'blue').img;
                     item3.groupNum=parseInt(item3.groupTotal)-sum(lightList,'status',null);
-                    // if(status==0 || status==1){
-                    //     item3.groupNum=item3.groupTotal;
-                    // }else if(status == 12 || status==2){
-                    //     var sumTotal=  sum(lightList,'status',12)+sum(lightList,'status',2);
-                    //     item3.groupNum=  parseInt(item3.groupTotal)-sumTotal;
-                    // }
 
-                    console.log(mname,'status',status,'state',state,'img',img);
                     var title = '<div class="place-title"><div class="clearfix "><div class="f-l p-r r-line"><div class="middle p-a "><p class="max">组' + item3.group + '</p>' +
                         '<p>(<span>' + item3.groupNum + '</span>/ <span>' + item3.groupTotal + '</span>)</p></div></div><div class="f-l p-r r-line"><div class="middle p-a"><p>' + img + '</p></div>' +
                         '</div><div class="f-l p-r"> <div class="middle p-a min"><p><img src="/static/new/img/on-off-white.png" alt=""></p> <p>开关</p></div></div></div></div>';
 
                     rightList += '<div class="place f-l swiper-slide">' + title + '<div class="place-content"><ul>' + lightContent + '</ul></div></div>';
                 })
-                // for (var j = 0; j < groupList.length; j++) {
-                //     var lightList = groupList[j].lightList;
-                //     var lightContent = '';
-                //
-                //
-                //
-                //
-                // }
                 var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
                 var state = statusM(status).state;
                 var img = statusM(status, 'blue').img;
@@ -150,9 +122,6 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                 var content = '<div class="clearfix">' + left + right + '</div>';
                 $('.content').append(content);
             })
-            // var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState')
-            // var state = statusM(status).state;
-            // var img = statusM(status).img;
             swiper('.light-swiper', 3, 1, 'row')
         }else{
             $.each(placeList, function (i, item2) {
@@ -194,7 +163,6 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
     })
     $('.nave ul').append(leftIndex + leftNav);
 
-    console.log('placeLNumList44', placeLNumList);
     if (placeLNumList.length > 0) {
         $.each(placeLNumList, function (i, item) {
             if (item.mname == fmname) {
@@ -212,7 +180,6 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
     } else {
         console.log('placeLNumList长度小于0')
     }
-    console.log('现在的centerLNumList',centerLNumList);
     if (centerLNumList.length > 0) {
         $.each(centerLNumList, function (i, item) {
             var mname = item.mname;
@@ -221,11 +188,9 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                 if (mname == floor) {
                     if (item.centerLNum) {
                         //初始化
-                        console.log('初始化')
                         $(this).find('.center-LNum').text(item.centerLNum);
                     } else {
                         //更新
-                        console.log('更新')
                         var sum = 0;
                         $('.content>.clearfix').each(function () {
                             if ($(this).find('.mname').text() == item.mname) {

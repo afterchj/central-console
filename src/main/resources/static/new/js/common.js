@@ -103,18 +103,18 @@ function sort(json, field) {
     return json;
 }
 function extractNum(str) {
-    var result = str.replace(/[^0-9]/ig, "");
-    return result;
+    if(isNaN(str)){
+        var result = str.replace(/[^0-9]/ig, "");
+        return result;
+    }
 }
 
 function sum(json, field,m) {
-
     var array = [];
     $.each(json, function (i, item) {
         array.push(item[field]);
     })
     if(m==null){
-        console.log(array)
         return timesSum(array,null);
     }else{
         return sumTotal(array)
@@ -129,32 +129,15 @@ function sumTotal(arr) {
 
 
 function timesSum(arr,m){
-    times=0;//m是数组中的元素，times用来统计出现的次数
-// for循环遍历arr数组
+    times=0;
     for(var i=0;i<arr.length;i++){
         if(arr[i]==m){
-            times++;//数组中有相同值就加1
+            times++;
         }
     }
     return times;
-    console.log('次数',times);//这是打印出的出现的次数
 }
-function sum2(json, field,m) {
 
-    var array = [];
-    var arrayNew = [];
-    $.each(json, function (i, item) {
-        array.push(item[field]);
-    })
-    $.each(array,function(i,item){
-        if(item==m){
-            arrayNew.push(item);
-        }
-    })
-    return arrayNew.reduce(function (prev, cur) {
-        return prev + cur;
-    }, 0);
-}
 
 $(".nave li").click(function () {
     $(this).addClass('active').siblings().removeClass('active');
@@ -221,6 +204,7 @@ function lightStateM(lightState) {
             lightList: []
         }
         groupName.push(groupList)
+       
         var lightList = {
             mname: mname,
             place: place,
@@ -231,6 +215,7 @@ function lightStateM(lightState) {
             y: y
         }
         lightName.push(lightList)
+
     })
     $.each(floorName, function (i, item1) {
         var obj2 = {};
@@ -244,6 +229,7 @@ function lightStateM(lightState) {
                         placeLNumState: "2",
                         groupList: item2.groupList
                     }
+
                     item1.placeList.push(newPlace)
                     obj2[item2.place] = true;
                 }
@@ -372,22 +358,7 @@ function jsonIsEqual(json, field) {
         //开关灯不一致
         return "1"
     }
-    // if(array.indexOf(null)!=-1 && isAllEqual(array)){
-    //     //异常
-    //     return "2"
-    // }else if(array.indexOf(null)==-1 && isAllEqual(array)){
-    //     //正常且开关灯一致
-    //     return "0"
-    // }else if(array.indexOf(null)!=-1 && !isAllEqual(array)){
-    //     //异常常且开关灯不一致
-    //     return "12"
-    // }else if(array.indexOf(null)==-1 && !isAllEqual(array)){
-    //     //开关灯不一致
-    //     return "1"
-    // }
 }
-var arr = [null, null, null];
-console.log('filterArr()', filterArr(arr, null));
 function filterArr(array, field) {
     var newArr = array.filter(function (item) {
         return item != field;
@@ -399,15 +370,6 @@ function jsonIsEqual1(json, field) {
     $.each(json, function (i, item) {
         array.push(item[field]);
     })
-    // if (array.indexOf('0') != -1 && isAllEqual(array)) {
-    //     return '0';
-    // } else if (array.indexOf('2') != -1 && isAllEqual(array)) {
-    //     return '2';
-    // } else if (array.indexOf('12') != -1 && isAllEqual(array)) {
-    //     return "12"
-    // } else if (array.indexOf("1") == -1 && !isAllEqual(array)) {
-    //     return "1"
-    // }
     if (array.indexOf('12') != -1) {
         //异常开关灯不一致
         return "12"
