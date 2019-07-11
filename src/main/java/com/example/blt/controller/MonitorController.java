@@ -208,6 +208,8 @@ public class MonitorController {
                     lightDemo.setGroup(groupId);
                     lightDemo.setStatus(status);
                     lightDemo.setOther("group");
+                    List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfoByPlace(lightDemo.getMname(), groupId);
+                    map.put("lightState", lightState);
                 } else if ("42".equals(ctype)) {
                     if ("01".equals(commandInfo.getCid())) {
                         scenes = "场景一";
