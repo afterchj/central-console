@@ -102,7 +102,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                         if (warning) {
                             hint = 'active';
                         } else {
-                            hint = '';
+                            hint = '';   
                         }
                         lightContent += '<li class="clearfix"> <div class="f-l p-r r-min-line"><div class="middle p-a ">' + item3.lname + '</div></div><div class="f-l p-r r-min-line"><div class="middle p-a yellow ' + hint + '">' + item3.y + '</div></div>' +
                             ' <div class="f-l p-r"><div class="middle p-a"><img src="/static/new/img/on-off-black.png" alt=""></div></div></li>';
