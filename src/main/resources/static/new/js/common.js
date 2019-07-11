@@ -103,8 +103,10 @@ function sort(json, field) {
     return json;
 }
 function extractNum(str) {
-    var result = str.replace(/[^0-9]/ig, "");
-    return result;
+    if(isNaN(str)){
+        var result = str.replace(/[^0-9]/ig, "");
+        return result;
+    }
 }
 
 function sum(json, field,m) {
@@ -129,32 +131,16 @@ function sumTotal(arr) {
 
 
 function timesSum(arr,m){
-    times=0;//m是数组中的元素，times用来统计出现的次数
-// for循环遍历arr数组
+    times=0;
+
     for(var i=0;i<arr.length;i++){
         if(arr[i]==m){
-            times++;//数组中有相同值就加1
+            times++;
         }
     }
     return times;
-    console.log('次数',times);//这是打印出的出现的次数
 }
-function sum2(json, field,m) {
 
-    var array = [];
-    var arrayNew = [];
-    $.each(json, function (i, item) {
-        array.push(item[field]);
-    })
-    $.each(array,function(i,item){
-        if(item==m){
-            arrayNew.push(item);
-        }
-    })
-    return arrayNew.reduce(function (prev, cur) {
-        return prev + cur;
-    }, 0);
-}
 
 $(".nave li").click(function () {
     $(this).addClass('active').siblings().removeClass('active');
@@ -221,6 +207,7 @@ function lightStateM(lightState) {
             lightList: []
         }
         groupName.push(groupList)
+       
         var lightList = {
             mname: mname,
             place: place,
@@ -231,6 +218,7 @@ function lightStateM(lightState) {
             y: y
         }
         lightName.push(lightList)
+
     })
     $.each(floorName, function (i, item1) {
         var obj2 = {};
@@ -244,6 +232,7 @@ function lightStateM(lightState) {
                         placeLNumState: "2",
                         groupList: item2.groupList
                     }
+
                     item1.placeList.push(newPlace)
                     obj2[item2.place] = true;
                 }

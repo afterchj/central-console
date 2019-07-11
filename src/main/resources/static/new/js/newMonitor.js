@@ -75,6 +75,7 @@ function upLight(url) {
             }
             if (lightState.length > 0) {
                 lightState = sort(lightState, 'mname');
+                
             }
 
             //json数据格式转换调用方法
@@ -114,36 +115,16 @@ function operation(lightState, placeLNumList, centerLNumList) {
                 var img = statusM(status, 'blue').img;
 
                 item3.groupNum=item3.groupTotal-sum(lightList,'status',null);
-                // if(status==0 || status==1){
-                //     groupList[k].groupNum=groupList[k].groupTotal;
-                // }else if(status == 12 || status==2){
-                //     var sumTotal=  sum(lightList,'status',12)+sum(lightList,'status',2);
-                //     groupList[k].groupNum=  parseInt(groupList[k].groupTotal)-sumTotal;
-                // }
             })
              var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
              var state = statusM(status).state;
              var img = statusM(status).img;
             item2.placeLNum=sum(groupList,'groupNum',1);
-            // if(status==0 || status==1){
-            //     placeList[j].placeLNum=placeList[j].placeLNumTotal;
-            // }else if(status == 12 || status==2){
-            //     var sumTotal=  sum(groupList,'status',12)+sum(groupList,'status',2);
-            //     placeList[j].placeLNum=  parseInt(placeList[j].placeLNumTotal)-sumTotal;
-            // }
         rightList += '<div class="place f-l swiper-slide"> <div class="place-title"> ' +
             '<div>区域<span class="placeName">' + item2.place + '</span></div> <div>(<span class="p-num">' + item2.placeLNum + '</span><span>/</span><span>' + item2.placeLNumTotal + '</span>)</div></div> ' +
             '<div class="place-content"><div class="img-place">' + img + '</div><div><p class="p-status">' + state + '</p></div> </div></div>'
 
         })
-        // console.log(' rightList', rightList);
-
-        // if(status==0 || status==1){
-        //     item.centerLNum=item.centerLNumTotal;
-        // }else if(status == 12 || status==2){
-        //     var sumTotal=  sum(placeList,'placeLNumState',12)+sum(placeList,'placeLNumState',2);
-        //     item.centerLNum=  parseInt(item.centerLNumTotal)-sumTotal;
-        // }
         var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState')
         var state = statusM(status).state;
         var img = statusM(status).img;
@@ -159,9 +140,6 @@ function operation(lightState, placeLNumList, centerLNumList) {
     $('.content').append(content);
 
     //左侧导航
-    // var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState')
-    // var state = statusM(status).state;
-    // var img = statusM(status).img;
 
     leftNav += '<li><a href="/newIndex/noEnergy"><div class="clearfix"><div class="f-l p-r">' +
         '<div class="nav-l p-a"><div class="floor">实验室-' + item.mname + '</div>' +
@@ -200,11 +178,9 @@ if (centerLNumList.length > 0) {
             if (mname == floor) {
                 if (item.centerLNum) {
                     //初始化
-                    console.log('初始化')
                     $(this).find('.center-LNum').text(item.centerLNum);
                 } else {
                     //更新
-                    console.log('更新')
                     var sum = 0;
                     $('.content>.clearfix').each(function () {
                         if ($(this).find('.mname').text() == item.mname) {
