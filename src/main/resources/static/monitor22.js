@@ -5,7 +5,9 @@ $(function () {
     setInterval(function () {
         light2()
     }, 500);
-
+    setInterval(function () {
+        light()
+    }, 100000);
 })
 $('.frame>span').click(function () {
     $(this).addClass('active').siblings('span').removeClass('active');
@@ -102,6 +104,7 @@ function light() {
         url: "/getMonitor2",
         dataType: "json",
         success: function (data) {
+            console.log(data)
             var groupLists = Array_2(10, '');
             var lightState = data.lightState;
             var placeLNumList = data.placeLNumList;

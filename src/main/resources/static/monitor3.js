@@ -13,6 +13,7 @@ function light() {
         url: "/getMonitor3",
         dataType: "json",
         success: function (data) {
+            console.log(data)
             var lightState = data.lightState;
             var placeLNumList = data.placeLNumList;
             var centerLNumList = data.centerLNumList;

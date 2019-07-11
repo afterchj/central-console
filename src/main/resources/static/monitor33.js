@@ -9,11 +9,11 @@ $(function () {
         // console.log('light')
     }, 500)
 
-    // setInterval(function () {
-    //     // light();
-    //     light2();
-    //     console.log('light2')
-    // }, 10000)
+    setInterval(function () {
+        // light();
+        light2();
+        console.log('light2')
+    }, 10000)
 })
 
 function light2() {
@@ -22,6 +22,7 @@ function light2() {
         url: "/getMonitor3",
         dataType: "json",
         success: function (data) {
+            console.log(data)
             var lightState = data.lightState;
             var placeLNumList = data.placeLNumList;
             var centerLNumList = data.centerLNumList;
