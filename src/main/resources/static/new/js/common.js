@@ -110,13 +110,11 @@ function extractNum(str) {
 }
 
 function sum(json, field,m) {
-
     var array = [];
     $.each(json, function (i, item) {
         array.push(item[field]);
     })
     if(m==null){
-        console.log(array)
         return timesSum(array,null);
     }else{
         return sumTotal(array)
@@ -132,7 +130,6 @@ function sumTotal(arr) {
 
 function timesSum(arr,m){
     times=0;
-
     for(var i=0;i<arr.length;i++){
         if(arr[i]==m){
             times++;
@@ -361,22 +358,7 @@ function jsonIsEqual(json, field) {
         //开关灯不一致
         return "1"
     }
-    // if(array.indexOf(null)!=-1 && isAllEqual(array)){
-    //     //异常
-    //     return "2"
-    // }else if(array.indexOf(null)==-1 && isAllEqual(array)){
-    //     //正常且开关灯一致
-    //     return "0"
-    // }else if(array.indexOf(null)!=-1 && !isAllEqual(array)){
-    //     //异常常且开关灯不一致
-    //     return "12"
-    // }else if(array.indexOf(null)==-1 && !isAllEqual(array)){
-    //     //开关灯不一致
-    //     return "1"
-    // }
 }
-var arr = [null, null, null];
-console.log('filterArr()', filterArr(arr, null));
 function filterArr(array, field) {
     var newArr = array.filter(function (item) {
         return item != field;
@@ -388,15 +370,6 @@ function jsonIsEqual1(json, field) {
     $.each(json, function (i, item) {
         array.push(item[field]);
     })
-    // if (array.indexOf('0') != -1 && isAllEqual(array)) {
-    //     return '0';
-    // } else if (array.indexOf('2') != -1 && isAllEqual(array)) {
-    //     return '2';
-    // } else if (array.indexOf('12') != -1 && isAllEqual(array)) {
-    //     return "12"
-    // } else if (array.indexOf("1") == -1 && !isAllEqual(array)) {
-    //     return "1"
-    // }
     if (array.indexOf('12') != -1) {
         //异常开关灯不一致
         return "12"
