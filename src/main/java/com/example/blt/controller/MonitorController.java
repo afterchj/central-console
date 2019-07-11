@@ -46,7 +46,6 @@ public class MonitorController {
     private AtomicInteger commandId = new AtomicInteger(0);
     private AtomicInteger newCommandId = new AtomicInteger(0);
 
-
     @RequestMapping("/monitor")
     public String monitor(Model model) {
         List<Map<String, Object>> centerLNumList = lightListDao.getCenterLNum();
@@ -86,6 +85,8 @@ public class MonitorController {
     @RequestMapping(value = "/getMonitor2", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getMonitor2() {
+        int id = monitor2Dao.getCommandId("16");
+        commandId.compareAndSet(0,id);
         Map<String, Object> map = new HashMap<>();
         List<Map<String, Object>> centerLNumList = lightListDao.getOfficeCenterLNum();
         List<LightDemo> placeLNumList = lightListDao.getOfficePlaceLNum();
@@ -112,6 +113,8 @@ public class MonitorController {
     @RequestMapping(value = "/getNewMonitor", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getNewMonitor() {
+        int id = monitor2Dao.getCommandId("16");
+        commandId.compareAndSet(0,id);
         Map<String, Object> map = new HashMap<>();
         List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
         List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
