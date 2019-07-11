@@ -16,6 +16,7 @@ public class LightDemo {
     private String status;
     private Integer group;
     private String y;
+    private String other;
 
     public Integer getGroup() {
         return group;
@@ -81,6 +82,14 @@ public class LightDemo {
         this.y = y;
     }
 
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
+    }
+
     @Override
     public String toString() {
         return "LightDemo{" +
@@ -92,6 +101,7 @@ public class LightDemo {
                 ", status='" + status + '\'' +
                 ", Group=" + group +
                 ", y=" + y +
+                ", other=" + other +
                 '}';
     }
 }

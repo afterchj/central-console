@@ -16,7 +16,7 @@ import java.util.Map;
 public interface Monitor4Dao {
 
 
-    @Select("select cid,ctype,x,y from t_command_info where ctype is not null and SUBSTRING_INDEX(SUBSTRING_INDEX(host,'.',-2),'.',1)=#{host} order by id desc limit 1")
+    @Select("select id,cid,ctype,host,x,y from t_command_info_copy where ctype is not null and SUBSTRING_INDEX(SUBSTRING_INDEX(host,'.',-2),'.',1)=#{host} order by id desc limit 1")
     CommandLight getCommandInfo(@Param("host") String host);
 
     @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info_copy1 i where d.lmac=i.lmac and  (i.y is not null)and d.other='intelligence' Group by mname")
