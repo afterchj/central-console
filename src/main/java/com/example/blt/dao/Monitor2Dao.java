@@ -1,6 +1,5 @@
 package com.example.blt.dao;
 
-import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,7 +17,7 @@ import java.util.List;
 public interface Monitor2Dao {
 
 
-    @Select("select  lmac ,mname,lname,#{status} as status,d.group from f_light_demo d where mname =#{mname} ORDER BY" +
+    @Select("select  lmac ,mname,lname,#{status} as status,d.groupId from f_light_demo d where mname =#{mname} ORDER BY" +
             " mname,lname")
     List<LightDemo>  getMonitorFromRemoteByStatus(@Param("status") String status,@Param("mname") String mname);//全开全关
 
