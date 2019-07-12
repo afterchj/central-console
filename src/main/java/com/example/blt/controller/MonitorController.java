@@ -133,8 +133,8 @@ public class MonitorController {
         CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
 //        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
 //        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
-        if (commandInfo != null) {
-            int id = commandInfo.getId();
+//        if (commandInfo != null) {
+//            int id = commandInfo.getId();
 //            if (newCommandId.get() < id) {
 //                newCommandId.set(id);
 //                newCommandId = id;
@@ -150,6 +150,7 @@ public class MonitorController {
                         //全关
                         status = "1";
                     }
+                    lightDemo.setMname(getMname(commandInfo.getHost()));
                     lightDemo.setStatus(status);
                     lightDemo.setOther("all");
                 } else if ("C0".equals(ctype)) {
@@ -161,6 +162,7 @@ public class MonitorController {
                         //全开
                         status = "0";
                     }
+                    lightDemo.setMname(getMname(commandInfo.getHost()));
                     lightDemo.setStatus(status);
                     lightDemo.setOther("all");
                 } else if ("C1".equals(ctype)) {
@@ -176,43 +178,26 @@ public class MonitorController {
                     } else {
                         status = "1";
                     }
-                    switch (commandInfo.getHost()) {
-                        case "192.168.16.103":
-                            lightDemo.setMname("1楼");
-                            break;
-                        case "192.168.16.68":
-                            lightDemo.setMname("2楼");
-                            break;
-                        case "192.168.16.66":
-                            lightDemo.setMname("3楼");
-                            break;
-                        case "192.168.16.70":
-                            lightDemo.setMname("4楼");
-                            break;
-                        case "192.168.16.71":
-                            lightDemo.setMname("5楼");
-                            break;
-                        case "192.168.16.72":
-                            lightDemo.setMname("6楼");
-                            break;
-                        case "192.168.16.73":
-                            lightDemo.setMname("7楼");
-                            break;
-                        case "192.168.16.80":
-                            lightDemo.setMname("8楼");
-                            break;
-                        case "192.168.16.79":
-                            lightDemo.setMname("9楼");
-                            break;
-                        case "192.168.16.76":
-                            lightDemo.setMname("10楼");
-                            break;
-                    }
+                    lightDemo.setMname(getMname(commandInfo.getHost()));
                     lightDemo.setGroupId(groupId);
                     lightDemo.setStatus(status);
                     lightDemo.setOther("group");
-                    List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfoByPlace(lightDemo.getMname(), groupId);
-                    map.put("lightState", lightState);
+                    int count1 = monitor4Dao.checkExceptionOfPlace(lightDemo.getMname(), groupId);
+                    int count2 = monitor4Dao.checkExceptionOfFloor(lightDemo.getMname(), groupId);
+                    if(count1==0){
+                        map.put("placeException", false);
+                    }else if(count1==1){
+                        map.put("placeException", true);
+                    }
+                    if(count2==0){
+                        map.put("floorException", false);
+                    }else if(count2==1){
+                        map.put("floorException", true);
+                    }
+//                    for(){
+//
+//                    }
+//                    map.put("lightState", lightState);
                 } else if ("42".equals(ctype)) {
                     if ("01".equals(commandInfo.getCid())) {
                         scenes = "场景一";
@@ -229,7 +214,7 @@ public class MonitorController {
 //            map.put("placeLNumList", placeLNumList);
 //            map.put("centerLNumList", centerLNumList);
             map.put("scenes", scenes);
-        }
+//        }
         return map;
     }
 
@@ -403,5 +388,43 @@ public class MonitorController {
         }
         return map;
     }
+
+    private String getMname(String host){
+        String mname="";
+        switch (host) {
+            case "192.168.16.103":
+                mname ="1楼";
+                break;
+            case "192.168.16.68":
+                mname ="2楼";
+                break;
+            case "192.168.16.66":
+                mname="3楼";
+                break;
+            case "192.168.16.70":
+                mname="4楼";
+                break;
+            case "192.168.16.71":
+                mname="5楼";
+                break;
+            case "192.168.16.72":
+                mname="6楼";
+                break;
+            case "192.168.16.73":
+                mname="7楼";
+                break;
+            case "192.168.16.80":
+                mname="8楼";
+                break;
+            case "192.168.16.79":
+                mname="9楼";
+                break;
+            case "192.168.16.76":
+                mname="10楼";
+                break;
+        }
+            return mname;
+    }
+
 
 }
