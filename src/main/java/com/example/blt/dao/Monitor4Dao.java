@@ -42,16 +42,19 @@ public interface Monitor4Dao {
     List<LightDemo>  getMonitorFromRemoteByStatus(@Param("status") String status,@Param("other") String other);//全开全关
 
     @Select("select  lmac ,mname,lname,#{status} as status,d.place,d.groupId from f_light_demo d where other =#{other} and" +
-            " d.groupId=#{group} ORDER BY mname,lname")
-    List<LightDemo> getMonitorFromPhoneByGroup(@Param("group") int groupId, @Param("status") String status,@Param("other") String other);//单组全开全关
+            " d.groupId=#{groupId} ORDER BY mname,lname")
+    List<LightDemo> getMonitorFromPhoneByGroup(@Param("groupId") int groupId, @Param("status") String status,@Param("other") String other);//单组全开全关
 
-    @Select("SELECT a.status FROM (SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy1 Group by lmac) i ON d.lmac = i.lmac where d.other='intelligence' and d.mname=#{mname} and d.groupId != 1 and place= (select place from f_light_demo ld where ld.mname=#{mname} and ld.groupId=1 limit 1)) a")
-    List<Integer> getStatusOfPlace(@Param("mname") String mname,@Param("group") int group);
+    @Select("select place from f_light_demo ld where ld.mname=#{mname} and ld.groupId=#{groupId} limit 1")
+    Integer getPlace(@Param("mname") String mname,@Param("groupId") int groupId);
+
+    @Select("SELECT a.status FROM (SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy1 Group by lmac) i ON d.lmac = i.lmac where d.other='intelligence' and d.mname=#{mname} and d.groupId != #{groupId} and place= #{place}) a")
+    List<Integer> getStatusOfPlace(@Param("mname") String mname,@Param("place") int place,@Param("groupId") int groupId);
 
     @Select("SELECT a.status FROM (SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and" +
             " i.y is not " +
-            "null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy1 Group by lmac) i ON d.lmac = i.lmac where d.other='intelligence' and d.mname=#{mname} and place !=(select place from f_light_demo ld where ld.mname=#{mname} and ld.groupId=1 limit 1)) a")
-    List<Integer> getStatusOfFloor(@Param("mname") String mname,@Param("group") int group);
+            "null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy1 Group by lmac) i ON d.lmac = i.lmac where d.other='intelligence' and d.mname=#{mname} and place !=(select place from f_light_demo ld where ld.mname=#{mname} and ld.groupId=#{groupId} limit 1)) a")
+    List<Integer> getStatusOfFloor(@Param("mname") String mname,@Param("groupId") int groupId);
 
 
 
