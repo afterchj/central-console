@@ -190,6 +190,23 @@ public class MonitorController {
                 List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(lightDemo.getMname(), place, groupId);
                 Map map1 = getExceptionAndDiff(statusList1);
                 Map map2 = getExceptionAndDiff(statusList2);
+                LightDemo placeStatus = new LightDemo();
+                LightDemo floorStatus = new LightDemo();
+                placeStatus.setMname(lightDemo.getMname());
+                placeStatus.setPlace(place);
+                placeStatus.setOther("开");
+                floorStatus.setMname(lightDemo.getMname());
+                floorStatus.setOther("开");
+                if(status.equals("1")){
+                    if(getSwitchStatus2(statusList1)==0){
+                        placeStatus.setOther("关");
+                        if(getSwitchStatus2(statusList2)==0){
+                            floorStatus.setOther("关");
+                        };
+                    };
+                }
+                map.put("placeStatus", placeStatus);
+                map.put("floorStatus", floorStatus);
                 map.put("place", place);
                 map.put("placeException", map1.get("exception"));
                 map.put("placeDifference", map1.get("difference"));
@@ -214,6 +231,8 @@ public class MonitorController {
         }
         return map;
     }
+
+
 
 
     @RequestMapping(value = "/getLightOnOrOff", method = RequestMethod.POST)
@@ -527,5 +546,18 @@ public class MonitorController {
         map.put("allStatus",allStatus);
         return map;
     }
+
+    private int getSwitchStatus2(List<Integer> statusList) {
+        int placeFlag = 0;
+        for(int i=0;i<statusList.size();i++){
+            if(statusList.get(i)!=null){
+                if(statusList.get(i)==0){
+                    placeFlag = 1;
+                }
+            }
+        }
+        return placeFlag;
+    }
+
 
 }
