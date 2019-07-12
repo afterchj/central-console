@@ -6,6 +6,7 @@ import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.dao.MonitorDao;
 import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
+import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 @Controller
 public class MonitorController {
+    @Resource
+    private GuavaCacheManager guavaCacheManager;
 
     @Resource
     private LightListDao lightListDao;
@@ -169,7 +172,7 @@ public class MonitorController {
             lightDemo.setStatus(status);
             lightDemo.setOther("floor");
         } else if ("C1".equals(ctype)) {
-            //pad or 手机 组控
+            //pad or 手机 or web 组控
             int groupId;
             if ("0A".equals(commandInfo.getCid())) {
                 groupId = 10;

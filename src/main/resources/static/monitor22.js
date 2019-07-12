@@ -29,10 +29,9 @@ $('.frame>span').click(function () {
     }
     console.log('groupOrder',groupOrder)
     var host = '192.168.16.73';
-    $.post("/sendNewIndex", {
+    $.post("/sendSocket6", {
         "command": command,
         "host": host,
-        "mname":"1楼"
     }, function () {})
     // if (groupOrder!='NaN'){
     //     var selector;
