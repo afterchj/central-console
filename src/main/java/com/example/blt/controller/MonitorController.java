@@ -494,31 +494,31 @@ public class MonitorController {
                     allFlag = 1;
                 }
             }
-            if ((i + 1) % 4 == 0 && groupFlag == 1) {
+            if ((i + 1) % 4 == 0 && groupFlag == 0) {
                 LightDemo lightDemo = new LightDemo();
                 lightDemo.setMname(lightState.get(i).getMname());
                 lightDemo.setPlace(lightState.get(i).getPlace());
                 lightDemo.setGroupId(lightState.get(i).getGroupId());
-                lightDemo.setOther("开");
+                lightDemo.setOther("关");
                 groupStatus.add(lightDemo);
             }
-            if ((i + 1) % 12 == 0 && placeFlag == 1) {
+            if ((i + 1) % 12 == 0 && placeFlag == 0) {
                 LightDemo lightDemo = new LightDemo();
                 lightDemo.setMname(lightState.get(i).getMname());
                 lightDemo.setPlace(lightState.get(i).getPlace());
-                lightDemo.setOther("开");
+                lightDemo.setOther("关");
                 placeStatus.add(lightDemo);
             }
-            if ((i + 1) % 48 == 0 && floorFlag == 1) {
+            if ((i + 1) % 48 == 0 && floorFlag == 0) {
                 LightDemo lightDemo = new LightDemo();
                 lightDemo.setMname(lightState.get(i).getMname());
-                lightDemo.setOther("开");
+                lightDemo.setOther("关");
                 floorStatus.add(lightDemo);
             }
         }
-        if(allFlag==1){
+        if(allFlag==0){
             LightDemo lightDemo = new LightDemo();
-            lightDemo.setOther("开");
+            lightDemo.setOther("关");
             allStatus.add(lightDemo);
         }
         map.put("groupStatus",groupStatus);
