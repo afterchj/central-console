@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -179,7 +180,8 @@ public class MainController {
 //            String code3 = SocketUtil.sendCmd2(host3, cmd3);
 //            String code4 = SocketUtil.sendCmd2(host4, cmd4);
 //            String code5 = SocketUtil.sendCmd2(host5, cmd5);
-//            if ("1".equals(code1) || "1".equals(code2) || "1".equals(code3) || "1".equals(code4) || "1".equals(code5)) {
+//            if ("1".equals(code1) || "1".equals(code2) || "1".equals(code3) || "1".equals(code4) || "1".equals
+// (code5)) {
 //                //            失败
 //                success = "error";
 //            }
@@ -240,6 +242,28 @@ public class MainController {
         if ("fail".equals(code)) {
 //            失败
             success = "error";
+        }
+        map.put("success", success);
+        return map;
+    }
+
+
+    @RequestMapping(value = "/sendSocket7", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> sendSocket7(String host, List<String> commands) {
+        Map<String, String> map = new HashMap<>();
+        String success = "success";
+        for (int i = 0; i < commands.size(); i++) {
+//        String code1 = SocketUtil.sendCmd2(host, cmd1);
+            map.put("command", commands.get(i));
+            map.put("host", host);
+            ControlTask task = new ControlTask(JSON.toJSONString(map));
+            String code = ExecuteTask.sendCmd(task);
+            if ("fail".equals(code)) {
+//            失败
+                success = "error";
+                break;
+            }
         }
         map.put("success", success);
         return map;
