@@ -119,13 +119,13 @@ public class MonitorController {
         List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
         List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
-        List<LightDemo> lightState2 = getSwitchStatus(lightState);
+        Map statusMap = getSwitchStatus(lightState);
         map.put("centerLNumList", centerLNumList);
         map.put("placeLNumList", placeLNumList);
         map.put("lightState", lightState);
+        map.put("status", statusMap);
         return map;
     }
-
 
 
     @RequestMapping(value = "/getNewMonitorLightStatus", method = RequestMethod.POST)
@@ -141,76 +141,76 @@ public class MonitorController {
 //            if (newCommandId.get() < id) {
 //                newCommandId.set(id);
 //                newCommandId = id;
-        LightDemo lightDemo = new LightDemo();
-        String ctype = commandInfo.getCtype();
-        String status = null;
-        if ("52".equals(ctype)) {
-            //遥控器
-            if ("01".equals(commandInfo.getCid())) {
-                //全开
-                status = "0";
-            } else if ("02".equals(commandInfo.getCid())) {
-                //全关
-                status = "1";
+            LightDemo lightDemo = new LightDemo();
+            String ctype = commandInfo.getCtype();
+            String status = null;
+            if ("52".equals(ctype)) {
+                //遥控器
+                if ("01".equals(commandInfo.getCid())) {
+                    //全开
+                    status = "0";
+                } else if ("02".equals(commandInfo.getCid())) {
+                    //全关
+                    status = "1";
+                }
+                lightDemo.setMname(getMname(commandInfo.getHost()));
+                lightDemo.setStatus(status);
+                lightDemo.setOther("floor");
+            } else if ("C0".equals(ctype)) {
+                //pad or 手机 全控
+                if ("32".equals(commandInfo.getY())) {
+                    //全关
+                    status = "1";
+                } else {
+                    //全开
+                    status = "0";
+                }
+                lightDemo.setMname(getMname(commandInfo.getHost()));
+                lightDemo.setStatus(status);
+                lightDemo.setOther("floor");
+            } else if ("C1".equals(ctype)) {
+                //pad or 手机 组控
+                int groupId;
+                if ("0A".equals(commandInfo.getCid())) {
+                    groupId = 10;
+                } else {
+                    groupId = Integer.valueOf(commandInfo.getCid());
+                }
+                if ("37".equals(commandInfo.getY())) {
+                    status = "0";
+                } else {
+                    status = "1";
+                }
+                lightDemo.setMname(getMname(commandInfo.getHost()));
+                lightDemo.setGroupId(groupId);
+                lightDemo.setStatus(status);
+                lightDemo.setOther("group");
+                int place = monitor4Dao.getPlace(lightDemo.getMname(), groupId);
+                List<Integer> statusList1 = monitor4Dao.getStatusOfPlace(lightDemo.getMname(), place, groupId);
+                List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(lightDemo.getMname(), place, groupId);
+                Map map1 = getExceptionAndDiff(statusList1);
+                Map map2 = getExceptionAndDiff(statusList2);
+                map.put("place", place);
+                map.put("placeException", map1.get("exception"));
+                map.put("placeDifference", map1.get("difference"));
+                map.put("floorException", map2.get("exception"));
+                map.put("floorDifference", map2.get("difference"));
+            } else if ("42".equals(ctype)) {
+                if ("01".equals(commandInfo.getCid())) {
+                    scenes = "场景一";
+                } else if ("02".equals(commandInfo.getCid())) {
+                    scenes = "场景二";
+                } else if ("03".equals(commandInfo.getCid())) {
+                    scenes = "场景三";
+                } else if ("04".equals(commandInfo.getCid())) {
+                    scenes = "场景四";
+                }
             }
-            lightDemo.setMname(getMname(commandInfo.getHost()));
-            lightDemo.setStatus(status);
-            lightDemo.setOther("floor");
-        } else if ("C0".equals(ctype)) {
-            //pad or 手机 全控
-            if ("32".equals(commandInfo.getY())) {
-                //全关
-                status = "1";
-            } else {
-                //全开
-                status = "0";
-            }
-            lightDemo.setMname(getMname(commandInfo.getHost()));
-            lightDemo.setStatus(status);
-            lightDemo.setOther("floor");
-        } else if ("C1".equals(ctype)) {
-            //pad or 手机 组控
-            int groupId;
-            if ("0A".equals(commandInfo.getCid())) {
-                groupId = 10;
-            } else {
-                groupId = Integer.valueOf(commandInfo.getCid());
-            }
-            if ("37".equals(commandInfo.getY())) {
-                status = "0";
-            } else {
-                status = "1";
-            }
-            lightDemo.setMname(getMname(commandInfo.getHost()));
-            lightDemo.setGroupId(groupId);
-            lightDemo.setStatus(status);
-            lightDemo.setOther("group");
-            int place = monitor4Dao.getPlace(lightDemo.getMname(),groupId);
-            List<Integer> statusList1 = monitor4Dao.getStatusOfPlace(lightDemo.getMname(), place,groupId);
-            List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(lightDemo.getMname(), groupId);
-            Map map1 = getExceptionAndDiff(statusList1);
-            Map map2 = getExceptionAndDiff(statusList2);
-            map.put("place", place);
-            map.put("placeException", map1.get("exception"));
-            map.put("placeDifference", map1.get("difference"));
-            map.put("floorException", map2.get("exception"));
-            map.put("floorDifference", map2.get("difference"));
-        } else if ("42".equals(ctype)) {
-            if ("01".equals(commandInfo.getCid())) {
-                scenes = "场景一";
-            } else if ("02".equals(commandInfo.getCid())) {
-                scenes = "场景二";
-            } else if ("03".equals(commandInfo.getCid())) {
-                scenes = "场景三";
-            } else if ("04".equals(commandInfo.getCid())) {
-                scenes = "场景四";
-            }
-        }
-        map.put("lightDemo", lightDemo);
+            map.put("lightDemo", lightDemo);
 //            }
 //            map.put("placeLNumList", placeLNumList);
 //            map.put("centerLNumList", centerLNumList);
-        map.put("scenes", scenes);
+            map.put("scenes", scenes);
         }
         return map;
     }
@@ -423,11 +423,11 @@ public class MonitorController {
         return mname;
     }
 
-    private Map<String,Boolean> getExceptionAndDiff(List<Integer> statusList){
-        Map<String,Boolean> map = new HashMap<>();
+    private Map<String, Boolean> getExceptionAndDiff(List<Integer> statusList) {
+        Map<String, Boolean> map = new HashMap<>();
         Boolean exception = false;
         Boolean difference = false;
-        int[][] arr = new int[statusList.size()/4][4];
+        int[][] arr = new int[statusList.size() / 4][4];
         int index1 = -1;
         int index2 = 0;
         for (int i = 0; i < statusList.size(); i++) {
@@ -435,42 +435,97 @@ public class MonitorController {
                 index1++;
                 index2 = 0;
             }
-            if(statusList.get(i)!=null) {
+            if (statusList.get(i) != null) {
                 arr[index1][index2] = statusList.get(i);
                 index2++;
-            }else {
+            } else {
                 exception = true;
                 arr[index1][index2] = 2;
                 index2++;
             }
         }
         int checkStatus = -1;
-        for(int i=0;i<=index1;i++) {
+        for (int i = 0; i <= index1; i++) {
             for (int j = 0; j < 4; j++) {
-                if(checkStatus==-1) {
+                if (checkStatus == -1) {
                     checkStatus = arr[i][j];
                 }
-                if(checkStatus!=arr[i][j]&&arr[i][j]!=2){
+                if (checkStatus != arr[i][j] && arr[i][j] != 2) {
                     difference = true;
                     break;
                 }
             }
-            if(difference){
+            if (difference) {
                 break;
             }
             checkStatus = -1;
         }
-        map.put("exception",exception);
-        map.put("difference",difference);
+        map.put("exception", exception);
+        map.put("difference", difference);
         return map;
     }
 
-    private List<LightDemo> getSwitchStatus(List<LightDemo> lightState) {
-        List<LightDemo> lightDemo = new ArrayList<>();
-
-
-
-return lightDemo;
+    private Map<String,List<LightDemo>> getSwitchStatus(List<LightDemo> lightState) {
+        Map<String,List<LightDemo>> map = new HashMap<>();
+        List<LightDemo> groupStatus = new ArrayList<>();
+        List<LightDemo> placeStatus = new ArrayList<>();
+        List<LightDemo> floorStatus = new ArrayList<>();
+        List<LightDemo> allStatus = new ArrayList<>();
+        int groupFlag = 0;
+        int placeFlag = 0;
+        int floorFlag = 0;
+        int allFlag = 0;
+        for (int i = 0; i < lightState.size(); i++) {
+            if (i % 4 == 0) {
+                groupFlag = 0;
+            }
+            if (i % 12 == 0) {
+                placeFlag = 0;
+            }
+            if (i % 48 == 0) {
+                floorFlag = 0;
+            }
+            if (lightState.get(i).getStatus() != null) {
+                if (Integer.parseInt(lightState.get(i).getStatus()) == 0) {
+//                            lightState.get(i).setOther(lightState.get(i).getGroupId() + "_" + 0);
+                    groupFlag = 1;
+                    placeFlag = 1;
+                    floorFlag = 1;
+                    allFlag = 1;
+                }
+            }
+            if ((i + 1) % 4 == 0 && groupFlag == 1) {
+                LightDemo lightDemo = new LightDemo();
+                lightDemo.setMname(lightState.get(i).getMname());
+                lightDemo.setPlace(lightState.get(i).getPlace());
+                lightDemo.setGroupId(lightState.get(i).getGroupId());
+                lightDemo.setOther("开");
+                groupStatus.add(lightDemo);
+            }
+            if ((i + 1) % 12 == 0 && placeFlag == 1) {
+                LightDemo lightDemo = new LightDemo();
+                lightDemo.setMname(lightState.get(i).getMname());
+                lightDemo.setPlace(lightState.get(i).getPlace());
+                lightDemo.setOther("开");
+                placeStatus.add(lightDemo);
+            }
+            if ((i + 1) % 48 == 0 && floorFlag == 1) {
+                LightDemo lightDemo = new LightDemo();
+                lightDemo.setMname(lightState.get(i).getMname());
+                lightDemo.setOther("开");
+                floorStatus.add(lightDemo);
+            }
+        }
+        if(allFlag==1){
+            LightDemo lightDemo = new LightDemo();
+            lightDemo.setOther("开");
+            allStatus.add(lightDemo);
+        }
+        map.put("groupStatus",groupStatus);
+        map.put("placeStatus",placeStatus);
+        map.put("floorStatus",floorStatus);
+        map.put("allStatus",allStatus);
+        return map;
     }
 
 }
