@@ -25,6 +25,8 @@ import java.util.Map;
 
 @RestController
 public class MainController {
+    @Resource
+    private GuavaCacheManager guavaCacheManager;
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
@@ -269,20 +271,8 @@ public class MainController {
         return map;
     }
 
-//    private static Cache<String, String> cache;
-//    static {
-//         cache = CacheBuilder.newBuilder()
-//                .maximumSize(100) // 设置缓存的最大容量
-//                .concurrencyLevel(10) // 设置并发级别为10
-//                .recordStats() // 开启缓存统计
-//                .build();
-//    }
-
     @Resource
     private CacheableService cacheableService;
-
-    @Resource
-    private GuavaCacheManager guavaCacheManager;
 
     @RequestMapping(value = "/getMsgByMF", method = RequestMethod.POST)
     @ResponseBody

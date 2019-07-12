@@ -31,7 +31,7 @@ $('.frame>span').click(function () {
     var host = '192.168.16.73';
     $.post("/sendSocket6", {
         "command": command,
-        "host": host
+        "host": host,
     }, function () {})
     // if (groupOrder!='NaN'){
     //     var selector;
@@ -120,7 +120,7 @@ function light() {
             $(this).find('.icon img').attr('src', '')
             $.each(lightState, function (i, val) {
                 var index = i;
-                var group = val.group;
+                var group = val.groupId;
                 var status = val.status;
                 if(groupLists[group - 1]){
                     groupLists[group - 1].push(status);
@@ -228,7 +228,7 @@ function light2() {
             $(this).find('.icon img').attr('src', '');
             $.each(lightState, function (i, val) {
                 var index = i;
-                var group = val.group;
+                var group = val.groupId;
                 var status = val.status;
                 var lname = val.lname;
                 if(groupLists[group - 1]){
