@@ -21,7 +21,8 @@ public class CacheConfig {
     @Bean
     public GuavaCacheManager getGuavaCacheManager() {
         GuavaCacheManager guavaCacheManager = new GuavaCacheManager();
-        guavaCacheManager.setCacheBuilder(CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(100, TimeUnit.DAYS));
+        guavaCacheManager.setCacheBuilder(CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(50, TimeUnit
+                .SECONDS));
         ArrayList<String> guavaCacheNames = Lists.newArrayList();
         guavaCacheNames.add("msg");
         guavaCacheManager.setCacheNames(guavaCacheNames);

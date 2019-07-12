@@ -29,7 +29,8 @@
                         <span class="hide"></span>
                         <span class="air">空调</span>
                     </div>
-                    <div class="f-l light-line " th:each="lightState,user:${lightState}" th:if="${lightState.group}==1">
+                    <div class="f-l light-line " th:each="lightState,user:${lightState}"
+                         th:if="${lightState.groupId}==1">
                         <span class="hide"></span>
                         <span class="hide"></span>
                         <span th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
@@ -45,24 +46,24 @@
                     <div class="f-l light-line ">
                         <span class="hide"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==2 and ${lightState.status}==0 and ${user.index}&lt;4"
+                              th:if="${lightState.groupId}==2 and ${lightState.status}==0 and ${user.index}&lt;4"
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==2 and ${lightState.status}==1 and ${user.index}&lt;4"
+                              th:if="${lightState.groupId}==2 and ${lightState.status}==1 and ${user.index}&lt;4"
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==2 and ${lightState.status}==null and ${user.index}&lt;4"
+                              th:if="${lightState.groupId}==2 and ${lightState.status}==null and ${user.index}&lt;4"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==2 and ${lightState.status}==0 and ${user.index}&gt;3  and  ${user.index}&lt;8"
+                              th:if="${lightState.groupId}==2 and ${lightState.status}==0 and ${user.index}&gt;3  and  ${user.index}&lt;8"
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==2 and ${lightState.status}==1 and ${user.index}&gt;3 and  ${user.index}&lt;8"
+                              th:if="${lightState.groupId}==2 and ${lightState.status}==1 and ${user.index}&gt;3 and  ${user.index}&lt;8"
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==2 and ${lightState.status}==null and ${user.index}&gt;3  and  ${user.index}&lt;8"
+                              th:if="${lightState.groupId}==2 and ${lightState.status}==null and ${user.index}&gt;3  and  ${user.index}&lt;8"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
@@ -70,13 +71,13 @@
                     <p class="f-r num p-a c">C</p>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==3 and ${lightState.status}==0 and   ${user.index}&lt;12 and ${user.index}&gt;7"
+                              th:if="${lightState.groupId}==3 and ${lightState.status}==0 and   ${user.index}&lt;12 and ${user.index}&gt;7"
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==3 and ${lightState.status}==1 and    ${user.index}&lt;12 and ${user.index}&gt;7"
+                              th:if="${lightState.groupId}==3 and ${lightState.status}==1 and    ${user.index}&lt;12 and ${user.index}&gt;7"
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==3 and ${lightState.status}==null and  ${user.index}&lt;12 and ${user.index}&gt;7"
+                              th:if="${lightState.groupId}==3 and ${lightState.status}==null and  ${user.index}&lt;12 and ${user.index}&gt;7"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
@@ -88,50 +89,50 @@
                         <span class="hide"></span>
                         <span class="hide"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==0 and   ${user.index}&lt;14 and ${user.index}&gt;11"
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==0 and   ${user.index}&lt;14 and ${user.index}&gt;11"
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==1 and    ${user.index}&lt;14 and ${user.index}&gt;11"
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==1 and    ${user.index}&lt;14 and ${user.index}&gt;11"
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==null and   ${user.index}&lt;14 and ${user.index}&gt;11"
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==null and   ${user.index}&lt;14 and ${user.index}&gt;11"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
                         <span class="air">空调</span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;13  and  ${user.index}&lt;16 "
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==0 and ${user.index}&gt;13  and  ${user.index}&lt;16 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;13  and  ${user.index}&lt;16  "
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==1 and ${user.index}&gt;13  and  ${user.index}&lt;16  "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;13  and  ${user.index}&lt;16"
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==null   and ${user.index}&gt;13  and  ${user.index}&lt;16"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
                     <div class="f-l light-line">
                         <span class="hide"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;15  and  ${user.index}&lt;19 "
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==0 and ${user.index}&gt;15  and  ${user.index}&lt;19 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;15  and  ${user.index}&lt;19  "
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==1 and ${user.index}&gt;15  and  ${user.index}&lt;19  "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;15  and  ${user.index}&lt;19"
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==null   and ${user.index}&gt;15  and  ${user.index}&lt;19"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
                         <!--<span class="hide"></span>-->
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==0 and ${user.index}&gt;18  and  ${user.index}&lt;22 "
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==0 and ${user.index}&gt;18  and  ${user.index}&lt;22 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==1 and ${user.index}&gt;18  and  ${user.index}&lt;22  "
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==1 and ${user.index}&gt;18  and  ${user.index}&lt;22  "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==4 and ${lightState.status}==null   and ${user.index}&gt;18  and  ${user.index}&lt;22"
+                              th:if="${lightState.groupId}==4 and ${lightState.status}==null   and ${user.index}&gt;18  and  ${user.index}&lt;22"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
@@ -140,47 +141,47 @@
                     <p class="f-r num p-a e">E</p>
                     <div class="f-l light-line ">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;21  and  ${user.index}&lt;26 "
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==0 and ${user.index}&gt;21  and  ${user.index}&lt;26 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;21  and  ${user.index}&lt;26  "
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==1 and ${user.index}&gt;21  and  ${user.index}&lt;26  "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;21  and  ${user.index}&lt;26"
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==null   and ${user.index}&gt;21  and  ${user.index}&lt;26"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;25  and  ${user.index}&lt;30 "
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==0 and ${user.index}&gt;25  and  ${user.index}&lt;30 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;25  and  ${user.index}&lt;30  "
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==1 and ${user.index}&gt;25  and  ${user.index}&lt;30  "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;25  and  ${user.index}&lt;30"
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==null   and ${user.index}&gt;25  and  ${user.index}&lt;30"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;29  and  ${user.index}&lt;33 "
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==0 and ${user.index}&gt;29  and  ${user.index}&lt;33 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;29  and  ${user.index}&lt;33  "
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==1 and ${user.index}&gt;29  and  ${user.index}&lt;33  "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;29  and  ${user.index}&lt;33"
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==null   and ${user.index}&gt;29  and  ${user.index}&lt;33"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="air">空调</span>
                     </div>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==0 and ${user.index}&gt;32  and  ${user.index}&lt;37 "
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==0 and ${user.index}&gt;32  and  ${user.index}&lt;37 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==1 and ${user.index}&gt;32  and  ${user.index}&lt;37 "
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==1 and ${user.index}&gt;32  and  ${user.index}&lt;37 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==5 and ${lightState.status}==null   and ${user.index}&gt;32  and  ${user.index}&lt;37"
+                              th:if="${lightState.groupId}==5 and ${lightState.status}==null   and ${user.index}&gt;32  and  ${user.index}&lt;37"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
@@ -188,7 +189,7 @@
             <div class="part-three f-l">
                 <div class="place06  f clearfix p-r">
                     <p class="f-r num p-a f">F</p>
-                    <div class="f-l light-line" th:each="lightState,user:${lightState}" th:if="${lightState.group}==6">
+                    <div class="f-l light-line" th:each="lightState,user:${lightState}" th:if="${lightState.groupId}==6">
                         <span th:if="${lightState.status}==0" class="on" th:alt="${user.index}"></span>
                         <span th:if="${lightState.status}==1" class="off" th:alt="${user.index}"></span>
                         <span th:if="${lightState.status}==null" class="disconnected" th:alt="${user.index}"></span>
@@ -202,82 +203,82 @@
                     <div class="pillar-square g2 p-a"></div>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;44  and  ${user.index}&lt;50 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==0 and ${user.index}&gt;44  and  ${user.index}&lt;50 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;44  and  ${user.index}&lt;50 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==1 and ${user.index}&gt;44  and  ${user.index}&lt;50 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;44  and  ${user.index}&lt;50"
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==null   and ${user.index}&gt;44  and  ${user.index}&lt;50"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;49  and  ${user.index}&lt;52 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==0 and ${user.index}&gt;49  and  ${user.index}&lt;52 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;49  and  ${user.index}&lt;52 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==1 and ${user.index}&gt;49  and  ${user.index}&lt;52 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;49  and  ${user.index}&lt;52"
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==null   and ${user.index}&gt;49  and  ${user.index}&lt;52"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="air" alt="空调1">空调</span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;51  and  ${user.index}&lt;54 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==0 and ${user.index}&gt;51  and  ${user.index}&lt;54 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;51   and  ${user.index}&lt;54 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==1 and ${user.index}&gt;51   and  ${user.index}&lt;54 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;51   and  ${user.index}&lt;54"
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==null   and ${user.index}&gt;51   and  ${user.index}&lt;54"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"></span>
                     </div>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;53  and  ${user.index}&lt;59 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==0 and ${user.index}&gt;53  and  ${user.index}&lt;59 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;53  and  ${user.index}&lt;59 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==1 and ${user.index}&gt;53  and  ${user.index}&lt;59 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;53  and  ${user.index}&lt;59"
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==null   and ${user.index}&gt;53  and  ${user.index}&lt;59"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"></span>
                     </div>
                     <div class="f-l light-line">
 
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;58  and  ${user.index}&lt;61 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==0 and ${user.index}&gt;58  and  ${user.index}&lt;61 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;58  and  ${user.index}&lt;61 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==1 and ${user.index}&gt;58  and  ${user.index}&lt;61 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;58  and  ${user.index}&lt;61"
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==null   and ${user.index}&gt;58  and  ${user.index}&lt;61"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="air" alt="空调2">空调</span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;60  and  ${user.index}&lt;63 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==0 and ${user.index}&gt;60  and  ${user.index}&lt;63 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;60  and  ${user.index}&lt;63 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==1 and ${user.index}&gt;60  and  ${user.index}&lt;63 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;60  and  ${user.index}&lt;63"
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==null   and ${user.index}&gt;60  and  ${user.index}&lt;63"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
                     <div class="f-l light-line">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==0 and ${user.index}&gt;62  and  ${user.index}&lt;68 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==0 and ${user.index}&gt;62  and  ${user.index}&lt;68 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==1 and ${user.index}&gt;62  and  ${user.index}&lt;68 "
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==1 and ${user.index}&gt;62  and  ${user.index}&lt;68 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==7 and ${lightState.status}==null   and ${user.index}&gt;62  and  ${user.index}&lt;68"
+                              th:if="${lightState.groupId}==7 and ${lightState.status}==null   and ${user.index}&gt;62  and  ${user.index}&lt;68"
                               class="disconnected" th:alt="${user.index}"></span>
                         <span class="hide"> </span>
                     </div>
@@ -288,24 +289,24 @@
                         <div class="pillar-square  h1 p-a"></div>
                         <div class="f-l light-line ">
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==8 and ${lightState.status}==0 and ${user.index}&gt;67  and  ${user.index}&lt;70 "
+                                  th:if="${lightState.groupId}==8 and ${lightState.status}==0 and ${user.index}&gt;67  and  ${user.index}&lt;70 "
                                   class="on" th:alt="${user.index}"></span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==8 and ${lightState.status}==1 and ${user.index}&gt;67  and  ${user.index}&lt;70 "
+                                  th:if="${lightState.groupId}==8 and ${lightState.status}==1 and ${user.index}&gt;67  and  ${user.index}&lt;70 "
                                   class="off" th:alt="${user.index}"></span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==8 and ${lightState.status}==null   and ${user.index}&gt;67  and  ${user.index}&lt;70"
+                                  th:if="${lightState.groupId}==8 and ${lightState.status}==null   and ${user.index}&gt;67  and  ${user.index}&lt;70"
                                   class="disconnected" th:alt="${user.index}"></span>
                         </div>
                         <div class="f-l light-line ">
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==8 and ${lightState.status}==0 and ${user.index}&gt;69  and  ${user.index}&lt;72 "
+                                  th:if="${lightState.groupId}==8 and ${lightState.status}==0 and ${user.index}&gt;69  and  ${user.index}&lt;72 "
                                   class="on" th:alt="${user.index}"></span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==8 and ${lightState.status}==1 and ${user.index}&gt;69  and  ${user.index}&lt;72 "
+                                  th:if="${lightState.groupId}==8 and ${lightState.status}==1 and ${user.index}&gt;69  and  ${user.index}&lt;72 "
                                   class="off" th:alt="${user.index}"></span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==8 and ${lightState.status}==null   and ${user.index}&gt;69  and  ${user.index}&lt;72"
+                                  th:if="${lightState.groupId}==8 and ${lightState.status}==null   and ${user.index}&gt;69  and  ${user.index}&lt;72"
                                   class="disconnected" th:alt="${user.index}"></span>
                         </div>
                     </div>
@@ -314,26 +315,26 @@
                         <div class="pillar-square  I2 p-a"></div>
                         <div class="f-l light-line">
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==9 and ${lightState.status}==0 and ${user.index}&gt;71  and  ${user.index}&lt;75 "
+                                  th:if="${lightState.groupId}==9 and ${lightState.status}==0 and ${user.index}&gt;71  and  ${user.index}&lt;75 "
                                   class="on" th:alt="${user.index}"></span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==9 and ${lightState.status}==1 and ${user.index}&gt;71  and  ${user.index}&lt;75 "
+                                  th:if="${lightState.groupId}==9 and ${lightState.status}==1 and ${user.index}&gt;71  and  ${user.index}&lt;75 "
                                   class="off" th:alt="${user.index}"></span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==9 and ${lightState.status}==null   and ${user.index}&gt;71  and  ${user.index}&lt;75"
+                                  th:if="${lightState.groupId}==9 and ${lightState.status}==null   and ${user.index}&gt;71  and  ${user.index}&lt;75"
                                   class="disconnected" th:alt="${user.index}"></span>
                             <span class="hide"></span>
                         </div>
                         <div class="f-l light-line">
                             <span class="air">空调</span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==9 and ${lightState.status}==0 and ${user.index}&gt;74  and  ${user.index}&lt;78 "
+                                  th:if="${lightState.groupId}==9 and ${lightState.status}==0 and ${user.index}&gt;74  and  ${user.index}&lt;78 "
                                   class="on" th:alt="${user.index}"></span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==9 and ${lightState.status}==1 and ${user.index}&gt;74  and  ${user.index}&lt;78 "
+                                  th:if="${lightState.groupId}==9 and ${lightState.status}==1 and ${user.index}&gt;74  and  ${user.index}&lt;78 "
                                   class="off" th:alt="${user.index}"></span>
                             <span th:each="lightState,user:${lightState}"
-                                  th:if="${lightState.group}==9 and ${lightState.status}==null   and ${user.index}&gt;74  and  ${user.index}&lt;78"
+                                  th:if="${lightState.groupId}==9 and ${lightState.status}==null   and ${user.index}&gt;74  and  ${user.index}&lt;78"
                                   class="disconnected" th:alt="${user.index}"></span>
                         </div>
                     </div>
@@ -342,13 +343,13 @@
                     <p class="f-r num p-a j">J</p>
                     <div class="f-l light-line ">
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==10 and ${lightState.status}==0 and ${user.index}&gt;77  and  ${user.index}&lt;85 "
+                              th:if="${lightState.groupId}==10 and ${lightState.status}==0 and ${user.index}&gt;77  and  ${user.index}&lt;85 "
                               class="on" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==10 and ${lightState.status}==1 and ${user.index}&gt;77  and  ${user.index}&lt;85 "
+                              th:if="${lightState.groupId}==10 and ${lightState.status}==1 and ${user.index}&gt;77  and  ${user.index}&lt;85 "
                               class="off" th:alt="${user.index}"></span>
                         <span th:each="lightState,user:${lightState}"
-                              th:if="${lightState.group}==10 and ${lightState.status}==null   and ${user.index}&gt;77  and  ${user.index}&lt;85"
+                              th:if="${lightState.groupId}==10 and ${lightState.status}==null   and ${user.index}&gt;77  and  ${user.index}&lt;85"
                               class="disconnected" th:alt="${user.index}"></span>
                     </div>
                 </div>
