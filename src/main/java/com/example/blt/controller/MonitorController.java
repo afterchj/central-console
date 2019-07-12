@@ -119,11 +119,14 @@ public class MonitorController {
         List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
         List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
+        List<LightDemo> lightState2 = getSwitchStatus(lightState);
         map.put("centerLNumList", centerLNumList);
         map.put("placeLNumList", placeLNumList);
         map.put("lightState", lightState);
         return map;
     }
+
+
 
     @RequestMapping(value = "/getNewMonitorLightStatus", method = RequestMethod.POST)
     @ResponseBody
@@ -133,7 +136,7 @@ public class MonitorController {
         CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
 //        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
 //        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
-//        if (commandInfo != null) {
+        if (commandInfo != null) {
 //            int id = commandInfo.getId();
 //            if (newCommandId.get() < id) {
 //                newCommandId.set(id);
@@ -182,10 +185,12 @@ public class MonitorController {
             lightDemo.setGroupId(groupId);
             lightDemo.setStatus(status);
             lightDemo.setOther("group");
-            List<Integer> statusList1 = monitor4Dao.getStatusOfPlace(lightDemo.getMname(), groupId);
+            int place = monitor4Dao.getPlace(lightDemo.getMname(),groupId);
+            List<Integer> statusList1 = monitor4Dao.getStatusOfPlace(lightDemo.getMname(), place,groupId);
             List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(lightDemo.getMname(), groupId);
             Map map1 = getExceptionAndDiff(statusList1);
             Map map2 = getExceptionAndDiff(statusList2);
+            map.put("place", place);
             map.put("placeException", map1.get("exception"));
             map.put("placeDifference", map1.get("difference"));
             map.put("floorException", map2.get("exception"));
@@ -206,7 +211,7 @@ public class MonitorController {
 //            map.put("placeLNumList", placeLNumList);
 //            map.put("centerLNumList", centerLNumList);
         map.put("scenes", scenes);
-//        }
+        }
         return map;
     }
 
@@ -460,6 +465,12 @@ public class MonitorController {
         return map;
     }
 
+    private List<LightDemo> getSwitchStatus(List<LightDemo> lightState) {
+        List<LightDemo> lightDemo = new ArrayList<>();
 
+
+
+return lightDemo;
+    }
 
 }
