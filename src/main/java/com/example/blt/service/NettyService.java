@@ -44,7 +44,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //    }
 
     @Scheduled(cron = "0/20 * * * * ?")
-    public void checkSize() {
+    public void checkSize() throws InterruptedException {
         Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
@@ -66,6 +66,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                 object.put("host", ip);
                 object.put("command", "7701012766");
                 ClientMain.sendCron(object.toJSONString());
+                new Thread().sleep(5000);
             }
         }
     }
