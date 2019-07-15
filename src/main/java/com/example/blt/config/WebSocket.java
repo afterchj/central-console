@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 @ServerEndpoint(value = "/ws/webSocket")
 public class WebSocket {
-    private Logger logger = LoggerFactory.getLogger(WebSocket.class);
+    private static Logger logger = LoggerFactory.getLogger(WebSocket.class);
     //每个客户端都会有相应的session,服务端可以发送相关消息
     private Session session;
     //J.U.C包下线程安全的类，主要用来存放每个客户端对应的webSocket连接
@@ -101,7 +101,7 @@ public class WebSocket {
      * @Parameters：
      * @Return：
      */
-    public void sendMessage(String message) {
+    public static void sendMessage(String message) {
         //遍历客户端
         for (WebSocket webSocket : copyOnWriteArraySet) {
 //             logger.warn("websocket广播消息：" + message);
@@ -122,7 +122,7 @@ public class WebSocket {
      * @Parameters：
      * @Return：
      */
-    public void sendMessage(String sessionId, String message) throws IOException {
+    public static void sendMessage(String sessionId, String message) throws IOException {
         Session session = null;
         WebSocket tempWebSocket = null;
         for (WebSocket webSocket : copyOnWriteArraySet) {

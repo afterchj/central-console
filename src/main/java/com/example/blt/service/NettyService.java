@@ -1,5 +1,6 @@
 package com.example.blt.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
@@ -14,6 +15,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -25,7 +28,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
-    private WebSocket webSocket = new WebSocket();
 
     //    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest1() {
@@ -39,7 +41,10 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //    }
 //    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest2() {
-//        webSocket.sendMessage("success");
+//        Map map=new HashMap();
+//        map.put("result","success");
+//        map.put("code","0");
+//        WebSocket.sendMessage(JSON.toJSONString(map));
 //    }
 
     @Scheduled(cron = "0/20 * * * * ?")
