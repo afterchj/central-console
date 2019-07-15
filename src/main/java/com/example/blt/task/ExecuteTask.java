@@ -2,6 +2,7 @@ package com.example.blt.task;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.netty.ClientMain;
@@ -119,7 +120,9 @@ public class ExecuteTask {
                     break;
             }
             try {
-                ProducerService.pushMsg(Topics.LOCAL_TOPIC.getTopic(), JSON.toJSONString(map));
+                String info = JSON.toJSONString(map);
+                WebSocket.sendMessage(info);
+                ProducerService.pushMsg(Topics.LOCAL_TOPIC.getTopic(), info);
             } catch (Exception e) {
                 sqlSessionTemplate.selectOne("console.saveConsole", map);
                 logger.warn("result=" + map.get("result"));

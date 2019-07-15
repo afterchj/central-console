@@ -7,7 +7,7 @@
 html,body{
 	width: 100%;
 	height: 100%;
-	background-color: #EDECEC;
+	background-color: #ededeb;
 	color: #333;
 	min-width: 1680px;
 }
@@ -35,6 +35,7 @@ html,body{
 	top: 80px;
 	height: 100%;
 	border-top: 1px solid #fff;
+	box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
 }
 .nave a{
 	color: #333;
@@ -88,14 +89,16 @@ html,body{
 	/*border-left: solid 1px #d7d7d7;*/
 	/*border-right: solid 2px #d7d7d7;*/
     /* border-right: solid 2px #33CCCC; */
-    border-bottom: solid 1px #d7d7d7;
+    border-bottom: solid 1px #E5E5E5;
 }
 .nave ul li.current{
-	line-height: 100px;
+	line-height: 85px;
+	height: 85px;
 }
 .nave ul li.current a{
 	font-size: 18px;
 	font-weight: bold;
+	height: 85px;
 }
 .nave a>div{
 	height: 100%;
@@ -165,8 +168,8 @@ html,body{
 	height: 300px;
 }
 .switch-hint{
-	font-size: 12.5px;
-	color: #666;
+	font-size: 12px;
+	color: #656565;
 	max-width: 80%;
 	margin-left: 10%;
 	line-height: 1.8;
@@ -191,7 +194,8 @@ html,body{
 	text-align: center;
 }
 .electric-detail>div>div{
-	margin:10px 0;
+	margin: 10px 0;
+	font-size: 13.2px;
 }
 .totail-rate{
 	text-align: center;
@@ -218,7 +222,7 @@ html,body{
 	right: 10px;
 }
 .floor{
-	color: #333;
+	color: #454545;
 	font-weight: bold;
 	font-size: 15px;
 	margin-bottom: 5px;
@@ -237,7 +241,8 @@ html,body{
 	vertical-align: middle;
 	height: 50px;
 	font-weight: normal;
-	color: #666;
+	color: #565656;
+	font-size: 14px;
 }
 .title span img{
 	width: 25px;
@@ -253,22 +258,33 @@ html,body{
 	text-align: center;
 }
 .btn{
-	border: 1px solid #C9C9C9;
+	/*border: 1px solid #C9C9C9;*/
+	/*width: 250px;*/
+	/*height: 55px;*/
+	/*line-height: 55px;*/
+	/*!* margin-top: 20px; *!*/
+	/*margin: 20px auto;*/
+	/*text-align: center;*/
+
+	border: 1px solid #eee;
 	width: 250px;
 	height: 55px;
 	line-height: 55px;
 	/* margin-top: 20px; */
 	margin: 20px auto;
 	text-align: center;
+	box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
 }
 .btn>div:first-child{
-	border-right: 1px solid #C9C9C9;
+	/*border-right: 1px solid #C9C9C9;*/
+	border-right: 1px solid #eee;
 	height: 100%;
 	width: 30%;
 	font-weight: bold;
 }
 .btn>div:last-child{
-	border-left: 1px solid #C9C9C9;
+	/*border-left: 1px solid #C9C9C9;*/
+	border-left: 1px solid #eee;
 	height: 100%;
 	width: 30%;
 }
@@ -340,10 +356,10 @@ html,body{
 	color: #333;
 	font-weight:bold;
 	font-size: 16px;
-	display: inline-block;
+	/*display: inline-block;*/
 }
 .tabs{
-	display: inline-block;
+	/*display: inline-block;*/
 }
 .tabs a{
 	color: #65D1C4;
@@ -433,6 +449,7 @@ html,body{
 }
 .min p{
 	font-size: 12px !important;
+	line-height: normal;
 }
 .min img{
 	width:22px !important;
@@ -506,8 +523,8 @@ html,body{
 }
 .tabs li{
 	display: inline-block;
-	width:50px;
 	color: #333;
+	width: 75px
 }
 
 .p-status{
@@ -515,6 +532,9 @@ html,body{
 	margin-left: 10%;
 	line-height: 1.8;
 	font-size: 13px;
+}
+.yellow.off{
+	background-color: #eee !important;
 }
 .yellow.hint{
 	border-color: red;
@@ -540,4 +560,53 @@ html,body{
 }
 .click-btn:hover{
 	option:.5;
+}
+.totalFloor{
+	text-align: left;
+}
+.totalLight {
+	text-align: center;
+	border-bottom: 1px solid #C9C9C9;
+	width: 250px;
+	height: 65px;
+	/* line-height: 55px; */
+	margin: 30px 0 0 85px;
+}
+.totalLight p{
+	line-height: normal;
+
+}
+.totalLight>div.f-l{
+	width: calc(50% - 1px);
+	height: 100%;
+}
+.totalLight>div.f-l:first-child{
+	font-weight: bold;
+	color: #3c3c3c;
+}
+
+.totalLight>div.f-l:first-child p:first-child{
+	font-size: 15.5px;
+}
+.totalLight>div.f-l:first-child p:last-child{
+	font-size: 12px;
+}
+.totalLight>div.f-l:last-child{
+	font-size: 12px;
+	color: #666;
+}
+.totalLight img{
+	width: 25px;
+	vertical-align: middle;
+}
+.tabs ul{
+	padding: 10px 60px 0px 40px;
+}
+.explain{
+	font-size: 12px;
+	color: #666;
+	text-align: right;
+	padding:0 60px;
+	bottom: 30px;
+	right: 0;
 }

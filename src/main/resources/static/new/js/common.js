@@ -103,37 +103,37 @@ function sort(json, field) {
     return json;
 }
 function extractNum(str) {
-    if(isNaN(str)){
+    if (isNaN(str)) {
         var result = str.replace(/[^0-9]/ig, "");
         return result;
     }
 }
 
-function sum(json, field,m) {
+function sum(json, field, m) {
     var array = [];
     $.each(json, function (i, item) {
         array.push(item[field]);
     })
-    if(m==null){
-        return timesSum(array,null);
-    }else{
+    if (m == null) {
+        return timesSum(array, null);
+    } else {
         return sumTotal(array)
     }
 
 }
 function sumTotal(arr) {
-    if(arr.length>0){
-        return arr.reduce(function(prev, curr, idx, arr){
+    if (arr.length > 0) {
+        return arr.reduce(function (prev, curr, idx, arr) {
             return prev + curr;
         });
     }
 }
 
 
-function timesSum(arr,m){
-    times=0;
-    for(var i=0;i<arr.length;i++){
-        if(arr[i]==m){
+function timesSum(arr, m) {
+    times = 0;
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] == m) {
             times++;
         }
     }
@@ -144,7 +144,7 @@ function timesSum(arr,m){
 // $(".nave li").click(function () {
 //
 // })
-$(".nave").on('click', "li", function(){
+$(".nave").on('click', "li", function () {
 
     $(this).addClass('active').siblings().removeClass('active');
     var imgUrl = $(this).find('img').attr('src');
@@ -157,9 +157,9 @@ $(".nave").on('click', "li", function(){
             }
         }
     }
-    var floor=extractNum($(this).find('.floor span').text());
-    if(floor){
-        location.href="/newIndex/noEnergy?floor="+floor;
+    var floor = extractNum($(this).find('.floor span').text());
+    if (floor) {
+        location.href = "/newIndex/noEnergy?floor=" + floor;
     }
 })
 $(".nave li").hover(function () {
@@ -178,13 +178,15 @@ $(".nave li").hover(function () {
 
 function getUrlParams(name) { // 不传name返回所有值，否则返回对应值
     var url = window.location.search;
-    if (url.indexOf('?') == 1) { return false; }
+    if (url.indexOf('?') == 1) {
+        return false;
+    }
     url = url.substr(1);
     url = url.split('&');
     var name = name || '';
     var nameres;
     // 获取全部参数及其值
-    for(var i=0;i<url.length;i++) {
+    for (var i = 0; i < url.length; i++) {
         var info = url[i].split('=');
         var obj = {};
         obj[info[0]] = decodeURI(info[1]);
@@ -192,7 +194,7 @@ function getUrlParams(name) { // 不传name返回所有值，否则返回对应�
     }
     // 如果传入一个参数名称，就匹配其值
     if (name) {
-        for(var i=0;i<url.length;i++) {
+        for (var i = 0; i < url.length; i++) {
             for (const key in url[i]) {
                 if (key == name) {
                     nameres = url[i][key];
@@ -208,7 +210,8 @@ function getUrlParams(name) { // 不传name返回所有值，否则返回对应�
 
 //lightState灯状态数据转换
 function lightStateM(lightState) {
-    var floorName = [], groupName = [], placeName = [], lightName = [], obj1 = {};
+    // var floorName = [{allBtn: 'on',}];
+    var floorName =[], groupName = [], placeName = [], lightName = [], obj1 = {};
     $.each(lightState, function (i, item) {
         var mname = item.mname;
         var groupId = item.groupId;
@@ -223,6 +226,7 @@ function lightStateM(lightState) {
                 centerLNum: 0,
                 centerLNumTotal: 48,
                 centerLNumState: "2",
+                centerLBtn: "on",
                 placeList: []
             };
             floorName.push(floorList);
@@ -268,6 +272,7 @@ function lightStateM(lightState) {
                         placeLNum: 0,
                         placeLNumTotal: 12,
                         placeLNumState: "2",
+                        placeLBtn: "on",
                         groupList: item2.groupList
                     }
 
@@ -293,6 +298,7 @@ function lightStateM(lightState) {
                                 groupNum: 0,
                                 groupTotal: 4,
                                 groupState: "2",
+                                groupBtn: "on",
                                 lightList: []
                             }
                             placeArr[n].groupList.push(newGroup)
@@ -316,6 +322,12 @@ function lightStateM(lightState) {
                         for (var m = 0; m < groupArr.length; m++) {
                             if (groupArr[m].groupId == item2.groupId) {
                                 if (!obj4[item2.lname]) {
+                                    var lightBtn;
+                                    if (item2.status == 0 || item2.status == null) {
+                                        lightBtn:'off';
+                                    } else {
+                                        lightBtn:'on';
+                                    }
                                     var newLight = {
                                         mname: item2.mname,
                                         place: item2.place,
@@ -323,6 +335,7 @@ function lightStateM(lightState) {
                                         lname: item2.lname,
                                         lmac: item2.lmac,
                                         status: item2.status,
+                                        lightBtn: lightBtn,
                                         y: item2.y,
                                     }
                                     groupArr[m].lightList.push(newLight)
@@ -463,32 +476,50 @@ function statusM(status, blue) {
     }
 }
 function statusM1(status, blue) {
-    var img, state, warning = false;
+    var img, imgBtn, state, warning = false;
     if (status == 0) {
         state = '开';
-        img = '<img src="/static/new/img/light-on.PNG" alt="">';
-        // if (blue == 'blue') {
-        //     img = '<img src="/static/new/img/light-on.PNG" alt="">';
-        // } else {
-        //     img = '<img src="/static/new/img/normal.png" alt="">';
-        // }
+        imgBtn = '<img src="/static/new/img/light-on.PNG" alt="">';
+        if (blue == 'blue') {
+            img = '<img src="/static/new/img/normal-white.png" alt="">';
+        } else {
+            img = '<img src="/static/new/img/normal.png" alt="">';
+        }
         warning = false;
     } else if (status == 1) {
         state = '关';
-        img = '<img src="/static/new/img/light-off.PNG" alt="">';
+        imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
+        img = '<img src="/static/new/img/normal.png" alt="">';
         warning = true;
     } else if (status == null) {
         state = '异常';
+        imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
         img = '<img src="/static/new/img/switch-abnormal.png" alt="">';
         warning = true;
     }
     return obj = {
         img: img,
         state: state,
-        warning: warning
+        warning: warning,
+        imgBtn: imgBtn
+    }
+}
+function statusM2(btn) {
+    var img, imgBtn, state;
+    //全异常 null,全关 1
+    if (btn=='off') {
+        state = '关';
+        imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
+    } else {
+        state = '开';
+        imgBtn = '<img src="/static/new/img/light-on.PNG" alt="">';
+    }
+    return obj = {
+        state: state,
+        imgBtn: imgBtn
     }
 }
 
-$(".content").on('click', ".btn", function(){
+$(".content").on('click', ".btn", function () {
 
 })
