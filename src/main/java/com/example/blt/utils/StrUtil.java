@@ -170,9 +170,9 @@ public class StrUtil {
                 }
                 break;
         }
-        String info = JSON.toJSONString(map);
-        WebSocket.sendMessage(info);
         try {
+            String info = JSON.toJSONString(map);
+            WebSocket.sendMessage(info);
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
         } catch (NoTopicException e) {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
