@@ -14,6 +14,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,26 +69,26 @@ public class ExecuteTask {
     }
 
     public static void pingStatus(boolean delay, int times) {
+        List<String> ips = sqlSessionTemplate.selectList("console.getHosts");
         new Thread(() -> {
-            JSONObject object = new JSONObject();
-            object.put("host", "all");
             try {
                 if (delay) {
                     new Thread().sleep(20000);
                 }
+                for (int i = 0; i < times; i++) {
+                    for (String ip : ips) {
+                        JSONObject object = new JSONObject();
+                        object.put("host", ip);
+                        object.put("command", "7701011B66");
+                        ClientMain.sendCron(object.toJSONString());
+                        new Thread().sleep(5000);
+                        object.put("command", "7701012766");
+                        ClientMain.sendCron(object.toJSONString());
+                    }
+                    new Thread().sleep(5000);
+                }
             } catch (InterruptedException e) {
                 logger.error(e.getMessage());
-            }
-            for (int i = 0; i < times; i++) {
-                object.put("command", "7701011B66");
-                ClientMain.sendCron(object.toJSONString());
-                try {
-                    new Thread().sleep(5000);
-                    object.put("command", "7701012766");
-                    ClientMain.sendCron(object.toJSONString());
-                } catch (InterruptedException e) {
-                    logger.error(e.getMessage());
-                }
             }
         }).start();
     }

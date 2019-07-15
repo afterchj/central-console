@@ -1,5 +1,6 @@
 package com.example.blt.netty;
 
+import com.example.blt.utils.AddrUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -28,8 +29,8 @@ public class ClientMain {
 //        private static String host = "119.3.49.192";
 
     public static void main(String[] args) throws IOException {
-//      ClientMain().run(AddrUtil.getIp(true), 8001);
-        run("192.168.16.60", 8001);
+        run(AddrUtil.getIp(true), 8001);
+//        run("192.168.16.60", 8001);
     }
 
     public static void run(String host, int port) throws IOException {
