@@ -181,13 +181,13 @@ public class MonitorController {
                 } else {
                     status = "1";
                 }
-                int place = monitor4Dao.getPlace(lightDemo.getMname(), groupId);
                 lightDemo.setMname(getMname(commandInfo.getHost()));
                 lightDemo.setGroupId(groupId);
                 lightDemo.setStatus(status);
                 lightDemo.setOther("group");
+                int place = monitor4Dao.getPlace(lightDemo.getMname(), groupId);
                 lightDemo.setPlace(place);
-                List<Integer> statusList1 = monitor4Dao.getStatusOfPlace(lightDemo.getMname(), place, groupId);
+                 List<Integer> statusList1 = monitor4Dao.getStatusOfPlace(lightDemo.getMname(), place, groupId);
                 List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(lightDemo.getMname(), place, groupId);
                 Map map1 = getExceptionAndDiff(statusList1);
                 Map map2 = getExceptionAndDiff(statusList2);
