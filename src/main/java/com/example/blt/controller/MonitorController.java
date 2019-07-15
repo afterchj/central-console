@@ -298,6 +298,7 @@ public class MonitorController {
                 if(status.equals("1")){
                     floorStatus.setOther("关");
                 }
+
                 map.put("placeStatus", placeStatus);
                 map.put("floorStatus", floorStatus);
                 map.put("placeException", map1.get("exception"));
