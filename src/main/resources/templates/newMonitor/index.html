@@ -95,12 +95,12 @@
                     <div class="clearfix electric-detail">
                         <div class="f-l">
                             <div>当日用电</div>
-                            <div><img th:src="@{/static/new/img/1.png}" alt=""></div>
+                            <div> <canvas id="todayElectric"></canvas></div>
                             <div>136.05KWh</div>
                         </div>
                         <div class="f-r">
                             <div>昨日用电</div>
-                            <div><img th:src="@{/static/new/img/1.png}" alt=""></div>
+                            <div><canvas id="yesterdayElectric"></canvas></div>
                             <div>106.05KWh</div>
                         </div>
                     </div>
@@ -109,19 +109,20 @@
                         <div>↑ 28.29%</div>
                     </div>
                 </div>
-                <div class="card energy f-l">
+                <div class="card energy f-l p-r">
 
                     <div class='tabs'>
-                        <div class="tabs-title">能耗统计</div>
                         <ul>
+                            <li>能耗统计</li>
                             <li><a href="#tab-1">当天</a></li>
                             <li><a href="#tab-2">近三天</a></li>
                             <li><a href="#tab-3">近七天</a></li>
                         </ul>
-                        <div id='tab-1'><div id="main" style="width: 100%;height:300px;" ></div></div>
+                        <div id='tab-1'><div id="main" style="width: 100%;height:245px;" ></div></div>
                         <div id='tab-2'>tab2</div>
                         <div id='tab-3'>tab3</div>
                     </div>
+                    <div class="explain p-a">24h/日/月/年</div>
 
                 </div>
                 <div class="card  bulb f-l p-r">
@@ -192,6 +193,22 @@
                         <div class="f-l right">
                             <span><img th:src="@{/static/new/img/switch-abnormal.png}" alt=""></span>
                             <span>异常状态（故障）</span></div>
+                    </div>
+                </div>
+                <div class="totalFloor">
+                    <div class="clearfix totalLight ">
+                        <div class="f-l p-r long-line">
+                            <div class="p-a middle">
+                                <p>实验室</p>
+                                <p>（全部楼层）</p>
+                            </div>
+                        </div>
+                        <div class="f-l p-r">
+                            <div class="p-a middle">
+                                <p class="pointer "><img th:src="@{/static/new/img/light-on.PNG}" alt="" ></p>
+                                <p>开关</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="content">

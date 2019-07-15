@@ -2,17 +2,38 @@
  * Created by yuanjie.fang on 2019/7/10.
  */
 $(function () {
-
-    init();
-    realTime();
+     run()
     // setInterval(function () {
-    //     realTime()
-    // }, 500)
+    //     realTime();
+    // },500)
     // setInterval(function () {
     //     init();
     // }, 100000)
+    // setTimeout(function () {
+    //     realTime();
+    // }, 500)
 })
-
+// async function run(){
+//     const resylt1= await init();
+//     console.log('巡检执行完毕');
+//     const resylt2= await realTime();
+//     console.log('动态数据更新执行完毕');
+//     // const resylt2= await setInterval(()=>{
+//     //     realTime();
+//     // console.log('动态数据更新执行完毕');
+// // },1000);
+// }
+function run(){
+    // const resylt1= await init();
+    // console.log('巡检执行完毕');
+    // const resylt2= await realTime();
+    // console.log('动态数据更新执行完毕');
+    // const resylt2= await setInterval(()=>{
+    init();
+    realTime();
+    // console.log('动态数据更新执行完毕');
+// },1000);
+}
 /**
  * @param {string} id - 参数id
  * @param {number} b=1 - 参数b默认值为1
@@ -30,44 +51,44 @@ function init() {
     waterbubbleS('#floor-5', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
     upLight("/getNewMonitor")
 }
-function lightAlter(other,status){
-    $.each(lightState,function(i,item1){
-        var placeList = item1.placeList;
-        $('.content>.clearfix').each(function(){
-            var that=$(this);
-            if(item1.mname==floor){
-                $.each(placeList,function(i,item2){
-                    var groupList = item2.groupList;
-                    if(item2.place==extractNum(that.find('.mname').text())){
-                        $.each(groupList,function(i,item3){
-                            var lightList = item3.lightList;
-
-                            that.find('.place').each(function(){
-                                var that2=$(this);
-                                var status = item3.groupState = jsonIsEqual(lightList, 'status');
-                                var state = statusM(status).state;
-                                var img = statusM(status, 'blue').img;
-                                item3.groupNum=parseInt(item3.groupTotal)-sum(lightList,'status',null);
-                                if(item3.groupId==extractNum($(this).find('.max').text())){
-                                    $.each(lightList,function(i,item4){
-                                        // var status = item4.status;
-                                        var y=item4.y;
-                                        item4.status=statusAll;
-                                        that2.find('.place-content>ul>li').each(function(){
-                                            if(item4.lname==extractNum($(this).find('.light-name').text())){
-                                                $(this).find('.yellow').text(item4.y);
-                                            }
-                                        })
-                                    })
-                                }
-                            })
-                        })
-                    }
-                })
-            }
-        })
-    })
-}
+// function lightAlter(other, status) {
+//     $.each(lightState, function (i, item1) {
+//         var placeList = item1.placeList;
+//         $('.content>.clearfix').each(function () {
+//             var that = $(this);
+//             if (item1.mname == floor) {
+//                 $.each(placeList, function (i, item2) {
+//                     var groupList = item2.groupList;
+//                     if (item2.place == extractNum(that.find('.mname').text())) {
+//                         $.each(groupList, function (i, item3) {
+//                             var lightList = item3.lightList;
+//
+//                             that.find('.place').each(function () {
+//                                 var that2 = $(this);
+//                                 var status = item3.groupState = jsonIsEqual(lightList, 'status');
+//                                 var state = statusM(status).state;
+//                                 var img = statusM(status, 'blue').img;
+//                                 item3.groupNum = parseInt(item3.groupTotal) - sum(lightList, 'status', null);
+//                                 if (item3.groupId == extractNum($(this).find('.max').text())) {
+//                                     $.each(lightList, function (i, item4) {
+//                                         // var status = item4.status;
+//                                         var y = item4.y;
+//                                         item4.status = statusAll;
+//                                         that2.find('.place-content>ul>li').each(function () {
+//                                             if (item4.lname == extractNum($(this).find('.light-name').text())) {
+//                                                 $(this).find('.yellow').text(item4.y);
+//                                             }
+//                                         })
+//                                     })
+//                                 }
+//                             })
+//                         })
+//                     }
+//                 })
+//             }
+//         })
+//     })
+// }
 //更新开关状态方法
 function realTime() {
     $.ajax({
@@ -78,15 +99,15 @@ function realTime() {
         success: function (data) {
             console.log('更新', data);
             if (data.lightDemo) {
-                if(data.lightDemo.other != null){
+                if (data.lightDemo.other != null) {
                     var lightDemo = data.lightDemo;
                     var other = data.lightDemo.other;
                     // lightState = sort(lightState, 'mname');
                     // lightState=sort(lightState, 'lname');
                     // lightState = lightStateM(lightState);
-                    var floor =getUrlParams('floor');
-                    console.log('floor',floor);
-                    operation2( lightDemo, other, floor)
+                    var floor = getUrlParams('floor');
+                    // console.log('floor',floor);
+                    operation2(lightDemo, other, floor)
                 }
             }
         }
@@ -94,31 +115,40 @@ function realTime() {
 }
 function operation2(lightDemo, other, floor) {
     if (other == 'all') {
-        var statusAll = lightDemo.status;
-        // console.log('statusAll', statusAll);
-        $('.content>.clearfix .place').each(function () {
-            var src= $(this).find('.img-place').attr('src',src);
-            // console.log('src',src);
-            var img= statusM1(statusAll,1).img;
-            $(this).find('.img-place').attr('src',img);
+        var status = lightDemo.status;
+        var img = statusM1(status, 1).imgBtn;
+        $('.content>.clearfix').each(function () {
+            $(this).find('.place').each(function () {
+                $(this).find('.place-content li').each(function () {
+                    $(this).find('img').replaceWith(img);
+                    if (status == 1 || status == null) {
+                        $(this).find('.yellow').text('');
+                        $(this).find('.yellow').addClass('off');
+                    }
+                })
+            })
         })
-    }else if(other=='group'){
-        var mname=lightDemo.mname;
-        var groupId=lightDemo.groupId;
-        var status=lightDemo.status;
-        var img= statusM1(status,1).img;
-        console.log(mname,groupId,status,img)
-        if(extractNum(mname)==floor){
-            console.log('楼层',mname);
-            console.log($('.content .max:contains("组"+groupId)').parent().parent().next().find('img').html())
-
-            // $('.content .max[text='组'+groupId']'+).parent().parent().next().find('img').replaceWith(img);
-            // $('.content .place:contains(is)').each(function () {
-            //     console.log($(this).find('.max').text());
-            //    if(group==extractNum($(this).find('.max').text())){
-            //
-            //    }
-            // })
+    } else if (other == 'group') {
+        var mname = lightDemo.mname;
+        var groupId = lightDemo.groupId;
+        var status = lightDemo.status;
+        var img = statusM1(status, 1).imgBtn;
+        if (extractNum(mname) == floor) {
+            $('.content>.clearfix').each(function () {
+                $(this).find('.place').each(function () {
+                    var txt = extractNum($(this).find('.max').text());
+                    if (txt == groupId) {
+                        $(this).find('.group-btn img').replaceWith(img);
+                        $(this).find('.place-content li').each(function () {
+                            $(this).find('img').replaceWith(img);
+                            if (status == 1 || status == null) {
+                                $(this).find('.yellow').text('');
+                                $(this).find('.yellow').addClass('off');
+                            }
+                        })
+                    }
+                })
+            })
         }
     }
 }
@@ -133,6 +163,7 @@ function upLight(url) {
             var centerLNumList = data.centerLNumList;
             var lightState = data.lightState;
             var placeLNumList = data.placeLNumList;
+            var status=data.status;
             //排序
             // if(centerLNumList.length>0){
             //     centerLNumList = sort(centerLNumList, 'mname');
@@ -142,24 +173,29 @@ function upLight(url) {
             }
             if (lightState.length > 0) {
                 lightState = sort(lightState, 'mname');
-                lightState=sort(lightState, 'lname');
+                // lightState=sort(lightState, 'lname');
             }
 
-            var floor =getUrlParams('floor');
-            console.log('floor',floor);
+            var floor = getUrlParams('floor');
+            console.log('floor', floor);
             //json数据格式转换调用方法
             lightState = lightStateM(lightState);
             placeLNumList = placeLNumListM(placeLNumList);
             // console.log('data原始lightState ', lightState);
             // console.log('data原始placeLNumList ', placeLNumList);
-            operation(lightState, placeLNumList, centerLNumList, floor)
+            operation(lightState, placeLNumList, centerLNumList, floor,status)
         }
     })
 }
 
-function operation(lightState, placeLNumList, centerLNumList, fmname) {
+function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
     $('.content').empty();
     $('.nave ul').empty();
+    var allStatus=status.allStatus;
+    var floorStatus=status.floorStatus;
+    var groupStatus=status.groupStatus;
+    var placeStatus=status.placeStatus;
+    console.log('lightState',lightState)
     var leftNav = '';
     var leftIndex = '<li class="current active"><a href="/newIndex">首页</a></li>';
     $.each(lightState, function (i, item) {
@@ -170,17 +206,26 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
         if (extractNum(item.mname) == fmname) {
             $.each(placeList, function (i, item2) {
                 var groupList = item2.groupList;
-                console.log('groupList3',groupList)
+                if(placeStatus.length==0){
+                    item2.placeLBtn='on';
+                }else{
+                    item2.placeLBtn='off';
+                }
                 //右侧数据展示
 
                 var rightList = '';
-                $.each(groupList,function(i, item3){
+                $.each(groupList, function (i, item3) {
                     var lightList = item3.lightList;
                     var lightContent = '';
+                    if(groupStatus.length==0){
+                        item3.groupBtn='on';
+                    }else{
+                        item3.groupBtn='off';
+                    }
                     $.each(lightList, function (i, item4) {
                         var status = item4.status;
                         var state = statusM1(status).state;
-                        var img = statusM1(status).img;
+                        var img = statusM1(status).imgBtn;
                         var warning = statusM1(status).warning;
                         var hint = '';
                         if (warning) {
@@ -188,42 +233,51 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                         } else {
                             hint = '';
                         }
-                        lightContent += '<li class="clearfix"> <div class="f-l p-r r-min-line"><div class="middle p-a light-name">灯' + item4.lname + '</div></div><div class="f-l p-r r-min-line"><div class="middle p-a yellow ' + hint + '">' + item4.y + '</div></div>' +
-                            ' <div class="f-l p-r"><div class="middle p-a light-btn click-btn" >'+img+'</div></div></li>';
+                        var  off='';
+
+                        if (status == 1 || status == null) {
+                            // $(this).find('.yellow').text('');
+                            off='';
+                            off='off';
+                            // $(this).find('.yellow').addClass('off');
+                        }
+                        lightContent += '<li class="clearfix"> <div class="f-l p-r r-min-line"><div class="middle p-a light-name">灯' + item4.lname + '</div></div><div class="f-l p-r r-min-line"><div class="middle p-a yellow ' + hint + off+'">' + item4.y + '</div></div>' +
+                            ' <div class="f-l p-r"><div class="middle p-a light-btn click-btn" >' + img + '</div></div></li>';
                     })
 
                     var status = item3.groupState = jsonIsEqual(lightList, 'status');
                     var state = statusM(status).state;
                     var img = statusM(status, 'blue').img;
-                    item3.groupNum=parseInt(item3.groupTotal)-sum(lightList,'status',null);
+                    item3.groupNum = parseInt(item3.groupTotal) - sum(lightList, 'status', null);
 
                     var title = '<div class="place-title"><div class="clearfix "><div class="f-l p-r r-line"><div class="middle p-a "><p class="max">组' + item3.groupId + '</p>' +
                         '<p>(<span>' + item3.groupNum + '</span>/ <span>' + item3.groupTotal + '</span>)</p></div></div><div class="f-l p-r r-line"><div class="middle p-a"><p>' + img + '</p></div>' +
-                        '</div><div class="f-l p-r"> <div class="middle p-a min"><p><img src="/static/new/img/on-off-white.png" alt="" class="group-btn click-btn"></p> <p>开关</p></div></div></div></div>';
+                        '</div><div class="f-l p-r"> <div class="middle p-a min"><p class="group-btn click-btn" alt="' + state + '">'+statusM2(item3.groupBtn).imgBtn+'</p> <p>开关</p></div></div></div></div>';
 
                     rightList += '<div class="place f-l swiper-slide">' + title + '<div class="place-content"><ul>' + lightContent + '</ul></div></div>';
                 })
                 var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
                 var state = statusM(status).state;
                 var img = statusM(status, 'blue').img;
-                item2.placeLNum=sum(groupList,'groupNum',1);
-                var sumTotal=parseInt(item2.placeLNumTotal)-sum(groupList,'groupNum',1);
+                item2.placeLNum = sum(groupList, 'groupNum', 1);
+                var sumTotal = parseInt(item2.placeLNumTotal) - sum(groupList, 'groupNum', 1);
                 var right = ' <div class="light-list f-l "> <div class="swiper-container light-swiper"> <div class="swiper-wrapper clearfix ">' +
                     rightList + ' <div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
 
 
                 var left = '<div class="on-off f-l"><div class="clearfix btn green "><div class="f-l p-r"><div class="pp-num middle p-a "><p class="mname">区域' + item2.place + '</p><p>(<span class="place-LNum1">' + item2.placeLNum + '</span>/ <span>' + item2.placeLNumTotal + '</span>)</p></div></div>' +
-                    ' <div class="f-l"> <span>故障：</span><span class="error">'+sumTotal+'</span> </div> ' +
-                    '<div class="f-l"> <div class="img"> <img src="/static/new/img/on-off-white.png" alt="" class="place-btn click-btn"> ' +
+                    ' <div class="f-l"> <span>故障：</span><span class="error">' + sumTotal + '</span> </div> ' +
+                    '<div class="f-l"> <div class="img place-btn click-btn">  '+
+                    statusM2(item2.placeLBtn).imgBtn+
                     '<div class="min-font">开关</div> </div> </div> </div> </div>';
                 var content = '<div class="clearfix">' + left + right + '</div>';
                 $('.content').append(content);
             })
             swiper('.light-swiper', 3, 1, 'row')
-        }else{
+        } else {
             $.each(placeList, function (i, item2) {
                 var groupList = item2.groupList;
-                $.each(groupList,function(i, item3) {
+                $.each(groupList, function (i, item3) {
                     var lightList = item3.lightList;
                     $.each(lightList, function (i, item4) {
                         var status = item4.status;
@@ -231,16 +285,16 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                         var img = statusM1(status).img;
                         var warning = statusM1(status).warning;
                     })
-                    var status =  item3.groupState = jsonIsEqual(lightList, 'status');
+                    var status = item3.groupState = jsonIsEqual(lightList, 'status');
                     var state = statusM(status).state;
                     var img = statusM(status, 'blue').img;
-                    item3.groupNum=item3.groupTotal-sum(lightList,'status',null);
+                    item3.groupNum = item3.groupTotal - sum(lightList, 'status', null);
                 })
                 var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
                 var state = statusM(status).state;
                 var img = statusM(status, 'blue').img;
-                item2.placeLNum=sum(groupList,'groupNum',1);
-                var sumTotal=parseInt(item2.placeLNumTotal)-sum(groupList,'groupNum',1);
+                item2.placeLNum = sum(groupList, 'groupNum', 1);
+                var sumTotal = parseInt(item2.placeLNumTotal) - sum(groupList, 'groupNum', 1);
 
             })
 
@@ -248,7 +302,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
         var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState')
         var state = statusM(status).state;
         var img = statusM(status).img;
-        item.centerLNum=sum(placeList,'placeLNum',1);
+        item.centerLNum = sum(placeList, 'placeLNum', 1);
         //左侧导航
 
         leftNav += '<li><a  href="javascript:void(0); "><div class="clearfix"><div class="f-l p-r">' +
@@ -266,8 +320,8 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
                 var placeList = item.placeList;
                 $('.content>div.clearfix').each(function () {
                     var that = $(this);
-                    $.each(placeList,function (i,item2) {
-                        if(item2.place==extractNum(that.find('.mname').text())){
+                    $.each(placeList, function (i, item2) {
+                        if (item2.place == extractNum(that.find('.mname').text())) {
                             that.find('.place-LNum1').text(item2.placeLNum);
                         }
                     })
@@ -307,12 +361,13 @@ function operation(lightState, placeLNumList, centerLNumList, fmname) {
         console.log('centerLNumList长度小于0')
     }
 }
-$(".content").on('click', ".toggle-button", function(){
-    var src=$(this).attr('src');
-    var groupOrder = parseInt($(this).parent().siblings('label').find('span').text());
-    if ($(this).text() == 'ON') {
+$(".content").on('click', ".group-btn", function () {
+    var src = $(this).attr('src');
+    var groupOrder = extractNum($(this).parent().parent().siblings().find('.max').text());
+    // var groupOrder = parseInt($(this).parent().siblings('label').find('span').text());
+    if ($(this).attr('alt') == '开') {
         var onOffOrder = '0037';
-    } else if ($(this).text() == 'OFF') {
+    } else if ($(this).attr('alt') == '关') {
         var onOffOrder = '0032';
     }
     if (groupOrder <= 9) {
@@ -325,9 +380,44 @@ $(".content").on('click', ".toggle-button", function(){
     } else if ($(this).attr("alt") == "total-off") {
         var command = '77010315323266';
     }
-    var host = '192.168.1.194';
+    var floor = getUrlParams('floor');
+    var host;
+    switch (floor) {
+        case "1":
+            host = "192.168.16.103";
+            break;
+        case "2":
+            host = "192.168.16.68";
+            break;
+        case "3":
+            host = '192.168.16.66';
+            break;
+        case "4":
+            host = '192.168.16.70';
+            break;
+        case "5":
+            host = '192.168.16.71';
+            break;
+        case "6":
+            host = "192.168.16.72";
+            break;
+        case "7":
+            host = "192.168.16.73";
+            break;
+        case "8":
+            host = "192.168.16.80";
+            break;
+        case "9":
+            host = "192.168.16.79";
+            break;
+        case "10":
+            host = "192.168.16.76";
+            break;
+    }
+
     $.post("/sendSocket6", {
         "command": command,
         "host": host
-    }, function () {})
+    }, function () {
+    })
 })

@@ -120,6 +120,9 @@ label{
     vertical-align: middle;
     text-align: center;
 }
+.pointer{
+cursor: pointer;
+}
 button{
     width: 100px;
     height: 34px;
@@ -144,6 +147,8 @@ button{
     line-height: 25px;
     width: 30px !important;
     border: 1px solid #eee;
+    font-size: 12px;
+    color: #656565
 }
 .long-line:after{
     position: absolute;
@@ -151,7 +156,7 @@ button{
     content: '';
     width: 1px;
     height: 65%;
-    background-color: #e6e6e6;
+    background-color: #C9C9C9;
     text-align: right;
     right: 0;
     top: 17%;
@@ -166,4 +171,8 @@ button{
     text-align: right;
     right: 0;
     top: 10%;
+}
+.font-color{
+    font-size: 12px;
+    color: #656565;
 }

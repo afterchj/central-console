@@ -3,12 +3,28 @@
  */
 $(function () {
     $('.tabs').tabslet();
-    init();
-    realTime();
-    // setInterval(function () {
-    //     init();
-    // }, 100000)
+    run();
 })
+async function run(){
+        const resylt1= await init();
+        console.log('巡检执行完毕');
+        const resylt2= await realTime();
+        console.log('动态数据更新执行完毕');
+    // const resylt2= await setInterval(()=>{
+    //         realTime();
+    //         console.log('动态数据更新执行完毕');
+    //     },1000);
+}
+
+//巡检
+function init() {
+    myChart("main");
+    swiper('.waterbubble', 3, 2, 'row')
+    water()
+    upLight("/getNewMonitor")
+}
+
+
 
 /**
  * @param {string} id - 参数id
@@ -37,69 +53,6 @@ function myChart(id) {
     myChart.setOption(option);
 }
 //巡检
-function init() {
-
-    myChart("main");
-    swiper('.waterbubble', 3, 2, 'row')
-    water()
-    upLight("/getNewMonitor")
-}
-
-//更新开关状态方法
-function realTime() {
-    $.ajax({
-        url: '/getNewMonitorLightStatus',
-        dataType: "json",
-        async: true,
-        type: "POST",
-        success: function (data) {
-            console.log('更新', data);
-            if (data.lightDemo && data.lightDemo.other != null) {
-                var lightDemo = data.lightDemo;
-                var other = data.lightDemo.other;
-                // lightState = sort(lightState, 'mname');
-                // lightState=sort(lightState, 'lname');
-                // lightState = lightStateM(lightState);
-                var floor =getUrlParams('floor');
-                console.log('floor',floor);
-
-                operation2( lightDemo, other, floor)
-            }
-        }
-    })
-}
-function operation2(lightDemo, other, floor) {
-    if (other == 'all') {
-        var statusAll = lightDemo.status;
-        $('.content>.clearfix .place').each(function () {
-           var src= $(this).find('.img-place').attr('src',src);
-           var img= statusM1(statusAll,1).img;
-            $(this).find('.img-place').attr('src',img);
-        })
-    }else if(other=='group'){
-        var mname=lightDemo.mname;
-        var groupId=lightDemo.groupId;
-        var status=lightDemo.status;
-        var img= statusM1(status,1).img;
-    }
-}
-// function operation2(lightState){
-//     $.each(lightState,function(i,item1){
-//         var placeList = item1.placeList;
-//         $.each(placeList,function(i,item2){
-//             var groupList = item2.groupList;
-//             $.each(groupList,function(i,item3){
-//                 var lightList = item3.lightList;
-//                 $.each(lightList,function(i,item4){
-//                     var status = item4.status;
-//
-//                 })
-//             })
-//         })
-//     })
-// }
-
-//巡检
 function upLight(url) {
     $.ajax({
         url: url,
@@ -111,6 +64,7 @@ function upLight(url) {
             var centerLNumList = data.centerLNumList;
             var lightState = data.lightState;
             var placeLNumList = data.placeLNumList;
+            var status=data.status;
             //排序
             // if(centerLNumList.length>0){
             //     centerLNumList = sort(centerLNumList, 'mname');
@@ -122,46 +76,72 @@ function upLight(url) {
                 lightState = sort(lightState, 'mname');
 
             }
-            console.log('lightState', lightState);
+            // console.log('lightState', lightState);
             //json数据格式转换调用方法
             lightState = lightStateM(lightState);
             placeLNumList = placeLNumListM(placeLNumList);
-            console.log('lightState', lightState);
-            operation(lightState, placeLNumList, centerLNumList)
+            // console.log('lightState', lightState);
+            operation(lightState, placeLNumList, centerLNumList,status)
         }
     })
 }
 
-function operation(lightState, placeLNumList, centerLNumList) {
+function operation(lightState, placeLNumList, centerLNumList,status) {
     $('.content').empty();
     $('.nave ul').empty();
     var leftNav = '';
     var leftIndex = '<li class="current active"><a href="/newIndex">首页</a></li>';
+    var allStatus=status.allStatus;
+    var floorStatus=status.floorStatus;
+    var groupStatus=status.groupStatus;
+    var placeStatus=status.placeStatus;
+    // console.log('lightState',lightState)
+    var allBtn;
+    if(allStatus.length==0){
+        allBtn='on';
+    }else{
+        allBtn='off';
+    }
+    $('.totalLight img').attr(statusM2(allBtn).imgBtn)
     $.each(lightState, function (i, item) {
-        var centerLNum = item.centerLNum;
-        var centerLNumTotal = item.centerLNumTotal;
-        var mname = item.mname;
-        var placeList = item.placeList;
-
         var rightList = '';
+        // var centerLNum = item.centerLNum;
+        // var centerLNumTotal = item.centerLNumTotal;
+        var mname = item.mname;
+        // var centerLBtn=item.centerLBtn;
+        var placeList = item.placeList;
+        // console.log('floorStatus',floorStatus);
+        if(floorStatus.length==0){
+            item.centerLBtn='on';
+        }else{
+            item.centerLBtn='off';
+        }
+
         $.each(placeList, function (i, item2) {
             var groupList = item2.groupList;
+            if(placeStatus.length==0){
+                item2.placeLBtn='on';
+            }else{
+                item2.placeLBtn='off';
+            }
             $.each(groupList, function (i, item3) {
                 var lightList = item3.lightList;
+                if(groupStatus.length==0){
+                    item3.groupBtn='on';
+                }else{
+                    item3.groupBtn='off';
+                }
                 $.each(lightList, function (i, item4) {
                     var status = item4.status;
-                    var state = statusM1(status).state;
-                    var img = statusM1(status).img;
+                    // var state = statusM1(status).state;
+                    // var img = statusM1(status).img;
                 })
-
-
                 var status = item3.groupState = jsonIsEqual(lightList, 'status');
                 var state = statusM(status).state;
                 var img = statusM(status).img;
                 var img = statusM(status, 'blue').img;
                 item3.groupNum = item3.groupTotal - sum(lightList, 'status', null);
             })
-
 
             var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
             var state = statusM(status).state;
@@ -176,6 +156,7 @@ function operation(lightState, placeLNumList, centerLNumList) {
                 '</div><div><p class="p-status">' + state + '</p></div> </div></div>'
 
         })
+
         var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState')
         var state = statusM(status).state;
         var img = statusM(status).img;
@@ -185,9 +166,9 @@ function operation(lightState, placeLNumList, centerLNumList) {
         //右侧数据展示
         var left = '<div class="on-off f-l"><div class="clearfix btn"><div class="f-l mname">' + mname + '</div>' +
             ' <div class="f-l"> <span>故障：</span><span>' + sumTotal + '</span> </div> ' +
-            '<div class="f-l"> <div class="img"> <img src="/static/new/img/on-off-black.png" alt="" class="toggle-button centerL-btn click-btn"> ' +
+            '<div class="f-l"> <div class="img toggle-button centerL-btn click-btn" >'+statusM2(item.centerLBtn).imgBtn +
             '<div class="min-font">开关</div> </div> </div> </div> </div>';
-        var right = '<div class="light-list f-l  "><div class="swiper-container light-swiper"><div class="swiper-wrapper clearfix ">' + rightList + '<div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
+        var right = '<div class="light-list f-l  "><div class="swiper-container light-swiper"><div class="swiper-wrapper clearfix ">' + rightList + '<div                          class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
         var content = '<div class="clearfix">' + left + right + '</div>';
         $('.content').append(content);
 
@@ -253,16 +234,81 @@ function operation(lightState, placeLNumList, centerLNumList) {
     }
 }
 
+//更新开关状态方法
+function realTime() {
+    $.ajax({
+        url: '/getNewMonitorLightStatus',
+        dataType: "json",
+        async: true,
+        type: "POST",
+        success: function (data) {
+            console.log('更新', data);
+            if (data.lightDemo && data.lightDemo.other != null) {
+                var lightDemo = data.lightDemo;
+                var other = data.lightDemo.other;
+                // lightState = sort(lightState, 'mname');
+                // lightState=sort(lightState, 'lname');
+                // lightState = lightStateM(lightState);
+                var floor =getUrlParams('floor');
+                // console.log('floor',floor);
+
+                operation2( lightDemo, other, floor)
+            }
+        }
+    })
+}
+
+function operation2(lightDemo, other, floor) {
+    if (other == 'all') {
+        var status = lightDemo.status;
+        var img = statusM1(status, 1).imgBtn;
+        $('.content>.clearfix').each(function () {
+            $(this).find('.place').each(function () {
+                $(this).find('.place-content li').each(function () {
+                    $(this).find('img').replaceWith(img);
+                    if (status == 1 || status == null) {
+                        $(this).find('.yellow').text('');
+                        $(this).find('.yellow').addClass('off');
+                    }
+                })
+            })
+        })
+    } else if (other == 'group') {
+        var mname = lightDemo.mname;
+        var groupId = lightDemo.groupId;
+        var status = lightDemo.status;
+        var img = statusM1(status, 1).imgBtn;
+        if (extractNum(mname) == floor) {
+            $('.content>.clearfix').each(function () {
+                $(this).find('.place').each(function () {
+                    var txt = extractNum($(this).find('.max').text());
+                    if (txt == groupId) {
+                        $(this).find('.place-content li').each(function () {
+                            $(this).find('img').replaceWith(img);
+                            if (status == 1 || status == null) {
+                                $(this).find('.yellow').text('');
+                                $(this).find('.yellow').addClass('off');
+                            }
+                        })
+                    }
+                })
+            })
+        }
+    }
+}
+
 function water() {
     var pDefault;
-    waterbubbleS('#floor-1', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-2', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-3', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-4', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-5', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-6', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-7', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-8', '30%', pDefault, pDefault, 26, 0.3, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-9', '60%', pDefault, pDefault, 26, 0.6, pDefault, pDefault, pDefault, pDefault)
-    waterbubbleS('#floor-10', '40%', pDefault, pDefault, 26, 0.4, pDefault, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-1', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-2', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-3', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-4', '30%', pDefault, pDefault, 22, 0.3,2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-5', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-6', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-7', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-8', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-9', '60%', pDefault, pDefault, 22, 0.6, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#floor-10', '40%', pDefault, pDefault, 26, 0.4, 2.5, pDefault, pDefault, pDefault)
+    waterbubbleS('#todayElectric', '136.05KWh', pDefault, pDefault, 40, 0.6, 3, pDefault, '12px arial', pDefault)
+    waterbubbleS('#yesterdayElectric', '106.05KWh', pDefault, pDefault, 40, 0.45, 3, pDefault, '12px arial', pDefault)
 }
