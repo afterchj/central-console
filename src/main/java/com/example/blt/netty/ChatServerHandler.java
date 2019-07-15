@@ -40,8 +40,13 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
         } catch (Exception e) {
-            to = host;
-            cmd = arg1;
+            if (arg1.indexOf("77020315") != -1) {
+                cmd = arg1.replace("02", "01");
+                to = "all";
+            } else {
+                to = host;
+                cmd = arg1;
+            }
         }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
@@ -55,19 +60,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     if (!ip.equals("127.0.0.1")) {
                         if (to.equals("all")) {
                             ch.writeAndFlush(cmd);
-                        }
-                        if (cmd.indexOf("77020315") != -1) {
-                            ch.writeAndFlush(cmd.replace("02", "01"));
-                        }
-                        if (ip.equals(to)) {
+                        } else if (to.equals(ip)) {
                             ch.writeAndFlush(cmd);
-                            break;
                         }
                     }
                 }
             }
         }
-        if (len >= 38) {
+        if (len >= 22) {
             logger.error("[" + to + "] receive :" + cmd);
             ExecuteTask.pingInfo(host, arg1.split("CCCCC"));
         } else {

@@ -8,6 +8,8 @@ import com.example.blt.netty.ClientMain;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.MapUtil;
+import com.example.blt.utils.SpringUtils;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,7 @@ import java.util.concurrent.FutureTask;
 public class ExecuteTask {
     private static Logger logger = LoggerFactory.getLogger(ExecuteTask.class);
     private static ExecutorService executorService = Executors.newCachedThreadPool();
+    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 //    private staticClientMainClientMain =ClientMain();
 //    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
@@ -91,34 +94,35 @@ public class ExecuteTask {
     public static void parseLocalCmd(String str, String ip) {
         executorService.submit(() -> {
             Map map = new ConcurrentHashMap();
+            String prefix = str.substring(0, 8);
+            map.put("host", ip);
+            map.put("other", str);
+            String cmd = str.substring(prefix.length());
+            String cid = cmd.substring(0, 2);
+            switch (prefix) {
+                case "77010416":
+                    map.put("ctype", "C1");
+                    map.put("x", cmd.substring(2, 4));
+                    map.put("y", cmd.substring(4, 6));
+                    map.put("cid", cid);
+                    break;
+                case "77010315":
+                    map.put("ctype", "C0");
+                    map.put("x", cmd.substring(0, 2));
+                    map.put("y", cmd.substring(2, 4));
+                    break;
+                case "77010219":
+                    map.put("ctype", "42");
+                    map.put("cid", cid);
+                    break;
+                default:
+                    break;
+            }
             try {
-                String prefix = str.substring(0, 8);
-                map.put("host", ip);
-                map.put("other", str);
-                String cmd = str.substring(prefix.length());
-                String cid = cmd.substring(0, 2);
-                switch (prefix) {
-                    case "77010416":
-                        map.put("ctype", "C1");
-                        map.put("x", cmd.substring(2, 4));
-                        map.put("y", cmd.substring(4, 6));
-                        map.put("cid", cid);
-                        break;
-                    case "77010315":
-                        map.put("ctype", "C0");
-                        map.put("x", cmd.substring(0, 2));
-                        map.put("y", cmd.substring(2, 4));
-                        break;
-                    case "77010219":
-                        map.put("ctype", "42");
-                        map.put("cid", cid);
-                        break;
-                    default:
-                        break;
-                }
                 ProducerService.pushMsg(Topics.LOCAL_TOPIC.getTopic(), JSON.toJSONString(map));
             } catch (Exception e) {
-                logger.error(e.getMessage());
+                sqlSessionTemplate.selectOne("console.saveConsole", map);
+                logger.warn("result=" + map.get("result"));
             }
         });
     }

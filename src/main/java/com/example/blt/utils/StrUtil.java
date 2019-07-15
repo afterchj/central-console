@@ -2,10 +2,10 @@ package com.example.blt.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.ConsoleKeys;
-import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.netty.ClientMain;
+import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +23,7 @@ public class StrUtil {
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
     private static Set<String> lmacSet = new CopyOnWriteArraySet<>();
     private static Set<String> vaddrSet = new CopyOnWriteArraySet<>();
-
-//    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
-//    private static ProducerService producerService = SpringUtils.getRocketProducer();
+    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     public static void buildLightInfo(String ip, String... array) {
         ConsoleUtil.cleanSet(lmacSet, vaddrSet);
@@ -52,9 +50,11 @@ public class StrUtil {
                 map.put("vaddr", vaddr);
                 map.put("x", x);
                 map.put("y", y);
-                ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-//            sqlSessionTemplate.selectOne("console.saveLight", map);
-//            logger.warn("result=" + map.get("result"));
+                try {
+                    ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+                } catch (NoTopicException e) {
+                    sqlSessionTemplate.selectOne("console.saveLight", map);
+                }
             } else if (str.indexOf("77040F01") != -1) {
 //            String prefix = str.substring(0, 8);
                 String lmac = str.substring(8, 20).toLowerCase();
@@ -66,71 +66,19 @@ public class StrUtil {
                 map.put("lmac", mac);
                 lmacSet.add(mac);
                 ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 80);
-                ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-//            sqlSessionTemplate.selectOne("console.saveLight", map);
-//            logger.warn("result=" + map.get("result"));
+                try {
+                    ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+                } catch (NoTopicException e) {
+                    sqlSessionTemplate.selectOne("console.saveLight", map);
+                }
             } else {
                 int len = str.length();
-                if (len >= 36) {
+                if (len >= 22) {
                     tempFormat(str, ip);
                 }
             }
         }
     }
-
-//    public static Map buildLightInfo(String ip, String str) {
-//        Map map = new HashMap();
-////        String str = msg.replace(" ", "");
-//        String str1 = "77040F0227";
-//        map.put("host", ip);
-//        map.put("status", 1);
-////        map.put("other", str);
-//        if (str.indexOf(str1) != -1) {
-//            map.put("host", ip);
-//            int index = str1.length();
-//            String vaddr = str.substring(index, index + 8);
-//
-//            String x = str.substring(index + 10, index + 12);
-//            String y = str.substring(index + 12, index + 14);
-//            if (str.contains("3232")) {
-//                map.put("status", 0);
-//            } else {
-//                map.put("status", 1);
-//            }
-//            map.put("vaddr", vaddr);
-//            map.put("x", x);
-//            map.put("y", y);
-//            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-////            sqlSessionTemplate.selectOne("console.saveLight", map);
-////            logger.warn("result=" + map.get("result"));
-//        } else if (str.indexOf("77040F01") != -1) {
-////            String prefix = str.substring(0, 8);
-//            String lmac = str.substring(8, 20).toLowerCase();
-//            String vaddr = str.substring(20, 28);
-//            String productId = str.substring(28, 32);
-//            map.put("vaddr", vaddr);
-//            map.put("product_id", productId);
-//            String[] strArr = buildMac(lmac).split(":");
-//            StringBuffer sortMac = new StringBuffer();
-//            for (int i = strArr.length - 1; i >= 0; i--) {
-//                if (i != 0) {
-//                    sortMac.append(strArr[i] + ":");
-//                } else {
-//                    sortMac.append(strArr[i]);
-//                }
-//            }
-//            map.put("lmac", sortMac.toString());
-//            ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-////            sqlSessionTemplate.selectOne("console.saveLight", map);
-////            logger.warn("result=" + map.get("result"));
-//        } else {
-//            int len = str.length();
-//            if (len >= 22) {
-//                tempFormat(str, ip);
-//            }
-//        }
-//        return map;
-//    }
 
     public static String buildMac(String str) {
         char[] chars = str.toCharArray();
@@ -221,9 +169,12 @@ public class StrUtil {
                 }
                 break;
         }
-        ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
-//        amqpTemplate.convertAndSend(ROUTING_KEY, JSON.toJSONString(map));
-//        sqlSessionTemplate.selectOne("console.saveConsole", map);
+        try {
+            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
+        } catch (NoTopicException e) {
+            sqlSessionTemplate.selectOne("console.saveConsole", map);
+            logger.warn("result=" + map.get("result"));
+        }
 //        logger.warn("result=" + JSON.toJSONString(map));
     }
 
@@ -249,9 +200,12 @@ public class StrUtil {
                 }
                 break;
         }
-        ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
-//        sqlSessionTemplate.selectOne("console.saveConsole", map);
-//        logger.warn("result=" + map.get("result"));
+        try {
+            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
+        } catch (NoTopicException e) {
+            sqlSessionTemplate.selectOne("console.saveConsole", map);
+            logger.warn("result=" + map.get("result"));
+        }
     }
 
 //    public static void main(String[] args) {
