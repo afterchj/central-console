@@ -1,8 +1,6 @@
 package com.example.blt.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.utils.ConsoleUtil;
@@ -15,8 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -49,12 +45,11 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
+        Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
         JSONObject object = new JSONObject();
-        object.put("host", "all");
-        object.put("command", "7701012766");
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
             logger.warn("lmacSize=" + lmacSet.size());
@@ -67,7 +62,11 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     return;
                 }
             }
-            ClientMain.sendCron(object.toJSONString());
+            for (String ip : ipSet) {
+                object.put("host", ip);
+                object.put("command", "7701012766");
+                ClientMain.sendCron(object.toJSONString());
+            }
         }
     }
 

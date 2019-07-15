@@ -7,6 +7,7 @@ public enum ConsoleKeys {
 
     lMAC("l_lmac"),
     VADDR("l_vaddr"),
+    HOSTS("l_host"),
     LSIZE("l_size");
 
     ConsoleKeys(String value) {

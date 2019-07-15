@@ -90,6 +90,7 @@ public class HomeController {
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
         Set lmacSet = operations.get(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
+        Set ipSet = operations.get(ConsoleKeys.HOSTS.getValue());
         if (null != lmacSet) {
             map.put("lmacSize", lmacSet.size());
             map.put("lmac", lmacSet);
@@ -98,6 +99,10 @@ public class HomeController {
         if (null != vaddrSet) {
             map.put("vaddr", vaddrSet);
             map.put("vaddrSize", vaddrSet.size());
+        }
+        if (ipSet != vaddrSet) {
+            map.put("hosts", ipSet);
+            map.put("hostSize", ipSet.size());
         }
         map.put("result", "ok");
         return map;
