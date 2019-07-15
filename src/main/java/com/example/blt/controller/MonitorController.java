@@ -305,6 +305,7 @@ public class MonitorController {
                 map.put("floorException", map2.get("exception"));
                 map.put("floorDifference", map2.get("difference"));
             }
+
             map.put("lightDemo", lightDemos);
             map.put("scenes", scenes);
         }
