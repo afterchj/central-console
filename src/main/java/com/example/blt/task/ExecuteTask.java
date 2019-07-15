@@ -101,7 +101,7 @@ public class ExecuteTask {
             String cid = cmd.substring(0, 2);
             switch (prefix) {
                 case "77010416":
-                    map.put("ctype", "C1");
+                    map.put("ctype", "CW");
                     map.put("x", cmd.substring(2, 4));
                     map.put("y", cmd.substring(4, 6));
                     map.put("cid", cid);
