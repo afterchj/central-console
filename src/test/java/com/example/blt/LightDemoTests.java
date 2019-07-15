@@ -1,15 +1,12 @@
 package com.example.blt;
 
 import com.example.blt.dao.LightListDao;
-import com.example.blt.entity.CommandLight;
-import com.example.blt.entity.LightDemo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//随机生成一个端口号
@@ -43,6 +40,13 @@ public class LightDemoTests {
         state = command.substring(10,12);
         type = command.substring(6,8);
         System.out.println(group+" : "+state+" : "+command.length()+" : "+type);
+    }
+
+    @Test
+    public void test4(){
+        String str = "0A";
+        System.out.println(str);
+//        System.out.println(Integer.parseInt(str,16));
     }
 
 }
