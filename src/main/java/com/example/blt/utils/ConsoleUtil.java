@@ -38,7 +38,7 @@ public class ConsoleUtil {
 
     public static void saveInfo(String key, Integer size) {
         ValueOperations<String, Integer> operations = redisTemplate.opsForValue();
-        operations.set(key, size, 50, TimeUnit.SECONDS);
+        operations.set(key, size, 30, TimeUnit.SECONDS);
     }
 
     public static Set getInfo(String key) {

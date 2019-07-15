@@ -52,7 +52,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         JSONObject object = new JSONObject();
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
-            logger.warn("lmacSize=" + lmacSet.size());
+            logger.warn(ipSet + " lmacSize=" + lmacSet.size());
             if (null != vaddrSet) {
                 logger.warn("size=" + size + ",vaddrSize=" + vaddrSet.size());
                 if (size == null) {
@@ -62,11 +62,12 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     return;
                 }
             }
-            for (String ip : ipSet) {
-                object.put("host", ip);
-                object.put("command", "7701012766");
-                ClientMain.sendCron(object.toJSONString());
-                new Thread().sleep(5000);
+            if (ipSet != null) {
+                for (String ip : ipSet) {
+                    object.put("host", ip);
+                    object.put("command", "7701012766");
+                    ClientMain.sendCron(object.toJSONString());
+                }
             }
         }
     }
