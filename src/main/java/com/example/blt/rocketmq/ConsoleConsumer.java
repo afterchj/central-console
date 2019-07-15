@@ -1,6 +1,7 @@
 package com.example.blt.rocketmq;
 
 import com.alibaba.fastjson.JSON;
+import com.example.blt.config.WebSocket;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -32,6 +33,7 @@ public class ConsoleConsumer implements RocketMQListener<String> {
         try {
             Map map = JSON.parseObject(message);
             sqlSessionTemplate.selectOne("console.saveConsole", map);
+            WebSocket.sendMessage(JSON.toJSONString(map));
             logger.info("result=" + map.get("result"));
         } catch (Exception e) {
             logger.error(e.getMessage());
