@@ -485,7 +485,6 @@ function statusM1(status, blue) {
         } else {
             img = '<img src="/static/new/img/normal.png" alt="">';
         }
-        warning = false;
     } else if (status == 1) {
         state = '关';
         imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
@@ -507,6 +506,21 @@ function statusM2(btn) {
     var img, imgBtn, state;
     //全异常 null,全关 1
     if (btn == 'off') {
+        state = '关';
+        imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
+    } else {
+        state = '开';
+        imgBtn = '<img src="/static/new/img/light-on.PNG" alt="">';
+    }
+    return obj = {
+        state: state,
+        imgBtn: imgBtn
+    }
+}
+function statusM3(btn) {
+    var img, imgBtn, state;
+    //全异常 null,全关 1
+    if (btn == '关') {
         state = '关';
         imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
     } else {
