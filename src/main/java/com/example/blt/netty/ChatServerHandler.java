@@ -87,25 +87,25 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
+        insertOrUpdateHost(ctx);
         group.add(channel);
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
+        insertOrUpdateHost(ctx);
         group.remove(channel);
     }
 
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        insertOrUpdateHost(ctx);
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        insertOrUpdateHost(ctx);
     }
 
     @Override
