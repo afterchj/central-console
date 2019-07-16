@@ -26,18 +26,23 @@
         <parameter property="other" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
-    <select id="saveLight" parameterMap="lightMapper" statementType="CALLABLE">
+    <select id="saveLight" parameterMap="lightMapper" resultType="map" statementType="CALLABLE">
         CALL save_light(?,?,?,?,?,?,?,?,?,?)
     </select>
 
-    <select id="saveConsole" parameterMap="commandMapper" statementType="CALLABLE">
+    <select id="saveConsole" parameterMap="commandMapper" resultType="map" statementType="CALLABLE">
         CALL save_blt_console(?,?,?,?,?,?,?,?,?)
     </select>
 
     <select id="getLights" resultType="map">
         SELECT mname,COUNT(0) lmacn FROM f_light_demo GROUP BY mname
     </select>
-    <select id="getVaddr" resultType="map">
+
+    <select id="getHosts" resultType="string">
+        SELECT ip FROM t_host_info WHERE status=1
+    </select>
+
+    <select id="getVaddr" resultType="string">
         SELECT vaddr FROM t_light_info
     </select>
 
@@ -48,11 +53,14 @@
     <select id="getTotal" resultType="int">
         SELECT COUNT(0) lmacn FROM f_light_demo
     </select>
+
     <insert id="insertLog" parameterType="string">
         INSERT INTO f_light_console(ip,msg,log_date) VALUE (#{ip},#{msg},now())
     </insert>
 
-
+    <insert id="insertHost" parameterType="map">
+        REPLACE INTO t_host_info(ip,status,log_date) VALUE (#{ip},#{status},now())
+    </insert>
     <select id="selectIn" parameterType="map" resultType="map">
         SELECT * FROM t_light_info WHERE vaddr IN
         <foreach collection="list" index="index" item="info" separator="," open="(" close=")">
@@ -68,16 +76,16 @@
     </select>
 
     <update id="saveUpdate" parameterType="map">
-        UPDATE t_light_info SET log_date=now(),`status`=NULL ,x=NULL ,y=NULL WHERE vaddr NOT IN
+        UPDATE t_light_info SET log_date=now(),`status`=NULL ,x=NULL ,y=NULL WHERE host=#{host} AND vaddr NOT IN
         <foreach collection="list" index="index" item="info" separator="," open="(" close=")">
-            #{info.vaddr}
+            #{info}
         </foreach>
     </update>
 
     <update id="saveUpdate2" parameterType="map">
-        UPDATE t_light_info SET log_date=now(),`status`=NULL ,x=NULL ,y=NULL WHERE lmac NOT IN
+        UPDATE t_light_info SET log_date=now(),`status`=NULL ,x=NULL ,y=NULL WHERE host=#{host} AND lmac NOT IN
         <foreach collection="list" index="index" item="info" separator="," open="(" close=")">
-            #{info.lmac}
+            #{info}
         </foreach>
     </update>
 
