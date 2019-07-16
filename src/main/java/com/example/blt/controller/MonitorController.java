@@ -133,7 +133,7 @@ public class MonitorController {
     public Map<String, Object> getNewMonitorLightStatus() {
         Map<String, Object> map = new HashMap<>();
         String scenes = null;
-        CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
+        CommandLight commandInfo = monitor4Dao.getCommandInfo("10");
 //        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
 //        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
         if (commandInfo != null) {
@@ -298,7 +298,6 @@ public class MonitorController {
                 if(status.equals("1")){
                     floorStatus.setOther("关");
                 }
-
                 map.put("placeStatus", placeStatus);
                 map.put("floorStatus", floorStatus);
                 map.put("placeException", map1.get("exception"));
@@ -486,34 +485,34 @@ public class MonitorController {
     private String getMname(String host) {
         String mname = "";
         switch (host) {
-            case "192.168.16.103":
+            case "192.168.10.11":
                 mname = "1楼";
                 break;
-            case "192.168.16.68":
+            case "192.168.10.12":
                 mname = "2楼";
                 break;
-            case "192.168.16.66":
+            case "192.168.10.13":
                 mname = "3楼";
                 break;
-            case "192.168.16.70":
+            case "192.168.10.14":
                 mname = "4楼";
                 break;
-            case "192.168.16.71":
+            case "192.168.10.15":
                 mname = "5楼";
                 break;
-            case "192.168.16.72":
+            case "192.168.10.16":
                 mname = "6楼";
                 break;
-            case "192.168.16.73":
+            case "192.168.10.17":
                 mname = "7楼";
                 break;
-            case "192.168.16.80":
+            case "192.168.10.18":
                 mname = "8楼";
                 break;
-            case "192.168.16.79":
+            case "192.168.10.19":
                 mname = "9楼";
                 break;
-            case "192.168.16.76":
+            case "192.168.10.20":
                 mname = "10楼";
                 break;
         }
