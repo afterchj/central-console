@@ -9,8 +9,8 @@ $(function () {
 async function run(){
         const resylt1= await init();
         console.log('巡检执行完毕');
-        // const resylt2= await realTime();
-        // console.log('动态数据更新执行完毕');
+        const resylt2= await realTime();
+        console.log('动态数据更新执行完毕');
     // const resylt2= await setInterval(()=>{
     //         realTime();
     //         console.log('动态数据更新执行完毕');
@@ -109,32 +109,31 @@ function operation(lightState, placeLNumList, centerLNumList,status) {
     $('.totalLight img').attr(statusM2(allBtn).imgBtn)
     $.each(lightState, function (i, item) {
         var rightList = '';
-        // var centerLNum = item.centerLNum;
-        // var centerLNumTotal = item.centerLNumTotal;
         var mname = item.mname;
-        // var centerLBtn=item.centerLBtn;
         var placeList = item.placeList;
-        // console.log('floorStatus',floorStatus);
-        // if(floorStatus.length==0){
-        //     item.centerLBtn='on';
-        // }else{
-        //     item.centerLBtn='off';
-        // }
-
         $.each(placeList, function (i, item2) {
             var groupList = item2.groupList;
-            if(placeStatus.length==0){
-                item2.placeLBtn='on';
-            }else{
-                item2.placeLBtn='off';
-            }
+            // if(placeStatus.length==0){
+            //     item2.placeLBtn='on';
+            // }else{
+            //     item2.placeLBtn='off';
+            // }
             $.each(groupList, function (i, item3) {
                 var lightList = item3.lightList;
-                if(groupStatus.length==0){
-                    item3.groupBtn='on';
-                }else{
-                    item3.groupBtn='off';
-                }
+                // var imgBtn;
+                // var other;
+                // if(groupStatus.length>0){
+                //     $.each(groupStatus, function (i, item7) {
+                //         if (extractNum(item7.mname) == item.mname && item7.place==item2.place) {
+                //             other = item7.other;
+                //         }else{
+                //             other = '开';
+                //         }
+                //     })
+                // }else{
+                //     other = '开';
+                // }
+                // imgBtn = statusM3(other).imgBtn;
                 $.each(lightList, function (i, item4) {
                     var status = item4.status;
                     // var state = statusM1(status).state;
@@ -166,11 +165,25 @@ function operation(lightState, placeLNumList, centerLNumList,status) {
         var img = statusM(status).img;
         item.centerLNum = sum(placeList, 'placeLNum', 1);
         var sumTotal = parseInt(item.centerLNumTotal) - sum(placeList, 'placeLNum', 1);
+        var imgBtn;
+        var other;
+        if(floorStatus.length>0){
+            $.each(floorStatus, function (i, item6) {
+                if (extractNum(item6.mname) == item.mname) {
+                    other = item6.other;
+                }else{
+                    other = '开';
+                }
+            })
+        }else{
+            other = '开';
+        }
+        imgBtn = statusM3(other).imgBtn;
 
         //右侧数据展示
         var left = '<div class="on-off f-l"><div class="clearfix btn"><div class="f-l mname">' + mname + '</div>' +
             ' <div class="f-l"> <span>故障：</span><span>' + sumTotal + '</span> </div> ' +
-            '<div class="f-l"> <div class="img toggle-button centerL-btn click-btn" >'+statusM2(item.centerLBtn).imgBtn +
+            '<div class="f-l"> <div class="img toggle-button centerL-btn click-btn" >'+imgBtn +
             '<div class="min-font">开关</div> </div> </div> </div> </div>';
         var right = '<div class="light-list f-l  "><div class="swiper-container light-swiper"><div class="swiper-wrapper clearfix ">' + rightList + '<div                          class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
         var content = '<div class="clearfix">' + left + right + '</div>';
@@ -186,6 +199,8 @@ function operation(lightState, placeLNumList, centerLNumList,status) {
     })
     $('.nave ul').append(leftIndex + leftNav);
     swiper('.light-swiper', 4)
+
+
 
     if (placeLNumList.length > 0) {
         $.each(placeLNumList, function (i, item) {
