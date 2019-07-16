@@ -312,3 +312,56 @@ function water() {
     waterbubbleS('#todayElectric', '136.05KWh', pDefault, pDefault, 40, 0.6, 3, pDefault, '12px arial', pDefault)
     waterbubbleS('#yesterdayElectric', '106.05KWh', pDefault, pDefault, 40, 0.45, 3, pDefault, '12px arial', pDefault)
 }
+//单楼层总开总关
+$(".content").on('click', ".centerL-btn", function () {
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-")+1,src.lastIndexOf("."));
+    var centerOrder = $(this).parent().parent().parent().find('.mname').text();
+    centerOrder = centerOrder.substring(0,1);
+    var host = getHostByFloor(centerOrder);
+
+    if (src=="off"){
+        var command = '77010315323266';
+    }else if (src=="on"){
+        var command = '77010315373766';
+    }
+    $.post("/sendSocket6", {
+        "command": command,
+        "host": host
+    }, function (msg) {
+        if (msg.success=='success'){
+            // console.log(state)
+            if (src=="off"){
+                $(state).attr('src','/static/new/img/light-on.PNG');
+            }else if (src=="on"){
+                $(state).attr('src','/static/new/img/light-off.PNG');
+            }
+        }
+    })
+});
+//总楼层开关
+$(".p-a .middle").on('click', ".pointer", function () {
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-")+1,src.lastIndexOf("."));
+    var host = 'all';
+    if (src=="off"){
+        var command = '77010315323266';
+    }else if (src=="on"){
+        var command = '77010315373766';
+    }
+    $.post("/sendSocket6", {
+        "command": command,
+        "host": host
+    }, function (msg) {
+        if (msg.success=='success'){
+            // console.log(state)
+            if (src=="off"){
+                $(state).attr('src','/static/new/img/light-on.PNG');
+            }else if (src=="on"){
+                $(state).attr('src','/static/new/img/light-off.PNG');
+            }
+        }
+    })
+})

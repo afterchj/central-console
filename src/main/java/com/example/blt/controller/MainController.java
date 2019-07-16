@@ -235,7 +235,7 @@ public class MainController {
 
     @RequestMapping(value = "/sendSocket7", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> sendSocket7(String host, List<String> commands) {
+    public Map<String, String> sendSocket7( @RequestParam("commands") List<String> commands,String host) {
         Map<String, String> map = new HashMap<>();
         String success = "success";
         for (int i = 0; i < commands.size(); i++) {

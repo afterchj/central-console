@@ -133,182 +133,191 @@ public class MonitorController {
     public Map<String, Object> getNewMonitorLightStatus() {
         Map<String, Object> map = new HashMap<>();
         String scenes = null;
-        CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
+        CommandLight commandInfo = monitor4Dao.getCommandInfo("10");
 //        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
 //        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
         if (commandInfo != null) {
-//            int id = commandInfo.getId();
-//            if (newCommandId.get() < id) {
-//                newCommandId.set(id);
-//                newCommandId = id;
-            List<LightDemo> lightDemos = new ArrayList<>();
-            LightDemo lightDemo = new LightDemo();
-            String ctype = commandInfo.getCtype();
-            String status = null;
-            if ("52".equals(ctype)) {
-                //遥控器
-                if ("01".equals(commandInfo.getCid())) {
-                    //全开
-                    status = "0";
-                } else if ("02".equals(commandInfo.getCid())) {
-                    //全关
-                    status = "1";
-                }
-                lightDemo.setMname(getMname(commandInfo.getHost()));
-                lightDemo.setStatus(status);
-                lightDemo.setOther("floor");
-            } else if ("C0".equals(ctype)) {
-                //pad or 手机 全控
-                if ("32".equals(commandInfo.getY())) {
-                    //全关
-                    status = "1";
-                } else {
-                    //全开
-                    status = "0";
-                }
-                lightDemo.setMname(getMname(commandInfo.getHost()));
-                lightDemo.setStatus(status);
-                lightDemo.setOther("floor");
-            } else if ("C1".equals(ctype)) {
-                //pad or 手机 组控
+            int id = commandInfo.getId();
+            if (newCommandId.get() < id) {
+                newCommandId.set(id);
+                List<LightDemo> lightDemos = new ArrayList<>();
+                LightDemo lightDemo = new LightDemo();
+                String ctype = commandInfo.getCtype();
+                String status = null;
+                if ("52".equals(ctype)) {
+                    //遥控器
+                    if ("01".equals(commandInfo.getCid())) {
+                        //全开
+                        status = "0";
+                    } else if ("02".equals(commandInfo.getCid())) {
+                        //全关
+                        status = "1";
+                    }
+                    lightDemo.setMname(getMname(commandInfo.getHost()));
+                    lightDemo.setStatus(status);
+                    lightDemo.setOther("floor");
+                    lightDemos.add(lightDemo);
+                } else if ("C0".equals(ctype)) {
+                    //pad or 手机 全控
+                    if ("32".equals(commandInfo.getY())) {
+                        //全关
+                        status = "1";
+                    } else {
+                        //全开
+                        status = "0";
+                    }
+                    if ("all".equals(commandInfo.getHost())) {
+                        lightDemo.setMname("all");
+                    } else {
+                        lightDemo.setMname(getMname(commandInfo.getHost()));
+                    }
+//                lightDemo.setMname(getMname(commandInfo.getHost()));
+                    lightDemo.setStatus(status);
+                    lightDemo.setOther("floor");
+                    lightDemos.add(lightDemo);
+                } else if ("C1".equals(ctype)) {
+                    //pad or 手机 组控
 
-                int groupId;
-                if ("0A".equals(commandInfo.getCid())) {
-                    groupId = 10;
-                } else {
-                    groupId = Integer.valueOf(commandInfo.getCid());
-                }
-                if ("37".equals(commandInfo.getY())) {
-                    status = "0";
-                } else {
-                    status = "1";
-                }
-                lightDemo.setMname(getMname(commandInfo.getHost()));
-                lightDemo.setGroupId(groupId);
-                lightDemo.setStatus(status);
-                lightDemo.setOther("group");
-                int place = monitor4Dao.getPlace(lightDemo.getMname(), groupId);
-                lightDemo.setPlace(place);
-                List<Integer> statusList1 = monitor4Dao.getStatusOfPlace(lightDemo.getMname(), place, groupId);
-                List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(lightDemo.getMname(), place, groupId);
-                Map map1 = getExceptionAndDiff(statusList1);
-                Map map2 = getExceptionAndDiff(statusList2);
-                LightDemo placeStatus = new LightDemo();
-                LightDemo floorStatus = new LightDemo();
-                placeStatus.setMname(lightDemo.getMname());
-                placeStatus.setPlace(place);
-                placeStatus.setOther("开");
-                floorStatus.setMname(lightDemo.getMname());
-                floorStatus.setOther("开");
-                if(status.equals("1")){
-                    if(getSwitchStatus2(statusList1)==0){
-                        placeStatus.setOther("关");
-                        if(getSwitchStatus2(statusList2)==0){
-                            floorStatus.setOther("关");
-                        }
+                    int groupId;
+                    if ("0A".equals(commandInfo.getCid())) {
+                        groupId = 10;
+                    } else {
+                        groupId = Integer.valueOf(commandInfo.getCid());
                     }
-                }
-                lightDemos.add(lightDemo);
-                map.put("placeStatus", placeStatus);
-                map.put("floorStatus", floorStatus);
-                map.put("placeException", map1.get("exception"));
-                map.put("placeDifference", map1.get("difference"));
-                map.put("floorException", map2.get("exception"));
-                map.put("floorDifference", map2.get("difference"));
-            } else if ("42".equals(ctype)) {
-                if ("01".equals(commandInfo.getCid())) {
-                    scenes = "场景一";
-                } else if ("02".equals(commandInfo.getCid())) {
-                    scenes = "场景二";
-                } else if ("03".equals(commandInfo.getCid())) {
-                    scenes = "场景三";
-                } else if ("04".equals(commandInfo.getCid())) {
-                    scenes = "场景四";
-                }
-            }else if ("CW".equals(ctype)){
-                //web
-                List<CommandLight> webCmds = webCmdDao.getWebCmd();
-                String host = webCmds.get(0).getHost();
-                String y = webCmds.get(0).getY();
-                boolean placeButton = true;//区域按钮
-                String cid = webCmds.get(0).getCid();
-                int place = monitor4Dao.getPlace(getMname(host), Integer.parseInt(webCmds.get(0).getCid(),16));
-                for (CommandLight cmd:webCmds){
-                    if (!host.equals(cmd.getHost())||!y.equals(cmd.getY())||cid.equals(cmd.getCid())){
-                        placeButton = false;//组按钮
-                        break;
+                    if ("37".equals(commandInfo.getY())) {
+                        status = "0";
+                    } else {
+                        status = "1";
                     }
-                }
-                if ("37".equals(webCmds.get(0).getY())){
-                    status = "0";
-                } else {
-                    status = "1";
-                }
-                List<Integer> statusList1;
-                Map<String, Boolean> map1 = new HashMap<>();
-                LightDemo placeStatus;
-                if (webCmds.size()!=3||!placeButton){
-                    //单组
-                    LightDemo lightDemo1 = new LightDemo();
-                    lightDemo1.setGroupId(Integer.parseInt(webCmds.get(0).getCid(),16));
-                    lightDemo1.setStatus(status);
-                    lightDemo1.setOther("group");
-                    lightDemo1.setMname(getMname(host));
-                    lightDemo1.setPlace(place);
-                    lightDemos.add(lightDemo1);
-                    statusList1 = monitor4Dao.getStatusOfPlace(lightDemo1.getMname(), place,
-                            lightDemo1.getGroupId());
-                    map1 = getExceptionAndDiff(statusList1);
-                    placeStatus = new LightDemo();
-                    placeStatus.setMname(lightDemo1.getMname());
+                    lightDemo.setMname(getMname(commandInfo.getHost()));
+                    lightDemo.setGroupId(groupId);
+                    lightDemo.setStatus(status);
+                    lightDemo.setOther("group");
+                    int place = monitor4Dao.getPlace(lightDemo.getMname(), groupId);
+                    lightDemo.setPlace(place);
+                    List<Integer> statusList1 = monitor4Dao.getStatusOfPlace(lightDemo.getMname(), place, groupId);
+                    List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(lightDemo.getMname(), place, groupId);
+                    Map map1 = getExceptionAndDiff(statusList1);
+                    Map map2 = getExceptionAndDiff(statusList2);
+                    LightDemo placeStatus = new LightDemo();
+                    LightDemo floorStatus = new LightDemo();
+                    placeStatus.setMname(lightDemo.getMname());
                     placeStatus.setPlace(place);
                     placeStatus.setOther("开");
-                    if(status.equals("1")){
-                        if(getSwitchStatus2(statusList1)==0){
+                    floorStatus.setMname(lightDemo.getMname());
+                    floorStatus.setOther("开");
+                    if (status.equals("1")) {
+                        if (getSwitchStatus2(statusList1) == 0) {
                             placeStatus.setOther("关");
+                            if (getSwitchStatus2(statusList2) == 0) {
+                                floorStatus.setOther("关");
+                            }
                         }
                     }
-                }else {
-                    //区域
-                    for (CommandLight webCmd:webCmds){
+                    lightDemos.add(lightDemo);
+                    map.put("placeStatus", placeStatus);
+                    map.put("floorStatus", floorStatus);
+                    map.put("placeException", map1.get("exception"));
+                    map.put("placeDifference", map1.get("difference"));
+                    map.put("floorException", map2.get("exception"));
+                    map.put("floorDifference", map2.get("difference"));
+                } else if ("42".equals(ctype)) {
+                    if ("01".equals(commandInfo.getCid())) {
+                        scenes = "场景一";
+                    } else if ("02".equals(commandInfo.getCid())) {
+                        scenes = "场景二";
+                    } else if ("03".equals(commandInfo.getCid())) {
+                        scenes = "场景三";
+                    } else if ("04".equals(commandInfo.getCid())) {
+                        scenes = "场景四";
+                    }
+                } else if ("CW".equals(ctype)) {
+                    //web
+                    List<CommandLight> webCmds = webCmdDao.getWebCmd();
+                    String host = webCmds.get(0).getHost();
+                    String y = webCmds.get(0).getY();
+                    boolean placeButton = true;//区域按钮
+                    String cid = webCmds.get(0).getCid();
+                    int place = monitor4Dao.getPlace(getMname(host), Integer.parseInt(webCmds.get(0).getCid(), 16));
+                    for (int i=0;i<webCmds.size();i++){
+                        if (i!=0){
+                            if (!host.equals(webCmds.get(i).getHost()) || !y.equals(webCmds.get(i).getY()) || cid.equals(webCmds.get(i).getCid())) {
+                                placeButton = false;//组按钮
+                                break;
+                            }
+                        }
+                    }
+                    if ("37".equals(webCmds.get(0).getY())) {
+                        status = "0";
+                    } else {
+                        status = "1";
+                    }
+                    List<Integer> statusList1;
+                    Map<String, Boolean> map1 = new HashMap<>();
+                    LightDemo placeStatus;
+                    if (webCmds.size() != 3 || !placeButton) {
+                        //单组
                         LightDemo lightDemo1 = new LightDemo();
-                        lightDemo1.setGroupId(Integer.parseInt(webCmd.getCid(),16));
+                        lightDemo1.setGroupId(Integer.parseInt(webCmds.get(0).getCid(), 16));
                         lightDemo1.setStatus(status);
                         lightDemo1.setOther("group");
-                        lightDemo1.setMname(getMname(webCmd.getHost()));
+                        lightDemo1.setMname(getMname(host));
                         lightDemo1.setPlace(place);
                         lightDemos.add(lightDemo1);
-                    }
-                    map1.put("exception",false);
-                    map1.put("difference",false);
-                    placeStatus = new LightDemo();
-                    placeStatus.setMname(getMname(host));
-                    placeStatus.setPlace(place);
-                    placeStatus.setOther("开");
-                    if(status.equals("1")){
-                        placeStatus.setOther("关");
-                    }
+                        statusList1 = monitor4Dao.getStatusOfPlace(lightDemo1.getMname(), place,
+                                lightDemo1.getGroupId());
+                        map1 = getExceptionAndDiff(statusList1);
+                        placeStatus = new LightDemo();
+                        placeStatus.setMname(lightDemo1.getMname());
+                        placeStatus.setPlace(place);
+                        placeStatus.setOther("开");
+                        if (status.equals("1")) {
+                            if (getSwitchStatus2(statusList1) == 0) {
+                                placeStatus.setOther("关");
+                            }
+                        }
+                    } else {
+                        //区域
+                        for (CommandLight webCmd : webCmds) {
+                            LightDemo lightDemo1 = new LightDemo();
+                            lightDemo1.setGroupId(Integer.parseInt(webCmd.getCid(), 16));
+                            lightDemo1.setStatus(status);
+                            lightDemo1.setOther("group");
+                            lightDemo1.setMname(getMname(webCmd.getHost()));
+                            lightDemo1.setPlace(place);
+                            lightDemos.add(lightDemo1);
+                        }
+                        map1.put("exception", false);
+                        map1.put("difference", false);
+                        placeStatus = new LightDemo();
+                        placeStatus.setMname(getMname(host));
+                        placeStatus.setPlace(place);
+                        placeStatus.setOther("开");
+                        if (status.equals("1")) {
+                            placeStatus.setOther("关");
+                        }
 
-                }
-                List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(getMname(host), place, Integer.parseInt(webCmds.get(0).getCid(),16));
-                Map map2 = getExceptionAndDiff(statusList2);
-                LightDemo floorStatus = new LightDemo();
-                floorStatus.setMname(getMname(host));
-                floorStatus.setOther("开");
-                if(status.equals("1")){
-                    floorStatus.setOther("关");
+                    }
+                    List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(getMname(host), place, Integer.parseInt(webCmds.get(0).getCid(), 16));
+
+                    Map map2 = getExceptionAndDiff(statusList2);
+                    LightDemo floorStatus = new LightDemo();
+                    floorStatus.setMname(getMname(host));
+                    floorStatus.setOther("开");
+                    if (status.equals("1")) {
+                        floorStatus.setOther("关");
+                    }
+                    map.put("placeStatus", placeStatus);
+                    map.put("floorStatus", floorStatus);
+                    map.put("placeException", map1.get("exception"));
+                    map.put("placeDifference", map1.get("difference"));
+                    map.put("floorException", map2.get("exception"));
+                    map.put("floorDifference", map2.get("difference"));
                 }
 
-                map.put("placeStatus", placeStatus);
-                map.put("floorStatus", floorStatus);
-                map.put("placeException", map1.get("exception"));
-                map.put("placeDifference", map1.get("difference"));
-                map.put("floorException", map2.get("exception"));
-                map.put("floorDifference", map2.get("difference"));
+                map.put("lightDemo", lightDemos);
+                map.put("scenes", scenes);
             }
-
-            map.put("lightDemo", lightDemos);
-            map.put("scenes", scenes);
         }
         return map;
     }
@@ -486,34 +495,34 @@ public class MonitorController {
     private String getMname(String host) {
         String mname = "";
         switch (host) {
-            case "192.168.16.103":
+            case "192.168.10.11":
                 mname = "1楼";
                 break;
-            case "192.168.16.68":
+            case "192.168.10.12":
                 mname = "2楼";
                 break;
-            case "192.168.16.66":
+            case "192.168.10.13":
                 mname = "3楼";
                 break;
-            case "192.168.16.70":
+            case "192.168.10.14":
                 mname = "4楼";
                 break;
-            case "192.168.16.71":
+            case "192.168.10.15":
                 mname = "5楼";
                 break;
-            case "192.168.16.72":
+            case "192.168.10.16":
                 mname = "6楼";
                 break;
-            case "192.168.16.73":
+            case "192.168.10.17":
                 mname = "7楼";
                 break;
-            case "192.168.16.80":
+            case "192.168.10.18":
                 mname = "8楼";
                 break;
-            case "192.168.16.79":
+            case "192.168.10.19":
                 mname = "9楼";
                 break;
-            case "192.168.16.76":
+            case "192.168.10.20":
                 mname = "10楼";
                 break;
         }

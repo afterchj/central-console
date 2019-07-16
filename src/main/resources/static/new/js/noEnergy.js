@@ -23,14 +23,14 @@ $(function () {
 //     // console.log('动态数据更新执行完毕');
 // // },1000);
 // }
-function run(){
-    // const resylt1= await init();
-    // console.log('巡检执行完毕');
+async function run(){
+    const resylt1= await init();
+    console.log('巡检执行完毕');
     // const resylt2= await realTime();
     // console.log('动态数据更新执行完毕');
     // const resylt2= await setInterval(()=>{
-    init();
-    realTime();
+    // init();
+    // realTime();
     // console.log('动态数据更新执行完毕');
 // },1000);
 }
@@ -164,6 +164,12 @@ function upLight(url) {
             var lightState = data.lightState;
             var placeLNumList = data.placeLNumList;
             var status=data.status;
+            // var allStatus=status.allStatus;
+            // var floorStatus=status.floorStatus;
+            // var groupStatus=status.groupStatus;
+            // var placeStatus=status.placeStatus;
+
+
             //排序
             // if(centerLNumList.length>0){
             //     centerLNumList = sort(centerLNumList, 'mname');
@@ -194,8 +200,13 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
     var allStatus=status.allStatus;
     var floorStatus=status.floorStatus;
     var groupStatus=status.groupStatus;
+    // groupStatus=treeData(groupStatus);
     var placeStatus=status.placeStatus;
-    console.log('lightState',lightState)
+    console.log('lightState',lightState);
+    console.log('allStatus',allStatus);
+    console.log('floorStatus',floorStatus);
+    console.log('groupStatus',groupStatus);
+    console.log('placeStatus',placeStatus);
     var leftNav = '';
     var leftIndex = '<li class="current active"><a href="/newIndex">首页</a></li>';
     $.each(lightState, function (i, item) {
@@ -206,42 +217,41 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
         if (extractNum(item.mname) == fmname) {
             $.each(placeList, function (i, item2) {
                 var groupList = item2.groupList;
-                if(placeStatus.length==0){
-                    item2.placeLBtn='on';
-                }else{
-                    item2.placeLBtn='off';
-                }
+                // if(placeStatus.length==0){
+                //     item2.placeLBtn='on';
+                // }else{
+                //     item2.placeLBtn='off';
+                // }
                 //右侧数据展示
 
                 var rightList = '';
                 $.each(groupList, function (i, item3) {
                     var lightList = item3.lightList;
                     var lightContent = '';
-                    if(groupStatus.length==0){
-                        item3.groupBtn='on';
-                    }else{
-                        item3.groupBtn='off';
-                    }
+                    // if(groupStatus.length==0){
+                    //     item3.groupBtn='on';
+                    // }else{
+                    //     item3.groupBtn='off';
+                    // }
                     $.each(lightList, function (i, item4) {
                         var status = item4.status;
                         var state = statusM1(status).state;
                         var img = statusM1(status).imgBtn;
                         var warning = statusM1(status).warning;
                         var hint = '';
-                        if (warning) {
+                        if (status==null) {
                             hint = 'active';
                         } else {
                             hint = '';
                         }
-                        var  off='';
-
-                        if (status == 1 || status == null) {
-                            // $(this).find('.yellow').text('');
-                            off='';
-                            off='off';
-                            // $(this).find('.yellow').addClass('off');
-                        }
-                        lightContent += '<li class="clearfix"> <div class="f-l p-r r-min-line"><div class="middle p-a light-name">灯' + item4.lname + '</div></div><div class="f-l p-r r-min-line"><div class="middle p-a yellow ' + hint + off+'">' + item4.y + '</div></div>' +
+                        // var  off='';
+                        //
+                        // if (status == 1 || status == null) {
+                        //     // $(this).find('.yellow').text('');
+                        //     off='off';
+                        //     // $(this).find('.yellow').addClass('off');
+                        // }
+                        lightContent += '<li class="clearfix"> <div class="f-l p-r r-min-line"><div class="middle p-a light-name">灯' + item4.lname + '</div></div><div class="f-l p-r r-min-line"><div class="middle p-a yellow ' + hint+'">' + item4.y + '</div></div>' +
                             ' <div class="f-l p-r"><div class="middle p-a light-btn click-btn" >' + img + '</div></div></li>';
                     })
 
@@ -361,63 +371,109 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
         console.log('centerLNumList长度小于0')
     }
 }
+//点击单组
 $(".content").on('click', ".group-btn", function () {
-    var src = $(this).attr('src');
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-")+1,src.lastIndexOf("."))
+    // console.log(src)
     var groupOrder = extractNum($(this).parent().parent().siblings().find('.max').text());
-    // var groupOrder = parseInt($(this).parent().siblings('label').find('span').text());
-    if ($(this).attr('alt') == '开') {
-        var onOffOrder = '0037';
-    } else if ($(this).attr('alt') == '关') {
+    if (src=="off"){
         var onOffOrder = '0032';
+    }else if (src=="on"){
+        var onOffOrder = '0037';
     }
-    if (groupOrder <= 9) {
-        var command = '770104160' + groupOrder + onOffOrder + '66';
-    } else if (groupOrder == 10) {
-        var command = '770104160A' + onOffOrder + '66';
-    }
-    if ($(this).attr("alt") == "total-on") {
-        var command = '77010315373766';
-    } else if ($(this).attr("alt") == "total-off") {
-        var command = '77010315323266';
-    }
+    // if (groupOrder>0){
+    groupOrder =  parseInt(groupOrder).toString(16).toUpperCase()
+    var command = '770104160' + groupOrder + onOffOrder + '66';
+    // }
     var floor = getUrlParams('floor');
-    var host;
-    switch (floor) {
-        case "1":
-            host = "192.168.16.103";
-            break;
-        case "2":
-            host = "192.168.16.68";
-            break;
-        case "3":
-            host = '192.168.16.66';
-            break;
-        case "4":
-            host = '192.168.16.70';
-            break;
-        case "5":
-            host = '192.168.16.71';
-            break;
-        case "6":
-            host = "192.168.16.72";
-            break;
-        case "7":
-            host = "192.168.16.73";
-            break;
-        case "8":
-            host = "192.168.16.80";
-            break;
-        case "9":
-            host = "192.168.16.79";
-            break;
-        case "10":
-            host = "192.168.16.76";
-            break;
-    }
+    var host = getHostByFloor(floor);
 
     $.post("/sendSocket6", {
         "command": command,
         "host": host
-    }, function () {
+    }, function (msg) {
+        // console.log(msg)
+        if (msg.success=='success'){
+            // console.log(state)
+            if (src=="off"){
+                $(state).attr('src','/static/new/img/light-on.PNG');
+            }else if (src=="on"){
+                $(state).attr('src','/static/new/img/light-off.PNG');
+            }
+        }
     })
 })
+//区域开关
+$(".content").on('click', ".place-btn", function () {
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-")+1,src.lastIndexOf("."));
+    if (src=="off"){
+        var onOffOrder = '0032';
+    }else if (src=="on"){
+        var onOffOrder = '0037';
+    }
+    var placeOrder = $(this).parent().parent().parent().siblings().find('.max');
+    var groupOrder;
+    var commandArr = [];
+    var command;
+    var floor = getUrlParams('floor');
+    var host = getHostByFloor(floor);
+    placeOrder.each(function (key,value) {
+        // console.log("placeOrdr",$(this).text())
+        groupOrder = extractNum($(this).text());
+        groupOrder =  parseInt(groupOrder).toString(16).toUpperCase();
+        command = '770104160' + groupOrder + onOffOrder + '66';
+        commandArr[key]=command;
+    });
+    // console.log(commandArr)
+    $.ajax({
+        type:"POST",
+        url:"/sendSocket7",
+        dataType:"json",
+        // contentType:"application/json",
+        // processData: false,
+        data:"commands="+commandArr+"&host="+host,
+        success:function (msg) {
+            if (msg.success=='success'){
+                // console.log(state)
+                if (src=="off"){
+                    $(state).attr('src','/static/new/img/light-on.PNG');
+                }else if (src=="on"){
+                    $(state).attr('src','/static/new/img/light-off.PNG');
+                }
+            }
+        }
+    })
+});
+
+//单楼层总开总关
+$(".middle.p-a").on('click', "p", function () {
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-")+1,src.lastIndexOf("."));
+    var centerOrder = $(this).parent().parent().parent().find('.mname').text();
+    centerOrder = centerOrder.substring(0,1);
+    var host = getHostByFloor(centerOrder);
+
+    if (src=="off"){
+        var command = '77010315323266';
+    }else if (src=="on"){
+        var command = '77010315373766';
+    }
+    $.post("/sendSocket6", {
+        "command": command,
+        "host": host
+    }, function (msg) {
+        if (msg.success=='success'){
+            // console.log(state)
+            if (src=="off"){
+                $(state).attr('src','/static/new/img/light-on.PNG');
+            }else if (src=="on"){
+                $(state).attr('src','/static/new/img/light-off.PNG');
+            }
+        }
+    })
+});
