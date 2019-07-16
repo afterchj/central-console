@@ -113,14 +113,29 @@ public class MonitorController {
     @RequestMapping(value = "/getNewMonitor", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getNewMonitor() {
-        int id = monitor2Dao.getCommandId("16");
+        int id = monitor2Dao.getCommandId("10");
         commandId.compareAndSet(0, id);
         Map<String, Object> map = new HashMap<>();
+        List<String> exceptions = webCmdDao.getExceptions();
+        List<String> diffs = webCmdDao.getDiff();
         List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
+        List<Map<String, Object>> centerLNums = new ArrayList<>();
+        for (Map<String, Object> centerNum:centerLNumList){
+            centerNum.put("exception","0");
+            centerNum.put("diff","0");
+            if (exceptions.contains(centerNum.get("mname"))){
+                centerNum.put("exception","1");
+            }
+            if (diffs.contains(centerNum.get("mname"))){
+                centerNum.put("diff","1");
+            }
+            centerLNums.add(centerNum);
+        }
+
         List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
         Map statusMap = getSwitchStatus(lightState);
-        map.put("centerLNumList", centerLNumList);
+        map.put("centerLNumList", centerLNums);
         map.put("placeLNumList", placeLNumList);
         map.put("lightState", lightState);
         map.put("status", statusMap);

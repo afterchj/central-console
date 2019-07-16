@@ -17,4 +17,10 @@ public interface WebCmdDao {
 
     @Select("select cid,host,y from t_command_info where ctype is not null and SUBSTRING_INDEX(SUBSTRING_INDEX(host,'.',-2),'.',1)='10' and ctype='CW' and log_date BETWEEN  DATE_ADD(now(),INTERVAL -1 minute) and now() order by id desc limit 3")
     List<CommandLight> getWebCmd();
+
+    @Select("select mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and d.other='intelligence' and i.y is null  group by substring_index(mname,'楼',1)+0 ")
+    List<String> getExceptions();
+
+    @Select("select i.mname from (select count(*) as count,mname,place,groupId from f_light_demo d,t_light_info i where d.lmac=i.lmac and d.other='intelligence' group by substring_index(mname,'楼',1)+0 ,place,groupId  having count(*)<4) i group by substring_index(i.mname,'楼',1)+0")
+    List<String> getDiff();
 }

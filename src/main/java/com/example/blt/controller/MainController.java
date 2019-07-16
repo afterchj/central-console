@@ -202,6 +202,16 @@ public class MainController {
             command = "7701021907";
         } else if (command.equals("场景八")) {
             command = "7701021908";
+        }else if (command.equals("场景1")) {
+            command = "7701021901";
+        }else if (command.equals("场景2")) {
+            command = "7701021902";
+        } else if (command.equals("场景3")) {
+            command = "7701021903";
+        } else if (command.equals("场景4")) {
+            command = "7701021904";
+        } else if (command.equals("场景5")) {
+            command = "7701021905";
         }
         String cmd = host + ":" + command;
         map.put("command", command);
