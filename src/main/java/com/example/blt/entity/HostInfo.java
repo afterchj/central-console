@@ -16,11 +16,10 @@ public class HostInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 64)
+    @Column(unique = true,length = 64)
     private String ip;
     private boolean status=true;
     private String other;
-    private Date create_date=new Date();
     private Date log_date=new Date();
 
     public int getId() {
@@ -45,14 +44,6 @@ public class HostInfo implements Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    public Date getCreate_date() {
-        return create_date;
-    }
-
-    public void setCreate_date(Date create_date) {
-        this.create_date = create_date;
     }
 
     public Date getLog_date() {

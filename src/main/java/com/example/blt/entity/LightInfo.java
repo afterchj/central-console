@@ -14,6 +14,7 @@ public class LightInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true,length = 64)
     private String lmac;
     private String vaddr;
     private String mesh_id;
