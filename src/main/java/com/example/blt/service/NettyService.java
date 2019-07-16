@@ -1,7 +1,10 @@
 package com.example.blt.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.dd.Topics;
+import com.example.blt.exception.NoTopicException;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.utils.ConsoleUtil;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -64,7 +67,11 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     for (String ip : ipSet) {
                         params.put("host", ip);
                         params.put("list", lmacSet);
-                        sqlSessionTemplate.update("console.saveUpdate2", params);
+                        try {
+                            ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
+                        } catch (NoTopicException e) {
+                            sqlSessionTemplate.update("console.saveUpdate2", params);
+                        }
                     }
                     return;
                 }
