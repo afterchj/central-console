@@ -211,7 +211,7 @@ function getUrlParams(name) { // 不传name返回所有值，否则返回对应�
 //lightState灯状态数据转换
 function lightStateM(lightState) {
     // var floorName = [{allBtn: 'on',}];
-    var floorName =[], groupName = [], placeName = [], lightName = [], obj1 = {};
+    var floorName = [], groupName = [], placeName = [], lightName = [], obj1 = {};
     $.each(lightState, function (i, item) {
         var mname = item.mname;
         var groupId = item.groupId;
@@ -476,7 +476,7 @@ function statusM(status, blue) {
     }
 }
 function statusM1(status, blue) {
-    var img, imgBtn, state, warning = false;
+    var img, imgBtn, state;
     if (status == 0) {
         state = '开';
         imgBtn = '<img src="/static/new/img/light-on.PNG" alt="">';
@@ -490,24 +490,23 @@ function statusM1(status, blue) {
         state = '关';
         imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
         img = '<img src="/static/new/img/normal.png" alt="">';
-        warning = true;
+      
     } else if (status == null) {
         state = '异常';
         imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
         img = '<img src="/static/new/img/switch-abnormal.png" alt="">';
-        warning = true;
+     
     }
     return obj = {
         img: img,
         state: state,
-        warning: warning,
         imgBtn: imgBtn
     }
 }
 function statusM2(btn) {
     var img, imgBtn, state;
     //全异常 null,全关 1
-    if (btn=='off') {
+    if (btn == 'off') {
         state = '关';
         imgBtn = '<img src="/static/new/img/light-off.PNG" alt="">';
     } else {
@@ -520,6 +519,264 @@ function statusM2(btn) {
     }
 }
 
-$(".content").on('click', ".btn", function () {
+// $(".content").on('click', ".btn", function () {
+//
+// })
 
-})
+//json格式数据
+
+function treeData(resData) {
+    var floor = [];
+    var place = [];
+    var group = [];
+    if (resData.length != 0) {
+        var obj1 = {};
+        for (var i = 0; i < resData.length; i++) {
+            if (!obj1[resData[i].mname]) {
+                var obj = {
+                    mname: resData[i].mname,
+                    placeList: []
+                };
+                floor.push(obj);
+                obj1[resData[i].mname] = true;
+            }
+            var placeList = {
+                mname: resData[i].mname,
+                place:resData[i].place,
+                groupList: []
+            };
+            place.push(placeList);
+            var groupList = {
+                mname: resData[i].mname,
+                place:resData[i].place,
+                groupId: resData[i].groupId,
+                status:resData[i].status,
+                other:resData[i].other,
+            };
+            group.push(groupList);
+        }
+        // $.each(resData, function (i, item) {
+            $.each(floor, function (i, item1) {
+                var obj2 = {};
+                $.each(place, function (i, item2) {
+                    if (item1.mname == item2.mname) {
+                        if (!obj2[item2.place]) {
+                            var obj = {
+                                mname: item2.mname,
+                                place: item2.place,
+                                groupList: []
+                            };
+                            item1.placeList.push(obj);
+                            obj2[item2.place] = true;
+                        }
+                    }
+                })
+            })
+        // })
+        $.each(floor, function (i, item1){
+            $.each(group, function (i, item2){
+                if (item1.mname == item2.mname) {
+                    var placeList=item1.placeList;
+                    var obj3 = {};
+                    $.each(placeList,function(i, item3){
+                        if (item2.place == item3.place) {
+                            if (!obj3[item2.groupId]) {
+                                var obj = {
+                                    mname: item2.mname,
+                                    place: item2.place,
+                                    groupId: item2.groupId,
+                                    status:item2.status,
+                                    other:item2.other,
+                                };
+                                item3.groupList.push(obj);
+                                obj3[item2.groupId] = true;
+                            }
+                        }
+                    })
+                }
+            })
+        })
+        // $.each(resData, function (i, item) {
+        //     $.each(floor, function (i, item1) {
+        //         var obj3 = {};
+        //             $.each(place, function (i, item2) {
+        //                 if (item1.mname == item2.mname) {
+        //                     $.each(item1.placeList, function (i, item3) {
+        //                         if(item1.place==item3.place ) {
+        //                             if (!obj3[item3.groupId]) {
+        //                                 var obj = {
+        //                                     mname: item3.mname,
+        //                                     place: item2.place,
+        //                                     groupId: item3.groupId,
+        //                                 };
+        //                                 item1.groupList.push(obj);
+        //                                 obj3[item3.groupId] = true;
+        //                             }
+        //                         }
+        //                     })
+        //                 }
+        //             })
+        //
+        //     })
+        // })
+
+        // $.each(resData, function (i, item) {
+        //     $.each(floor, function (i, item2) {
+        //         if (item.mname == item2.mname) {
+        //             $.each(place, function (i, item3) {
+        //                 if(item.place==item3.place){
+        //                     $.each(group, function (i, item4) {
+        //                         if(item.groupId==item4.groupId){
+        //                             if (!obj4[item4.groupId]) {
+        //                                 var obj = {
+        //                                     mname: item2.mname,
+        //                                     place: item3.place,
+        //                                     groupId: item4.groupId,
+        //                                 };
+        //                                 item4.groupList.push(obj);
+        //                                 obj4[item4.mname] = true;
+        //                             }
+        //                         }
+        //                     })
+        //                 }
+        //             })
+        //         }
+        //     })
+        // })
+        return floor;
+    }
+
+    // var obj1={};
+    // if(resData.length!=0){
+    //     for(var i=0;i<resData.length;i++){
+    //         if(!obj1[resData[i][m]]){
+    //             var obj2={
+    //                 m:resData[i].m,
+    //                 children:[]
+    //             };
+    //             tree.push(obj2);
+    //             obj1[resData[i][m]] = true;
+    //         }
+    //     }
+    // }
+
+
+    // function run(chiArr,m ,n) {
+    //     if (resData.length !== 0) {
+    //         for (var i = 0; i < chiArr.length; i++) {
+    //             for (var j = 0; j < resData.length; i++) {
+    //                 if (chiArr[i][m] === resData[j][m]) {
+    //
+    //                     var obj = {
+    //                         n: resData[j][n],
+    //                         children: []
+    //                     };
+    //                     chiArr[i].children.push(obj);
+    //                 }
+    //             }
+    //             run(chiArr[i].children);
+    //         }
+    //     }
+    // }
+    // console.log('tree',tree);
+    // return tree;
+
+}
+// function data(treeData,resData,m){
+//     var tree;
+//     var obj={};
+//     if(treeData.length>0){
+//         tree=treeData;
+//     }else{
+//         tree=[];
+//     }
+//     console.log('tree11',tree);
+//     if(resData.length!=0){
+//         for(var i=0;i<resData.length;i++){
+//             if(!obj[resData[i][m]]){
+//                 var obj1={
+//                     m:resData[i].m,
+//                     children:[]
+//                 };
+//                 tree.push(obj1);
+//                 obj[resData[i][m]] = true;
+//             }
+//         }
+//     }
+//     return tree;
+// }
+
+// function transData(a,idStr,pidStr,childrenStr) {
+//     var r=[],hash={},id=idStr,pid=pidStr,children=childrenStr,i=0,j=0,len=a.length;
+//     for(;i<len;i++){
+//         hash[a[i][id]]=a[i];
+//     }
+//     for(;j<len;j++){
+//       var aVal=a[j], hashVP= hash[aVal[pid]];
+//       if(hashVP){
+//           !hashVP[children] && (hashVP[children]=[]);
+//           hashVP[children].push(aVal);
+//       }else{
+//           r.push(aVal);
+//       }
+//     }
+//     return r;
+// }
+
+// function toTree(data){
+//     data.forEach(function(item){
+//         delete  item.children;
+//     });
+//     var map={};
+//     data.forEach(function(item){
+//         map[item.mname]==item;
+//     });
+//     var val=[];
+//     data.forEach(function(item){
+//         var parent=map[item.place];
+//         if(parent){
+//             (parent.children || (parent.children=[])).push(item);
+//         }else{
+//             val.push(item);
+//         }
+//     });
+//     return val;
+// }
+
+//根据楼层回去ip
+function getHostByFloor(floor) {
+    var host;
+    switch (floor) {
+        case "1":
+            host = "192.168.10.11";
+            break;
+        case "2":
+            host = "192.168.10.12";
+            break;
+        case "3":
+            host = '192.168.10.13';
+            break;
+        case "4":
+            host = '192.168.10.14';
+            break;
+        case "5":
+            host = '192.168.10.15';
+            break;
+        case "6":
+            host = "192.168.10.16";
+            break;
+        case "7":
+            host = "192.168.10.17";
+            break;
+        case "8":
+            host = "192.168.10.18";
+            break;
+        case "9":
+            host = "192.168.10.19";
+            break;
+        case "10":
+            host = "192.168.10.20";
+            break;
+    }
+    return host;
+}
