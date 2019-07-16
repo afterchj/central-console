@@ -2,6 +2,9 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.entity.dd.Topics;
+import com.example.blt.exception.NoTopicException;
+import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
 import io.netty.channel.Channel;
@@ -102,11 +105,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+        insertOrUpdateHost(ctx);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        insertOrUpdateHost(ctx);
         ctx.close().sync();
     }
 
@@ -118,7 +121,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             Map map = new HashMap();
             map.put("ip", ip);
             map.put("status", channel.isActive());
-            sqlSessionTemplate.insert("console.insertHost", map);
+            try {
+                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (NoTopicException e) {
+                sqlSessionTemplate.insert("console.insertHost", map);
+            }
         }
     }
 }
