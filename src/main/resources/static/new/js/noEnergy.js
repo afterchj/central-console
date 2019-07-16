@@ -324,7 +324,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
             }
             var imgBtn = statusM3(other).imgBtn;
             $('.search .nowFloor-on-of').replaceWith(imgBtn);
-            $('.search .nowFloor .floor').text('实验室-'+fmname+'层');
+
         })
 
         //左侧导航
@@ -332,11 +332,14 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
         // console.log('左侧导航',status)
         var state = statusM(status).state;
         var img = statusM(status).img;
+        var active="";
         if(extractNum(item.mname) == fmname){
             nowFloorState=img;
+            active="active";
+            nowFloorNumTotal=item.centerLNumTotal;
         }
         item.centerLNum = sum(placeList, 'placeLNum', 1);
-                leftNav += '<li><a  href="javascript:void(0); "><div class="clearfix"><div class="f-l p-r">' +
+                leftNav += '<li class="'+active+'"><a  href="javascript:void(0); " ><div class="clearfix"><div class="f-l p-r">' +
                     '<div class="nav-l p-a"><div class="floor">实验室-<span>' + item.mname + '</span></div>' +
                     '<div class="switch-hint">(<span class=" center-LNum">' + item.centerLNum + '</span> / <span class="">' + item.centerLNumTotal + '</span>)</div>' +
                     '</div></div><div class="f-l p-r"><div class="nav-r p-a"><div class="left-img">' +
@@ -365,16 +368,15 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
     if (centerLNumList.length > 0) {
         $.each(centerLNumList, function (i, item) {
             var mname = item.mname;
+            if(extractNum(mname)==fmname){
+                nowFloorNum=item.centerLNum;
+            }
             $('.nave li').each(function () {
                 var floor = $(this).find('.floor span').text();
-                var img=$(this).find('.left-img img').attr('src');
                 if (extractNum(mname) == extractNum(floor)) {
                     if (item.centerLNum) {
                         //初始化
                         $(this).find('.center-LNum').text(item.centerLNum);
-                        nowFloorNum=item.centerLNum;
-                        nowFloorNumTotal=item.centerLNumTotal;
-
                     } else {
                         //更新
                         var sum = 0;
@@ -394,6 +396,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
     } else {
         console.log('centerLNumList长度小于0')
     }
+    $('.search .nowFloor .floor').text('实验室-'+fmname+'层');
     $('.search .nowState img').replaceWith(nowFloorState);
     $('.search .nowFloor .font-color span:first-child').text(nowFloorNum);
     $('.search .nowFloor .font-color span:last-child').text(nowFloorNumTotal);
@@ -440,7 +443,7 @@ $(".content").on('click', ".place-btn", function () {
     if (src=="off"){
         var onOffOrder = '3232';
     }else if (src=="on"){
-        var onOffOrder = '3237';
+        var onOffOrder = '3737';
     }
     var placeOrder = $(this).parent().parent().parent().next().find('.max');
     var groupOrder;
