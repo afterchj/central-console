@@ -94,16 +94,19 @@ public class MainTest {
 
     @Test
     public void testUpdate() {
-        List addr = sqlSessionTemplate.selectList("console.getVaddr");
-        Set list = new HashSet(addr);
-        sqlSessionTemplate.update("console.saveUpdate2", list);
+//        List addr = sqlSessionTemplate.selectList("console.getVaddr");
+//        Set list = new HashSet(addr);
+        Set<String> set=new HashSet<>();
+        set.add("1234");
+        logger.warn("list="+set);
 //        Set<Map> set = new HashSet<>();
 //        set.addAll(list);
-        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), list, 30);
-        logger.warn("set=" + list.size());
-//        Map map=new HashMap();
-//        map.put("list",set);
-//        sqlSessionTemplate.update("console.saveUpdate2", map);
+        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
+        logger.warn("set=" + set.size());
+        Map map=new HashMap();
+        map.put("collection",set);
+        map.put("host","127.0.0.1");
+        sqlSessionTemplate.update("console.saveUpdate2", map);
 //        Set<Map> list = ConsoleUtil.persistHosts();
 //        map.put("list", list);
 //        sqlSessionTemplate.selectList("console.batchInsert", map);

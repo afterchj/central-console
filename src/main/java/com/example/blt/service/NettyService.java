@@ -13,6 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -44,7 +46,8 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //    }
 
     @Scheduled(cron = "0/20 * * * * ?")
-    public void checkSize() throws InterruptedException {
+    public void checkSize() {
+        Map params = new HashMap();
         Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
@@ -58,7 +61,11 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                 if (size == null) {
                     ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), vaddrSet.size());
                 } else if (size == vaddrSet.size()) {
-                    sqlSessionTemplate.update("console.saveUpdate2", lmacSet);
+                    for (String ip : ipSet) {
+                        params.put("host", ip);
+                        params.put("list",lmacSet);
+                        sqlSessionTemplate.update("console.saveUpdate2", params);
+                    }
                     return;
                 }
             }
