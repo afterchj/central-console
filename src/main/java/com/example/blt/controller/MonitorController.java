@@ -152,9 +152,9 @@ public class MonitorController {
 //        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
 //        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
         if (commandInfo != null) {
-            int id = commandInfo.getId();
-            if (newCommandId.get() < id) {
-                newCommandId.set(id);
+//            int id = commandInfo.getId();
+//            if (newCommandId.get() < id) {
+//                newCommandId.set(id);
                 List<LightDemo> lightDemos = new ArrayList<>();
                 LightDemo lightDemo = new LightDemo();
                 String ctype = commandInfo.getCtype();
@@ -332,7 +332,7 @@ public class MonitorController {
 
                 map.put("lightDemo", lightDemos);
                 map.put("scenes", scenes);
-            }
+//            }
         }
         return map;
     }
