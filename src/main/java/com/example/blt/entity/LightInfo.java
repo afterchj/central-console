@@ -22,7 +22,7 @@ public class LightInfo {
     private String y;
     private String product_id;
     private String host;
-    private int status;
+    private Integer status;
     private String other;
     private Date log_date=new Date();
 
