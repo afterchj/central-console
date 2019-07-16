@@ -4,6 +4,7 @@
 $(function () {
     $('.tabs').tabslet();
     run();
+    // init()
 })
 async function run(){
         const resylt1= await init();
@@ -95,7 +96,10 @@ function operation(lightState, placeLNumList, centerLNumList,status) {
     var floorStatus=status.floorStatus;
     var groupStatus=status.groupStatus;
     var placeStatus=status.placeStatus;
-    // console.log('lightState',lightState)
+    console.log('lightState',lightState)
+    console.log('floorStatus',floorStatus)
+    console.log('groupStatus',groupStatus)
+    console.log('placeStatus',placeStatus)
     var allBtn;
     if(allStatus.length==0){
         allBtn='on';
@@ -111,11 +115,11 @@ function operation(lightState, placeLNumList, centerLNumList,status) {
         // var centerLBtn=item.centerLBtn;
         var placeList = item.placeList;
         // console.log('floorStatus',floorStatus);
-        if(floorStatus.length==0){
-            item.centerLBtn='on';
-        }else{
-            item.centerLBtn='off';
-        }
+        // if(floorStatus.length==0){
+        //     item.centerLBtn='on';
+        // }else{
+        //     item.centerLBtn='off';
+        // }
 
         $.each(placeList, function (i, item2) {
             var groupList = item2.groupList;

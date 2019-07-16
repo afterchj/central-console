@@ -209,8 +209,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
     var leftNav = '';
     var leftIndex = '<li class="current active"><a href="/newIndex">首页</a></li>';
     $.each(lightState, function (i, item) {
-        // var centerLNum = item.centerLNum;
-        // var centerLNumTotal = item.centerLNumTotal;
+
         var mname = item.mname;
         var placeList = item.placeList;
         if (extractNum(item.mname) == fmname) {
@@ -283,47 +282,47 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
                         $('.content').append(content);
                     }
                 })
+                swiper('.light-swiper', 3)
             })
-            swiper('.light-swiper', 3, 1, 'row')
-        }
-        // else {
-        //     $.each(placeList, function (i, item2) {
-        //         var groupList = item2.groupList;
-        //         $.each(groupList, function (i, item3) {
-        //             var lightList = item3.lightList;
-        //             $.each(lightList, function (i, item4) {
-        //                 var status = item4.status;
-        //                 var state = statusM1(status).state;
-        //                 var img = statusM1(status).img;
-        //                 var warning = statusM1(status).warning;
-        //             })
-        //             var status = item3.groupState = jsonIsEqual(lightList, 'status');
-        //             var state = statusM(status).state;
-        //             var img = statusM(status, 'blue').img;
-        //             item3.groupNum = item3.groupTotal - sum(lightList, 'status', null);
-        //         })
-        //         var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
-        //         var state = statusM(status).state;
-        //         var img = statusM(status, 'blue').img;
-        //         item2.placeLNum = sum(groupList, 'groupNum', 1);
-        //         var sumTotal = parseInt(item2.placeLNumTotal) - sum(groupList, 'groupNum', 1);
-        //
-        //     })
-        //
-        // }
 
-
-        $.each(floorStatus, function (i, item6) {
-            if (extractNum(item6.mname) == fmname) {
-                var other = item6.other;
+            $.each(floorStatus, function (i, item6) {
+                var other;
+                if (extractNum(item6.mname) == fmname) {
+                    other = item6.other;
+                }else{
+                    other = '关';
+                }
                 var imgBtn = statusM3(item6.other).imgBtn;
-                $('.nowFloor-on-of').replaceWith(imgBtn);
-            }
-        })
+                $('.search .nowFloor-on-of').replaceWith(imgBtn);
+            })
+        }else{
+            $.each(placeList, function (i, item2) {
+                var groupList = item2.groupList;
+
+                $.each(groupList, function (i, item3) {
+                    var lightList = item3.lightList;
+                    $.each(lightList, function (i, item4) {
+                        item4.status;
+                    })
+
+                    item3.groupState = jsonIsEqual(lightList, 'status');
+                    item3.groupNum = parseInt(item3.groupTotal) - sum(lightList, 'status', null);
+
+                })
+                $.each(placeStatus, function (i, item5) {
+                    item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
+                    item2.placeLNum = sum(groupList, 'groupNum', 1);
+                })
+            })
+        }
+
+
         //左侧导航
-        var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState')
+        var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState');
+        // console.log('左侧导航',status)
         var state = statusM(status).state;
         var img = statusM(status).img;
+
         item.centerLNum = sum(placeList, 'placeLNum', 1);
                 leftNav += '<li><a  href="javascript:void(0); "><div class="clearfix"><div class="f-l p-r">' +
                     '<div class="nav-l p-a"><div class="floor">实验室-<span>' + item.mname + '</span></div>' +
@@ -331,7 +330,9 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
                     '</div></div><div class="f-l p-r"><div class="nav-r p-a"><div class="left-img">' +
                     img + '</div><div class="switch-hint">' + state + '</div></div></div></div></a></li>';
     })
+
     $('.nave ul').append(leftIndex + leftNav);
+
     if (placeLNumList.length > 0) {
         $.each(placeLNumList, function (i, item) {
             if (item.mname == fmname) {
@@ -354,10 +355,15 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
             var mname = item.mname;
             $('.nave li').each(function () {
                 var floor = $(this).find('.floor span').text();
+                var img=$(this).find('.left-img img').attr('src');
                 if (mname == floor) {
+                     $('.search .nowState img').attr('src',img);
                     if (item.centerLNum) {
                         //初始化
                         $(this).find('.center-LNum').text(item.centerLNum);
+                        $('.search .nowFloor .font-color span:first-child').text(item.centerLNum);
+                        $('.search .nowFloor .font-color span:last-child').text(item.centerLNumTotal);
+                        $('.search .nowFloor .floor').text('实验室-'+fmname+'层');
                     } else {
                         //更新
                         var sum = 0;
@@ -378,6 +384,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
     } else {
         console.log('centerLNumList长度小于0')
     }
+
 }
 //点击单组
 $(".content").on('click', ".group-btn", function () {
@@ -482,6 +489,19 @@ $(".middle.p-a").on('click', "p", function () {
             }else if (src=="on"){
                 $(state).attr('src','/static/new/img/light-off.PNG');
             }
+        }
+    })
+});
+$(".status.card").on('click', "button", function () {
+    var command = $.trim($("select").val());
+    var floor = getUrlParams('floor');
+    var host = getHostByFloor(floor);
+    $.post("/sendSocket5", {
+        "command": command,
+        "host": host
+    }, function (msg) {
+        if (msg.success=='success'){
+            $(".img-levels .f-l:eq(1) p[class='font-color']").text(command)
         }
     })
 });
