@@ -82,26 +82,31 @@ public class MainTest {
 
     @Test
     public void testSqlSession() {
+        List hosts =  sqlSessionTemplate.selectList("console.getHosts");
+        Set set = new HashSet(hosts);
 //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
 //        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
-        String str = "77040F0227E9010000713232000000000000CC";
+//        String str = "77040F0227E9010000713232000000000000CC";
 //        StrUtil.buildLightInfo(str,"127.0.0.1");
-        ExecuteTask.pingInfo("127.0.0.1", str);
-        System.out.println(str);
+//        ExecuteTask.pingInfo("127.0.0.1", str);
+        System.out.println(hosts+"\t"+set);
     }
 
     @Test
     public void testUpdate() {
-        List addr = sqlSessionTemplate.selectList("console.getVaddr");
-        Set list = new HashSet(addr);
-        sqlSessionTemplate.update("console.saveUpdate2", list);
+//        List addr = sqlSessionTemplate.selectList("console.getVaddr");
+//        Set list = new HashSet(addr);
+        Set<String> set=new HashSet<>();
+        set.add("1234");
+        logger.warn("list="+set);
 //        Set<Map> set = new HashSet<>();
 //        set.addAll(list);
-        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), list, 30);
-        logger.warn("set=" + list.size());
-//        Map map=new HashMap();
-//        map.put("list",set);
-//        sqlSessionTemplate.update("console.saveUpdate2", map);
+        ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
+        logger.warn("set=" + set.size());
+        Map map=new HashMap();
+        map.put("collection",set);
+        map.put("host","127.0.0.1");
+        sqlSessionTemplate.update("console.saveUpdate2", map);
 //        Set<Map> list = ConsoleUtil.persistHosts();
 //        map.put("list", list);
 //        sqlSessionTemplate.selectList("console.batchInsert", map);

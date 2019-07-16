@@ -53,36 +53,19 @@ public class MainController {
     @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendSocket4(String host, String command) {
-        String info;
         Map<String, String> map = new HashMap<>();
-        String result = "success";
-        String host1 = "192.168.1.191";//茶室
-        String host2 = "192.168.1.192";//活动室
-        String host3 = "192.168.1.193";//客餐厅
-        String host4 = "192.168.1.195";//洽谈室
-        String host5 = "192.168.1.194";//办公大厅
+        String result;
         if (command.equalsIgnoreCase("ON")) {
             //开
             command = "77010315373766";
-            map.put("command", command);
         } else if (command.equalsIgnoreCase("OFF")) {
             //关
             command = "77010315323266";
-            map.put("command", command);
         }
-        if (host.equals("all")) {
-            //向所有地址发信息
-            map.put("host", "all");
-            info = JSON.toJSONString(map);
-            ControlTask task = new ControlTask(info);
-            result = ExecuteTask.sendCmd(task);
-        } else {
-//            String cmd = host + ":" + command;
-            map.put("host", host);
-            info = JSON.toJSONString(map);
-            ControlTask task = new ControlTask(info);
-            result = ExecuteTask.sendCmd(task);
-        }
+        map.put("host", host);
+        map.put("command", command);
+        ControlTask task = new ControlTask(JSON.toJSONString(map));
+        result = ExecuteTask.sendCmd(task);
         map.put("success", result);
         return map;
     }

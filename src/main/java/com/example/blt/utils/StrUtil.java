@@ -22,12 +22,13 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class StrUtil {
 
     private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
+    private static Set<String> ipSet = new CopyOnWriteArraySet<>();
     private static Set<String> lmacSet = new CopyOnWriteArraySet<>();
     private static Set<String> vaddrSet = new CopyOnWriteArraySet<>();
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     public static void buildLightInfo(String ip, String... array) {
-        ConsoleUtil.cleanSet(lmacSet, vaddrSet);
+        ConsoleUtil.cleanSet(lmacSet, vaddrSet,ipSet);
         for (String str : array) {
             Map map = new HashMap();
 //        String str = msg.replace(" ", "");
@@ -40,7 +41,7 @@ public class StrUtil {
                 int index = str1.length();
                 String vaddr = str.substring(index, index + 8);
                 vaddrSet.add(vaddr);
-                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 20);
+                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 30);
                 String x = str.substring(index + 10, index + 12);
                 String y = str.substring(index + 12, index + 14);
                 if (str.contains("3232")) {
@@ -57,6 +58,7 @@ public class StrUtil {
                     sqlSessionTemplate.selectOne("console.saveLight", map);
                 }
             } else if (str.indexOf("77040F01") != -1) {
+                ipSet.add(ip);
 //            String prefix = str.substring(0, 8);
                 String lmac = str.substring(8, 20).toLowerCase();
                 String vaddr = str.substring(20, 28);
@@ -66,7 +68,8 @@ public class StrUtil {
                 String mac = sortMac(lmac);
                 map.put("lmac", mac);
                 lmacSet.add(mac);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 80);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 70);
+                ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 80);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
                 } catch (NoTopicException e) {

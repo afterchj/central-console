@@ -3,6 +3,7 @@ package com.example.blt.netty;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.task.ExecuteTask;
+import com.example.blt.utils.SpringUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,10 +11,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 服务器主要的业务逻辑
@@ -23,6 +27,8 @@ import java.net.SocketAddress;
  */
 @ChannelHandler.Sharable
 public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
+
+    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     private static Logger logger = LoggerFactory.getLogger(ChatServerHandler.class);
     //保存所有活动的用户
@@ -90,19 +96,29 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        Channel channel = ctx.channel();
-//        logger.warn("[" + channel.remoteAddress().toString() + "] " + "online");
+        insertOrUpdateHost(ctx);
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        Channel channel = ctx.channel();
-//        logger.warn("[" + channel.remoteAddress().toString() + "] " + "offline");
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        insertOrUpdateHost(ctx);
         ctx.close().sync();
+    }
+
+    private void insertOrUpdateHost(ChannelHandlerContext ctx) {
+        Channel channel = ctx.channel();
+        String addr = channel.remoteAddress().toString();
+        String ip = addr.substring(1, addr.indexOf(":"));
+        if (!ip.equals("127.0.0.1")) {
+            Map map = new HashMap();
+            map.put("ip", ip);
+            map.put("status", channel.isActive());
+            sqlSessionTemplate.insert("console.insertHost", map);
+        }
     }
 }

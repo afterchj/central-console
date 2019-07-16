@@ -1,8 +1,6 @@
 package com.example.blt.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.utils.ConsoleUtil;
@@ -49,25 +47,35 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
+        Map params = new HashMap();
+        Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
         JSONObject object = new JSONObject();
-        object.put("host", "all");
-        object.put("command", "7701012766");
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
-            logger.warn("lmacSize=" + lmacSet.size());
+            logger.warn(ipSet + " lmacSize=" + lmacSet.size());
             if (null != vaddrSet) {
                 logger.warn("size=" + size + ",vaddrSize=" + vaddrSet.size());
                 if (size == null) {
                     ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), vaddrSet.size());
                 } else if (size == vaddrSet.size()) {
-                    sqlSessionTemplate.update("console.saveUpdate2", lmacSet);
+                    for (String ip : ipSet) {
+                        params.put("host", ip);
+                        params.put("list",lmacSet);
+                        sqlSessionTemplate.update("console.saveUpdate2", params);
+                    }
                     return;
                 }
             }
-            ClientMain.sendCron(object.toJSONString());
+            if (ipSet != null) {
+                for (String ip : ipSet) {
+                    object.put("host", ip);
+                    object.put("command", "7701012766");
+                    ClientMain.sendCron(object.toJSONString());
+                }
+            }
         }
     }
 
