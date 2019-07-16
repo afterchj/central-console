@@ -201,6 +201,9 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
     var groupStatus=status.groupStatus;
     // groupStatus=treeData(groupStatus);
     var placeStatus=status.placeStatus;
+    var nowFloorNum;
+    var nowFloorNumTotal;
+    var nowFloorState;
     console.log('lightState',lightState);
     console.log('allStatus',allStatus);
     console.log('floorStatus',floorStatus);
@@ -222,7 +225,6 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
                     var lightContent = '';
                     $.each(lightList, function (i, item4) {
                         var status = item4.status;
-                        var state = statusM1(status).state;
                         var img = statusM1(status).imgBtn;
                         var y = item4.y == "-60%" ? '' : item4.y;
 
@@ -251,28 +253,42 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
                     var state = statusM(status).state;
                     var img = statusM(status, 'blue').img;
                     item3.groupNum = parseInt(item3.groupTotal) - sum(lightList, 'status', null);
+                    var imgBtn;
+                    var other;
                     $.each(groupStatus, function (i, item4) {
                         if (item4.groupId == item3.groupId) {
-                            var imgBtn = statusM3(item4.other).imgBtn;
-                            var title = '<div class="place-title"><div class="clearfix "><div class="f-l p-r r-line"><div class="middle p-a "><p class="max">组' + item3.groupId + '</p>' +
-                                '<p>(<span>' + item3.groupNum + '</span>/ <span>' + item3.groupTotal + '</span>)</p></div></div><div class="f-l p-r r-line"><div class="middle p-a"><p>' + img + '</p></div>' +
-                                '</div><div class="f-l p-r"> <div class="middle p-a min"><p class="group-btn click-btn" alt="' + state + '">' + imgBtn + '</p> <p>开关</p></div></div></div></div>';
-
-                            rightList += '<div class="place f-l swiper-slide">' + title + '<div class="place-content"><ul>' + lightContent + '</ul></div></div>';
+                            other = item4.other;
+                        }else{
+                            other = '开';
                         }
                     })
+                    imgBtn = statusM3(other).imgBtn;
+                    var title = '<div class="place-title"><div class="clearfix "><div class="f-l p-r r-line"><div class="middle p-a "><p class="max">组' + item3.groupId + '</p>' +
+                        '<p>(<span>' + item3.groupNum + '</span>/ <span>' + item3.groupTotal + '</span>)</p></div></div><div class="f-l p-r r-line"><div class="middle p-a"><p>' + img + '</p></div>' +
+                        '</div><div class="f-l p-r"> <div class="middle p-a min"><p class="group-btn click-btn" alt="' + state + '">' + imgBtn + '</p> <p>开关</p></div></div></div></div>';
+
+                    rightList += '<div class="place f-l swiper-slide">' + title + '<div class="place-content"><ul>' + lightContent + '</ul></div></div>';
 
                 })
+                var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
+                var img = statusM(status, 'blue').img;
+                item2.placeLNum = sum(groupList, 'groupNum', 1);
+                var sumTotal = parseInt(item2.placeLNumTotal) - sum(groupList, 'groupNum', 1);
+                var imgBtn;
+                var other;
                 $.each(placeStatus, function (i, item5) {
-                    var status = item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
-                    var img = statusM(status, 'blue').img;
-                    item2.placeLNum = sum(groupList, 'groupNum', 1);
-                    var sumTotal = parseInt(item2.placeLNumTotal) - sum(groupList, 'groupNum', 1);
+                    if (extractNum(item5.mname) == fmname && item5.place == item2.place) {
+                         other = item5.other;
+
+                    }else{
+                        other = '开';
+                    }
+                })
+                imgBtn = statusM3(other).imgBtn;
                     var right = ' <div class="light-list f-l "> <div class="swiper-container light-swiper"> <div class="swiper-wrapper clearfix ">' +
                         rightList + ' <div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
-                    if (extractNum(item5.mname) == fmname && item5.place == item2.place) {
-                        var other = item5.other;
-                        var imgBtn = statusM3(item5.other).imgBtn;
+
+
                         var left = '<div class="on-off f-l"><div class="clearfix btn green "><div class="f-l p-r"><div class="pp-num middle p-a "><p class="mname">区域' + item2.place + '</p><p>(<span class="place-LNum1">' + item2.placeLNum + '</span>/ <span>' + item2.placeLNumTotal + '</span>)</p></div></div>' +
                             ' <div class="f-l"> <span>故障：</span><span class="error">' + sumTotal + '</span> </div> ' +
                             '<div class="f-l"> <div class="img place-btn click-btn">  ' +
@@ -280,49 +296,45 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
                             '<div class="min-font">开关</div> </div> </div> </div> </div>';
                         var content = '<div class="clearfix">' + left + right + '</div>';
                         $('.content').append(content);
-                    }
-                })
                 swiper('.light-swiper', 3)
             })
 
-            $.each(floorStatus, function (i, item6) {
-                var other;
-                if (extractNum(item6.mname) == fmname) {
-                    other = item6.other;
-                }else{
-                    other = '关';
-                }
-                var imgBtn = statusM3(item6.other).imgBtn;
-                $('.search .nowFloor-on-of').replaceWith(imgBtn);
-            })
+
         }else{
             $.each(placeList, function (i, item2) {
                 var groupList = item2.groupList;
-
                 $.each(groupList, function (i, item3) {
                     var lightList = item3.lightList;
                     $.each(lightList, function (i, item4) {
                         item4.status;
                     })
-
                     item3.groupState = jsonIsEqual(lightList, 'status');
                     item3.groupNum = parseInt(item3.groupTotal) - sum(lightList, 'status', null);
-
                 })
-                $.each(placeStatus, function (i, item5) {
-                    item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
-                    item2.placeLNum = sum(groupList, 'groupNum', 1);
-                })
+                item2.placeLNumState = jsonIsEqual1(groupList, 'groupState');
+                item2.placeLNum = sum(groupList, 'groupNum', 1);
             })
         }
-
+        $.each(floorStatus, function (i, item6) {
+            var other;
+            if (extractNum(item6.mname) == fmname) {
+                other = item6.other;
+            }else{
+                other = '开';
+            }
+            var imgBtn = statusM3(other).imgBtn;
+            $('.search .nowFloor-on-of').replaceWith(imgBtn);
+            $('.search .nowFloor .floor').text('实验室-'+fmname+'层');
+        })
 
         //左侧导航
         var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState');
         // console.log('左侧导航',status)
         var state = statusM(status).state;
         var img = statusM(status).img;
-
+        if(extractNum(item.mname) == fmname){
+            nowFloorState=img;
+        }
         item.centerLNum = sum(placeList, 'placeLNum', 1);
                 leftNav += '<li><a  href="javascript:void(0); "><div class="clearfix"><div class="f-l p-r">' +
                     '<div class="nav-l p-a"><div class="floor">实验室-<span>' + item.mname + '</span></div>' +
@@ -356,14 +368,13 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
             $('.nave li').each(function () {
                 var floor = $(this).find('.floor span').text();
                 var img=$(this).find('.left-img img').attr('src');
-                if (mname == floor) {
-                     $('.search .nowState img').attr('src',img);
+                if (extractNum(mname) == extractNum(floor)) {
                     if (item.centerLNum) {
                         //初始化
                         $(this).find('.center-LNum').text(item.centerLNum);
-                        $('.search .nowFloor .font-color span:first-child').text(item.centerLNum);
-                        $('.search .nowFloor .font-color span:last-child').text(item.centerLNumTotal);
-                        $('.search .nowFloor .floor').text('实验室-'+fmname+'层');
+                        nowFloorNum=item.centerLNum;
+                        nowFloorNumTotal=item.centerLNumTotal;
+
                     } else {
                         //更新
                         var sum = 0;
@@ -372,7 +383,6 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
                                 $(this).find('.place').each(function () {
                                     var num = parseInt($(this).find('.p-num').text());
                                     sum += num;
-
                                 })
                             }
                         })
@@ -384,7 +394,9 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
     } else {
         console.log('centerLNumList长度小于0')
     }
-
+    $('.search .nowState img').replaceWith(nowFloorState);
+    $('.search .nowFloor .font-color span:first-child').text(nowFloorNum);
+    $('.search .nowFloor .font-color span:last-child').text(nowFloorNumTotal);
 }
 //点击单组
 $(".content").on('click', ".group-btn", function () {
@@ -394,9 +406,9 @@ $(".content").on('click', ".group-btn", function () {
     // console.log(src)
     var groupOrder = extractNum($(this).parent().parent().siblings().find('.max').text());
     if (src=="off"){
-        var onOffOrder = '0032';
+        var onOffOrder = '3232';
     }else if (src=="on"){
-        var onOffOrder = '0037';
+        var onOffOrder = '3737';
     }
     // if (groupOrder>0){
     groupOrder =  parseInt(groupOrder).toString(16).toUpperCase()
@@ -426,11 +438,11 @@ $(".content").on('click', ".place-btn", function () {
     var state = $(this).children();
     src = src.substring(src.lastIndexOf("-")+1,src.lastIndexOf("."));
     if (src=="off"){
-        var onOffOrder = '0032';
+        var onOffOrder = '3232';
     }else if (src=="on"){
-        var onOffOrder = '0037';
+        var onOffOrder = '3237';
     }
-    var placeOrder = $(this).parent().parent().parent().siblings().find('.max');
+    var placeOrder = $(this).parent().parent().parent().next().find('.max');
     var groupOrder;
     var commandArr = [];
     var command;
@@ -469,9 +481,8 @@ $(".middle.p-a").on('click', "p", function () {
     var src = $(this).children().attr('src');
     var state = $(this).children();
     src = src.substring(src.lastIndexOf("-")+1,src.lastIndexOf("."));
-    var centerOrder = $(this).parent().parent().parent().find('.mname').text();
-    centerOrder = centerOrder.substring(0,1);
-    var host = getHostByFloor(centerOrder);
+    var floor = getUrlParams('floor');
+    var host = getHostByFloor(floor);
 
     if (src=="off"){
         var command = '77010315323266';
