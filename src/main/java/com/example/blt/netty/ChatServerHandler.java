@@ -102,11 +102,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        insertOrUpdateHost(ctx);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        insertOrUpdateHost(ctx);
         ctx.close().sync();
     }
 
