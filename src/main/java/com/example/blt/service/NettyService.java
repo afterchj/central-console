@@ -55,7 +55,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         JSONObject object = new JSONObject();
 //        int size = ConsoleUtil.getLightSize("Office");
         if (null != lmacSet) {
-            logger.warn(ipSet + " lmacSize=" + lmacSet.size());
+            logger.warn("lmacSize=" + lmacSet.size() + ",ips:" + ipSet);
             if (null != vaddrSet) {
                 logger.warn("size=" + size + ",vaddrSize=" + vaddrSet.size());
                 if (size == null) {
@@ -63,7 +63,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                 } else if (size == vaddrSet.size()) {
                     for (String ip : ipSet) {
                         params.put("host", ip);
-                        params.put("list",lmacSet);
+                        params.put("list", lmacSet);
                         sqlSessionTemplate.update("console.saveUpdate2", params);
                     }
                     return;

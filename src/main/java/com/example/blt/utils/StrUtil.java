@@ -68,8 +68,8 @@ public class StrUtil {
                 String mac = sortMac(lmac);
                 map.put("lmac", mac);
                 lmacSet.add(mac);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 70);
-                ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 80);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 90);
+                ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 100);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
                 } catch (NoTopicException e) {
