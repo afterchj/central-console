@@ -217,22 +217,22 @@ function operation(lightState, placeLNumList, centerLNumList, fmname,status) {
         if (extractNum(item.mname) == fmname) {
             $.each(placeList, function (i, item2) {
                 var groupList = item2.groupList;
-                if(placeStatus.length==0){
-                    item2.placeLBtn='on';
-                }else{
-                    item2.placeLBtn='off';
-                }
+                // if(placeStatus.length==0){
+                //     item2.placeLBtn='on';
+                // }else{
+                //     item2.placeLBtn='off';
+                // }
                 //右侧数据展示
 
                 var rightList = '';
                 $.each(groupList, function (i, item3) {
                     var lightList = item3.lightList;
                     var lightContent = '';
-                    if(groupStatus.length==0){
-                        item3.groupBtn='on';
-                    }else{
-                        item3.groupBtn='off';
-                    }
+                    // if(groupStatus.length==0){
+                    //     item3.groupBtn='on';
+                    // }else{
+                    //     item3.groupBtn='off';
+                    // }
                     $.each(lightList, function (i, item4) {
                         var status = item4.status;
                         var state = statusM1(status).state;
