@@ -14,6 +14,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,20 +109,16 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        try {
-            ctx.close().sync();
-        } catch (InterruptedException e) {
-        } finally {
-            insertOrUpdateHost(ctx);
-        }
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws InterruptedException {
+        insertOrUpdateHost(ctx);
+        ctx.close().sync();
     }
 
     private void insertOrUpdateHost(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
         String addr = channel.remoteAddress().toString();
         String ip = addr.substring(1, addr.indexOf(":"));
-        if (!ip.equals("127.0.0.1")) {
+        if (StringUtils.isNotEmpty(ip) && !ip.equals("127.0.0.1")) {
             Map map = new HashMap();
             map.put("ip", ip);
             map.put("status", channel.isActive());
