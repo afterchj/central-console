@@ -8,8 +8,8 @@ $(function () {
 async function run(){
         const resylt1= await init();
         console.log('巡检执行完毕');
-        const resylt2= await realTime();
-        console.log('动态数据更新执行完毕');
+        // const resylt2= await realTime();
+        // console.log('动态数据更新执行完毕');
     // const resylt2= await setInterval(()=>{
     //         realTime();
     //         console.log('动态数据更新执行完毕');
@@ -341,7 +341,7 @@ $(".content").on('click', ".centerL-btn", function () {
     })
 });
 //总楼层开关
-$(".p-a .middle").on('click', ".pointer", function () {
+$(".p-a.middle").on('click', ".pointer", function () {
     var src = $(this).children().attr('src');
     var state = $(this).children();
     src = src.substring(src.lastIndexOf("-")+1,src.lastIndexOf("."));
