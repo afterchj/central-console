@@ -14,7 +14,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,16 +115,19 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     private void insertOrUpdateHost(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        String addr = channel.remoteAddress().toString();
-        String ip = addr.substring(1, addr.indexOf(":"));
-        if (StringUtils.isNotEmpty(ip) && !ip.equals("127.0.0.1")) {
-            Map map = new HashMap();
-            map.put("ip", ip);
-            map.put("status", channel.isActive());
-            try {
-                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
-            } catch (NoTopicException e) {
-                sqlSessionTemplate.insert("console.insertHost", map);
+        SocketAddress address = channel.remoteAddress();
+        if (address != null) {
+            String addr = address.toString();
+            String ip = addr.substring(1, addr.indexOf(":"));
+            if (!ip.equals("127.0.0.1")) {
+                Map map = new HashMap();
+                map.put("ip", ip);
+                map.put("status", channel.isActive());
+                try {
+                    ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
+                } catch (NoTopicException e) {
+                    sqlSessionTemplate.insert("console.insertHost", map);
+                }
             }
         }
     }
