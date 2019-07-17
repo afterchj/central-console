@@ -39,7 +39,7 @@
     </select>
 
     <select id="getHosts" resultType="string">
-        SELECT ip FROM t_host_info WHERE status=1
+        SELECT ip FROM t_host_info WHERE ip !='127.0.0.1' AND status=1
     </select>
 
     <select id="getVaddr" resultType="string">
