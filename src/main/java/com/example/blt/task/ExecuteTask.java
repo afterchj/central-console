@@ -48,7 +48,7 @@ public class ExecuteTask {
             executorService.submit(() -> {
                 MapUtil.removeEntries(map, new String[]{"lmac"});
                 set.add(map);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), set, 80);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), set, 5);
             });
         } else if (msg.indexOf("77040F0227") != -1) {
             executorService.submit(() -> {

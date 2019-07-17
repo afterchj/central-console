@@ -64,6 +64,8 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                 if (size == null) {
                     ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), vaddrSet.size());
                 } else if (size == vaddrSet.size()) {
+                    ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue());
+                    ConsoleUtil.cleanKey(ConsoleKeys.HOSTS.getValue());
                     for (String ip : ipSet) {
                         params.put("host", ip);
                         params.put("list", lmacSet);

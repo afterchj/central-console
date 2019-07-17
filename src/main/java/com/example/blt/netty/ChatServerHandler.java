@@ -14,7 +14,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.net.SocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 服务器主要的业务逻辑
@@ -78,10 +78,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         if (len >= 22) {
-            logger.error("[" + to + "] receive :" + cmd);
             ExecuteTask.pingInfo(host, arg1.split("CCCCC"));
-        } else {
-            logger.warn("[" + to + "] receive :" + cmd);
         }
     }
 
@@ -110,26 +107,19 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws InterruptedException {
-        insertOrUpdateHost(ctx);
         ctx.close().sync();
     }
 
     private void insertOrUpdateHost(ChannelHandlerContext ctx) {
+        Map map = new ConcurrentHashMap();
         Channel channel = ctx.channel();
-        SocketAddress address = channel.remoteAddress();
-        if (address != null) {
-            String addr = address.toString();
-            String ip = addr.substring(1, addr.indexOf(":"));
-            if (StringUtils.isNotEmpty(ip) && !ip.equals("127.0.0.1")) {
-                Map map = new HashMap();
-                map.put("ip", ip);
-                map.put("status", channel.isActive());
-                try {
-                    ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
-                } catch (NoTopicException e) {
-                    sqlSessionTemplate.insert("console.insertHost", map);
-                }
-            }
+        String addr = channel.remoteAddress().toString();
+        map.put("ip", addr.substring(1, addr.indexOf(":")));
+        map.put("status", channel.isActive());
+        try {
+            ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
+        } catch (NoTopicException e) {
+            sqlSessionTemplate.insert("console.insertHost", map);
         }
     }
 }
