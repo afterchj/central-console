@@ -59,18 +59,9 @@
     </insert>
 
     <insert id="insertHost" parameterType="map">
-        <choose>
-            <when test="status == null">
-                REPLACE INTO t_host_info(ip,status,log_date) VALUE (#{ip},0,now())
-            </when>
-            <when test="status == ''">
-                REPLACE INTO t_host_info(ip,status,log_date) VALUE (#{ip},0,now())
-            </when>
-            <otherwise>
-                REPLACE INTO t_host_info(ip,status,log_date) VALUE (#{ip},#{status},now())
-            </otherwise>
-        </choose>
+        REPLACE INTO t_host_info(ip,status,log_date) VALUE (#{ip},#{status},now())
     </insert>
+
     <select id="selectIn" parameterType="map" resultType="map">
         SELECT * FROM t_light_info WHERE vaddr IN
         <foreach collection="list" index="index" item="info" separator="," open="(" close=")">

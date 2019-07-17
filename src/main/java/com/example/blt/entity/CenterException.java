@@ -11,6 +11,24 @@ public class CenterException {
     private String mname;
     private int exception;
     private int diff;
+    private int on;
+    private int off;
+
+    public int getOn() {
+        return on;
+    }
+
+    public void setOn(int on) {
+        this.on = on;
+    }
+
+    public int getOff() {
+        return off;
+    }
+
+    public void setOff(int off) {
+        this.off = off;
+    }
 
     public String getMname() {
         return mname;

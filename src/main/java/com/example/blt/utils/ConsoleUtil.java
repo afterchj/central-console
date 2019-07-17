@@ -28,12 +28,12 @@ public class ConsoleUtil {
 
     public static void saveLmac(String key, Set list, int expire) {
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
-        operations.set(key, list, expire, TimeUnit.SECONDS);
+        operations.set(key, list, expire, TimeUnit.MINUTES);
     }
 
     public static void saveHost(String key, Set list, int expire) {
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
-        operations.set(key, list, expire, TimeUnit.SECONDS);
+        operations.set(key, list, expire, TimeUnit.MINUTES);
     }
 
     public static void saveInfo(String key, Integer size) {
@@ -43,6 +43,10 @@ public class ConsoleUtil {
 
     public static Set getInfo(String key) {
         return (Set) redisTemplate.opsForValue().get(key);
+    }
+
+    public static void cleanKey(String key) {
+        redisTemplate.delete(key);
     }
 
     public static void cleanSet(Set lmacSet, Set vaddrSet, Set ipSet) {

@@ -118,12 +118,14 @@ public class MainTest {
     @Test
     public void testConsole() {
         List<Map> vaddr = sqlSessionTemplate.selectList("console.getVaddr");
-        System.out.println("light=" + ConsoleUtil.getLightSize("lmacn"));
+//        System.out.println("light=" + ConsoleUtil.getLightSize("lmacn"));
+        System.out.println("vaddr=" + vaddr.size());
         String key1 = ConsoleKeys.VADDR.getValue();
         String key2 = ConsoleKeys.lMAC.getValue();
-        ConsoleUtil.saveInfo("test_vaddr", vaddr.size());
-        Integer size = (Integer) ConsoleUtil.getValue("test_vadd");
-        System.out.println("size=" + size);
+        ConsoleUtil.saveInfo("test_vaddr", 101);
+        System.out.println("size=" +  ConsoleUtil.getValue("test_vaddr"));
+        ConsoleUtil.cleanKey("test_vaddr");
+        System.out.println("size=" +  ConsoleUtil.getValue("test_vaddr"));
 //        Set set2 = getInfo(key2);
     }
 

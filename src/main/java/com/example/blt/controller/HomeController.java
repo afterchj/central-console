@@ -100,7 +100,7 @@ public class HomeController {
             map.put("vaddr", vaddrSet);
             map.put("vaddrSize", vaddrSet.size());
         }
-        if (ipSet != vaddrSet) {
+        if (null != ipSet) {
             map.put("hosts", ipSet);
             map.put("hostSize", ipSet.size());
         }
