@@ -35,7 +35,7 @@
             let cmd = $("#txt").val();
             let host = $("#hosts").val();
             $.get("/test", {"command": cmd, "host": host}, function (result) {
-                console.log("result", result);
+                console.log("cmd",cmd,"host",host,"result", result);
             });
             socket.send(cmd);
         });
@@ -67,7 +67,7 @@
 <p>
     <label for="test">获取灯信息：</label>
     <input style="width: 200px" type="text" id="txt" placeholder="默认ping指令7701011B66" value="7701011B66"/>
-    <select style="width: 200px" id="hosts" name="host">
+    <select id="hosts" name="host">
         <option value="all" selected>all</option>
     </select>
     <input type="button" id="test" value="测试"/>
