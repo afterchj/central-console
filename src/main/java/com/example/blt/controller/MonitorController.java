@@ -119,10 +119,11 @@ public class MonitorController {
         Map<String, Object> map = new HashMap<>();
         List<String> exception = webCmdDao.getException();
         List<String> diff = webCmdDao.getDiff();
-        List<String> diffs = webCmdDao.getDiffs();
-        List<String> exceptions = webCmdDao.getExceptions();
-        List<CenterException> mnames = webCmdDao.getMnames();
-        List<CenterException> CenterException = getCenterException(mnames,diffs,exceptions);//获取每个楼层的异常组个数
+        List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
+//        List<String> diffs = webCmdDao.getDiffs();
+//        List<String> exceptions = webCmdDao.getExceptions();
+//        List<CenterException> mnames = webCmdDao.getMnames();
+//        List<CenterException> CenterException = getCenterException(mnames,lightState,exceptions);//获取每个楼层的异常组个数
         List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
         List<Map<String, Object>> centerLNums = new ArrayList<>();
         for (Map<String, Object> centerNum:centerLNumList){
@@ -138,11 +139,11 @@ public class MonitorController {
         }
 
         List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
-        List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
+
         Map statusMap = getSwitchStatus(lightState);
         map.put("centerLNumList", centerLNums);
         //获取每个楼层的异常组个数
-        map.put("CenterExceptions", CenterException);
+//        map.put("CenterExceptions", CenterException);
         map.put("placeLNumList", placeLNumList);
         map.put("lightState", lightState);
         map.put("status", statusMap);
@@ -165,6 +166,7 @@ public class MonitorController {
                 List<LightDemo> lightDemos = new ArrayList<>();
                 LightDemo lightDemo = new LightDemo();
                 String ctype = commandInfo.getCtype();
+//            List<CenterException> mnames = webCmdDao.getMnames();
                 String status = null;
                 if ("52".equals(ctype)) {
                     //遥控器
@@ -188,15 +190,21 @@ public class MonitorController {
                         //全开
                         status = "0";
                     }
+
                     if ("all".equals(commandInfo.getHost())) {
                         lightDemo.setMname("all");
+//                        map.put("CenterExceptions", mnames);
                     } else {
                         lightDemo.setMname(getMname(commandInfo.getHost()));
+//                        List<String> diffs = webCmdDao.getDiffsByMname(getMname(commandInfo.getHost()));
+//                        List<String> exceptions = webCmdDao.getExceptionsByMname(getMname(commandInfo.getHost()));
+//                        List<CenterException> CenterException = getCenterException(mnames,diffs,exceptions);//获取每个楼层的异常组个数
+//                        map.put("CenterExceptions", CenterException);
                     }
-//                lightDemo.setMname(getMname(commandInfo.getHost()));
                     lightDemo.setStatus(status);
                     lightDemo.setOther("floor");
                     lightDemos.add(lightDemo);
+
                 } else if ("C1".equals(ctype)) {
                     //pad or 手机 组控
 
@@ -245,13 +253,15 @@ public class MonitorController {
                     map.put("floorDifference", map2.get("difference"));
                 } else if ("42".equals(ctype)) {
                     if ("01".equals(commandInfo.getCid())) {
-                        scenes = "场景一";
+                        scenes = "场景1";
                     } else if ("02".equals(commandInfo.getCid())) {
-                        scenes = "场景二";
+                        scenes = "场景2";
                     } else if ("03".equals(commandInfo.getCid())) {
-                        scenes = "场景三";
+                        scenes = "场景3";
                     } else if ("04".equals(commandInfo.getCid())) {
-                        scenes = "场景四";
+                        scenes = "场景4";
+                    }else if ("05".equals(commandInfo.getCid())) {
+                        scenes = "场景5";
                     }
                 } else if ("CW".equals(ctype)) {
                     //web
@@ -277,6 +287,7 @@ public class MonitorController {
                     List<Integer> statusList1;
                     Map<String, Boolean> map1 = new HashMap<>();
                     LightDemo placeStatus;
+                    List<CenterException> CenterException;
                     if (webCmds.size() != 3 || !placeButton) {
                         //单组
                         LightDemo lightDemo1 = new LightDemo();
@@ -298,6 +309,9 @@ public class MonitorController {
                                 placeStatus.setOther("关");
                             }
                         }
+//                        List<String> diffs = webCmdDao.getDiffsByMnameAndGroupId(getMname(commandInfo.getHost()),Integer.parseInt(webCmds.get(0).getCid(), 16));
+//                        List<String> exceptions = webCmdDao.getExceptionsByMnameAndGroupId(getMname(commandInfo.getHost()),Integer.parseInt(webCmds.get(0).getCid(), 16));
+//                        CenterException = getCenterException(mnames,diffs,exceptions);//获取每个楼层的异常组个数
                     } else {
                         //区域
                         for (CommandLight webCmd : webCmds) {
@@ -309,6 +323,9 @@ public class MonitorController {
                             lightDemo1.setPlace(place);
                             lightDemos.add(lightDemo1);
                         }
+//                        List<String> diffs = webCmdDao.getDiffsByMnameAndPlace(getMname(commandInfo.getHost()),place);
+//                        List<String> exceptions = webCmdDao.getExceptionsByMnameAndPlace(getMname(commandInfo.getHost()),place);
+//                        CenterException = getCenterException(mnames,diffs,exceptions);//获取每个楼层的异常组个数
                         map1.put("exception", false);
                         map1.put("difference", false);
                         placeStatus = new LightDemo();
@@ -329,6 +346,7 @@ public class MonitorController {
                     if (status.equals("1")) {
                         floorStatus.setOther("关");
                     }
+//                    map.put("CenterExceptions", CenterException);
                     map.put("placeStatus", placeStatus);
                     map.put("floorStatus", floorStatus);
                     map.put("placeException", map1.get("exception"));
@@ -668,20 +686,28 @@ public class MonitorController {
         return placeFlag;
     }
 
-    public List<CenterException> getCenterException(List<CenterException> mnames,List<String> diffs,List<String>
+    public List<CenterException> getCenterException(List<CenterException> mnames,List<LightDemo> lightDemos,List<String>
             exceptions){
         for (int i=0 ;i<mnames.size();i++){
-            int exception = mnames.get(i).getException();
             int diff = mnames.get(i).getDiff();
-            for (String dif:diffs){
-                if (dif.equals(mnames.get(i).getMname())){
-                    mnames.get(i).setException(exception++);
+            for (LightDemo lightDemo:lightDemos){
+                if (lightDemo.getMname().equals(mnames.get(i).getMname())){
+                    if ("0".equals(lightDemo.getStatus())||null==lightDemo.getStatus()){
+                        mnames.get(i).setOn(1);//开
+                    }else if ("1".equals(lightDemo.getStatus())){
+                        mnames.get(i).setOff(1);//关
+                    }
                 }
             }
             for (String except:exceptions){
                 if (except.equals(mnames.get(i).getMname())){
                     mnames.get(i).setDiff(diff++);
                 }
+            }
+        }
+        for (int i=0 ;i<mnames.size();i++){
+            if (mnames.get(i).getOn()==1&&mnames.get(i).getOff()==1){
+                mnames.get(i).setException(mnames.get(i).getException()+1);
             }
         }
         return mnames;
