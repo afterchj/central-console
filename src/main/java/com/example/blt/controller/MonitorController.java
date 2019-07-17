@@ -1,6 +1,7 @@
 package com.example.blt.controller;
 
 import com.example.blt.dao.*;
+import com.example.blt.entity.CenterException;
 import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
 import org.springframework.stereotype.Controller;
@@ -116,17 +117,21 @@ public class MonitorController {
         int id = monitor2Dao.getCommandId("10");
         commandId.compareAndSet(0, id);
         Map<String, Object> map = new HashMap<>();
+        List<String> exception = webCmdDao.getException();
+        List<String> diff = webCmdDao.getDiff();
+        List<String> diffs = webCmdDao.getDiffs();
         List<String> exceptions = webCmdDao.getExceptions();
-        List<String> diffs = webCmdDao.getDiff();
+        List<CenterException> mnames = webCmdDao.getMnames();
+        List<CenterException> CenterException = getCenterException(mnames,diffs,exceptions);//获取每个楼层的异常组个数
         List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
         List<Map<String, Object>> centerLNums = new ArrayList<>();
         for (Map<String, Object> centerNum:centerLNumList){
             centerNum.put("exception","0");
             centerNum.put("diff","0");
-            if (exceptions.contains(centerNum.get("mname"))){
+            if (exception.contains(centerNum.get("mname"))){
                 centerNum.put("exception","1");
             }
-            if (diffs.contains(centerNum.get("mname"))){
+            if (diff.contains(centerNum.get("mname"))){
                 centerNum.put("diff","1");
             }
             centerLNums.add(centerNum);
@@ -136,6 +141,8 @@ public class MonitorController {
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
         Map statusMap = getSwitchStatus(lightState);
         map.put("centerLNumList", centerLNums);
+        //获取每个楼层的异常组个数
+        map.put("CenterExceptions", CenterException);
         map.put("placeLNumList", placeLNumList);
         map.put("lightState", lightState);
         map.put("status", statusMap);
@@ -661,5 +668,23 @@ public class MonitorController {
         return placeFlag;
     }
 
-
+    public List<CenterException> getCenterException(List<CenterException> mnames,List<String> diffs,List<String>
+            exceptions){
+        for (int i=0 ;i<mnames.size();i++){
+            int exception = mnames.get(i).getException();
+            int diff = mnames.get(i).getDiff();
+            for (String dif:diffs){
+                if (dif.equals(mnames.get(i).getMname())){
+                    mnames.get(i).setException(exception++);
+                }
+            }
+            for (String except:exceptions){
+                if (except.equals(mnames.get(i).getMname())){
+                    mnames.get(i).setDiff(diff++);
+                }
+            }
+        }
+        return mnames;
+    }
 }
+

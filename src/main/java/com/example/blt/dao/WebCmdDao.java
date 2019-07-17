@@ -1,5 +1,6 @@
 package com.example.blt.dao;
 
+import com.example.blt.entity.CenterException;
 import com.example.blt.entity.CommandLight;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -15,12 +16,22 @@ import java.util.List;
 @Mapper
 public interface WebCmdDao {
 
-    @Select("select cid,host,y from t_command_info where ctype is not null and SUBSTRING_INDEX(SUBSTRING_INDEX(host,'.',-2),'.',1)='10' and ctype='CW' and log_date BETWEEN  DATE_ADD(now(),INTERVAL -1 minute) and now() order by id desc limit 3")
+    @Select("select cid,host,y from t_command_info where ctype is not null and SUBSTRING_INDEX(SUBSTRING_INDEX(host,'.',-2),'.',1)='10' and ctype='CW' order by id desc limit 3")
     List<CommandLight> getWebCmd();
 
     @Select("select mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and d.other='intelligence' and i.y is null  group by substring_index(mname,'楼',1)+0 ")
-    List<String> getExceptions();
+    List<String> getException();
 
     @Select("select i.mname from (select count(*) as count,mname,place,groupId from f_light_demo d,t_light_info i where d.lmac=i.lmac and d.other='intelligence' group by substring_index(mname,'楼',1)+0 ,place,groupId  having count(*)<4) i group by substring_index(i.mname,'楼',1)+0")
     List<String> getDiff();
+
+    @Select("select mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and d.other='intelligence' group by substring_index(mname,'楼',1)+0 ,place,groupId  having count(*)<4")
+    List<String> getDiffs();
+
+    @Select("select mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and d.other='intelligence' and i.y " +
+            "is null group by substring_index(mname,'楼',1)+0 ,place,groupId;")
+    List<String> getExceptions();
+
+    @Select("select mname from f_light_demo where other='intelligence' group by substring_index(mname,'楼',1)+0")
+    List<CenterException> getMnames();
 }
