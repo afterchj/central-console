@@ -14,7 +14,7 @@ async function run() {
     const result2 = await setInterval(()=> {
         realTime();
         console.log('动态数据更新执行完毕');
-    }, 5000);
+    }, 1000);
 }
 // async function result(value, ms) {
 //     await timeout(ms);
@@ -59,17 +59,18 @@ async function init() {
             }
 
             var floor = getUrlParams('floor');
-            const  CenterExceptions = data.CenterExceptions;
-            const index = CenterExceptions.findIndex(CenterExceptions=>CenterExceptions.mname==floor+'楼');//根据元素获取数组下标
-            console.log("index",index);
-            $(".error.status").text(parseInt(CenterExceptions[index].exception)+parseInt(CenterExceptions[index].diff));
-            $(".error.diff").text(parseInt(CenterExceptions[index].diff));
-            $(".error.exception").text(parseInt(CenterExceptions[index].exception));
+            // const  CenterExceptions = data.CenterExceptions;
+            // const index = CenterExceptions.findIndex(CenterExceptions=>CenterExceptions.mname==floor+'楼');//根据元素获取数组下标
+            // console.log("index",index);
+            // $(".error.status").text(parseInt(CenterExceptions[index].exception)+parseInt(CenterExceptions[index].diff));
+            // $(".error.diff").text(parseInt(CenterExceptions[index].diff));
+            // $(".error.exception").text(parseInt(CenterExceptions[index].exception));
             console.log('floor', floor);
             //json数据格式转换调用方法
             lightState = lightStateM(lightState);
             placeLNumList = placeLNumListM(placeLNumList);
-            operation(lightState, placeLNumList, centerLNumList, floor, status)
+            operation(lightState, placeLNumList, centerLNumList, floor, status);
+
         }
     });
 }
@@ -91,28 +92,34 @@ async function realTime() {
                     // lightState = lightStateM(lightState);
                     var floor = getUrlParams('floor');
                     // console.log('floor',floor);
-                    operation2(data, lightDemo, other, floor)
+                    operation2(data, lightDemo, other, floor);
+
                 }
             }
         }
     })
 }
 function operation2(data, lightDemo, other, floor) {
-    if (other == 'group') {
-        var mname = lightDemo[0].mname;
-        var groupId = lightDemo[0].groupId;
-        var status = lightDemo[0].status;
-        var img = statusM1(status).imgBtn;
-        var place = lightDemo[0].place;
-        if (lightDemo.length == 3) {
-            if (extractNum(mname) == floor) {
+    var mname = lightDemo[0].mname;
+    var status = lightDemo[0].status;
+    var imgBtn = statusM1(status).imgBtn;
+    if (extractNum(mname) == floor) {
+        if (other == 'group') {
+            var mname = lightDemo[0].mname;
+            var groupId = lightDemo[0].groupId;
+            var status = lightDemo[0].status;
+            var imgBtn = statusM1(status).imgBtn;
+            var place = lightDemo[0].place;
+            if (lightDemo.length == 3) {
+                //区域
+                // if (extractNum(mname) == floor) {
                 $('.content>.clearfix').each(function () {
                     var txt = $(this).find('.mname').text();
                     if (extractNum(txt) == place) {
                         $(this).find('.place').each(function () {
-                            $(this).find('.group-btn img').replaceWith(img);
+                            $(this).find('.group-btn img').replaceWith(imgBtn);
                             $(this).find('.place-content li').each(function () {
-                                $(this).find('img').replaceWith(img);
+                                $(this).find('img').replaceWith(imgBtn);
                                 if (status == 1 || status == null) {
                                     $(this).find('.yellow').text('');
                                     $(this).find('.yellow').addClass('off');
@@ -121,17 +128,17 @@ function operation2(data, lightDemo, other, floor) {
                         })
                     }
                 })
-            }
-        } else if (lightDemo.length == 1) {
-            //如果是当前楼层
-            if (extractNum(mname) == floor) {
+                // }
+            } else if (lightDemo.length == 1) {
+                //组
+                // if (extractNum(mname) == floor) {
                 $('.content>.clearfix').each(function () {
                     $(this).find('.place').each(function () {
                         var txt = extractNum($(this).find('.max').text());
                         if (txt == groupId) {
-                            $(this).find('.group-btn img').replaceWith(img);
+                            $(this).find('.group-btn img').replaceWith(imgBtn);
                             $(this).find('.place-content li').each(function () {
-                                $(this).find('img').replaceWith(img);
+                                $(this).find('img').replaceWith(imgBtn);
                                 if (status == 1 || status == null) {
                                     $(this).find('.yellow').text('');
                                     $(this).find('.yellow').addClass('off');
@@ -140,42 +147,14 @@ function operation2(data, lightDemo, other, floor) {
                         }
                     })
                 })
+                // }
             }
-        }
-        if (data.floorStatus) {
-            var floorStatus = data.floorStatus;
-            var floorMname = floorStatus.mname;
-            if (extractNum(floorMname) == floor) {
-                var floorOther = floorStatus.other;
-                var imgBtn = statusM3(floorOther).imgBtn;
-                $('.nowFloor-on-of').replaceWith(imgBtn);
-            }
-        }
-        if (data.placeStatus) {
-            var placeStatus = data.placeStatus;
-            var placeMname = placeStatus.mname;
-            var place = placeStatus.place;
-            if (extractNum(placeMname) == floor) {
-                var placeOther = placeStatus.other;
-                var imgBtn = statusM3(placeOther).imgBtn;
-                $('.content>.clearfix').each(function () {
-                    // $(this).find('.place').each(function () {
-                    var txt = $(this).find('.mname').text();
-                    if (extractNum(txt) == place) {
-                        $(this).find('.place-btn img').replaceWith(imgBtn);
-                    }
-                    // })
-                })
-                $('.nowFloor-on-of').replaceWith(imgBtn);
-            }
-        }
-
-    } else if (other == 'floor') {
-        var mname = lightDemo[0].mname;
-        var status = lightDemo[0].status;
-        var imgBtn = statusM1(status).imgBtn;
-        if (mname == 'all') {
-            $('.nowFloor-on-of').replaceWith(imgBtn);
+        } else if (other == 'floor') {
+            // var mname = lightDemo[0].mname;
+            // var status = lightDemo[0].status;
+            // var imgBtn = statusM1(status).imgBtn;
+            // if (mname == 'all') {
+            $('.search .switch-levels img').replaceWith(imgBtn);
             $('.content>.clearfix').each(function () {
                 $(this).find('.place-btn img').replaceWith(imgBtn);
                 $(this).find('.place').each(function () {
@@ -189,23 +168,64 @@ function operation2(data, lightDemo, other, floor) {
                     })
                 })
             })
-        } else {
-            if (extractNum(mname) == floor) {
-                $('.nowFloor-on-of').replaceWith(imgBtn);
-                $('.content>.clearfix').each(function () {
-                    $(this).find('.place-btn img').replaceWith(imgBtn);
-                    $(this).find('.place').each(function () {
-                        $(this).find('.group-btn img').replaceWith(imgBtn);
-                        $(this).find('.place-content li').each(function () {
-                            $(this).find('img').replaceWith(imgBtn);
-                            if (status == 1 || status == null) {
-                                $(this).find('.yellow').text('');
-                                $(this).find('.yellow').addClass('off');
-                            }
-                        })
+        }
+        var exceptionPng = $(".content img");
+        var un = 0;
+        var abnoraml = 0;
+        exceptionPng.each(function () {
+            var src = $(this).attr('src');
+            src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+            if (src == "un") {
+                un++;
+            } else if (src == "abnormal") {
+                abnoraml++;
+            }
+        })
+        $(".error.status").text(un + abnoraml);
+        $(".error.diff").text(un);
+        $(".error.exception").text(abnoraml);
+    } else {
+        if (mname == 'all') {
+            $('.search .switch-levels img').replaceWith(imgBtn);
+            $('.content>.clearfix').each(function () {
+                $(this).find('.place-btn img').replaceWith(imgBtn);
+                $(this).find('.place').each(function () {
+                    $(this).find('.group-btn img').replaceWith(imgBtn);
+                    $(this).find('.place-content li').each(function () {
+                        $(this).find('img').replaceWith(imgBtn);
+                        if (status == 1 || status == null) {
+                            $(this).find('.yellow').text('');
+                            $(this).find('.yellow').addClass('off');
+                        }
                     })
                 })
-            }
+            })
+        }
+    }
+
+    if (data.floorStatus) {
+        var floorStatus = data.floorStatus;
+        var floorMname = floorStatus.mname;
+        if (extractNum(floorMname) == floor) {
+            var floorOther = floorStatus.other;
+            var imgBtn = statusM3(floorOther).imgBtn;
+            $('.search .switch-levels img').replaceWith(imgBtn);
+        }
+    }
+
+    if (data.placeStatus) {
+        var placeStatus = data.placeStatus;
+        var floorMname = placeStatus.mname;
+        var place = placeStatus.place;
+        if (extractNum(floorMname) == floor) {
+            var placeOther = placeStatus.other;
+            var imgBtn = statusM3(placeOther).imgBtn;
+            $('.content>.clearfix').each(function () {
+                var txt = $(this).find('.mname').text();
+                if (extractNum(txt) == place) {
+                    $(this).find('.place-btn img').replaceWith(imgBtn);
+                }
+            })
         }
     }
 }
@@ -220,13 +240,14 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
     var nowFloorNum;
     var nowFloorNumTotal;
     var nowFloorState;
+    var nowFloorSwitch;
 
     console.log('lightState', lightState);
     console.log('allStatus', allStatus);
     console.log('floorStatus', floorStatus);
     console.log('groupStatus', groupStatus);
     console.log('placeStatus', placeStatus);
-
+    var other1 = '开';
     var leftNav = '';
     var leftIndex = '<li class="current active"><a href="/newIndex">首页</a></li>';
     $.each(lightState, function (i, item) {
@@ -242,7 +263,8 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
                     var lightContent = '';
                     $.each(lightList, function (i, item4) {
                         var status = item4.status;
-                        var img = statusM1(status).imgBtn;
+                        // var img = statusM1(status).img;
+                        var imgBtn = statusM1(status).imgBtn;
                         var y = item4.y == "-60%" ? '' : item4.y;
                         if (status == 1 || status == null) {
                             item4.lightBtn = 'off';
@@ -262,7 +284,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
                             off = '';
                         }
                         lightContent += '<li class="clearfix"> <div class="f-l p-r r-min-line"><div class="middle p-a light-name">灯' + item4.lname + '</div></div><div class="f-l p-r r-min-line"><div class="middle p-a yellow ' + hint + off + '">' + y + '</div></div>' +
-                            ' <div class="f-l p-r"><div class="middle p-a light-btn click-btn" >' + img + '</div></div></li>';
+                            ' <div class="f-l p-r"><div class="middle p-a light-btn click-btn"  alt="' + status + '">' + imgBtn + '</div></div></li>';
                     })
                     var status = item3.groupState = jsonIsEqual(lightList, 'status');
                     var state = statusM(status).state;
@@ -271,7 +293,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
                     var imgBtn;
                     var other = '开';
                     $.each(groupStatus, function (i, item4) {
-                        if (extractNum(item4.mname) == fmname && item4.mname==item.mname && item4.place==item2.place && item4.groupId == item3.groupId) {
+                        if (extractNum(item4.mname) == fmname && item4.mname == item.mname && item4.place == item2.place && item4.groupId == item3.groupId) {
                             other = item4.other;
                             // console.log('当前组222',item.mname,item4.place,item4.groupId,other);
                             return false;
@@ -290,18 +312,20 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
                 var imgBtn;
                 var other = '开';
                 $.each(placeStatus, function (i, item5) {
-                    if (extractNum(item5.mname) == fmname &&  item5.mname==item.mname && item5.place == item2.place) {
+                    if (extractNum(item5.mname) == fmname && item5.mname == item.mname && item5.place == item2.place) {
                         other = item5.other;
                         return false;
                     }
                 })
                 imgBtn = statusM3(other).imgBtn;
-                var right = ' <div class="light-list f-l "> <div class="swiper-container light-swiper"> <div class="swiper-wrapper clearfix ">' +rightList + ' <div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
-                var left = '<div class="on-off f-l"><div class="clearfix btn green "><div class="f-l p-r"><div class="pp-num middle p-a "><p class="mname">区域' + item2.place + '</p><p>(<span class="place-LNum1">' + item2.placeLNum + '</span>/ <span>' + item2.placeLNumTotal + '</span>)</p></div></div>' +' <div class="f-l"> <span>故障：</span><span class="error">' + sumTotal + '</span> </div> ' +'<div class="f-l"> <div class="img place-btn click-btn">  ' +imgBtn +'<div class="min-font">开关</div> </div> </div> </div> </div>';
+                var right = ' <div class="light-list f-l "> <div class="swiper-container light-swiper"> <div class="swiper-wrapper clearfix ">' + rightList + ' <div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
+                var left = '<div class="on-off f-l"><div class="clearfix btn green "><div class="f-l p-r"><div class="pp-num middle p-a "><p class="mname">区域' + item2.place + '</p><p>(<span class="place-LNum1">' + item2.placeLNum + '</span>/ <span>' + item2.placeLNumTotal + '</span>)</p></div></div>' + ' <div class="f-l"> <span>故障：</span><span class="error">' + sumTotal + '</span> </div> ' + '<div class="f-l"> <div class="img place-btn click-btn">  ' + imgBtn + '<div class="min-font">开关</div> </div> </div> </div> </div>';
                 var content = '<div class="clearfix">' + left + right + '</div>';
                 $('.content').append(content);
                 swiper('.light-swiper', 3)
             })
+
+
         } else {
             $.each(placeList, function (i, item2) {
                 var groupList = item2.groupList;
@@ -317,26 +341,26 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
                 item2.placeLNum = sum(groupList, 'groupNum', 1);
             })
         }
-        $.each(floorStatus, function (i, item6) {
-            var other = '开';
-            if (extractNum(item6.mname) == fmname && item6.mname==item.mname) {
-                other = item6.other;
-                return false;
-            }
-            var imgBtn = statusM3(other).imgBtn;
-            $('.search .nowFloor-on-of').replaceWith(imgBtn);
-        })
+
+
+        // nowFloorSwitch=imgBtn;
+
+        // // $('.search .nowFloor-on-of').replaceWith(imgBtn);
 
         //左侧导航
         var status = item.centerLNumState = jsonIsEqual1(placeList, 'placeLNumState');
         // console.log('左侧导航',status)
         var state = statusM(status).state;
-        var img = statusM(status).img;
+        var img;
         var active = "";
         if (extractNum(item.mname) == fmname) {
-            nowFloorState = img;
+            img = statusM(status, 'blue').img;
+            nowFloorState = statusM(status).img;
             active = "active";
             nowFloorNumTotal = item.centerLNumTotal;
+        } else {
+            active = "";
+            img = statusM(status).img;
         }
         item.centerLNum = sum(placeList, 'placeLNum', 1);
         leftNav += '<li class="' + active + '"><a  href="javascript:void(0); " ><div class="clearfix"><div class="f-l p-r">' +
@@ -344,7 +368,18 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
             '<div class="switch-hint">(<span class=" center-LNum">' + item.centerLNum + '</span> / <span class="">' + item.centerLNumTotal + '</span>)</div>' +
             '</div></div><div class="f-l p-r"><div class="nav-r p-a"><div class="left-img">' +
             img + '</div><div class="switch-hint">' + state + '</div></div></div></div></a></li>';
+
+
+        $.each(floorStatus, function (i, item6) {
+
+
+            if (extractNum(item6.mname) == fmname && item6.mname == item.mname) {
+                other1 = item6.other;
+                return false;
+            }
+        })
     })
+
 
     $('.nave ul').append(leftIndex + leftNav);
 
@@ -396,10 +431,32 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
     } else {
         console.log('centerLNumList长度小于0')
     }
+    var imgBtn1 = statusM3(other1).imgBtn;
+    nowFloorSwitch = imgBtn1;
+    console.log('当前', other1, nowFloorSwitch);
+    console.log('nowFloorSwitch', nowFloorSwitch);
     $('.search .nowFloor .floor').text('实验室-' + fmname + '层');
     $('.search .nowState img').replaceWith(nowFloorState);
     $('.search .nowFloor .font-color span:first-child').text(nowFloorNum);
     $('.search .nowFloor .font-color span:last-child').text(nowFloorNumTotal);
+    $('.search .switch-levels img').replaceWith(nowFloorSwitch);
+
+
+    var exceptionPng = $(".content img");
+    var un = 0;
+    var abnoraml = 0;
+    exceptionPng.each(function () {
+        var src = $(this).attr('src');
+        src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+        if (src == "un") {
+            un++;
+        } else if (src == "abnormal") {
+            abnoraml++;
+        }
+    })
+    $(".error.status").text(un + abnoraml);
+    $(".error.diff").text(un);
+    $(".error.exception").text(abnoraml);
 }
 //点击单组
 $(".content").on('click', ".group-btn", function () {
@@ -526,4 +583,21 @@ function water() {
     waterbubbleS('#floor-3', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
     waterbubbleS('#floor-4', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
     waterbubbleS('#floor-5', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
+}
+function realTimeStatus() {
+    var exceptionPng = $(".content img");
+    var un = 0;
+    var abnoraml = 0;
+    exceptionPng.each(function () {
+        var src = $(this).attr('src');
+        src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+        if (src == "un") {
+            un++;
+        } else if (src == "abnormal") {
+            abnoraml++;
+        }
+    })
+    $(".error.status").text(un + abnoraml);
+    $(".error.diff").text(un);
+    $(".error.exception").text(abnoraml);
 }

@@ -13,7 +13,7 @@ async function run() {
     const result2 = await setInterval(()=> {
         realTime();
         console.log('动态数据更新执行完毕');
-    }, 5000);
+    }, 1000);
 }
 
 //巡检
@@ -271,13 +271,13 @@ async function realTime() {
             console.log('更新', data);
             if (data.lightDemo && data.lightDemo[0].other != null) {
                 var lightDemo = data.lightDemo;
-                operation2(lightDemo)
+                operation2(data,lightDemo)
             }
         }
     })
 }
 
-function operation2(lightDemo) {
+function operation2(data,lightDemo) {
     var other = lightDemo[0].other;
     var sum=0;
     if (other == 'group') {
@@ -307,11 +307,7 @@ function operation2(lightDemo) {
         var imgBtn = statusM1(status).imgBtn;
 
         $('.content>.clearfix').each(function () {
-            var onStatus=$(this).find('.centerL-btn img').attr('src');
-            console.log('onStatus',onStatus);
-            if(onStatus.indexOf('on')!=-1){
-                sum++;
-            }
+
             var floor = $(this).find('.on-off .mname').text();
             if (mname == 'all') {
                 $('.totalLight img').replaceWith(imgBtn);
@@ -324,6 +320,27 @@ function operation2(lightDemo) {
             }
         })
     }
+    if (data.floorStatus) {
+        var floorStatus = data.floorStatus;
+        var floorMname = floorStatus.mname;
+        $('.content>.clearfix').each(function () {
+            var floor = $(this).find('.on-off .mname').text();
+            if (extractNum(floorMname) == extractNum(floor)) {
+                var floorOther = floorStatus.other;
+                var imgBtn = statusM3(floorOther).imgBtn;
+                console.log('floor',floor,floorMname,floorOther,imgBtn)
+                $(this).find('.centerL-btn img').replaceWith(imgBtn);
+            }
+        })
+    }
+
+    $('.content>.clearfix').each(function () {
+        var onStatus = $(this).find('.centerL-btn img').attr('src');
+        console.log('onStatus', onStatus);
+        if (onStatus.indexOf('on') != -1) {
+            sum++;
+        }
+    })
     console.log('sum',sum);
     if(sum>0){
         var imgBtn = statusM3('开').imgBtn;

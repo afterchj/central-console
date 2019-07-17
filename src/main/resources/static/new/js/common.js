@@ -106,6 +106,8 @@ function extractNum(str) {
     if (isNaN(str)) {
         var result = str.replace(/[^0-9]/ig, "");
         return result;
+    }else{
+        return str;
     }
 }
 
