@@ -497,8 +497,7 @@ public class MonitorController {
     @ResponseBody
     public Map<String, Object> getMonitor2LightStatus() {
         List<LightDemo> lightState2 = new ArrayList<>();
-        int id = monitor2Dao.getCommandId("16");
-        CommandLight commandInfo = monitor4Dao.getCommandInfo("16");
+        CommandLight commandInfo = monitor4Dao.getCommandInfo("192.168.10.22");
         List<LightDemo> placeLNumList = monitor2Dao.getPlaceLNum("Office");
         Map<String, Object> map = new HashMap<>();
         String scenes = null;

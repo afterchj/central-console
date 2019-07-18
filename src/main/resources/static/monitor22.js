@@ -28,39 +28,16 @@ $('.frame>span').click(function () {
         var command = '77010315323266';
     }
     console.log('groupOrder',groupOrder)
-    var host = '192.168.16.73';
+    var host = '192.168.10.22';
     $.post("/sendSocket6", {
         "command": command,
         "host": host,
     }, function () {})
-    // if (groupOrder!='NaN'){
-    //     var selector;
-    //     (groupOrder > 9) ? selector = '.place': selector = '.place0';
-    //     !$(selector + groupOrder + '  .light-line').find('span').not(".hide .air").each(function () {
-    //         $(this).removeClass('disconnected off on');
-    //         if (onOffOrder == '0037'){
-    //             $(this).addClass('on');
-    //         }else {
-    //             $(this).addClass('off');
-    //         }
-    //
-    //     });
-    // }else {
-    //     $('.light-line span').not(".hide .air").each(function () {
-    //         if (command == '77010315373766'){
-    //             $(this).removeClass('disconnected off on');
-    //             $(this).addClass('on');
-    //         }else if (command = '77010315323266'){
-    //             $(this).removeClass('disconnected off on');
-    //             $(this).addClass('off');
-    //         }
-    //     });
-    // }
 
 })
 $("select").change(function () {
     var command = $.trim($(this).val());
-    var host = '192.168.16.73';
+    var host = '192.168.10.22';
     $.post("/sendSocket5", {
         "command": command,
         "host": host
