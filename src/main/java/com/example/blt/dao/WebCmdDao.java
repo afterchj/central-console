@@ -27,4 +27,6 @@ public interface WebCmdDao {
 
     @Select("select mname,place,groupId from f_light_demo where other='intelligence' group by substring_index(mname,'楼',1)+0,place,groupId")
     List<CenterException> getMnames();
+
+
 }

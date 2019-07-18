@@ -4,13 +4,17 @@ import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.dao.WebCmdDao;
 import com.example.blt.entity.CenterException;
 import com.example.blt.entity.LightDemo;
+import com.example.blt.service.NewMonitorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @program: central-console
@@ -28,6 +32,9 @@ public class NewMonitorController {
     @Resource
     private Monitor4Dao monitor4Dao;
 
+    @Resource
+    private NewMonitorService newMonitorService;
+
     @RequestMapping(value = "/getNewMonitor", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getNewMonitor(String floor) {
@@ -39,7 +46,15 @@ public class NewMonitorController {
         List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
         if ("index".equals(floor)){
             //首页
+//            newMonitorService.getInitIndex();
+            Map<String,List> total = new HashMap<>();
+            List<Map<String,Object>> totalFloor = new ArrayList<>();
+//            Map<String,Object> totalFloor = new HashMap<>();
+            Map<String,Object> floors = new HashMap<>();
+            List<Map<String,Object>> places = new ArrayList<>();
+            for (int i=0;i<lightState.size();i++){
 
+            }
         }
 //        List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
 //        Map statusMap = getSwitchStatus(lightState);
@@ -49,6 +64,8 @@ public class NewMonitorController {
 //        map.put("status", statusMap);
         return map;
     }
+
+
 
 
     public List<Map<String, Object>> getLeftCenter(List<LightDemo> lightState, List<CenterException> mnames,
@@ -90,6 +107,7 @@ public class NewMonitorController {
                     }
                 }
             }
+
             centerLNums.add(centerNum);
         }
         return centerLNums;
