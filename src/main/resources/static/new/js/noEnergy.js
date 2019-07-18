@@ -118,6 +118,27 @@ function operation2(data, lightDemo, other, floor) {
                     if (extractNum(txt) == place) {
                         $(this).find('.place').each(function () {
                             $(this).find('.group-btn img').replaceWith(imgBtn);
+                            var length=$(this).find('.group-btn-s').children('img').length;
+                            console.log('length',length);
+                            if(length==2){
+                                $(this).find('.group-btn-s').children('img').each(function(){
+                                    var unlikeImg = $(this).attr('src');
+                                    console.log('unlikeImg',unlikeImg);
+                                    if (unlikeImg.indexOf('switch-un')!=-1){
+                                        $(this).replaceWith('');
+                                    }
+                                })
+                            }else if(length==1){
+                                var unlikeImg = $(this).find('.group-btn-s img').attr('src');
+                                console.log('unlikeImg',unlikeImg);
+                                if(unlikeImg.indexOf('switch-un')!=-1){
+                                    console.log('222',unlikeImg);
+                                    var img = '<img src="/static/new/img/normal-white.png" alt="">';
+                                    console.log('jjj',$(this).find('.group-btn-s img'))
+                                    $(this).find('.group-btn-s img').replaceWith(img);
+                                }
+
+                            }
                             $(this).find('.place-content li').each(function () {
                                 $(this).find('img').replaceWith(imgBtn);
                                 if (status == 1 || status == null) {
@@ -137,6 +158,27 @@ function operation2(data, lightDemo, other, floor) {
                         var txt = extractNum($(this).find('.max').text());
                         if (txt == groupId) {
                             $(this).find('.group-btn img').replaceWith(imgBtn);
+                            var length=$(this).find('.group-btn-s').children('img').length;
+                            console.log('length',length);
+                            if(length==2){
+                                $(this).find('.group-btn-s').children('img').each(function(){
+                                    var unlikeImg = $(this).attr('src');
+                                    console.log('unlikeImg',unlikeImg);
+                                    if (unlikeImg.indexOf('switch-un')!=-1){
+                                        $(this).replaceWith('');
+                                    }
+                                })
+                            }else if(length==1){
+                                var unlikeImg = $(this).find('.group-btn-s img').attr('src');
+                                console.log('unlikeImg',unlikeImg);
+                                if(unlikeImg.indexOf('switch-un')!=-1){
+                                    console.log('222',unlikeImg);
+                                    var img = '<img src="/static/new/img/normal-white.png" alt="">';
+                                    console.log('jjj',$(this).find('.group-btn-s img'))
+                                    $(this).find('.group-btn-s img').replaceWith(img);
+                                }
+
+                            }
                             $(this).find('.place-content li').each(function () {
                                 $(this).find('img').replaceWith(imgBtn);
                                 if (status == 1 || status == null) {
@@ -301,7 +343,7 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
                     })
                     imgBtn = statusM3(other).imgBtn;
                     var title = '<div class="place-title"><div class="clearfix "><div class="f-l p-r r-line"><div class="middle p-a "><p class="max">组' + item3.groupId + '</p>' +
-                        '<p>(<span>' + item3.groupNum + '</span>/ <span>' + item3.groupTotal + '</span>)</p></div></div><div class="f-l p-r r-line"><div class="middle p-a"><p>' + img + '</p></div>' +
+                        '<p>(<span>' + item3.groupNum + '</span>/ <span>' + item3.groupTotal + '</span>)</p></div></div><div class="f-l p-r r-line"><div class="middle p-a"><p class="group-btn-s">' + img + '</p></div>' +
                         '</div><div class="f-l p-r"> <div class="middle p-a min"><p class="group-btn click-btn" alt="' + state + '">' + imgBtn + '</p> <p>开关</p></div></div></div></div>';
                     rightList += '<div class="place f-l swiper-slide">' + title + '<div class="place-content"><ul>' + lightContent + '</ul></div></div>';
                 })

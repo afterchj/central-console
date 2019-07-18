@@ -106,7 +106,7 @@ function operation(lightState, placeLNumList, centerLNumList, status) {
         var rightList = '';
         var mname = item.mname;
         var placeList = item.placeList;
-        console.log('lightState',lightState);
+        console.log('lightState', lightState);
         $.each(placeList, function (i, item2) {
             var groupList = item2.groupList;
             // if(placeStatus.length==0){
@@ -162,10 +162,10 @@ function operation(lightState, placeLNumList, centerLNumList, status) {
         item.centerLNum = sum(placeList, 'placeLNum', 1);
         var sumTotal = parseInt(item.centerLNumTotal) - sum(placeList, 'placeLNum', 1);
         var imgBtn;
-        var  other = '开';
+        var other = '开';
         if (floorStatus.length > 0) {
             $.each(floorStatus, function (i, item6) {
-                if (extractNum(item6.mname) == item.mname ) {
+                if (extractNum(item6.mname) == item.mname) {
                     other = item6.other;
                     return false;
                 }
@@ -243,7 +243,7 @@ function operation(lightState, placeLNumList, centerLNumList, status) {
     } else {
         console.log('centerLNumList长度小于0')
     }
-    var sum1=0;
+    var sum1 = 0;
     $('.content>.clearfix').each(function () {
         var onStatus = $(this).find('.centerL-btn img').attr('src');
         console.log('onStatus', onStatus);
@@ -251,10 +251,10 @@ function operation(lightState, placeLNumList, centerLNumList, status) {
             sum1++;
         }
     })
-    if(sum1>0){
+    if (sum1 > 0) {
         var imgBtn = statusM3('开').imgBtn;
         $('.totalLight img').replaceWith(imgBtn);
-    }else{
+    } else {
         var imgBtn = statusM3('关').imgBtn;
         $('.totalLight img').replaceWith(imgBtn);
     }
@@ -271,15 +271,15 @@ async function realTime() {
             console.log('更新', data);
             if (data.lightDemo && data.lightDemo[0].other != null) {
                 var lightDemo = data.lightDemo;
-                operation2(data,lightDemo)
+                operation2(data, lightDemo)
             }
         }
     })
 }
 
-function operation2(data,lightDemo) {
+function operation2(data, lightDemo) {
     var other = lightDemo[0].other;
-    var sum=0;
+    var sum = 0;
     if (other == 'group') {
         var mname = lightDemo[0].mname;
         var groupId = lightDemo[0].groupId;
@@ -306,19 +306,66 @@ function operation2(data,lightDemo) {
         var status = lightDemo[0].status;
         var imgBtn = statusM1(status).imgBtn;
 
-        $('.content>.clearfix').each(function () {
 
-            var floor = $(this).find('.on-off .mname').text();
-            if (mname == 'all') {
+        if (mname == 'all') {
+            $('.content>.clearfix').each(function () {
+                var floor = $(this).find('.on-off .mname').text();
                 $('.totalLight img').replaceWith(imgBtn);
                 $(this).find('.on-off img').replaceWith(imgBtn);
-            } else {
-                if (floor == mname) {
-                    console.log(floor, mname)
+                $(this).find('.place').each(function () {
+                    var length=$(this).find('.img-place').children('img').length;
+                    if(length==2){
+                        $(this).find('.img-place').children('img').each(function(){
+                            var unlikeImg = $(this).attr('src');
+                            if (unlikeImg.indexOf('switch-un')!=-1){
+                                $(this).replaceWith('');
+                            }
+                        })
+                        $(this).find('.p-status').text('异常');
+                    }else if(length==1){
+                        var unlikeImg = $(this).find('.img-place img').attr('src');
+                        if(unlikeImg.indexOf('switch-un')!=-1){
+                            var img = '<img src="/static/new/img/normal.png" alt="">';
+                            $(this).find('.img-place img').replaceWith(img);
+                            $(this).find('.p-status').text('正常');
+                        }
+
+                    }
+
+                })
+            })
+        } else {
+
+            $('.content>.clearfix').each(function () {
+                var floor = $(this).find('.on-off .mname').text();
+                if ((floor == mname)) {
                     $(this).find('.on-off img').replaceWith(imgBtn);
+                    $(this).find('.place').each(function () {
+                        var length=$(this).find('.img-place').children('img').length;
+                        if(length==2){
+                            $(this).find('.img-place').children('img').each(function(){
+                               var unlikeImg = $(this).attr('src');
+                                if (unlikeImg.indexOf('switch-un')!=-1){
+                                    $(this).replaceWith('');
+                                }
+                            })
+                            $(this).find('.p-status').text('异常');
+                        }else if(length==1){
+                            var unlikeImg = $(this).find('.img-place img').attr('src');
+                            if(unlikeImg.indexOf('switch-un')!=-1){
+                                var img = '<img src="/static/new/img/normal.png" alt="">';
+                                $(this).find('.img-place img').replaceWith(img);
+                                $(this).find('.p-status').text('正常');
+                            }
+
+                        }
+
+                    })
                 }
-            }
-        })
+            })
+        }
+
+
     }
     if (data.floorStatus) {
         var floorStatus = data.floorStatus;
@@ -328,7 +375,7 @@ function operation2(data,lightDemo) {
             if (extractNum(floorMname) == extractNum(floor)) {
                 var floorOther = floorStatus.other;
                 var imgBtn = statusM3(floorOther).imgBtn;
-                console.log('floor',floor,floorMname,floorOther,imgBtn)
+                console.log('floor', floor, floorMname, floorOther, imgBtn)
                 $(this).find('.centerL-btn img').replaceWith(imgBtn);
             }
         })
@@ -341,11 +388,11 @@ function operation2(data,lightDemo) {
             sum++;
         }
     })
-    console.log('sum',sum);
-    if(sum>0){
+    console.log('sum', sum);
+    if (sum > 0) {
         var imgBtn = statusM3('开').imgBtn;
         $('.totalLight img').replaceWith(imgBtn);
-    }else{
+    } else {
         var imgBtn = statusM3('关').imgBtn;
         $('.totalLight img').replaceWith(imgBtn);
     }

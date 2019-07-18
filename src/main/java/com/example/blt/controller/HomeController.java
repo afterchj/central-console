@@ -2,6 +2,7 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -30,6 +31,8 @@ public class HomeController {
 
     @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    private SqlSessionTemplate sqlSessionTemplate;
 
     @RequestMapping("/")
     public String index() {
@@ -84,7 +87,7 @@ public class HomeController {
     }
 
     @ResponseBody
-    @RequestMapping("/getHost")
+    @RequestMapping("/showHost")
     public Map showHost() {
         Map map = new LinkedHashMap();
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
@@ -108,4 +111,10 @@ public class HomeController {
         return map;
     }
 
+    @ResponseBody
+    @RequestMapping("/getHost")
+    public List getHosts() {
+        List ips = sqlSessionTemplate.selectList("console.getHosts");
+        return ips;
+    }
 }
