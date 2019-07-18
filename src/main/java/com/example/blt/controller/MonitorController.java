@@ -351,6 +351,7 @@ public class MonitorController {
                 boolean placeButton = true;//区域按钮
                 String cid = webCmds.get(0).getCid();
                 int place = monitor4Dao.getPlace(getMname(host), Integer.parseInt(webCmds.get(0).getCid(), 16));
+
                 for (int i = 0; i < webCmds.size(); i++) {
                     if (i != 0) {
                         if (!host.equals(webCmds.get(i).getHost()) || !y.equals(webCmds.get(i).getY()) || cid.equals
