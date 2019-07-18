@@ -68,11 +68,11 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     ConsoleUtil.cleanKey(ConsoleKeys.HOSTS.getValue());
                     for (String ip : ipSet) {
                         params.put("host", ip);
-                        params.put("list", lmacSet);
+                        params.put("list", vaddrSet);
                         try {
                             ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
                         } catch (NoTopicException e) {
-                            sqlSessionTemplate.update("console.saveUpdate2", params);
+                            sqlSessionTemplate.update("console.saveUpdate", params);
                         }
                     }
                     return;
