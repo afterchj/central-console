@@ -56,15 +56,12 @@ public class ConsoleUtil {
         Set vaddr = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         Set ips = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         if (lmac == null) {
-            logger.warn("clean..."+ConsoleKeys.lMAC.getValue());
             lmacSet.clear();
         }
         if (vaddr == null) {
-            logger.warn("clean..."+ConsoleKeys.VADDR.getValue());
             vaddrSet.clear();
         }
         if (ips == null) {
-            logger.warn("clean..."+ConsoleKeys.HOSTS.getValue());
             ipSet.clear();
         }
     }

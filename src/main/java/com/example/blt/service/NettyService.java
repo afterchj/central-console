@@ -77,9 +77,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     return;
                 }
             }
-        } else {
-            logger.warn("cleanKey...");
-            ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
         }
         if (ipSet != null) {
             for (String ip : ipSet) {
