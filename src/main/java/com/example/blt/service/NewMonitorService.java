@@ -62,7 +62,7 @@ public class NewMonitorService {
             for (int j = 0; j < mnames.size(); j++) {
                 String mname = mnames.get(j).getMname();
                 if (msMname.equals(mname)) {
-
+//                    if ()
                 }
             }
         }

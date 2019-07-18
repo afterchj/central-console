@@ -225,7 +225,7 @@ public class MonitorController {
         CommandLight commandInfo = monitor4Dao.getCommandInfo("10");
 //        List<LightDemo> placeLNumList = monitor4Dao.getPlaceLNum("intelligence");
 //        List<LightDemo> centerLNumList = monitor4Dao.getCenterLNum("intelligence");
-        if (commandInfo != null) {
+        if (commandInfo != null&& !commandInfo.getHost().equals("192.168.10.253")) {
 //            int id = commandInfo.getId();
 //            if (newCommandId.get() < id) {
 //                newCommandId.set(id);
@@ -531,7 +531,7 @@ public class MonitorController {
                         status = "0";
                     }
                     lightState2 = monitor2Dao.getMonitorFromRemoteByStatus(status, "Office");
-                } else if ("C1".equals(commandInfo.getCtype())) {
+                } else if ("C1".equals(commandInfo.getCtype()) || "CW".equals(commandInfo.getCtype())) {
                     //pad or 手机 组控
 //                    int groupId;
                     if (commandInfo.getCid()!=null){
