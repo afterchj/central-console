@@ -18,6 +18,24 @@ public class LightDemo {
     private String y;
     private String other;
     private int count;
+    private int onNum;
+    private int offNum;
+
+    public int getOnNum() {
+        return onNum;
+    }
+
+    public void setOnNum(int onNum) {
+        this.onNum = onNum;
+    }
+
+    public int getOffNum() {
+        return offNum;
+    }
+
+    public void setOffNum(int offNum) {
+        this.offNum = offNum;
+    }
 
     public int getCount() {
         return count;

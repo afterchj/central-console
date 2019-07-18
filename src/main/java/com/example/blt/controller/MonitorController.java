@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -111,6 +108,58 @@ public class MonitorController {
         return map;
     }
 
+    public  List<Map<String, Object>> getLeftCenter(List<LightDemo> lightState,List<CenterException> mnames,
+                                                    List<Map<String, Object>> centerLNumList,List<String> exception,
+                                                    String filterMname,List<String> exceptionByGroupIdOrPlace){
+        List<Map<String, Object>> centerLNums = new ArrayList<>();
+        if (filterMname!=null && exceptionByGroupIdOrPlace.size()<=0){
+            for (Iterator<String> iter = exception.iterator();iter.hasNext();){
+                String ce = iter.next();
+                if (filterMname.equals(ce)){
+                    iter.remove();
+                }
+            }
+        }
+
+        for (int i=0;i<lightState.size();i++){
+            String lightStateMname = lightState.get(i).getMname();
+            int lightStatePlace = lightState.get(i).getPlace();
+            int lightStateGroupId = lightState.get(i).getGroupId();
+            String lightStateStatus = lightState.get(i).getStatus();
+            for (int j=0;j<mnames.size();j++){
+                if (lightStateStatus!=null){
+                    String mname = mnames.get(j).getMname();
+                    int place = mnames.get(j).getPlace();
+                    int groupId = mnames.get(j).getGroupId();
+                    if (mname.equals(lightStateMname)&&place==lightStatePlace&&groupId==lightStateGroupId){
+                        if ("0".equals(lightStateStatus)){
+                            mnames.get(j).setOn(1);
+                        }else if ("1".equals(lightStateStatus)){
+                            mnames.get(j).setOff(1);
+                        }
+                    }
+                }
+            }
+        }
+        for (Map<String, Object> centerNum:centerLNumList){
+            centerNum.put("exception","0");//默认没有异常
+            centerNum.put("diff","0");
+            if (exception.size()>0){
+                if (exception.contains(centerNum.get("mname"))){
+                    centerNum.put("exception","1");
+                }
+            }
+            for (CenterException mname:mnames){
+                    if (mname.getMname().equals(centerNum.get("mname"))){
+                        if (mname.getOn()==1&&mname.getOff()==1){
+                            centerNum.put("diff","1");
+                        }
+                    }
+            }
+            centerLNums.add(centerNum);
+        }
+        return centerLNums;
+    }
     @RequestMapping(value = "/getNewMonitor", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getNewMonitor() {
@@ -118,28 +167,14 @@ public class MonitorController {
         commandId.compareAndSet(0, id);
         Map<String, Object> map = new HashMap<>();
         List<String> exception = webCmdDao.getException();
-        List<String> diff = webCmdDao.getDiff();
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
-//        List<String> diffs = webCmdDao.getDiffs();
-//        List<String> exceptions = webCmdDao.getExceptions();
-//        List<CenterException> mnames = webCmdDao.getMnames();
-//        List<CenterException> CenterException = getCenterException(mnames,lightState,exceptions);//获取每个楼层的异常组个数
+        List<CenterException> mnames = webCmdDao.getMnames();
         List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
-        List<Map<String, Object>> centerLNums = new ArrayList<>();
-        for (Map<String, Object> centerNum:centerLNumList){
-            centerNum.put("exception","0");
-            centerNum.put("diff","0");
-            if (exception.contains(centerNum.get("mname"))){
-                centerNum.put("exception","1");
-            }
-            if (diff.contains(centerNum.get("mname"))){
-                centerNum.put("diff","1");
-            }
-            centerLNums.add(centerNum);
-        }
-
+        List<LightDemo> lightDemos = new ArrayList<>();
+        List<String> str = new ArrayList<>();
+        List<Map<String, Object>> centerLNums = getLeftCenter(lightState,mnames,centerLNumList,exception,null,str);
+        //左侧导航栏状态
         List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
-
         Map statusMap = getSwitchStatus(lightState);
         map.put("centerLNumList", centerLNums);
         //获取每个楼层的异常组个数
@@ -163,10 +198,15 @@ public class MonitorController {
 //            int id = commandInfo.getId();
 //            if (newCommandId.get() < id) {
 //                newCommandId.set(id);
+            List<String> exception = webCmdDao.getException();
+            List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
+            List<CenterException> mnames = webCmdDao.getMnames();
+            List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
+            List<Map<String, Object>> centerLNums;
+            List<String> exceptionByGroupIdOrPlace = new ArrayList<>();
                 List<LightDemo> lightDemos = new ArrayList<>();
                 LightDemo lightDemo = new LightDemo();
                 String ctype = commandInfo.getCtype();
-//            List<CenterException> mnames = webCmdDao.getMnames();
                 String status = null;
                 if ("52".equals(ctype)) {
                     //遥控器
@@ -190,16 +230,20 @@ public class MonitorController {
                         //全开
                         status = "0";
                     }
-
                     if ("all".equals(commandInfo.getHost())) {
                         lightDemo.setMname("all");
-//                        map.put("CenterExceptions", mnames);
+                        centerLNums = new ArrayList<>();
+                        for (Map<String, Object> centerNum:centerLNumList){
+                            centerNum.put("exception","0");//默认没有异常
+                            centerNum.put("diff","0");
+                            centerLNums.add(centerNum);
+                        }
+                        map.put("centerLNumList", centerLNums);
                     } else {
                         lightDemo.setMname(getMname(commandInfo.getHost()));
-//                        List<String> diffs = webCmdDao.getDiffsByMname(getMname(commandInfo.getHost()));
-//                        List<String> exceptions = webCmdDao.getExceptionsByMname(getMname(commandInfo.getHost()));
-//                        List<CenterException> CenterException = getCenterException(mnames,diffs,exceptions);//获取每个楼层的异常组个数
-//                        map.put("CenterExceptions", CenterException);
+                        centerLNums = getLeftCenter(lightState,mnames,centerLNumList,
+                                exception,getMname(commandInfo.getHost()),exceptionByGroupIdOrPlace);//左侧导航栏状态
+                        map.put("centerLNumList", centerLNums);
                     }
                     lightDemo.setStatus(status);
                     lightDemo.setOther("floor");
@@ -244,6 +288,12 @@ public class MonitorController {
                             }
                         }
                     }
+                    exceptionByGroupIdOrPlace = webCmdDao.getExceptionByGroupId
+                            (lightDemo.getGroupId(),
+                                    lightDemo.getMname(),
+                                    lightDemo.getPlace());
+                    centerLNums = getLeftCenter(lightState,mnames,centerLNumList,exception,getMname(commandInfo.getHost()),exceptionByGroupIdOrPlace);
+                    map.put("centerLNumList", centerLNums);
                     lightDemos.add(lightDemo);
                     map.put("placeStatus", placeStatus);
                     map.put("floorStatus", floorStatus);
@@ -287,7 +337,7 @@ public class MonitorController {
                     List<Integer> statusList1;
                     Map<String, Boolean> map1 = new HashMap<>();
                     LightDemo placeStatus;
-                    List<CenterException> CenterException;
+
                     if (webCmds.size() != 3 || !placeButton) {
                         //单组
                         LightDemo lightDemo1 = new LightDemo();
@@ -309,9 +359,10 @@ public class MonitorController {
                                 placeStatus.setOther("关");
                             }
                         }
-//                        List<String> diffs = webCmdDao.getDiffsByMnameAndGroupId(getMname(commandInfo.getHost()),Integer.parseInt(webCmds.get(0).getCid(), 16));
-//                        List<String> exceptions = webCmdDao.getExceptionsByMnameAndGroupId(getMname(commandInfo.getHost()),Integer.parseInt(webCmds.get(0).getCid(), 16));
-//                        CenterException = getCenterException(mnames,diffs,exceptions);//获取每个楼层的异常组个数
+                        exceptionByGroupIdOrPlace = webCmdDao.getExceptionByGroupId
+                                (lightDemo1.getGroupId(),
+                                lightDemo1.getMname(),
+                                lightDemo1.getPlace());
                     } else {
                         //区域
                         for (CommandLight webCmd : webCmds) {
@@ -323,9 +374,6 @@ public class MonitorController {
                             lightDemo1.setPlace(place);
                             lightDemos.add(lightDemo1);
                         }
-//                        List<String> diffs = webCmdDao.getDiffsByMnameAndPlace(getMname(commandInfo.getHost()),place);
-//                        List<String> exceptions = webCmdDao.getExceptionsByMnameAndPlace(getMname(commandInfo.getHost()),place);
-//                        CenterException = getCenterException(mnames,diffs,exceptions);//获取每个楼层的异常组个数
                         map1.put("exception", false);
                         map1.put("difference", false);
                         placeStatus = new LightDemo();
@@ -335,18 +383,22 @@ public class MonitorController {
                         if (status.equals("1")) {
                             placeStatus.setOther("关");
                         }
+                        exceptionByGroupIdOrPlace = webCmdDao.getExceptionByPlace(getMname(host), place);
 
                     }
                     List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(getMname(host), place, Integer.parseInt(webCmds.get(0).getCid(), 16));
-
+                    centerLNums = getLeftCenter(lightState,mnames,centerLNumList,exception,getMname(host),exceptionByGroupIdOrPlace);
                     Map map2 = getExceptionAndDiff(statusList2);
                     LightDemo floorStatus = new LightDemo();
                     floorStatus.setMname(getMname(host));
                     floorStatus.setOther("开");
                     if (status.equals("1")) {
-                        floorStatus.setOther("关");
+                        if (getSwitchStatus2(statusList2) == 0) {
+                            floorStatus.setOther("关");
+                        }
+//                        floorStatus.setOther("关");
                     }
-//                    map.put("CenterExceptions", CenterException);
+                    map.put("centerLNumList", centerLNums);
                     map.put("placeStatus", placeStatus);
                     map.put("floorStatus", floorStatus);
                     map.put("placeException", map1.get("exception"));

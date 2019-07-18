@@ -9,10 +9,28 @@ package com.example.blt.entity;
 public class CenterException {
 
     private String mname;
+    private int place;
+    private int groupId;
     private int exception;
     private int diff;
     private int on;
     private int off;
+
+    public int getPlace() {
+        return place;
+    }
+
+    public void setPlace(int place) {
+        this.place = place;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
 
     public int getOn() {
         return on;
@@ -52,5 +70,18 @@ public class CenterException {
 
     public void setDiff(int diff) {
         this.diff = diff;
+    }
+
+    @Override
+    public String toString() {
+        return "CenterException{" +
+                "mname='" + mname + '\'' +
+                ", place=" + place +
+                ", groupId=" + groupId +
+                ", exception=" + exception +
+                ", diff=" + diff +
+                ", on=" + on +
+                ", off=" + off +
+                '}';
     }
 }
