@@ -28,7 +28,7 @@ $('.frame>span').click(function () {
         var command = '77010315323266';
     }
     console.log('groupOrder',groupOrder)
-    var host = '192.168.10.35';
+    var host = '192.168.10.253';
     $.post("/sendSocket6", {
         "command": command,
         "host": host,
@@ -37,7 +37,7 @@ $('.frame>span').click(function () {
 })
 $("select").change(function () {
     var command = $.trim($(this).val());
-    var host = '192.168.10.35';
+    var host = '192.168.10.253';
     $.post("/sendSocket5", {
         "command": command,
         "host": host
