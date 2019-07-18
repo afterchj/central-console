@@ -27,7 +27,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = arg0.channel();
 //        channel.writeAndFlush(msg);
         SocketAddress address = channel.remoteAddress();
-//        logger.warn("[" + address + "] receive:" + msg);
         String str = address.toString();
         String ip = str.substring(1, str.indexOf(":"));
         ExecuteTask.pingInfo(ip, msg);

@@ -7,6 +7,7 @@ import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SocketUtil;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -27,26 +28,33 @@ import java.util.Map;
 public class MainController {
     @Resource
     private GuavaCacheManager guavaCacheManager;
-
+    @Resource
+    private SqlSessionTemplate sqlSessionTemplate;
     private Logger logger = LoggerFactory.getLogger(MainController.class);
-
-    @RequestMapping("/test")
-    public String ping(ConsoleVo consoleVo) {
-        String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(info);
-        String result = ExecuteTask.sendCmd(task);
-        int index = consoleVo.getCommand().indexOf("770101");
-        if (index == -1) {
-            ExecuteTask.pingStatus(true, 1);
-        }
-        return result;
-    }
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
         ControlTask task = new ControlTask(info);
         String result = ExecuteTask.sendCmd(task);
+        return result;
+    }
+
+    @RequestMapping("/test")
+    public String ping(ConsoleVo consoleVo) {
+        List<String> ips = sqlSessionTemplate.selectList("console.getHosts");
+        String host = consoleVo.getHost();
+        String info = JSON.toJSONString(consoleVo);
+        ControlTask task = new ControlTask(info);
+        String result = ExecuteTask.sendCmd(task);
+        int index = consoleVo.getCommand().indexOf("7701011B");
+        if (index != -1) {
+            if ("all".equals(host)) {
+                ExecuteTask.ping(false, 3, ips.toArray(new String[ips.size()]));
+            } else {
+                ExecuteTask.ping(false, 3, host);
+            }
+        }
         return result;
     }
 
@@ -202,9 +210,9 @@ public class MainController {
             command = "7701021907";
         } else if (command.equals("场景八")) {
             command = "7701021908";
-        }else if (command.equals("场景1")) {
+        } else if (command.equals("场景1")) {
             command = "7701021901";
-        }else if (command.equals("场景2")) {
+        } else if (command.equals("场景2")) {
             command = "7701021902";
         } else if (command.equals("场景3")) {
             command = "7701021903";
@@ -245,7 +253,7 @@ public class MainController {
 
     @RequestMapping(value = "/sendSocket7", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> sendSocket7( @RequestParam("commands") List<String> commands,String host) {
+    public Map<String, String> sendSocket7(@RequestParam("commands") List<String> commands, String host) {
         Map<String, String> map = new HashMap<>();
         String success = "success";
         for (int i = 0; i < commands.size(); i++) {

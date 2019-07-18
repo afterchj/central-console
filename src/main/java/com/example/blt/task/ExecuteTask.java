@@ -68,28 +68,39 @@ public class ExecuteTask {
         }
     }
 
+    public static void ping(boolean flag, int times, String... host) {
+        try {
+            for (int i = 0; i < times; i++) {
+                logger.warn("times [{}]", i + 1);
+                for (String ip : host) {
+                    JSONObject object = new JSONObject();
+                    object.put("host", ip);
+                    object.put("command", "7701011B66");
+                    ClientMain.sendCron(object.toJSONString());
+                    if (flag) {
+                        Thread.sleep(5000);
+                        object.put("command", "7701012766");
+                        ClientMain.sendCron(object.toJSONString());
+                    }
+                }
+                Thread.sleep(20000);
+            }
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
     public static void pingStatus(boolean delay, int times) {
         List<String> ips = sqlSessionTemplate.selectList("console.getHosts");
         new Thread(() -> {
             try {
                 if (delay) {
-                    new Thread().sleep(20000);
-                }
-                for (int i = 0; i < times; i++) {
-                    for (String ip : ips) {
-                        JSONObject object = new JSONObject();
-                        object.put("host", ip);
-                        object.put("command", "7701011B66");
-                        ClientMain.sendCron(object.toJSONString());
-                        new Thread().sleep(5000);
-                        object.put("command", "7701012766");
-                        ClientMain.sendCron(object.toJSONString());
-                    }
-                    new Thread().sleep(5000);
+                    Thread.sleep(20000);
                 }
             } catch (InterruptedException e) {
                 logger.error(e.getMessage());
             }
+            ping(delay, times, ips.toArray(new String[ips.size()]));
         }).start();
     }
 

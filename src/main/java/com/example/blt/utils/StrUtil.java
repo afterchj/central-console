@@ -10,7 +10,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,20 +27,19 @@ public class StrUtil {
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     public static void buildLightInfo(String ip, String... array) {
-        ConsoleUtil.cleanSet(lmacSet, vaddrSet,ipSet);
+        ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
         for (String str : array) {
-            Map map = new HashMap();
+            Map map = new ConcurrentHashMap();
 //        String str = msg.replace(" ", "");
             String str1 = "77040F0227";
             map.put("host", ip);
             map.put("status", 1);
 //            map.put("other", str);
             if (str.indexOf(str1) != -1) {
-                map.put("host", ip);
                 int index = str1.length();
                 String vaddr = str.substring(index, index + 8);
                 vaddrSet.add(vaddr);
-                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 30);
+                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
                 String x = str.substring(index + 10, index + 12);
                 String y = str.substring(index + 12, index + 14);
                 if (str.contains("3232")) {
@@ -68,8 +66,8 @@ public class StrUtil {
                 String mac = sortMac(lmac);
                 map.put("lmac", mac);
                 lmacSet.add(mac);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 5);
-                ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 5);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
+                ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
                 } catch (NoTopicException e) {
@@ -168,7 +166,11 @@ public class StrUtil {
                     map.put("ctype", prefix);
                     map.put("x", str.substring(2, 4));
                     map.put("y", str.substring(4, 6));
-                    map.put("cid", cid);
+                    try {
+                        map.put("cid", Integer.valueOf(cid));
+                    } catch (Exception e) {
+                        logger.error("cid [{}] info [{}]", cid, format);
+                    }
                 }
                 break;
         }

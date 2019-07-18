@@ -109,7 +109,7 @@ public class WebSocket {
                 //服务器主动推送
                 webSocket.session.getBasicRemote().sendText(message);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("params [{}] info [{}]", message, e.getMessage());
             }
         }
     }

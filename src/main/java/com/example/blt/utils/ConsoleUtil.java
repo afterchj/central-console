@@ -23,7 +23,7 @@ public class ConsoleUtil {
 
     public static void saveVaddr(String key, Set list, int expire) {
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
-        operations.set(key, list, expire, TimeUnit.SECONDS);
+        operations.set(key, list, expire, TimeUnit.MINUTES);
     }
 
     public static void saveLmac(String key, Set list, int expire) {
@@ -45,8 +45,10 @@ public class ConsoleUtil {
         return (Set) redisTemplate.opsForValue().get(key);
     }
 
-    public static void cleanKey(String key) {
-        redisTemplate.delete(key);
+    public static void cleanKey(String... keys) {
+        for (String key : keys) {
+            redisTemplate.delete(key);
+        }
     }
 
     public static void cleanSet(Set lmacSet, Set vaddrSet, Set ipSet) {
@@ -54,12 +56,15 @@ public class ConsoleUtil {
         Set vaddr = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         Set ips = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         if (lmac == null) {
+            logger.warn("clean..."+ConsoleKeys.lMAC.getValue());
             lmacSet.clear();
         }
         if (vaddr == null) {
+            logger.warn("clean..."+ConsoleKeys.VADDR.getValue());
             vaddrSet.clear();
         }
         if (ips == null) {
+            logger.warn("clean..."+ConsoleKeys.HOSTS.getValue());
             ipSet.clear();
         }
     }

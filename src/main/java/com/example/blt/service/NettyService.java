@@ -50,7 +50,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() {
-        Map params = new HashMap();
         Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
@@ -64,9 +63,9 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                 if (size == null) {
                     ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), vaddrSet.size());
                 } else if (size == vaddrSet.size()) {
-                    ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue());
-                    ConsoleUtil.cleanKey(ConsoleKeys.HOSTS.getValue());
+                    ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
                     for (String ip : ipSet) {
+                        Map params = new HashMap();
                         params.put("host", ip);
                         params.put("list", vaddrSet);
                         try {
@@ -78,12 +77,15 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     return;
                 }
             }
-            if (ipSet != null) {
-                for (String ip : ipSet) {
-                    object.put("host", ip);
-                    object.put("command", "7701012766");
-                    ClientMain.sendCron(object.toJSONString());
-                }
+        } else {
+            logger.warn("cleanKey...");
+            ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
+        }
+        if (ipSet != null) {
+            for (String ip : ipSet) {
+                object.put("host", ip);
+                object.put("command", "7701012766");
+                ClientMain.sendCron(object.toJSONString());
             }
         }
     }
