@@ -4,7 +4,6 @@ package com.example.blt.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -18,7 +17,7 @@ public class HostInfo implements Serializable {
     private int id;
     @Column(unique = true,length = 64)
     private String ip;
-    private boolean status=true;
+    private Boolean status=true;
     private String other;
     private Date log_date=new Date();
 
