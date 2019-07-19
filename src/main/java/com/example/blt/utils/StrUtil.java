@@ -27,7 +27,8 @@ public class StrUtil {
     private static Set<String> vaddrSet = new CopyOnWriteArraySet<>();
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
-    public static void buildLightInfo(String ip, String... array) {
+    public static void buildLightInfo(String ip, String msg) {
+        String[] array = msg.split("CCCC");
         for (String str : array) {
             Map map = new ConcurrentHashMap();
 //        String str = msg.replace(" ", "");

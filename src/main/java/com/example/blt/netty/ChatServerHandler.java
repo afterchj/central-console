@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -78,7 +77,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         if (len >= 22) {
-            ExecuteTask.pingInfo(host, arg1.split("CCCCC"));
+            if (arg1.indexOf("CCCC") != -1) {
+                ExecuteTask.pingInfo(host, arg1);
+            }
         }
     }
 
