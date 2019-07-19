@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "save_host_topic", consumerGroup = "save_consumer_host_group")
+@RocketMQMessageListener(topic = "blt_host_topic", consumerGroup = "blt_consumer_host_group")
 public class HostConsumer implements RocketMQListener<String> {
 
     @Resource

@@ -6,6 +6,7 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,6 @@ public class StrUtil {
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     public static void buildLightInfo(String ip, String... array) {
-        ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
         for (String str : array) {
             Map map = new ConcurrentHashMap();
 //        String str = msg.replace(" ", "");
@@ -36,6 +36,7 @@ public class StrUtil {
             map.put("status", 1);
 //            map.put("other", str);
             if (str.indexOf(str1) != -1) {
+                ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                 int index = str1.length();
                 String vaddr = str.substring(index, index + 8);
                 vaddrSet.add(vaddr);
@@ -56,6 +57,7 @@ public class StrUtil {
                     sqlSessionTemplate.selectOne("console.saveLight", map);
                 }
             } else if (str.indexOf("77040F01") != -1) {
+                ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                 ipSet.add(ip);
 //            String prefix = str.substring(0, 8);
                 String lmac = str.substring(8, 20).toLowerCase();
@@ -114,6 +116,10 @@ public class StrUtil {
 
     public static void tempFormat(String format, String ip) {
         String str = format.substring(18);
+        int index = str.indexOf("CC");
+        if (index != -1) {
+            str = str.substring(0, index);
+        }
         int len = str.length();
         String prefix = str.substring(0, 2).toUpperCase();
         String tmp = str.substring(2, 4);
@@ -159,14 +165,12 @@ public class StrUtil {
                 //C1代表组控，32 32字段是x、y值, 02字段是组ID
 //               C4，RGB组控77 04 10 02 20 95 00 00 00 C4 5F 02 00 00 00 00 00 00 02 4F
 //                灯状态信息77 04 0F 02 27 35 00 00 00 71 00 13 00 00 00 00 00 00 0E
-                if ("C1".equals(prefix) || "C4".equals(prefix) || "71".equals(prefix)||"42".equals(prefix)) {
+                if ("C1".equals(prefix) || "C4".equals(prefix) || "71".equals(prefix) || "42".equals(prefix)) {
                     map.put("ctype", prefix);
                     map.put("x", str.substring(2, 4));
                     map.put("y", str.substring(4, 6));
-                    try {
-                        map.put("cid", Integer.valueOf(cid));
-                    } catch (Exception e) {
-                        logger.error("cid [{}] info [{}]", cid, format);
+                    if (StringUtils.isNotEmpty(cid)) {
+                        map.put("cid", cid);
                     }
                 }
                 break;
@@ -175,7 +179,8 @@ public class StrUtil {
             String info = JSON.toJSONString(map);
             WebSocket.sendMessage(info);
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
-        } catch (NoTopicException e) {
+        } catch (
+                NoTopicException e) {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
             logger.warn("result=" + map.get("result"));
         }

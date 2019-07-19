@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "blt_cmd_console_topic", consumerGroup = "my_consumer_cmd_group")
+@RocketMQMessageListener(topic = "blt_cmd_console_topic", consumerGroup = "blt_consumer_cmd_group")
 public class CmdConsumer implements RocketMQListener<String> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

@@ -26,6 +26,10 @@
         <parameter property="other" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
+
+    <delete id="deleteHost">
+        TRUNCATE TABLE t_host_info
+    </delete>
     <select id="saveLight" parameterMap="lightMapper" resultType="map" statementType="CALLABLE">
         CALL save_light(?,?,?,?,?,?,?,?,?,?)
     </select>
