@@ -147,7 +147,6 @@ function timesSum(arr, m) {
 //
 // })
 $(".nave").on('click', "li", function () {
-
     $(this).addClass('active').siblings().removeClass('active');
     var imgUrl = $(this).find('img').attr('src');
     if (imgUrl) {
