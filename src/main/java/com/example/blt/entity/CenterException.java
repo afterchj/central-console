@@ -1,5 +1,8 @@
 package com.example.blt.entity;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @program: central-console
  * @description:
@@ -15,6 +18,15 @@ public class CenterException {
     private int diff;
     private int on;
     private int off;
+    private List<Map<String,Object>> plcaeList;
+
+    public List<Map<String, Object>> getPlcaeList() {
+        return plcaeList;
+    }
+
+    public void setPlcaeList(List<Map<String, Object>> plcaeList) {
+        this.plcaeList = plcaeList;
+    }
 
     public int getPlace() {
         return place;
@@ -76,12 +88,13 @@ public class CenterException {
     public String toString() {
         return "CenterException{" +
                 "mname='" + mname + '\'' +
-                ", place=" + place +
+                ", Place=" + place +
                 ", groupId=" + groupId +
                 ", exception=" + exception +
                 ", diff=" + diff +
                 ", on=" + on +
                 ", off=" + off +
+                ", plcaeList=" + plcaeList.toString() +
                 '}';
     }
 }

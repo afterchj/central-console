@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program: central-console
@@ -42,23 +43,19 @@ public class NewMonitorController {
         List<String> exception = webCmdDao.getException();
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
         List<CenterException> mnames = webCmdDao.getMnames();
+//        List<Mnames> mnames = newMonitorService.getMnames();
         List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
         List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
+        Map<String, Object> indexFloorStatus = new ConcurrentHashMap();
+//        Map map1 = new ConcurrentHashMap();
         if ("index".equals(floor)){
             //首页
-//            newMonitorService.getInitIndex();
-            Map<String,List> total = new HashMap<>();
-            List<Map<String,Object>> totalFloor = new ArrayList<>();
-//            Map<String,Object> totalFloor = new HashMap<>();
-            Map<String,Object> floors = new HashMap<>();
-            List<Map<String,Object>> places = new ArrayList<>();
-            for (int i=0;i<lightState.size();i++){
-
-            }
+            indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
         }
 //        List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
 //        Map statusMap = getSwitchStatus(lightState);
         map.put("leftFloors", centerLNums);//左侧导航栏状态
+        map.put("indexFloorStatus", indexFloorStatus);
 //        map.put("placeLNumList", placeLNumList);
 //        map.put("lightState", lightState);
 //        map.put("status", statusMap);

@@ -4,7 +4,6 @@ import com.example.blt.dao.LightListDao;
 import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.dao.NewMonitorDao;
 import com.example.blt.dao.WebCmdDao;
-import com.example.blt.entity.CenterException;
 import com.example.blt.entity.LightDemo;
 import com.example.blt.service.NewMonitorService;
 import org.junit.Test;
@@ -54,16 +53,16 @@ public class LightDemoTests {
         Map<String,List> map2 = new HashMap<>();
         List<Map> list2 = new ArrayList<>();
         Map map3 = new HashMap();
-        map3.put("place","区域1");
+        map3.put("Place","区域1");
         map3.put("num",10);
         map3.put("state",0);
         list2.add(map3);
         map3 = new HashMap();
-        map3.put("place","区域2");
+        map3.put("Place","区域2");
         map3.put("num",15);
         map3.put("state",1);
         list2.add(map3);
-        map2.put("place",list2);
+        map2.put("Place",list2);
         list1.add(map2);
         map1.put("total",list1);
         System.out.println(map1.toString());
@@ -87,10 +86,10 @@ public class LightDemoTests {
 
     @Test
     public void test5(){
-        List<CenterException> mnames = newMonitorDao.getMnames();
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
-//        List<CenterException> indexFloorStatus = newMonitorService.getIndexFloorStatus(mnames,lightState);
-//        System.out.println(indexFloorStatus.toString());
+//        List<CenterException> ms = webCmdDao.getMnames();
+        Map<String,Object> indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
+        System.out.println(indexFloorStatus.toString());
     }
 
 }
