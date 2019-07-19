@@ -20,6 +20,7 @@ public class ProducerService {
         DefaultMQProducer producer = new DefaultMQProducer("blt_local_main_group");
         producer.setInstanceName(UUID.randomUUID().toString());
         producer.setNamesrvAddr("119.3.49.192:9876");
+//        producer.setNamesrvAddr("127.0.0.1:9876");
         producer.setVipChannelEnabled(false);
         try {
             producer.start();

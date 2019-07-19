@@ -89,6 +89,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        sqlSessionTemplate.delete("console.deleteHost");
         logger.warn("nettyService starting...");
 //        ExecuteTask.pingStatus(true, 3);
     }

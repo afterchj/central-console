@@ -117,6 +117,7 @@ public class StrUtilTest {
         String on="77020315323266";
         System.out.println(on.replace("02","01"));
         String strs = "77041002216501000052456365D7ACF0000200CCCC";
+        System.out.println(strs.indexOf("CC")+"\t"+strs.substring(0,strs.indexOf("CC")));
         System.out.println(strs.length()+"\t"+strs.indexOf("770101"));
         System.out.println("77040F0227FD020000713232000000000000CC".length());
         System.out.println("77040F0152406DD7ACF06900000008200102CCCC".length()+"\t"+"77040F0227A9000000710013000000000000CCCC".length());

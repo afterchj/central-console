@@ -29,8 +29,8 @@ public class ClientMain {
 //        private static String host = "119.3.49.192";
 
     public static void main(String[] args) throws IOException {
-//        run(AddrUtil.getIp(true), 8001);
-        run("192.168.16.84", 8001);
+        run(AddrUtil.getIp(true), 8001);
+//        run("192.168.16.84", 8001);
     }
 
     public static void run(String host, int port) throws IOException {
