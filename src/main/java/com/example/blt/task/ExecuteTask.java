@@ -32,15 +32,8 @@ public class ExecuteTask {
 //    private staticClientMainClientMain =ClientMain();
 //    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
-    public static void pingInfo(String ip, String... msg) {
-        PingTask task = new PingTask(ip, msg);
-        FutureTask futureTask = new FutureTask(task);
-        executorService.submit(futureTask);
-        try {
-            futureTask.get();
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
+    public static void pingInfo(String ip, String msg) {
+        executorService.submit(new PingTask(ip, msg));
     }
 
     public static void saveInfo(String msg, Map map, Set set, boolean flag) {
