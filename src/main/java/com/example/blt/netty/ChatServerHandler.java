@@ -57,6 +57,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 cmd = arg1;
             }
         }
+        if (arg1.indexOf("182716324621") != -1) {
+            logger.warn("ip [{}] cmd [{}]", to, cmd);
+        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len < 21) {

@@ -4,6 +4,7 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
@@ -49,6 +50,17 @@ public class ConsoleUtil {
         for (String key : keys) {
             redisTemplate.delete(key);
         }
+    }
+
+    public static Map getLight(String key) {
+        return redisTemplate.opsForHash().entries(key);
+    }
+
+    public static void saveLight(String key, String hkey, String ip, Set set) {
+        HashOperations hashOperations = redisTemplate.opsForHash();
+        hashOperations.put(key, "ip", ip);
+        hashOperations.put(key, hkey, set);
+        redisTemplate.expire(key, 10, TimeUnit.MINUTES);
     }
 
     public static void cleanSet(Set lmacSet, Set vaddrSet, Set ipSet) {

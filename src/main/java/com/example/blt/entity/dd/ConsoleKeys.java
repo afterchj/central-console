@@ -8,7 +8,8 @@ public enum ConsoleKeys {
     lMAC("l_lmac"),
     VADDR("l_vaddr"),
     HOSTS("l_host"),
-    LSIZE("l_size");
+    LSIZE("l_size"),
+    LINFO("l_info");
 
     ConsoleKeys(String value) {
         this.value = value;
