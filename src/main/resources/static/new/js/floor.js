@@ -122,7 +122,7 @@ function ajaxFloor(floor) {
                                                         </div>
                                                     </div>
                                                     <div class="f-l p-r r-min-line">
-                                                        <div class="middle p-a yellow ' + hint + off + '">
+                                                        <div class="middle p-a yellow">
                                                             ${y}
                                                         </div>
                                                     </div>
