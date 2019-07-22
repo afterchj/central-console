@@ -48,25 +48,10 @@ public class LightDemoTests {
 //        List<LightDemo> exhibitionFromPhoneByGroup = lightListDao.getExhibitionFromPhoneByGroup(1, "0");
 //        exhibitionFromPhoneByGroup.stream().forEach(System.out::println);
 
-        Map<String,List> map1 = new HashMap<>();
-        List<Map> list1 = new ArrayList<>();
-        Map<String,List> map2 = new HashMap<>();
-        List<Map> list2 = new ArrayList<>();
-        Map map3 = new HashMap();
-        map3.put("Place","区域1");
-        map3.put("num",10);
-        map3.put("state",0);
-        list2.add(map3);
-        map3 = new HashMap();
-        map3.put("Place","区域2");
-        map3.put("num",15);
-        map3.put("state",1);
-        list2.add(map3);
-        map2.put("Place",list2);
-        list1.add(map2);
-        map1.put("total",list1);
+        Map<String,Object> map1 = new HashMap<>();
+        String test = null;
+        map1.put("test",test);
         System.out.println(map1.toString());
-//        System.out.println(list1.toString());
 
 
     }
@@ -90,6 +75,15 @@ public class LightDemoTests {
 //        List<CenterException> ms = webCmdDao.getMnames();
         Map<String,Object> indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
         System.out.println(indexFloorStatus.toString());
+    }
+
+    @Test
+    public void test6(){
+//        List<LightDemo> floorLightStatus = newMonitorDao.getFloorLightStatus("1楼");
+//        System.out.println(floorLightStatus.toString());
+        List<LightDemo> lightState = newMonitorService.getFloorLights("1楼");
+        Map<String,Object> floorLights = newMonitorService.getFloorLightsStatus(lightState,"1楼");
+        System.out.println(floorLights.toString());
     }
 
 }

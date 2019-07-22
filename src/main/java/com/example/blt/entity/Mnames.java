@@ -13,7 +13,7 @@ public class Mnames {
 
     private String mname;
     private int exception;
-    private int diff;
+//    private int diff;
     private int on;
     private int off;
     private List<Map<String,Object>> placeList;
@@ -34,13 +34,13 @@ public class Mnames {
         this.exception = exception;
     }
 
-    public int getDiff() {
-        return diff;
-    }
-
-    public void setDiff(int diff) {
-        this.diff = diff;
-    }
+//    public int getDiff() {
+//        return diff;
+//    }
+//
+//    public void setDiff(int diff) {
+//        this.diff = diff;
+//    }
 
     public int getOn() {
         return on;
@@ -71,7 +71,7 @@ public class Mnames {
         return "Mnames{" +
                 "mname='" + mname + '\'' +
                 ", exception=" + exception +
-                ", diff=" + diff +
+//                ", diff=" + diff +
                 ", on=" + on +
                 ", off=" + off +
                 ", placeList=" + placeList +

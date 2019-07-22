@@ -19,6 +19,15 @@ public class CenterException {
     private int on;
     private int off;
     private List<Map<String,Object>> plcaeList;
+    private List<Map<String,Object>> lightList;
+
+    public List<Map<String, Object>> getLightList() {
+        return lightList;
+    }
+
+    public void setLightList(List<Map<String, Object>> lightList) {
+        this.lightList = lightList;
+    }
 
     public List<Map<String, Object>> getPlcaeList() {
         return plcaeList;
@@ -88,13 +97,14 @@ public class CenterException {
     public String toString() {
         return "CenterException{" +
                 "mname='" + mname + '\'' +
-                ", Place=" + place +
+                ", place=" + place +
                 ", groupId=" + groupId +
                 ", exception=" + exception +
                 ", diff=" + diff +
                 ", on=" + on +
                 ", off=" + off +
-                ", plcaeList=" + plcaeList.toString() +
+                ", plcaeList=" + plcaeList +
+                ", lightList=" + lightList +
                 '}';
     }
 }

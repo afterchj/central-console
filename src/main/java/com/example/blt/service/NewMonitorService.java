@@ -143,6 +143,7 @@ public class NewMonitorService {
                 mnames.get(j).setOn(0);
                 mnames.get(j).setOff(0);
             }
+
 //            if (on==1 && off==0){
 //                totalStatus=0;//楼层内的组状态只有开 楼层状态为开
 //                mnames.get(j).setOn(1);
@@ -158,5 +159,61 @@ public class NewMonitorService {
         map.put("floor",mnames);
 //        System.out.println(map.toString());
         return map;
+    }
+
+    public List<LightDemo> getFloorLights(String floor) {
+
+        return newMonitorDao.getFloorLights(floor);
+    }
+
+
+    public Map<String,Object> getFloorLightsStatus(List<LightDemo> lightState, String floor) {
+        Map<String,Object> map = new HashMap<>();
+        List<Place> places = newMonitorDao.getPlacesByFloor(floor);//单楼层内区域结构
+        List<Place> placesExceptions = newMonitorDao.getPlacesExceptionsByFloor(floor);//单楼层内每个区域故障灯个数
+        List<CenterException> ms = webCmdDao.getMnamesByFloor(floor);//单楼层结构
+        List<Map<String,Object>> lightList;
+
+
+
+
+        for (int i=0;i<ms.size();i++){
+//            lightList = new ArrayList<>();
+            int msPlace = ms.get(i).getPlace();
+            int msGroupId = ms.get(i).getGroupId();
+//            Map<String,Object> lightMap;
+            for (int j=0;j<lightState.size();j++){
+//                lightMap = new HashMap<>();
+                int place = lightState.get(j).getPlace();
+                int groupId = lightState.get(j).getGroupId();
+                int lname = lightState.get(j).getLname();
+                String status = lightState.get(j).getStatus();
+                if (place == msPlace && groupId == msGroupId){
+                    if (status != null) {
+                        if ("0".equals(status)) {
+                            ms.get(i).setOn(1);
+                        } else {
+                            ms.get(i).setOff(1);
+                        }
+                    }
+//                    lightMap.put("lname",lname);
+//                    lightMap.put("status",status);
+//                    lightMap.put("y",lightState.get(j).getY());
+//                    lightList.add(lightMap);
+                }
+            }
+//            ms.get(i).setLightList(lightList);
+        }
+//        System.out.println(ms.toString());
+        for (int i=0;i<ms.size();i++){
+
+        }
+
+        return map;
+    }
+
+
+    public List<Map<String,Object>> getIntelligenceCenterLNum() {
+        return newMonitorDao.getIntelligenceCenterLNum();
     }
 }

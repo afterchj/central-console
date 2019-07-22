@@ -3,6 +3,7 @@ package com.example.blt.dao;
 import com.example.blt.entity.CenterException;
 import com.example.blt.entity.CommandLight;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -27,5 +28,8 @@ public interface WebCmdDao {
 
     @Select("select mname,Place,groupId from f_light_demo where other='intelligence' group by substring_index(mname,'楼',1)+0,Place,groupId")
     List<CenterException> getMnames();
+
+    @Select("select mname,Place,groupId from f_light_demo where other='intelligence' and mname='1楼' group by substring_index(mname,'楼',1)+0,Place,groupId")
+    List<CenterException> getMnamesByFloor(@Param("floor")String floor);
 
 }
