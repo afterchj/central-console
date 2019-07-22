@@ -1,7 +1,6 @@
 package com.example.blt.entity;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @program: central-console
@@ -9,17 +8,21 @@ import java.util.Map;
  * @author: Mr.Ma
  * @create: 2019-07-19 15:23
  **/
-public class Place {
+public class PlaceWeb {
 
-    private String mname;
+//    private String mname;
     private int place;
     private int exception;
     private int diff;
     private int on;
-    private List<Map<String,Object>> groupList;
+    private List<GroupWeb> groupList;
 
-    public List<Map<String, Object>> getGroupList() {
+    public List<GroupWeb> getGroupList() {
         return groupList;
+    }
+
+    public void setGroupList(List<GroupWeb> groupList) {
+        this.groupList = groupList;
     }
 
     public int getOn() {
@@ -30,17 +33,14 @@ public class Place {
         this.on = on;
     }
 
-    public void setGroupList(List<Map<String, Object>> groupList) {
-        this.groupList = groupList;
-    }
 
-    public String getMname() {
-        return mname;
-    }
-
-    public void setMname(String mname) {
-        this.mname = mname;
-    }
+//    public String getMname() {
+//        return mname;
+//    }
+//
+//    public void setMname(String mname) {
+//        this.mname = mname;
+//    }
 
     public int getPlace() {
         return place;
@@ -68,8 +68,8 @@ public class Place {
 
     @Override
     public String toString() {
-        return "Place{" +
-                "mname='" + mname + '\'' +
+        return "PlaceWeb{" +
+//                "mname='" + mname + '\'' +
                 ", place=" + place +
                 ", exception=" + exception +
                 ", diff=" + diff +

@@ -63,7 +63,8 @@ public class NewMonitorController {
 //        List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
 //        Map statusMap = getSwitchStatus(lightState);
         map.put("leftFloors", centerLNums);//左侧导航栏状态
-        map.put("indexFloorStatus", indexFloorStatus);
+        map.put("indexFloorStatus", indexFloorStatus);//首页
+        map.put("floorStatus",floorStatus);//其它页面
 //        map.put("placeLNumList", placeLNumList);
 //        map.put("lightState", lightState);
 //        map.put("status", statusMap);
