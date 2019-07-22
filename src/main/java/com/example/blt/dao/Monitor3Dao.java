@@ -15,6 +15,6 @@ import java.util.List;
 @Mapper
 public interface Monitor3Dao {
 
-    @Select("select count(*) as PlaceLNum,place from f_light_demo where mname ='exhibition' Group by mname,place")
+    @Select("select count(*) as PlaceLNum,Place from f_light_demo where mname ='exhibition' Group by mname,Place")
     List<LightDemo> getPlaceLNum();//每个区域的灯个数
 }

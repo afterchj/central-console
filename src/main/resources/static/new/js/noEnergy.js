@@ -14,7 +14,7 @@ async function run() {
     const result2 = await setInterval(()=> {
         realTime();
         console.log('动态数据更新执行完毕');
-    }, 1000);
+    }, 5000);
 }
 // async function result(value, ms) {
 //     await timeout(ms);
@@ -87,13 +87,8 @@ async function realTime() {
                 if (data.lightDemo[0].other) {
                     var lightDemo = data.lightDemo;
                     var other = data.lightDemo[0].other;
-                    // lightState = sort(lightState, 'mname');
-                    // lightState=sort(lightState, 'lname');
-                    // lightState = lightStateM(lightState);
                     var floor = getUrlParams('floor');
-                    // console.log('floor',floor);
                     operation2(data, lightDemo, other, floor);
-
                 }
             }
         }
@@ -196,6 +191,8 @@ function operation2(data, lightDemo, other, floor) {
             // var status = lightDemo[0].status;
             // var imgBtn = statusM1(status).imgBtn;
             // if (mname == 'all') {
+            console.log('status',status);
+            console.log('imgBtn',imgBtn);
             $('.search .switch-levels img').replaceWith(imgBtn);
             $('.content>.clearfix').each(function () {
                 $(this).find('.place-btn img').replaceWith(imgBtn);
@@ -270,6 +267,8 @@ function operation2(data, lightDemo, other, floor) {
             })
         }
     }
+
+    leftCenter(data.centerLNumList);
 }
 
 function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
@@ -360,8 +359,8 @@ function operation(lightState, placeLNumList, centerLNumList, fmname, status) {
                     }
                 })
                 imgBtn = statusM3(other).imgBtn;
-                var right = ' <div class="light-list f-l "> <div class="swiper-container light-swiper"> <div class="swiper-wrapper clearfix ">' + rightList + ' <div class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
-                var left = '<div class="on-off f-l"><div class="clearfix btn green "><div class="f-l p-r"><div class="pp-num middle p-a "><p class="mname">区域' + item2.place + '</p><p>(<span class="place-LNum1">' + item2.placeLNum + '</span>/ <span>' + item2.placeLNumTotal + '</span>)</p></div></div>' + ' <div class="f-l"> <span>故障：</span><span class="error">' + sumTotal + '</span> </div> ' + '<div class="f-l"> <div class="img place-btn click-btn">  ' + imgBtn + '<div class="min-font">开关</div> </div> </div> </div> </div>';
+                var right = ' <div class="light-list f-l "> <div class="swiper-container light-swiper"> <div class="swiper-wrapper clearfix ">' + rightList + ' <div class="swiper-button-prev swiper-button-black"></div><div class="swiper-button-next swiper-button-black"></div></div></div></div>';
+                var left = '<div class="on-off f-l"><div class="clearfix btn green "><div class="f-l p-r"><div class="pp-num middle p-a "><p class="mname">区域' + item2.place + '</p><p class="font12">(<span class="place-LNum1">' + item2.placeLNum + '</span>/ <span>' + item2.placeLNumTotal + '</span>)</p></div></div>' + ' <div class="f-l"> <span>故障：</span><span class="error">' + sumTotal + '</span> </div> ' + '<div class="f-l"> <div class="img place-btn click-btn">  ' + imgBtn + '<div class="min-font">开关</div> </div> </div> </div> </div>';
                 var content = '<div class="clearfix">' + left + right + '</div>';
                 $('.content').append(content);
                 swiper('.light-swiper', 3)
@@ -620,11 +619,11 @@ $(".status.card").on('click', "button", function () {
 });
 function water() {
     var pDefault;
-    waterbubbleS('#floor-1', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
-    waterbubbleS('#floor-2', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
-    waterbubbleS('#floor-3', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
-    waterbubbleS('#floor-4', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
-    waterbubbleS('#floor-5', '30%', pDefault, pDefault, 26, 0.3, pDefault, '#FF4646', pDefault, pDefault)
+    waterbubbleS('#floor-1', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
+    waterbubbleS('#floor-2', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
+    waterbubbleS('#floor-3', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
+    waterbubbleS('#floor-4', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
+    waterbubbleS('#floor-5', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
 }
 function realTimeStatus() {
     var exceptionPng = $(".content img");
@@ -642,4 +641,47 @@ function realTimeStatus() {
     $(".error.status").text(un + abnoraml);
     $(".error.diff").text(un);
     $(".error.exception").text(abnoraml);
+}
+
+function leftCenter(centerLNumList) {
+    var centers = $("ul>li").find(".floor");
+    centers.each(function () {
+        // console.log($(this).children('span').text());
+        var center = $(this).children('span').text();
+        var index = centerLNumList.findIndex(centerLNumList=>centerLNumList.mname==center);
+        // console.log(index);
+        var exception = centerLNumList[index].exception;
+        var diff = centerLNumList[index].diff;
+
+        if (exception==1 && diff==1){
+            $(this).parent().parent().next().find(".left-img").empty();
+            $(this).parent().parent().next().find(".left-img").append('<img' +
+                ' src="/static/new/img/switch-un.png"><img' +
+                ' src="/static/new/img/switch-abnormal.png">');
+            $(this).parent().parent().next().find(".switch-hint").empty();
+            $(this).parent().parent().next().find(".switch-hint").append('<span>开关灯状态不一致异常状态（故障）</span>');
+        }
+        if (diff==1 && exception==0){
+            $(this).parent().parent().next().find(".left-img").empty();
+            $(this).parent().parent().next().find(".left-img").append('<img' +
+                ' src="/static/new/img/switch-un.png">');
+            $(this).parent().parent().next().find(".switch-hint").empty();
+            $(this).parent().parent().next().find(".switch-hint").append('<span>开关灯状态不一致</span>');
+        }
+        if (exception==1&&diff==0){
+            $(this).parent().parent().next().find(".left-img").empty();
+            $(this).parent().parent().next().find(".left-img").append('<img' +
+                ' src="/static/new/img/switch-abnormal.png">');
+            $(this).parent().parent().next().find(".switch-hint").empty();
+            $(this).parent().parent().next().find(".switch-hint").append('<span>异常状态（故障）</span>');
+        }
+        if (exception==0&&diff==0){
+            $(this).parent().parent().next().find(".left-img").empty();
+            $(this).parent().parent().next().find(".left-img").append('<img' +
+                ' src="/static/new/img/normal.png">');
+            $(this).parent().parent().next().find(".switch-hint").empty();
+            $(this).parent().parent().next().find(".switch-hint").append('<span>正常</span>');
+        }
+    })
+
 }

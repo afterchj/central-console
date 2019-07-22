@@ -123,7 +123,7 @@ public class LightDemo {
                 "mname='" + mname + '\'' +
                 ", lmac='" + lmac + '\'' +
                 ", lname='" + lname + '\'' +
-                ", place=" + place +
+                ", Place=" + place +
                 ", PlaceLNum=" + PlaceLNum +
                 ", status='" + status + '\'' +
                 ", groupId=" + groupId +

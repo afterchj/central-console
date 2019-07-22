@@ -300,6 +300,16 @@
 <script>
 
     $(function () {
+        $.ajax({
+            url: "/new/getNewMonitor",
+            dataType: "json",
+            async: true,
+            type: "POST",
+            data:{"floor":"index"},
+            success: function (data) {
+                console.log(data)
+            }
+        });
         $('.send').click(function () {
             var host = $.trim($(this).next().val());
             var command = $.trim($(this).prev().val());
