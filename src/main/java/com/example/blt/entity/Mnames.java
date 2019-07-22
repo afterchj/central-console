@@ -16,7 +16,7 @@ public class Mnames {
     private int diff;
     private int on;
     private int off;
-    private List<Map<String,Object>> plcaeList;
+    private List<Map<String,Object>> placeList;
 
     public String getMname() {
         return mname;
@@ -58,12 +58,12 @@ public class Mnames {
         this.off = off;
     }
 
-    public List<Map<String, Object>> getPlcaeList() {
-        return plcaeList;
+    public List<Map<String, Object>> getPlaceList() {
+        return placeList;
     }
 
-    public void setPlcaeList(List<Map<String, Object>> plcaeList) {
-        this.plcaeList = plcaeList;
+    public void setPlaceList(List<Map<String, Object>> placeList) {
+        this.placeList = placeList;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Mnames {
                 ", diff=" + diff +
                 ", on=" + on +
                 ", off=" + off +
-                ", plcaeList=" + plcaeList.toString() +
+                ", placeList=" + placeList +
                 '}';
     }
 }

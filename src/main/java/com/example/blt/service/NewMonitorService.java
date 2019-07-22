@@ -101,7 +101,7 @@ public class NewMonitorService {
                     placeList.add(placeMap);
                 }
             }
-            mnames.get(i).setPlcaeList(placeList);
+            mnames.get(i).setPlaceList(placeList);
         }
 //        System.out.println(mnames.toString());
         //统计每个楼层组的开关状态
