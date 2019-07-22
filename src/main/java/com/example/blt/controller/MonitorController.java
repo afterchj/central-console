@@ -413,7 +413,7 @@ public class MonitorController {
                     if (status.equals("1")) {
                         placeStatus.setOther("关");
                     }
-//                        exceptionByGroupIdOrPlace = webCmdDao.getExceptionByPlace(getMname(host), place);
+//                        exceptionByGroupIdOrPlace = webCmdDao.getExceptionByPlace(getMname(host), Place);
 
                 }
                 List<Integer> statusList2 = monitor4Dao.getStatusOfFloor(getMname(host), place, Integer.parseInt
