@@ -2,7 +2,7 @@
  * Created by yuanjie.fang on 2019/7/18.
  */
 
-
+//左侧导航栏鼠标悬浮
 $('.nave').on('mouseenter mouseleave','li',function(){
     var src=$(this).find('.left-img img').attr('src');
     if(src && src.indexOf('normal')!=-1){
@@ -86,7 +86,7 @@ function getNum(text){
 }
 
 
-
+//获取url中的参数的值
 function getUrlParams(name) { // 不传name返回所有值，否则返回对应值
     var url = window.location.search;
     if (url.indexOf('?') == 1) {
@@ -118,8 +118,8 @@ function getUrlParams(name) { // 不传name返回所有值，否则返回对应�
     // 返回结果
     return nameres;
 }
-//状态判断
-function statusJudgement(exception,diff,active){
+//状态判断(左侧楼层)
+function statusFloorJudgement(exception,diff,active){
     var status;
     var statusImg;
     if (exception == 1 && diff == 1) {
@@ -138,7 +138,6 @@ function statusJudgement(exception,diff,active){
         }else{
             statusImg = '<img src="/static/new/img/normal-white.png" alt="">';
         }
-
     }
     var obj={
         status:status,
@@ -147,16 +146,66 @@ function statusJudgement(exception,diff,active){
     return obj;
 }
 
+//状态判断(右侧首页区域)
+function statusPlaceJudgement(exception,diff,active){
+    var status;
+    var statusImg;
+    if (exception >0 && diff == 1) {
+        status = '<p>开关不一致</p><p>异常状态（故障）</p>';
+        statusImg = '<img src="/static/new/img/switch-un.png" alt=""><img src="/static/new/img/switch-abnormal.png" alt="">';
+    } else if (exception >0 && diff ==0) {
+        status = '<p>异常</p>';
+        statusImg = '<img src="/static/new/img/switch-abnormal.png" alt="">';
+    } else if (exception == 0 && diff == 1) {
+        status = '<p>开关不一致</p>';
+        statusImg = '<img src="/static/new/img/switch-un.png" alt="">';
+    } else if (exception == 0 && diff == 0) {
+        status = '<p>正常</p>';
+        if(active==''){
+            statusImg = '<img src="/static/new/img/normal.png" alt="">';
+        }else{
+            statusImg = '<img src="/static/new/img/normal-white.png" alt="">';
+        }
+    }
+    var obj={
+        status:status,
+        statusImg:statusImg
+    }
+    return obj;
+}
+
+//开关判断(楼层单个)
+function switchFloorJudgement(on) {
+    var switchImg;
+    if(on==0){
+        switchImg= '<img src="/static/new/img/light-off.PNG" alt="">';
+    }else if(on==1){
+        switchImg= '<img src="/static/new/img/light-on.PNG" alt="">';
+    }
+    return switchImg;
+}
+
+//开关判断(楼层总)
+function switchAllFloorJudgement(allFloorStatus) {
+    var switchImg;
+    if(allFloorStatus==0){
+        switchImg= '<img src="/static/new/img/light-on.PNG" alt="">';
+    }else if(allFloorStatus==1){
+        switchImg= '<img src="/static/new/img/light-off.PNG" alt="">';
+    }
+    return switchImg;
+}
+
 //左侧数据初始化
 function ajaxLeftNav() {
     return new Promise(function (resolve, reject) {
         $.ajax({
-            url: '/new/getNewMonitor', // 此处为错误的 url
+            url: '/new/getNewMonitor', 
             type: 'POST',
             dataType: "json",
             success: function (res) {
-                resolve(res)
-                console.log(res);
+                resolve(res);
+                // console.log('res',res);
                 var leftFloors = res.leftFloors;
                 var leftNav = '';
                 $.each(leftFloors, function (i, item) {
@@ -172,8 +221,8 @@ function ajaxLeftNav() {
                             active='active';
                         }
                     }
-                    var status=statusJudgement(exception,diff,active).status;
-                    var statusImg=statusJudgement(exception,diff,active).statusImg;
+                    var status=statusFloorJudgement(exception,diff,active).status;
+                    var statusImg=statusFloorJudgement(exception,diff,active).statusImg;
                     leftNav +=` <li class="${active}">
                                     <a href="/newIndex/noEnergy?floor=${floor}">
                                         <div class="clearfix">
