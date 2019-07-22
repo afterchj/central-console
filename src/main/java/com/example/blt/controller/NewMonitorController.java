@@ -46,8 +46,6 @@ public class NewMonitorController {
         List<String> exception = webCmdDao.getException();
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
         List<CenterException> mnames = webCmdDao.getMnames();
-//        List<Mnames> mnames = newMonitorService.getMnames();
-//        List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
         List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum();
         List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
         Map<String, Object> indexFloorStatus = new HashMap<>();
@@ -56,18 +54,14 @@ public class NewMonitorController {
             //首页
             indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
         }else {
+            //指定楼层
             lightState = newMonitorService.getFloorLights(floor);
             floorStatus = newMonitorService.getFloorLightsStatus(lightState,floor);
 
         }
-//        List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
-//        Map statusMap = getSwitchStatus(lightState);
         map.put("leftFloors", centerLNums);//左侧导航栏状态
         map.put("indexFloorStatus", indexFloorStatus);//首页
-        map.put("floorStatus",floorStatus);//其它页面
-//        map.put("placeLNumList", placeLNumList);
-//        map.put("lightState", lightState);
-//        map.put("status", statusMap);
+        map.put("floorStatus",floorStatus);//指定楼层
         return map;
     }
 
