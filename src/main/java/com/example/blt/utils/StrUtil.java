@@ -11,6 +11,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,7 +31,7 @@ public class StrUtil {
     public static void buildLightInfo(String ip, String msg) {
         String[] array = msg.split("CCCC");
         for (String str : array) {
-            Map map = new ConcurrentHashMap();
+            Map map = new HashMap();
 //        String str = msg.replace(" ", "");
             String str1 = "77040F0227";
             map.put("host", ip);
@@ -42,7 +43,7 @@ public class StrUtil {
                 String vaddr = str.substring(index, index + 8);
                 vaddrSet.add(vaddr);
 //                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
-                ConsoleUtil.saveLight(ip,ConsoleKeys.LINFO.getValue(),ConsoleKeys.VADDR.getValue(), vaddrSet);
+                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.VADDR.getValue(), ip, vaddrSet);
                 String x = str.substring(index + 10, index + 12);
                 String y = str.substring(index + 12, index + 14);
                 if (str.contains("3232")) {
@@ -71,7 +72,7 @@ public class StrUtil {
                 map.put("lmac", mac);
                 lmacSet.add(mac);
 //                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
-                ConsoleUtil.saveLight(ip,ConsoleKeys.LINFO.getValue(),ConsoleKeys.lMAC.getValue(), lmacSet);
+                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.lMAC.getValue(), ip, lmacSet);
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
@@ -178,14 +179,12 @@ public class StrUtil {
                 }
                 break;
         }
+        String info = JSON.toJSONString(map);
         try {
-            String info = JSON.toJSONString(map);
             WebSocket.sendMessage(info);
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
-        } catch (
-                NoTopicException e) {
+        } catch (NoTopicException e) {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.warn("result=" + map.get("result"));
         }
 //        logger.warn("result=" + JSON.toJSONString(map));
     }

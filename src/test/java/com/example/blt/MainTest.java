@@ -135,6 +135,8 @@ public class MainTest {
 
     @Test
     public void testRedis() {
+        ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), 10);
+
         Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         logger.warn("lmacSet=" + lmacSet);

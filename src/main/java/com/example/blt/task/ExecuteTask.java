@@ -124,13 +124,12 @@ public class ExecuteTask {
                 default:
                     break;
             }
+            String info = JSON.toJSONString(map);
             try {
-                String info = JSON.toJSONString(map);
                 WebSocket.sendMessage(info);
                 ProducerService.pushMsg(Topics.LOCAL_TOPIC.getTopic(), info);
             } catch (Exception e) {
                 sqlSessionTemplate.selectOne("console.saveConsole", map);
-                logger.warn("result=" + map.get("result"));
             }
         });
     }

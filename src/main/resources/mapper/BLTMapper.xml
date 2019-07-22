@@ -28,7 +28,7 @@
     </parameterMap>
 
     <delete id="deleteHost">
-        TRUNCATE TABLE t_host_info
+       delete from t_host_info where status is null
     </delete>
     <select id="saveLight" parameterMap="lightMapper" resultType="map" statementType="CALLABLE">
         CALL save_light(?,?,?,?,?,?,?,?,?,?)

@@ -7,6 +7,7 @@ import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
+import com.example.blt.utils.StrUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -58,7 +59,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         if (arg1.indexOf("182716324621") != -1) {
-            logger.warn("ip [{}] cmd [{}]", to, cmd);
+            logger.error("ip [{}] cmd [{}]", to, cmd);
         }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
@@ -81,7 +82,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         }
         if (len >= 22) {
             if (arg1.indexOf("CCCC") != -1) {
-                ExecuteTask.pingInfo(host, arg1);
+                StrUtil.buildLightInfo(host, arg1);
+//                ExecuteTask.pingInfo(host, arg1);
             }
         }
     }
