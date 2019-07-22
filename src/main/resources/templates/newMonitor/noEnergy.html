@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/static/new/style/normalize.css}"/>
     <link rel="stylesheet" th:href="@{/static/swiper/css/swiper.min.css}"/>
     <link rel="stylesheet" th:href="@{/static/new/style/global.css}"/>
     <link rel="stylesheet" th:href="@{/static/new/style/style.css}"/>
@@ -156,8 +157,8 @@
                             <div class="swiper-pagination"></div>
 
                             <!-- 如果需要导航按钮 -->
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev swiper-button-black"></div>
+                            <div class="swiper-button-next swiper-button-black"></div>
                         </div>
                     </div>
                 </div>
@@ -192,18 +193,18 @@
                     <div class="f-l img-levels p-r long-line">
                         <div class="clearfix middle p-a">
                             <div class="f-l nowState">
-                                <p><img th:src="@{/static/new/img/switch-un.png}" alt=""></p>
+                                <p class="height37"><img th:src="@{/static/new/img/switch-un.png}" alt=""></p>
                                 <p class="font-color">当前状态</p>
                             </div>
                             <div class="f-l liveApp">
-                                <p ><img th:src="@{/static/new/img/no-scene.png}" alt=""></p>
+                                <p class="height37"><img th:src="@{/static/new/img/no-scene.png}" alt=""></p>
                                 <p class="font-color">无场景应用</p>
                             </div>
                         </div>
                     </div>
                     <div class="f-l switch-levels p-r">
                         <div class="middle p-a">
-                            <p><img class="nowFloor-on-of" th:src="@{/static/new/img/light-on.PNG}" alt=""></p>
+                            <p class="pointer height37"><img class="nowFloor-on-of" th:src="@{/static/new/img/light-on.PNG}" alt=""></p>
                             <p class="font-color">开关</p>
                         </div>
                     </div>
@@ -235,7 +236,9 @@
 <script type="text/javascript" th:src="@{/static/new/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/static/swiper/js/swiper.min.js}"></script>
 <script type="text/javascript" th:src="@{/static/new/js/waterbubble.min.js}"></script>
-<script type="text/javascript" th:src="@{/static/new/js/common.js}"></script>
-<script type="text/javascript" th:src="@{/static/new/js/noEnergy.js}"></script>
+<script type="text/javascript" th:src="@{/static/new/js/global.js}"></script>
+<script type="text/javascript" th:src="@{/static/new/js/floor.js}"></script>
+<!--<script type="text/javascript" th:src="@{/static/new/js/common.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/static/new/js/noEnergy.js}"></script>-->
 </body>
 </html>

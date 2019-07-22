@@ -178,10 +178,9 @@ function operation(lightState, placeLNumList, centerLNumList, status) {
             ' <div class="f-l"> <span>故障：</span><span>' + sumTotal + '</span> </div> ' +
             '<div class="f-l"> <div class="img toggle-button centerL-btn click-btn" >' + imgBtn +
             '<div class="min-font">开关</div> </div> </div> </div> </div>';
-        var right = '<div class="light-list f-l  "><div class="swiper-container light-swiper"><div class="swiper-wrapper clearfix ">' + rightList + '<div                          class="swiper-button-prev"></div><div class="swiper-button-next"></div></div></div></div>';
+        var right = '<div class="light-list f-l  "><div class="swiper-container light-swiper"><div class="swiper-wrapper clearfix ">' + rightList + '<div                          class="swiper-button-prev swiper-button-black"></div><div class="swiper-button-next swiper-button-black"></div></div></div></div>';
         var content = '<div class="clearfix">' + left + right + '</div>';
         $('.content').append(content);
-
 
         //左侧导航
         leftNav += '<li><a href="javascript:void(0);"><div class="clearfix"><div class="f-l p-r">' +
@@ -190,9 +189,9 @@ function operation(lightState, placeLNumList, centerLNumList, status) {
             '</div></div><div class="f-l p-r"><div class="nav-r p-a"><div class="left-img">' +
             img + '</div><div class="switch-hint">' + state + '</div></div></div></div></a></li>';
     })
+
     $('.nave ul').append(leftIndex + leftNav);
     swiper('.light-swiper', 4)
-
 
     if (placeLNumList.length > 0) {
         $.each(placeLNumList, function (i, item) {
