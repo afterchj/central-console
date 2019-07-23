@@ -43,4 +43,8 @@ public interface NewMonitorDao {
 
     @Select("select count(*) as centerLNum,mname from f_light_demo d left join t_light_info_copy i on d.lmac=i.lmac where i.status is not null and  d.other='intelligence' Group by substring_index(mname,'楼',1)+0")
     List<Map<String,Object>> getIntelligenceCenterLNum();
+
+    @Select("select count(*) as centerLNum from f_light_demo d left join t_light_info_copy i on d.lmac=i.lmac where i" +
+            ".status is not null and  d.other='intelligence' and d.mname=#{floor}")
+    Integer getIntelligenceCenterLNumByFloor(@Param("floor")String floor);
 }

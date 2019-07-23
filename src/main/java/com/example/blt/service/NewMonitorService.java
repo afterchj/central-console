@@ -184,6 +184,7 @@ public class NewMonitorService {
         List<PlaceWeb> places = newMonitorDao.getPlacesByFloor(floor);//单楼层内区域结构
         List<PlaceWeb> placesExceptions = newMonitorDao.getPlacesExceptionsByFloor(floor);//单楼层内每个区域故障灯个数
         List<CenterException> ms = webCmdDao.getMnamesByFloor(floor);//单楼层结构
+        Integer centerLNum = newMonitorDao.getIntelligenceCenterLNumByFloor(floor);
         for (int i = 0; i < ms.size(); i++) {
             int msPlace = ms.get(i).getPlace();
             int msGroupId = ms.get(i).getGroupId();
@@ -264,6 +265,7 @@ public class NewMonitorService {
         map.put("exception",exception);
         map.put("diff",diff);
         map.put("placeList",places);
+        map.put("lightNum",centerLNum);
         return map;
     }
 
