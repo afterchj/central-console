@@ -81,14 +81,13 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                             }
                         }
                     }
-                    if (ipSet.size() == 0) {
-                        ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
-                    }
                     JSONObject object = new JSONObject();
                     object.put("host", ip);
                     object.put("command", "7701012766");
                     ClientMain.sendCron(object.toJSONString());
                 }
+            } else {
+                ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
             }
         }
     }
