@@ -25,5 +25,6 @@ public class LightInfoC {
     private String y;
     private Integer status;
     private String other;
+    private Date log_date=new Date();
 
 }
