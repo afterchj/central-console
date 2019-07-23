@@ -250,7 +250,7 @@
         };
         //收到消息事件
         socket.onmessage = function (result) {
-            console.log("type", typeof result, "receive", result.data);
+            console.log(JSON.parse(result.data).host);
         }
     }
 </script>
