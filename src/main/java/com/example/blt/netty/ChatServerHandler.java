@@ -7,6 +7,7 @@ import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
+import com.example.blt.utils.StrUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -58,6 +58,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 cmd = arg1;
             }
         }
+        if (arg1.indexOf("182716324621") != -1) {
+            logger.error("ip [{}] cmd [{}]", to, cmd);
+        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len < 21) {
@@ -78,7 +81,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         if (len >= 22) {
-            ExecuteTask.pingInfo(host, arg1.split("CCCCC"));
+            if (arg1.indexOf("CCCC") != -1) {
+//                StrUtil.buildLightInfo(host, arg1);
+                ExecuteTask.pingInfo(host, arg1);
+            }
         }
     }
 

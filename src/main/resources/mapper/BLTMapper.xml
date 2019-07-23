@@ -18,17 +18,17 @@
     <parameterMap id="commandMapper" type="map">
         <parameter property="host" mode="IN"/>
         <parameter property="mesh_id" mode="IN"/>
-        <parameter property="lmac" mode="IN"/>
         <parameter property="ctype" mode="IN"/>
         <parameter property="cid" mode="IN"/>
         <parameter property="x" mode="IN"/>
         <parameter property="y" mode="IN"/>
+        <parameter property="status" mode="IN"/>
         <parameter property="other" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
 
     <delete id="deleteHost">
-        TRUNCATE TABLE t_host_info
+       delete from t_host_info where status is null
     </delete>
     <select id="saveLight" parameterMap="lightMapper" resultType="map" statementType="CALLABLE">
         CALL save_light(?,?,?,?,?,?,?,?,?,?)
@@ -50,10 +50,13 @@
         SELECT vaddr FROM t_light_info
     </select>
 
-    <select id="getLmac" resultType="map">
-        SELECT lmac FROM t_light_info limit 10
+    <select id="getLnum" resultType="map">
+        SELECT host, COUNT(1) lnum FROM t_light_info group by host
     </select>
 
+    <select id="getLight" resultType="string" parameterType="string">
+        SELECT vaddr FROM t_light_info WHERE host=#{ip}
+    </select>
     <select id="getTotal" resultType="int">
         SELECT COUNT(0) lmacn FROM f_light_demo
     </select>
@@ -66,10 +69,10 @@
         REPLACE INTO t_host_info(ip,status,log_date) VALUE (#{ip},#{status},now())
     </insert>
 
-    <select id="selectIn" parameterType="map" resultType="map">
-        SELECT * FROM t_light_info WHERE vaddr IN
+    <select id="selectIn" parameterType="map" resultType="int">
+        SELECT COUNT(0) lumn FROM t_light_info WHERE host=#{ip} AND vaddr IN
         <foreach collection="list" index="index" item="info" separator="," open="(" close=")">
-            #{info.vaddr}
+            #{info}
         </foreach>
     </select>
 

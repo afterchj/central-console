@@ -50,9 +50,9 @@ public class MainController {
         int index = consoleVo.getCommand().indexOf("7701011B");
         if (index != -1) {
             if ("all".equals(host)) {
-                ExecuteTask.ping(false, 3, ips.toArray(new String[ips.size()]));
+                ExecuteTask.ping(false, 1, ips.toArray(new String[ips.size()]));
             } else {
-                ExecuteTask.ping(false, 3, host);
+                ExecuteTask.ping(false, 1, host);
             }
         }
         return result;
