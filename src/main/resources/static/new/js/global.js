@@ -198,15 +198,22 @@ function switchAllFloorJudgement(allFloorStatus) {
 
 //开关判断(灯)
 function switchLightJudgement(status) {
+    var className='';
     var switchImg;
     if(status==0){
         switchImg= '<img src="/static/new/img/light-on.PNG" alt="">';
     }else if(status==1){
         switchImg= '<img src="/static/new/img/light-off.PNG" alt="">';
+        className='off';
     }else if(status==null){
         switchImg= '<img src="/static/new/img/light-off.PNG" alt="">';
+        className='off hint';
     }
-    return switchImg;
+    var obj={
+        className:className,
+        switchImg:switchImg    
+    }
+    return obj;
 }
 
 //左侧数据初始化

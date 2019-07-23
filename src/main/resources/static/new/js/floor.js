@@ -35,7 +35,6 @@ function ajaxFloor(floor) {
                     console.log('floorres', res);
                     var placeContent = '';
                     var floorStatus=res.floorStatus;
-                    console.log('22',floorStatus);
                     var placeList=floorStatus.placeList;
                     $.each(placeList, function (i, placeItem) {
                         var place = placeItem.place;
@@ -113,8 +112,9 @@ function ajaxFloor(floor) {
                             $.each(lightList, function (i, lightItem) {
                                 var lname=lightItem.lname;
                                 var status=lightItem.status;
-                                var y=lightItem.y;
-                                var switchImg=switchLightJudgement(status);
+                                var y = lightItem.y == "-60%" ? 'null' : lightItem.y;
+                                var switchImg=switchLightJudgement(status).switchImg;
+                                var className=switchLightJudgement(status).className;
                                 light += `<li class="clearfix">
                                                     <div class="f-l p-r r-min-line">
                                                         <div class="middle p-a light-name">
@@ -122,22 +122,18 @@ function ajaxFloor(floor) {
                                                         </div>
                                                     </div>
                                                     <div class="f-l p-r r-min-line">
-                                                        <div class="middle p-a yellow">
+                                                        <div class="middle p-a yellow ${className}">
                                                             ${y}
                                                         </div>
                                                     </div>
                                                     <div class="f-l p-r">
-                                                        <div class="middle p-a light-btn click-btn" alt="' + status + '">
+                                                        <div class="middle p-a light-btn click-btn off" alt="">
                                                             ${switchImg}
                                                         </div>
                                                     </div>
                                                 </li>`;
-                                // group=`${groupTitle}+<div class="place-content"><ul>${light}</ul></div>`;
-
                             });
                             group += `<div class="place f-l swiper-slide">${groupTitle}<div class="place-content"><ul>${light}</ul></div></div>`;
-                            // place=`<div class="place f-l swiper-slide">${placeTitle}<div class="place-content"><ul>${group}</ul></div></div>`;
-
                         });
                         var groupRight = `<div class="light-list f-l ">
                                                 <div class="swiper-container light-swiper">
@@ -150,11 +146,8 @@ function ajaxFloor(floor) {
                                                     </div>
                                                 </div>
                                             </div>`;
-                        // console.log('placeTitle',placeTitle);
                         placeContent += `<div class="clearfix">${placeTitle}${groupRight}</div>`;
-                        console.log('placeContent',placeContent);
                     })
-                    console.log('placeContent',placeContent);
                     $('.content').append(placeContent);
                     swiper('.light-swiper', 3)
                 },
