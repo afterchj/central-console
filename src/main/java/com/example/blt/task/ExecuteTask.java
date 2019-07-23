@@ -62,8 +62,12 @@ public class ExecuteTask {
         executorService.submit(() -> {
             Map map = new ConcurrentHashMap();
             String prefix = str.substring(0, 8);
+            if (str.contains("3232")) {
+                map.put("status", 0);
+            } else {
+                map.put("status", 1);
+            }
             map.put("host", ip);
-            map.put("other", str);
             String cmd = str.substring(prefix.length());
             String cid = cmd.substring(0, 2);
             switch (prefix) {

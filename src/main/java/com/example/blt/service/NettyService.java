@@ -59,14 +59,13 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         Set lmacSet = (Set) map.get(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = (Set) map.get(ConsoleKeys.VADDR.getValue());
 //        int size = ConsoleUtil.getLightSize("Office");
+//        Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
         if (null != lmacSet) {
-            logger.warn("lmacSize[{}] ips[{}]", lmacSet.size(), ipSet);
-            if (null != vaddrSet) {
-//                Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
-                logger.warn("ip=" + host + ",vaddrSize=" + vaddrSet.size());
-                ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
-                if (ipSet != null && ipSet.size() > 0) {
-                    for (String ip : ipSet) {
+            if (null != ipSet && ipSet.size() > 0) {
+                logger.warn("lmacSize[{}] ips[{}]", lmacSet.size(), ipSet);
+                for (String ip : ipSet) {
+                    if (null != vaddrSet) {
+                        logger.warn("ip=" + ip + ",vaddrSize=" + vaddrSet.size());
                         Map params = new HashMap();
                         params.put("host", ip);
                         params.put("list", vaddrSet);
@@ -81,11 +80,14 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                                 sqlSessionTemplate.update("console.saveUpdate", params);
                             }
                         }
-                        JSONObject object = new JSONObject();
-                        object.put("host", ip);
-                        object.put("command", "7701012766");
-                        ClientMain.sendCron(object.toJSONString());
                     }
+                    if (ipSet.size() == 0) {
+                        ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
+                    }
+                    JSONObject object = new JSONObject();
+                    object.put("host", ip);
+                    object.put("command", "7701012766");
+                    ClientMain.sendCron(object.toJSONString());
                 }
             }
         }

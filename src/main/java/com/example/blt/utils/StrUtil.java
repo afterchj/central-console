@@ -127,19 +127,28 @@ public class StrUtil {
         String prefix = str.substring(0, 2).toUpperCase();
         String tmp = str.substring(2, 4);
         Integer cid = Integer.parseInt(str.substring(len - 4, len - 2), 16);
+        Integer status = null;
         Map map = new ConcurrentHashMap<>();
         map.put("host", ip);
+        if (str.contains("3232")) {
+            map.put("status", 0);
+        } else {
+            map.put("status", 1);
+        }
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
                 //7704100221F505000052456365D7ACF0000200CCCC
-//                String cmd = str.substring(len - 6, len - 4);
-//                if ("01".equals(cmd)) {
+                String cmd = str.substring(len - 6, len - 4);
+                if ("01".equals(cmd)) {
+                    status = 0;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
-//                } else if ("02".equals(cmd)) {
+                } else if ("02".equals(cmd)) {
+                    status = 1;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
-//                }
+                }
                 map.put("ctype", prefix);
                 map.put("cid", cid);
+                map.put("status", status);
                 break;
             case "C0"://pad或手机，C0代表全控，37 37字段是x、y值
                 map.put("ctype", prefix);
@@ -149,12 +158,12 @@ public class StrUtil {
             case "CA":
                 //门磁,77 04 0E 02 20 9D 01 00 00 CA 00  关门,77 04 0E 02 20 9D 01 00 00 CA 01   开门
                 map.put("ctype", prefix);
-                map.put("x", tmp);
+                map.put("cid", tmp);
                 break;
             case "CB":
 //                人感 ,77 04 0E 02 20 9D 01 00 00 CB 00  无人,77 04 0E 02 20 9D 01 00 00 CB 01  有人
                 map.put("ctype", "CB");
-                map.put("x", tmp);
+                map.put("cid", tmp);
                 break;
             case "CC":
 //                温湿度 77 04 0E 02 20 9D 01 00 00 CC, 温度 00 00 湿度  00 00

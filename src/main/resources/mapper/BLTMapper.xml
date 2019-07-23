@@ -18,11 +18,11 @@
     <parameterMap id="commandMapper" type="map">
         <parameter property="host" mode="IN"/>
         <parameter property="mesh_id" mode="IN"/>
-        <parameter property="lmac" mode="IN"/>
         <parameter property="ctype" mode="IN"/>
         <parameter property="cid" mode="IN"/>
         <parameter property="x" mode="IN"/>
         <parameter property="y" mode="IN"/>
+        <parameter property="status" mode="IN"/>
         <parameter property="other" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
@@ -71,7 +71,7 @@
 
     <select id="selectIn" parameterType="map" resultType="int">
         SELECT COUNT(0) lumn FROM t_light_info WHERE host=#{ip} AND vaddr IN
-        <foreach collection="l_vaddr" index="index" item="info" separator="," open="(" close=")">
+        <foreach collection="list" index="index" item="info" separator="," open="(" close=")">
             #{info}
         </foreach>
     </select>
