@@ -53,15 +53,12 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         Map map = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
         Integer osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
-//        Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-//        Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
-        String host = (String) map.get("ip");
         Set lmacSet = (Set) map.get(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = (Set) map.get(ConsoleKeys.VADDR.getValue());
 //        int size = ConsoleUtil.getLightSize("Office");
 //        Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
         if (null != lmacSet) {
-            if (null != ipSet && ipSet.size() > 0) {
+            if (ipSet.size() > 0) {
                 logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
                 for (String ip : ipSet) {
                     if (null != vaddrSet) {
@@ -69,10 +66,9 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                         params.put("ip", ip);
                         params.put("list", vaddrSet);
                         Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
-                        if (null == osize) {
-                            ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
-                        } else if (osize == size) {
-                            logger.warn("ip[{}] old_size[{}] current_size[{}]", ip, osize, size);
+                        ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
+                        logger.warn("ip[{}] old_size[{}] current_size[{}]", ip, osize, size);
+                        if (osize == size) {
                             ipSet.remove(ip);
                             ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                             try {
