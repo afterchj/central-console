@@ -238,7 +238,22 @@
 <script type="text/javascript" th:src="@{/static/new/js/waterbubble.min.js}"></script>
 <script type="text/javascript" th:src="@{/static/new/js/global.js}"></script>
 <script type="text/javascript" th:src="@{/static/new/js/floor.js}"></script>
-
+<script>
+    let url = location.host;
+    if (typeof (WebSocket) == "undefined") {
+        console.log("遗憾：您的浏览器不支持WebSocket");
+    } else {
+        socket = new WebSocket("ws://" + url + "/ws/webSocket");
+        //连接打开事件
+        socket.onopen = function () {
+            console.log("Socket 已打开！");
+        };
+        //收到消息事件
+        socket.onmessage = function (result) {
+            console.log("type", typeof result, "receive", result.data);
+        }
+    }
+</script>
 <!--<script type="text/javascript" th:src="@{/static/new/js/common.js}"></script>-->
 <!--<script type="text/javascript" th:src="@{/static/new/js/noEnergy.js}"></script>-->
 </body>
