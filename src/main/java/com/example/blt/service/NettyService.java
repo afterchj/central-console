@@ -62,18 +62,19 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //        Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
         if (null != lmacSet) {
             if (null != ipSet && ipSet.size() > 0) {
-                logger.warn("lmacSize[{}] ips[{}]", lmacSet.size(), ipSet);
+                logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
                 for (String ip : ipSet) {
                     if (null != vaddrSet) {
-                        logger.warn("ip=" + ip + ",vaddrSize=" + vaddrSet.size());
                         Map params = new HashMap();
-                        params.put("host", ip);
+                        params.put("ip", ip);
                         params.put("list", vaddrSet);
                         Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
                         if (null == osize) {
                             ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
                         } else if (osize == size) {
+                            logger.warn("ip[{}] old_size[{}] current_size[{}]", ip, osize, size);
                             ipSet.remove(ip);
+                            ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                             try {
                                 ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
                             } catch (NoTopicException e) {
