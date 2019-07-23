@@ -11,9 +11,9 @@ $(function () {
 
 async function getInit() {
     try {
-        let result1 = await ajaxLeftNav(); // 执行到这里报错，直接跳至下面 catch() 语句
+        let result1 = await init(); // 执行到这里报错，直接跳至下面 catch() 语句
         // let result2 = await ajaxGet(result1.url);
-        let result2 = await ajaxIndex();
+        // let result2 = await ajaxIndex();
         // let result3 = await ajaxGet(result2.url);
         // console.log('result1 ---> ', result1);
         // console.log('result2 ---> ', result2);
@@ -23,6 +23,10 @@ async function getInit() {
     }
 };
 
+function init() {
+    ajaxLeftNav();
+    ajaxIndex();
+}
 function water() {
     var pDefault;
     waterbubbleS('#floor-1', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
@@ -45,7 +49,7 @@ function ajaxIndex() {
             url: '/new/getNewMonitor',
             type: 'POST',
             dataType: "json",
-            data: {'floor': 'index'},
+            data:{"floor":"index","type":"0"} ,
             success: function (res) {
                 resolve(res);
                 console.log('res',res);
@@ -142,3 +146,57 @@ function ajaxIndex() {
         })
     })
 };
+
+//单楼层总开总关
+$(".content").on('click', ".centerL-btn", function () {
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+    var centerOrder = $(this).parent().parent().parent().find('.mname').text();
+    centerOrder = centerOrder.substring(0, 1);
+    var host = getHostByFloor(centerOrder);
+
+    if (src == "off") {
+        var command = '77010315373766';
+    } else if (src == "on") {
+        var command = '77010315323266';
+    }
+    $.post("/sendSocket6", {
+        "command": command,
+        "host": host
+    }, function (msg) {
+        if (msg.success == 'success') {
+            // console.log(state)
+            if (src == "off") {
+                $(state).attr('src', '/static/new/img/light-on.PNG');
+            } else if (src == "on") {
+                $(state).attr('src', '/static/new/img/light-off.PNG');
+            }
+        }
+    })
+});
+//总楼层开关
+$(".p-a.middle").on('click', ".pointer", function () {
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+    var host = 'all';
+    if (src == "off") {
+        var command = '77010315373766';
+    } else if (src == "on") {
+        var command = '77010315323266';
+    }
+    $.post("/sendSocket6", {
+        "command": command,
+        "host": host
+    }, function (msg) {
+        if (msg.success == 'success') {
+            // console.log(state)
+            if (src == "off") {
+                $(state).attr('src', '/static/new/img/light-on.PNG');
+            } else if (src == "on") {
+                $(state).attr('src', '/static/new/img/light-off.PNG');
+            }
+        }
+    })
+})

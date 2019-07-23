@@ -14,6 +14,33 @@ $('.nave').on('mouseenter mouseleave','li',function(){
     }
 });
 
+//监听select场景选择
+// $('.select-levels select').change(function(){
+//     var selectVal=$(this).children('option:selected').val();
+//     console.log('selectVal',selectVal);
+//     const actions = () => {
+//         const functionA = () => {
+//             /*do sth*/
+//
+//         }
+//         const functionB = () => {
+//             /*do sth*/
+//
+//         }
+//         return new Map([
+//             [/\S/, functionA],
+//             [/^guest_5$/, functionB],
+//             //...
+//         ])
+//     }
+//
+//     const onButtonClick = (identity, status) => {
+//         let action = [...actions()].filter(([key, value]) => (key.test(`${identity}_${status}`)))
+//         action.forEach(([key, value]) => value.call(this))
+//     }
+// })
+
+
 /**
  * @param {string} classaName - 参数classaName
  * @param {number} slidesPerView - 参数默认值为1
@@ -38,7 +65,6 @@ function swiper(classaName, slidesPerView, slidesPerColumn, slidesPerColumnFill)
 }
 
 
-
 /**
  * @param {string} id - 参数id
  * @param {string} txt - 参数默认值为0%
@@ -60,7 +86,6 @@ function waterbubbleS(id, txt, textColor, wave, radius, data, lineWidth, waterCo
     waterColor ? waterColor : waterColor = '#68d8d8';
     font ? font : font = '14px arial';
     animation ? animation : animation = true;
-    // console.log(id, txt, textColor, wave, radius, data, lineWidth, waterColor, font, animation)
     $(id).waterbubble({
         txt: txt,
         textColor: textColor,
@@ -85,9 +110,8 @@ function getNum(text){
     return value;
 }
 
-
 //获取url中的参数的值
-function getUrlParams(name) { // 不传name返回所有值，否则返回对应值
+function getUrlParams(name) { 
     var url = window.location.search;
     if (url.indexOf('?') == 1) {
         return false;
@@ -118,7 +142,8 @@ function getUrlParams(name) { // 不传name返回所有值，否则返回对应�
     // 返回结果
     return nameres;
 }
-//状态判断(左侧楼层)
+
+//状态判断(左侧楼层,楼层页楼层状态判断)
 function statusFloorJudgement(exception,diff,active){
     var status;
     var statusImg;
@@ -146,7 +171,7 @@ function statusFloorJudgement(exception,diff,active){
     return obj;
 }
 
-//状态判断(右侧首页区域)
+//状态判断(右侧首页区域,楼层页组状态)
 function statusPlaceJudgement(exception,diff,active){
     var status;
     var statusImg;
@@ -174,7 +199,8 @@ function statusPlaceJudgement(exception,diff,active){
     return obj;
 }
 
-//开关判断(楼层单个,区域)
+
+//开关判断(首页楼层单个,楼层页区域)
 function switchFloorJudgement(on) {
     var switchImg;
     if(on==0){
@@ -184,6 +210,7 @@ function switchFloorJudgement(on) {
     }
     return switchImg;
 }
+
 
 //开关判断(楼层总)
 function switchAllFloorJudgement(allFloorStatus) {
@@ -195,6 +222,7 @@ function switchAllFloorJudgement(allFloorStatus) {
     }
     return switchImg;
 }
+
 
 //开关判断(灯)
 function switchLightJudgement(status) {
@@ -223,11 +251,10 @@ function ajaxLeftNav() {
             url: '/new/getNewMonitor', 
             type: 'POST',
             dataType: "json",
+            data:{"floor":"index","type":"0"},
             success: function (res) {
                 resolve(res);
-                // console.log('res',res);
                 var leftFloors = res.leftFloors;
-                console.log('leftFloors',leftFloors);
                 var leftNav = '';
                 $.each(leftFloors, function (i, item) {
                     var mname=item.mname;
