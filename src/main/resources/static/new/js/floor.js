@@ -10,7 +10,8 @@ $(function () {
 async function getInit() {
     console.log('开始')
     try {
-        let result1 = await init();
+        let floor=getUrlParams('floor')+'楼';
+        let result1 = await ajaxFloor(floor);
         // let result2 = await ajaxFloor(floor);
         // console.log('floor',floor);
         // let result3 = await ajaxGet(result2.url);
@@ -21,11 +22,6 @@ async function getInit() {
         console.log(err);
     }
 };
-function init() {
-    let floor=getUrlParams('floor')+'楼';
-    ajaxLeftNav();
-    ajaxFloor(floor);
-}
 function ajaxFloor(floor) {
     return new Promise(function (resolve, reject) {
         $.ajax({
@@ -36,6 +32,56 @@ function ajaxFloor(floor) {
                 success: function (res) {
                     console.log(res)
                     resolve(res);
+                    //左侧导航
+                    var leftFloors = res.leftFloors;
+                    var leftNav = '';
+                    $.each(leftFloors, function (i, item) {
+                        var mname=item.mname;
+                        var centerLNum=item.centerLNum;
+                        var exception = item.exception;
+                        var diff = item.diff;
+                        var floor=getNum(mname);
+                        var active='';
+                        var urlFloor= getUrlParams('floor');
+                        if(urlFloor && urlFloor!=null){
+                            if(urlFloor==floor){
+                                active='active';
+                            }
+                        }
+                        var status=statusFloorJudgement(exception,diff,active).status;
+                        var statusImg=statusFloorJudgement(exception,diff,active).statusImg;
+                        leftNav +=` <li class="${active}">
+                                    <a href="/newIndex/noEnergy?floor=${floor}">
+                                        <div class="clearfix">
+                                            <div class="f-l p-r">
+                                                <div class="nav-l p-a">
+                                                    <div class="floor">实验室-<span> ${mname} </span></div>
+                                                    <div class="switch-hint">(<span class=" center-LNum">${centerLNum}</span> / <span
+                                                            class="">48</span>)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="nav-r p-a">
+                                                    <div class="left-img">
+                                                        ${statusImg}
+                                                    </div>
+                                                    <div class="switch-hint">${status}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>`;
+                    });
+                    var indexActive='';
+                    var url=window.location.href;
+                    if(url.indexOf('floor')==-1){
+                        indexActive='active';
+                    }
+                    var leftIndex = `<li class="current ${indexActive}"><a href="/newIndex">首页</a></li>`;
+                    $('.nave ul').append(leftIndex + leftNav);
+
+                    //右侧
                     var placeContent = '';
                     var floorStatus=res.floorStatus;
                     var status=floorStatus.status;
@@ -161,7 +207,24 @@ function ajaxFloor(floor) {
                         placeContent += `<div class="clearfix">${placeTitle}${groupRight}</div>`;
                     })
                     $('.content').append(placeContent);
-                    swiper('.light-swiper', 3)
+                    swiper('.light-swiper', 3);
+
+                    //实时状态
+                    var exceptionPng = $(".content img");
+                    var un = 0;
+                    var abnoraml = 0;
+                    exceptionPng.each(function () {
+                        var src = $(this).attr('src');
+                        src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+                        if (src == "un") {
+                            un++;
+                        } else if (src == "abnormal") {
+                            abnoraml++;
+                        }
+                    })
+                    $(".error.status").text(un + abnoraml);
+                    $(".error.diff").text(un);
+                    $(".error.exception").text(abnoraml);
                 },
                 error: function (err) {
                     reject('请求失败')

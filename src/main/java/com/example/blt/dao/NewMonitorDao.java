@@ -52,4 +52,7 @@ public interface NewMonitorDao {
 
     @Select("select mname,place,groupId  FROM f_light_demo d LEFT JOIN t_light_info i ON d.lmac = i.lmac where d.other='intelligence' and (i.status='0' or i.y='32') group by substring_index(mname,'楼',1)+0,place,groupId")
     List<LightDemo> getGroupOffStatus();
+
+    @Select("SELECT d.mname,d.lname,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info) i ON d.lmac = i.lmac where d.other='intelligence' and d.mname=#{floor}")
+    List<LightDemo> getRealLightStateByFloor(@Param("floor")String floor);
 }
