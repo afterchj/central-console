@@ -19,7 +19,7 @@ public interface Monitor4Dao {
     @Select("select id,cid,ctype,host,x,y from t_command_info where ctype is not null and (SUBSTRING_INDEX(SUBSTRING_INDEX(host,'.',-2),'.',1)='10' or host='all')  order by id desc limit 1")
     CommandLight getCommandInfo(@Param("host") String host);
 
-    @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info_copy i where d.lmac=i.lmac and  (i.y is not null)and d.other='intelligence' Group by substring_index(mname,'楼',1)+0")
+    @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and  (i.y is not null)and d.other='intelligence' Group by substring_index(mname,'楼',1)+0")
     List<Map<String,Object>> getIntelligenceCenterLNum();//每一层正常状态的灯个数
 
 
@@ -27,7 +27,7 @@ public interface Monitor4Dao {
     List<LightDemo> getIntelligencePlaceLNum();//每一层每个区域的正常状态灯个数
 
 
-    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.Place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info_copy) i ON d.lmac = i.lmac where d.other='intelligence'")
+    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.Place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info) i ON d.lmac = i.lmac where d.other='intelligence'")
     List<LightDemo> getIntelligenceLightInfo();
 
     @Select("select mname,count(*) as PlaceLNum,Place from f_light_demo where other =#{other} Group by mname,Place ORDER BY substring_index(mname,'楼',1)+0,Place")
