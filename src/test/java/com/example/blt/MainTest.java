@@ -82,34 +82,34 @@ public class MainTest {
 
     @Test
     public void testSqlSession() {
-        List hosts =  sqlSessionTemplate.selectList("console.getHosts");
+        List hosts = sqlSessionTemplate.selectList("console.getHosts");
         Set set = new HashSet(hosts);
-        Map map=new HashMap();
-        map.put("ip","127.0.0.1");
-        map.put("status",true);
+        Map map = new HashMap();
+        map.put("ip", "127.0.0.1");
+        map.put("status", true);
         sqlSessionTemplate.insert("console.insertHost", map);
 //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
 //        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
 //        String str = "77040F0227E9010000713232000000000000CC";
 //        StrUtil.buildLightInfo(str,"127.0.0.1");
 //        ExecuteTask.pingInfo("127.0.0.1", str);
-        System.out.println(hosts+"\t"+set);
+        System.out.println(hosts + "\t" + set);
     }
 
     @Test
     public void testUpdate() {
 //        List addr = sqlSessionTemplate.selectList("console.getVaddr");
 //        Set list = new HashSet(addr);
-        Set<String> set=new HashSet<>();
+        Set<String> set = new HashSet<>();
         set.add("1234");
-        logger.warn("list="+set);
+        logger.warn("list=" + set);
 //        Set<Map> set = new HashSet<>();
 //        set.addAll(list);
         ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 30);
         logger.warn("set=" + set.size());
-        Map map=new HashMap();
-        map.put("collection",set);
-        map.put("host","127.0.0.1");
+        Map map = new HashMap();
+        map.put("collection", set);
+        map.put("host", "127.0.0.1");
         sqlSessionTemplate.update("console.saveUpdate2", map);
 //        Set<Map> list = ConsoleUtil.persistHosts();
 //        map.put("list", list);
@@ -127,18 +127,36 @@ public class MainTest {
         String key1 = ConsoleKeys.VADDR.getValue();
         String key2 = ConsoleKeys.lMAC.getValue();
         ConsoleUtil.saveInfo("test_vaddr", 101);
-        System.out.println("size=" +  ConsoleUtil.getValue("test_vaddr"));
+        System.out.println("size=" + ConsoleUtil.getValue("test_vaddr"));
         ConsoleUtil.cleanKey("test_vaddr");
-        System.out.println("size=" +  ConsoleUtil.getValue("test_vaddr"));
+        System.out.println("size=" + ConsoleUtil.getValue("test_vaddr"));
 //        Set set2 = getInfo(key2);
     }
 
     @Test
     public void testRedis() {
+        ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), 10);
+
         Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         logger.warn("lmacSet=" + lmacSet);
         logger.warn("vaddrSet=" + vaddrSet);
+    }
+
+    @Test
+    public void testHash() throws InterruptedException {
+        List list = sqlSessionTemplate.selectList("console.getLight", "192.168.10.12");
+        Set set = new HashSet(list);
+        ConsoleUtil.saveLight("t_light", "l_vaddr", "192.168.10.12", set);
+        Map rs = ConsoleUtil.getLight("t_light");
+        Integer size = sqlSessionTemplate.selectOne("console.selectIn", rs);
+        logger.warn("size [{}]", size);
+//        Set lmac = (Set) rs.get("l_vaddr");
+        logger.warn("map [{}]", rs);
+//        Thread.sleep(10000);
+//        Map rs1 = ConsoleUtil.getLight("t_light");
+//        logger.warn("ip [{}] \n lmac [{}]", rs1.get("ip"), rs1.get("lmac"));
+
     }
 
     @Test

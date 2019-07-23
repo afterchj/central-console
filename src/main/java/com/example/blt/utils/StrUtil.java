@@ -6,11 +6,11 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
-import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,7 +30,7 @@ public class StrUtil {
     public static void buildLightInfo(String ip, String msg) {
         String[] array = msg.split("CCCC");
         for (String str : array) {
-            Map map = new ConcurrentHashMap();
+            Map map = new HashMap();
 //        String str = msg.replace(" ", "");
             String str1 = "77040F0227";
             map.put("host", ip);
@@ -41,7 +41,8 @@ public class StrUtil {
                 int index = str1.length();
                 String vaddr = str.substring(index, index + 8);
                 vaddrSet.add(vaddr);
-                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
+//                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
+                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.VADDR.getValue(), ip, vaddrSet);
                 String x = str.substring(index + 10, index + 12);
                 String y = str.substring(index + 12, index + 14);
                 if (str.contains("3232")) {
@@ -69,7 +70,8 @@ public class StrUtil {
                 String mac = sortMac(lmac);
                 map.put("lmac", mac);
                 lmacSet.add(mac);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
+//                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
+                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.lMAC.getValue(), ip, lmacSet);
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
@@ -124,20 +126,29 @@ public class StrUtil {
         int len = str.length();
         String prefix = str.substring(0, 2).toUpperCase();
         String tmp = str.substring(2, 4);
-        String cid = str.substring(len - 4, len - 2);
+        Integer cid = Integer.parseInt(str.substring(len - 4, len - 2), 16);
+        Integer status = null;
         Map map = new ConcurrentHashMap<>();
         map.put("host", ip);
+        if (str.contains("3232")) {
+            map.put("status", 0);
+        } else {
+            map.put("status", 1);
+        }
         switch (prefix) {
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
                 //7704100221F505000052456365D7ACF0000200CCCC
-//                String cmd = str.substring(len - 6, len - 4);
-//                if ("01".equals(cmd)) {
+                String cmd = str.substring(len - 6, len - 4);
+                if ("01".equals(cmd)) {
+                    status = 0;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
-//                } else if ("02".equals(cmd)) {
+                } else if ("02".equals(cmd)) {
+                    status = 1;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
-//                }
+                }
                 map.put("ctype", prefix);
                 map.put("cid", cid);
+                map.put("status", status);
                 break;
             case "C0"://pad或手机，C0代表全控，37 37字段是x、y值
                 map.put("ctype", prefix);
@@ -147,12 +158,12 @@ public class StrUtil {
             case "CA":
                 //门磁,77 04 0E 02 20 9D 01 00 00 CA 00  关门,77 04 0E 02 20 9D 01 00 00 CA 01   开门
                 map.put("ctype", prefix);
-                map.put("x", tmp);
+                map.put("cid", tmp);
                 break;
             case "CB":
 //                人感 ,77 04 0E 02 20 9D 01 00 00 CB 00  无人,77 04 0E 02 20 9D 01 00 00 CB 01  有人
                 map.put("ctype", "CB");
-                map.put("x", tmp);
+                map.put("cid", tmp);
                 break;
             case "CC":
 //                温湿度 77 04 0E 02 20 9D 01 00 00 CC, 温度 00 00 湿度  00 00
@@ -170,9 +181,7 @@ public class StrUtil {
                     map.put("ctype", prefix);
                     map.put("x", str.substring(2, 4));
                     map.put("y", str.substring(4, 6));
-                    if (StringUtils.isNotEmpty(cid)) {
-                        map.put("cid", cid);
-                    }
+                    map.put("cid", cid);
                 }
                 break;
         }
@@ -180,10 +189,8 @@ public class StrUtil {
             String info = JSON.toJSONString(map);
             WebSocket.sendMessage(info);
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
-        } catch (
-                NoTopicException e) {
+        } catch (NoTopicException e) {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.warn("result=" + map.get("result"));
         }
 //        logger.warn("result=" + JSON.toJSONString(map));
     }

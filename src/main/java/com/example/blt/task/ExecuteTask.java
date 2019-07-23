@@ -36,31 +36,6 @@ public class ExecuteTask {
         executorService.submit(new PingTask(ip, msg));
     }
 
-    public static void saveInfo(String msg, Map map, Set set, boolean flag) {
-        if (msg.indexOf("77040F01") != -1) {
-            executorService.submit(() -> {
-                MapUtil.removeEntries(map, new String[]{"lmac"});
-                set.add(map);
-                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), set, 5);
-            });
-        } else if (msg.indexOf("77040F0227") != -1) {
-            executorService.submit(() -> {
-                MapUtil.removeEntries(map, new String[]{"vaddr"});
-                set.add(map);
-                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 20);
-            });
-        }
-    }
-
-    public static void translateCmd(String msg) {
-        if (msg.indexOf("77010315") != -1) {
-            JSONObject object = new JSONObject();
-            object.put("host", "all");
-            object.put("command", msg);
-            ClientMain.sendCron(object.toJSONString());
-        }
-    }
-
     public static void ping(boolean flag, int times, String... host) {
         try {
             for (int i = 0; i < times; i++) {
@@ -83,26 +58,16 @@ public class ExecuteTask {
         }
     }
 
-    public static void pingStatus(boolean delay, int times) {
-        List<String> ips = sqlSessionTemplate.selectList("console.getHosts");
-        new Thread(() -> {
-            try {
-                if (delay) {
-                    Thread.sleep(20000);
-                }
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-            }
-            ping(delay, times, ips.toArray(new String[ips.size()]));
-        }).start();
-    }
-
     public static void parseLocalCmd(String str, String ip) {
         executorService.submit(() -> {
             Map map = new ConcurrentHashMap();
             String prefix = str.substring(0, 8);
+            if (str.contains("3232")) {
+                map.put("status", 0);
+            } else {
+                map.put("status", 1);
+            }
             map.put("host", ip);
-            map.put("other", str);
             String cmd = str.substring(prefix.length());
             String cid = cmd.substring(0, 2);
             switch (prefix) {
@@ -130,7 +95,6 @@ public class ExecuteTask {
                 ProducerService.pushMsg(Topics.LOCAL_TOPIC.getTopic(), info);
             } catch (Exception e) {
                 sqlSessionTemplate.selectOne("console.saveConsole", map);
-                logger.warn("result=" + map.get("result"));
             }
         });
     }
@@ -147,6 +111,45 @@ public class ExecuteTask {
             result = "fail";
         }
         return result;
+    }
+
+    public static void pingStatus(boolean delay, int times) {
+        List<String> ips = sqlSessionTemplate.selectList("console.getHosts");
+        new Thread(() -> {
+            try {
+                if (delay) {
+                    Thread.sleep(20000);
+                }
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage());
+            }
+            ping(delay, times, ips.toArray(new String[ips.size()]));
+        }).start();
+    }
+
+    public static void saveInfo(String msg, Map map, Set set, boolean flag) {
+        if (msg.indexOf("77040F01") != -1) {
+            executorService.submit(() -> {
+                MapUtil.removeEntries(map, new String[]{"lmac"});
+                set.add(map);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), set, 5);
+            });
+        } else if (msg.indexOf("77040F0227") != -1) {
+            executorService.submit(() -> {
+                MapUtil.removeEntries(map, new String[]{"vaddr"});
+                set.add(map);
+                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), set, 20);
+            });
+        }
+    }
+
+    public static void translateCmd(String msg) {
+        if (msg.indexOf("77010315") != -1) {
+            JSONObject object = new JSONObject();
+            object.put("host", "all");
+            object.put("command", msg);
+            ClientMain.sendCron(object.toJSONString());
+        }
     }
 
 }
