@@ -52,7 +52,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     public void checkSize() throws Exception {
         Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         Map map = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
-        JSONObject object = new JSONObject();
         Integer osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
 //        Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
 //        Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
@@ -63,32 +62,31 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         if (null != lmacSet) {
             logger.warn("lmacSize[{}] ips[{}]", lmacSet.size(), ipSet);
             if (null != vaddrSet) {
-                Integer size = sqlSessionTemplate.selectOne("console.selectIn", map);
 //                Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
-                logger.warn("size=" + size + ",vaddrSize=" + vaddrSet.size());
-                if (null == osize) {
-                    ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
-                } else if (osize == size) {
-                    ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
-                    if (null != ipSet) {
-                        ipSet.remove(host);
-                    }
-                    Map params = new HashMap();
-                    params.put("host", host);
-                    params.put("list", vaddrSet);
-                    try {
-                        ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
-                    } catch (NoTopicException e) {
-                        sqlSessionTemplate.update("console.saveUpdate", params);
+                logger.warn("ip=" + host + ",vaddrSize=" + vaddrSet.size());
+                ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
+                if (ipSet != null && ipSet.size() > 0) {
+                    for (String ip : ipSet) {
+                        Map params = new HashMap();
+                        params.put("host", ip);
+                        params.put("list", vaddrSet);
+                        Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
+                        if (null == osize) {
+                            ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
+                        } else if (osize == size) {
+                            ipSet.remove(ip);
+                            try {
+                                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
+                            } catch (NoTopicException e) {
+                                sqlSessionTemplate.update("console.saveUpdate", params);
+                            }
+                        }
+                        JSONObject object = new JSONObject();
+                        object.put("host", ip);
+                        object.put("command", "7701012766");
+                        ClientMain.sendCron(object.toJSONString());
                     }
                 }
-            }
-        }
-        if (ipSet != null && ipSet.size() > 0) {
-            for (String ip : ipSet) {
-                object.put("host", ip);
-                object.put("command", "7701012766");
-                ClientMain.sendCron(object.toJSONString());
             }
         }
     }

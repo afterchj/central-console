@@ -82,8 +82,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         }
         if (len >= 22) {
             if (arg1.indexOf("CCCC") != -1) {
-                StrUtil.buildLightInfo(host, arg1);
-//                ExecuteTask.pingInfo(host, arg1);
+//                StrUtil.buildLightInfo(host, arg1);
+                ExecuteTask.pingInfo(host, arg1);
             }
         }
     }

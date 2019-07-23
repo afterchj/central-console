@@ -6,7 +6,6 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
-import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,7 +126,7 @@ public class StrUtil {
         int len = str.length();
         String prefix = str.substring(0, 2).toUpperCase();
         String tmp = str.substring(2, 4);
-        String cid = str.substring(len - 4, len - 2);
+        Integer cid = Integer.parseInt(str.substring(len - 4, len - 2), 16);
         Map map = new ConcurrentHashMap<>();
         map.put("host", ip);
         switch (prefix) {
@@ -173,14 +172,12 @@ public class StrUtil {
                     map.put("ctype", prefix);
                     map.put("x", str.substring(2, 4));
                     map.put("y", str.substring(4, 6));
-                    if (StringUtils.isNotEmpty(cid)) {
-                        map.put("cid", cid);
-                    }
+                    map.put("cid", cid);
                 }
                 break;
         }
-        String info = JSON.toJSONString(map);
         try {
+            String info = JSON.toJSONString(map);
             WebSocket.sendMessage(info);
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
         } catch (NoTopicException e) {

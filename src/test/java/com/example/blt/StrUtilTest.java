@@ -114,6 +114,7 @@ public class StrUtilTest {
 
     @Test
     public void testA(){
+        System.out.println(Integer.parseInt("0a",16));
         String on="77020315323266";
         System.out.println(on.replace("02","01"));
         String strs = "77041002216501000052456365D7ACF0000200CCCC";
