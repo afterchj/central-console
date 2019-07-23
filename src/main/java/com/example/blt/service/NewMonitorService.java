@@ -34,7 +34,6 @@ public class NewMonitorService {
         List<Place> places = newMonitorDao.getPlaces();
         Map<String, Object> map = new HashMap<>();
 
-        //ms:mname,Place,groupId 每个组的开关状态
         for (int i = 0; i < ms.size(); i++) {
             String msMname = ms.get(i).getMname();
             int msPlace = ms.get(i).getPlace();
@@ -57,21 +56,29 @@ public class NewMonitorService {
                 }
             }
         }
+//        System.out.println(ms.toString());
 
         for (int i = 0; i < places.size(); i++) {
+            int placePlace = places.get(i).getPlace();
+            String placeMname = places.get(i).getMname();
             if (placesExceptions.size() > 0) {
                 for (int j = 0; j < placesExceptions.size(); j++) {
                     if (places.get(i).getMname().equals(placesExceptions.get(j).getMname()) && places.get(i).getPlace()
                             == placesExceptions.get(j).getPlace()) {
                         places.get(i).setException(placesExceptions.get(j).getException());
+                        break;
                     }
                 }
             }
             for (int c = 0; c < ms.size(); c++) {
-                if (places.get(i).getMname().equals(ms.get(c).getMname()) && places.get(i).getPlace() == ms.get(c)
-                        .getPlace()) {
-                    if (ms.get(i).getOff() == 1 && ms.get(i).getOn() == 1) {
+                int place = ms.get(c).getPlace();
+                String mname = ms.get(c).getMname();
+                int on = ms.get(c).getOn();
+                int off = ms.get(c).getOff();
+                if (mname.equals(placeMname) && place == placePlace) {
+                    if (on == 1 && off == 1) {
                         places.get(i).setDiff(1);
+                        break;
                     }
                 }
             }
@@ -85,6 +92,7 @@ public class NewMonitorService {
                 for (int j = 0; j < floorsExceptions.size(); j++) {
                     if (mnames.get(i).getMname().equals(floorsExceptions.get(j).getMname())) {
                         mnames.get(i).setException(floorsExceptions.get(j).getException());
+                        break;
                     }
                 }
             }
@@ -103,56 +111,62 @@ public class NewMonitorService {
         }
 //        System.out.println(mnames.toString());
         //统计每个楼层组的开关状态
+        int totalStatus = 1;//总楼层默认状态为关
         for (int i = 0; i < ms.size(); i++) {
             String msMname = ms.get(i).getMname();
             for (int j = 0; j < mnames.size(); j++) {
                 String mname = mnames.get(j).getMname();
                 if (msMname.equals(mname)) {
-                    if (ms.get(i).getOn() == 1 && ms.get(i).getOff() == 1) {
+//                    if (ms.get(i).getOn() == 1 && ms.get(i).getOff() == 1) {
+//                        //组内既有开又有关 该组为开的状态
+//                        mnames.get(j).setOn(1);
+//                    }
+//                    if (ms.get(i).getOn() == 0 && ms.get(i).getOff() == 0) {
+//                        //组内没有开也没有管 异常状态 该组状态为关
+//                        mnames.get(j).setOff(1);
+//                    }
+//                    if (ms.get(i).getOn() == 1 && ms.get(i).getOff() == 0) {
+//                        //组内只有开 该组为开的状态
+//                        mnames.get(j).setOn(1);
+//                    }
+//                    if (ms.get(i).getOn() == 0 && ms.get(i).getOff() == 1) {
+//                        //组内只有关 该组为关的状态
+//                        mnames.get(j).setOff(1);
+//                    }
+                    if (ms.get(i).getOn() == 1){
                         //组内既有开又有关 该组为开的状态
+                        totalStatus = 0;
                         mnames.get(j).setOn(1);
-                    }
-                    if (ms.get(i).getOn() == 0 && ms.get(i).getOff() == 0) {
-                        //组内没有开也没有管 异常状态 该组状态为关
-                        mnames.get(j).setOff(1);
-                    }
-                    if (ms.get(i).getOn() == 1 && ms.get(i).getOff() == 0) {
-                        //组内只有开 该组为开的状态
-                        mnames.get(j).setOn(1);
-                    }
-                    if (ms.get(i).getOn() == 0 && ms.get(i).getOff() == 1) {
-                        //组内只有关 该组为关的状态
-                        mnames.get(j).setOff(1);
                     }
                 }
             }
         }
-        int totalStatus = 1;//总楼层默认状态为关
-        for (int j = 0; j < mnames.size(); j++) {
-            int on = mnames.get(j).getOn();
-//            int off = mnames.get(j).getOff();
-            if (on == 1) {
-                totalStatus = 0;//楼层内的组只要有开即为开
-                mnames.get(j).setOn(1);//1 存在开 0 存在关
-                mnames.get(j).setOff(0);
-            }
-            if (on == 0) {
-                //楼层内的组状态没有开 楼层状态为关
-                mnames.get(j).setOn(0);
-                mnames.get(j).setOff(0);
-            }
 
-//            if (on==1 && off==0){
-//                totalStatus=0;//楼层内的组状态只有开 楼层状态为开
-//                mnames.get(j).setOn(1);
+//        for (int j = 0; j < mnames.size(); j++) {
+//            int on = mnames.get(j).getOn();
+////            int off = mnames.get(j).getOff();
+//            if (on == 1) {
+//                totalStatus = 0;//楼层内的组只要有开即为开
+//                mnames.get(j).setOn(1);//1 存在开 0 存在关
 //                mnames.get(j).setOff(0);
 //            }
-//            if (on==0 && off==1){
-//                //楼层内的组状态只有开 楼层状态为开
+//            if (on == 0) {
+//                //楼层内的组状态没有开 楼层状态为关
 //                mnames.get(j).setOn(0);
 //                mnames.get(j).setOff(0);
 //            }
-        }
+//
+////            if (on==1 && off==0){
+////                totalStatus=0;//楼层内的组状态只有开 楼层状态为开
+////                mnames.get(j).setOn(1);
+////                mnames.get(j).setOff(0);
+////            }
+////            if (on==0 && off==1){
+////                //楼层内的组状态只有开 楼层状态为开
+////                mnames.get(j).setOn(0);
+////                mnames.get(j).setOff(0);
+////            }
+//        }
         map.put("status", totalStatus);
         map.put("floor", mnames);
 //        System.out.println(map.toString());
