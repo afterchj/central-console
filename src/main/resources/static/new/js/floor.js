@@ -32,8 +32,9 @@ function ajaxFloor(floor) {
                 url: '/new/getNewMonitor',
                 type: 'POST',
                 dataType: "json",
-                data: {'floor': floor},
+                data: {'floor': floor,"type":"0"},
                 success: function (res) {
+                    console.log(res)
                     resolve(res);
                     var placeContent = '';
                     var floorStatus=res.floorStatus;
@@ -179,14 +180,91 @@ function water() {
     waterbubbleS('#floor-5', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault);
 }
 
-//单楼层总开总关
-$(".content").on('click', ".centerL-btn", function () {
+//点击单组
+$(".content").on('click', ".group-btn", function () {
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."))
+    // console.log(src)
+    var groupOrder = extractNum($(this).parent().parent().siblings().find('.max').text());
+    if (src == "off") {
+        var onOffOrder = '3737';
+    } else if (src == "on") {
+        var onOffOrder = '3232';
+    }
+    // if (groupOrder>0){
+    groupOrder = parseInt(groupOrder).toString(16).toUpperCase()
+    var command = '770104160' + groupOrder + onOffOrder + '66';
+    // }
+    var floor = getUrlParams('floor');
+    var host = getHostByFloor(floor);
+
+    $.post("/sendSocket6", {
+        "command": command,
+        "host": host
+    }, function (msg) {
+        // console.log(msg)
+        if (msg.success == 'success') {
+            // console.log(state)
+            if (src == "off") {
+                $(state).attr('src', '/static/new/img/light-on.PNG');
+            } else if (src == "on") {
+                $(state).attr('src', '/static/new/img/light-off.PNG');
+            }
+        }
+    })
+})
+//区域开关
+$(".content").on('click', ".place-btn", function () {
     var src = $(this).children().attr('src');
     var state = $(this).children();
     src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
-    var centerOrder = $(this).parent().parent().parent().find('.mname').text();
-    centerOrder = centerOrder.substring(0, 1);
-    var host = getHostByFloor(centerOrder);
+    if (src == "off") {
+        var onOffOrder = '3737';
+    } else if (src == "on") {
+        var onOffOrder = '3232';
+    }
+    var placeOrder = $(this).parent().parent().parent().next().find('.max');
+    var groupOrder;
+    var commandArr = [];
+    var command;
+    var floor = getUrlParams('floor');
+    var host = getHostByFloor(floor);
+    placeOrder.each(function (key, value) {
+        // console.log("placeOrdr",$(this).text())
+        groupOrder = extractNum($(this).text());
+        groupOrder = parseInt(groupOrder).toString(16).toUpperCase();
+        command = '770104160' + groupOrder + onOffOrder + '66';
+        commandArr[key] = command;
+    });
+    // console.log(commandArr)
+    $.ajax({
+        type: "POST",
+        url: "/sendSocket7",
+        dataType: "json",
+        // contentType:"application/json",
+        // processData: false,
+        data: "commands=" + commandArr + "&host=" + host,
+        success: function (msg) {
+            if (msg.success == 'success') {
+                // console.log(state)
+                if (src == "off") {
+                    $(state).attr('src', '/static/new/img/light-on.PNG');
+                } else if (src == "on") {
+                    $(state).attr('src', '/static/new/img/light-off.PNG');
+                }
+            }
+        }
+    })
+});
+
+//单楼层总开总关
+$(".middle.p-a").on('click', "p", function () {
+    var src = $(this).children().attr('src');
+    var state = $(this).children();
+    src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+    var floor = getUrlParams('floor');
+    var host = getHostByFloor(floor);
 
     if (src == "off") {
         var command = '77010315373766';
@@ -207,27 +285,35 @@ $(".content").on('click', ".centerL-btn", function () {
         }
     })
 });
-//总楼层开关
-$(".p-a.middle").on('click', ".pointer", function () {
-    var src = $(this).children().attr('src');
-    var state = $(this).children();
-    src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
-    var host = 'all';
-    if (src == "off") {
-        var command = '77010315373766';
-    } else if (src == "on") {
-        var command = '77010315323266';
-    }
-    $.post("/sendSocket6", {
+//实时状态
+function realTimeStatus() {
+    var exceptionPng = $(".content img");
+    var un = 0;
+    var abnoraml = 0;
+    exceptionPng.each(function () {
+        var src = $(this).attr('src');
+        src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+        if (src == "un") {
+            un++;
+        } else if (src == "abnormal") {
+            abnoraml++;
+        }
+    })
+    $(".error.status").text(un + abnoraml);
+    $(".error.diff").text(un);
+    $(".error.exception").text(abnoraml);
+}
+//点击应用场景
+$(".status.card").on('click', "button", function () {
+    var command = $.trim($("select").val());
+    var floor = getUrlParams('floor');
+    var host = getHostByFloor(floor);
+    $.post("/sendSocket5", {
         "command": command,
         "host": host
     }, function (msg) {
         if (msg.success == 'success') {
-            if (src == "off") {
-                $(state).attr('src', '/static/new/img/light-on.PNG');
-            } else if (src == "on") {
-                $(state).attr('src', '/static/new/img/light-off.PNG');
-            }
+            $(".img-levels .f-l:eq(1) p[class='font-color']").text(command)
         }
     })
-})
+});
