@@ -8,7 +8,7 @@ $('.nave').on('mouseenter mouseleave','li',function(){
     if(src && src.indexOf('normal')!=-1){
         if(src=='/static/new/img/normal.png'){
             $(this).find('.left-img img').attr('src','/static/new/img/normal-white.png');
-        }else{
+        }else if(src=='/static/new/img/normal-white.png'){
             $(this).find('.left-img img').attr('src','/static/new/img/normal.png');
         }
     }
@@ -25,7 +25,7 @@ function swiper(classaName, slidesPerView, slidesPerColumn, slidesPerColumnFill)
     slidesPerColumn ? slidesPerColumn : slidesPerColumn = 1;
     slidesPerColumnFill ? slidesPerColumnFill : slidesPerColumnFill = 'row';
     new Swiper(classaName, {
-        autoplay: true,
+        autoplay: false,
         direction: 'horizontal',
         slidesPerView: slidesPerView,
         slidesPerColumn: slidesPerColumn,
@@ -57,7 +57,7 @@ function waterbubbleS(id, txt, textColor, wave, radius, data, lineWidth, waterCo
     radius ? radius : radius = 26;
     data ? data : data = 0;
     lineWidth ? lineWidth : lineWidth = 2;
-    waterColor ? waterColor : waterColor = '#64D1C4';
+    waterColor ? waterColor : waterColor = '#68d8d8';
     font ? font : font = '14px arial';
     animation ? animation : animation = true;
     // console.log(id, txt, textColor, wave, radius, data, lineWidth, waterColor, font, animation)
@@ -174,7 +174,7 @@ function statusPlaceJudgement(exception,diff,active){
     return obj;
 }
 
-//开关判断(楼层单个)
+//开关判断(楼层单个,区域)
 function switchFloorJudgement(on) {
     var switchImg;
     if(on==0){
@@ -196,6 +196,26 @@ function switchAllFloorJudgement(allFloorStatus) {
     return switchImg;
 }
 
+//开关判断(灯)
+function switchLightJudgement(status) {
+    var className='';
+    var switchImg;
+    if(status==0){
+        switchImg= '<img src="/static/new/img/light-on.PNG" alt="">';
+    }else if(status==1){
+        switchImg= '<img src="/static/new/img/light-off.PNG" alt="">';
+        className='off';
+    }else if(status==null){
+        switchImg= '<img src="/static/new/img/light-off.PNG" alt="">';
+        className='off hint';
+    }
+    var obj={
+        className:className,
+        switchImg:switchImg    
+    }
+    return obj;
+}
+
 //左侧数据初始化
 function ajaxLeftNav() {
     return new Promise(function (resolve, reject) {
@@ -207,6 +227,7 @@ function ajaxLeftNav() {
                 resolve(res);
                 // console.log('res',res);
                 var leftFloors = res.leftFloors;
+                console.log('leftFloors',leftFloors);
                 var leftNav = '';
                 $.each(leftFloors, function (i, item) {
                     var mname=item.mname;

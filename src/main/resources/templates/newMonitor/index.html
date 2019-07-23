@@ -55,6 +55,7 @@
             font-size: 13px;
             color: #fff;
             margin-left: 15%;
+
         }
         .swiper-container .place-content{
             position: absolute;
@@ -65,7 +66,6 @@
             height: calc(170px - 56px - 40px);
             padding: 20px 0;
             margin-left: 15%;
-
         }
         .light-list .swiper-slide{
             height: 170px;
@@ -211,6 +211,22 @@
 <!--<script type="text/javascript" th:src="@{/static/new/js/common.js}"></script>-->
 <script type="text/javascript" th:src="@{/static/new/js/global.js}"></script>
 <script type="text/javascript" th:src="@{/static/new/js/index.js}"></script>
+<script>
+    let url = location.host;
+    if (typeof (WebSocket) == "undefined") {
+        console.log("遗憾：您的浏览器不支持WebSocket");
+    } else {
+        socket = new WebSocket("ws://" + url + "/ws/webSocket");
+        //连接打开事件
+        socket.onopen = function () {
+            console.log("Socket 已打开！");
+        };
+        //收到消息事件
+        socket.onmessage = function (result) {
+            console.log("type", typeof result, "receive", result.data);
+        }
+    }
+</script>
 <!--<script type="text/javascript" th:src="@{/static/new/js/newMonitor.js}"></script>-->
 </body>
 </html>

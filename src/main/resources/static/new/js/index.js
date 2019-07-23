@@ -71,7 +71,7 @@ function ajaxIndex() {
                 $.each(indexFloorList, function (i, floorTtem) {
                     var mname = floorTtem.mname;
                     var exception = floorTtem.exception;
-                    var diff = floorTtem.diff;
+                    // var diff = floorTtem.diff;
                     var placeList = floorTtem.placeList;
                     var on = floorTtem.on;
                     var switchImg = switchFloorJudgement(on);

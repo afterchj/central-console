@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: central-console
@@ -39,6 +36,11 @@ public class NewMonitorController {
     @Resource
     private NewMonitorDao newMonitorDao;
 
+    /**
+     * 主体内容
+     * @param floor
+     * @return
+     */
     @RequestMapping(value = "/getNewMonitor", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getNewMonitor(String floor) {
@@ -46,8 +48,6 @@ public class NewMonitorController {
         List<String> exception = webCmdDao.getException();
         List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
         List<CenterException> mnames = webCmdDao.getMnames();
-//        List<Mnames> mnames = newMonitorService.getMnames();
-//        List<Map<String, Object>> centerLNumList = monitor4Dao.getIntelligenceCenterLNum();
         List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum();
         List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
         Map<String, Object> indexFloorStatus = new HashMap<>();
@@ -56,22 +56,33 @@ public class NewMonitorController {
             //首页
             indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
         }else {
+            //指定楼层
             lightState = newMonitorService.getFloorLights(floor);
             floorStatus = newMonitorService.getFloorLightsStatus(lightState,floor);
 
         }
-//        List<LightDemo> placeLNumList = monitor4Dao.getIntelligencePlaceLNum();
-//        Map statusMap = getSwitchStatus(lightState);
         map.put("leftFloors", centerLNums);//左侧导航栏状态
-        map.put("indexFloorStatus", indexFloorStatus);
-//        map.put("placeLNumList", placeLNumList);
-//        map.put("lightState", lightState);
-//        map.put("status", statusMap);
+        map.put("indexFloorStatus", indexFloorStatus);//首页
+        map.put("floorStatus",floorStatus);//指定楼层
         return map;
     }
 
-
-
+    /**
+     * 左侧导航
+     * @return
+     */
+    @RequestMapping(value = "/getLeft", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getLeft() {
+        Map<String, Object> map = new HashMap<>();
+        List<String> exception = webCmdDao.getException();
+        List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
+        List<CenterException> mnames = webCmdDao.getMnames();
+        List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum();
+        List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
+        map.put("leftFloors", centerLNums);//左侧导航栏状态
+        return map;
+    }
 
     public List<Map<String, Object>> getLeftCenter(List<LightDemo> lightState, List<CenterException> mnames,
                                                    List<Map<String, Object>> centerLNumList, List<String> exception) {
@@ -102,29 +113,41 @@ public class NewMonitorController {
             ms.put("centerLNum", 0);
             ms.put("diff", "0");
             if (exception.size()>0){
-                for (String exp: exception){
-                    if (ms.get("mname").equals(exp)){
-                        ms.put("exception", "1");
-                    }
-                }
+                exception.stream().filter(exp -> ms.get("mname").equals(exp)).forEach(exp -> ms.put("exception", "1"));
+//                for (String exp: exception){
+//                    if (ms.get("mname").equals(exp)){
+//                        ms.put("exception", "1");
+//                    }
+//                }
             }
             if (centerLNumList.size()>0){
-                for (Map<String, Object> centerNum : centerLNumList) {
-                    if (centerNum.get("mname").equals(ms.get("mname"))){
-                        ms.put("centerLNum", centerNum.get("centerLNum"));
-                    }
+                centerLNumList.stream().filter(centerNum -> centerNum.get("mname").equals(ms.get("mname"))).forEach
+                        (centerNum -> ms.put("centerLNum", centerNum.get("centerLNum")));
+//                for (Map<String, Object> centerNum : centerLNumList) {
+//                    if (centerNum.get("mname").equals(ms.get("mname"))){
+//                        ms.put("centerLNum", centerNum.get("centerLNum"));
+//                    }
+//
+//                }
+            }
+            mnames.stream().filter(mname -> mname.getMname().equals(ms.get("mname"))).forEach(mname -> {
+                int on = mname.getOn();
+                int off = mname.getOff();
+                if (off == 1 && on == 1) {
+                    ms.put("diff", "1");
+                }
+            });
 
-                }
-            }
-            for (CenterException mname : mnames) {
-                if (mname.getMname().equals(ms.get("mname"))) {
-                    if (mname.getOff() == 1&&mname.getOn() == 1) {
-                        ms.put("diff", "1");
-                    }
-                }
-            }
+//            for (CenterException mname : mnames) {
+//                if (mname.getMname().equals(ms.get("mname"))) {
+//                    int on = mname.getOn();
+//                    int off = mname.getOff();
+//                    if (off == 1&&on == 1) {
+//                        ms.put("diff", "1");
+//                    }
+//                }
+//            }
             centerLNums.add(ms);
-
         }
         return centerLNums;
     }
