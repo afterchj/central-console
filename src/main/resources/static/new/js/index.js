@@ -11,7 +11,7 @@ $(function () {
 
 async function getInit() {
     try {
-        let result1 = await init(); // 执行到这里报错，直接跳至下面 catch() 语句
+        let result1 = await ajaxIndex(); // 执行到这里报错，直接跳至下面 catch() 语句
         // let result2 = await ajaxGet(result1.url);
         // let result2 = await ajaxIndex();
         // let result3 = await ajaxGet(result2.url);
@@ -23,10 +23,6 @@ async function getInit() {
     }
 };
 
-function init() {
-    ajaxLeftNav();
-    ajaxIndex();
-}
 function water() {
     var pDefault;
     waterbubbleS('#floor-1', '30%', pDefault, pDefault, 22, 0.3, 2.5, pDefault, pDefault, pDefault)
@@ -53,6 +49,56 @@ function ajaxIndex() {
             success: function (res) {
                 resolve(res);
                 console.log('res',res);
+                //左侧导航
+                var leftFloors = res.leftFloors;
+                var leftNav = '';
+                $.each(leftFloors, function (i, item) {
+                    var mname=item.mname;
+                    var centerLNum=item.centerLNum;
+                    var exception = item.exception;
+                    var diff = item.diff;
+                    var floor=getNum(mname);
+                    var active='';
+                    var urlFloor= getUrlParams('floor');
+                    if(urlFloor && urlFloor!=null){
+                        if(urlFloor==floor){
+                            active='active';
+                        }
+                    }
+                    var status=statusFloorJudgement(exception,diff,active).status;
+                    var statusImg=statusFloorJudgement(exception,diff,active).statusImg;
+                    leftNav +=` <li class="${active}">
+                                    <a href="/newIndex/noEnergy?floor=${floor}">
+                                        <div class="clearfix">
+                                            <div class="f-l p-r">
+                                                <div class="nav-l p-a">
+                                                    <div class="floor">实验室-<span> ${mname} </span></div>
+                                                    <div class="switch-hint">(<span class=" center-LNum">${centerLNum}</span> / <span
+                                                            class="">48</span>)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="nav-r p-a">
+                                                    <div class="left-img">
+                                                        ${statusImg}
+                                                    </div>
+                                                    <div class="switch-hint">${status}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>`;
+                });
+                var indexActive='';
+                var url=window.location.href;
+                if(url.indexOf('floor')==-1){
+                    indexActive='active';
+                }
+                var leftIndex = `<li class="current ${indexActive}"><a href="/newIndex">首页</a></li>`;
+                $('.nave ul').append(leftIndex + leftNav);
+                
+                //右侧
                 var rightSwiper = '';
                 var rightContent='';
                 var indexFloorList = res.indexFloorStatus.floor;
