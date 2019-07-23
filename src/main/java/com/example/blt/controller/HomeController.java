@@ -100,11 +100,8 @@ public class HomeController {
         Set ipSet = operations.get(ConsoleKeys.HOSTS.getValue());
         if (null != lmacSet) {
             map.put("lmacSize", lmacSet.size());
-            map.put("lmac", lmacSet);
-
         }
         if (null != vaddrSet) {
-            map.put("vaddr", vaddrSet);
             map.put("vaddrSize", vaddrSet.size());
         }
         if (null != ipSet) {
