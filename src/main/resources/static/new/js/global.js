@@ -412,66 +412,66 @@ function getFloorByHost(host) {
 //     action.forEach(([key, value])=> value.call(this));
 // }
 //左侧数据初始化
-// function ajaxLeftNav() {
-//     return new Promise(function (resolve, reject) {
-//         $.ajax({
-//             url: '/new/getNewMonitor', 
-//             type: 'POST',
-//             dataType: "json",
-//             data:{"floor":"index","type":"0"},
-//             success: function (res) {
-//                 resolve(res);
-//                 var leftFloors = res.leftFloors;
-//                 var leftNav = '';
-//                 $.each(leftFloors, function (i, item) {
-//                     var mname=item.mname;
-//                     var centerLNum=item.centerLNum;
-//                     var exception = item.exception;
-//                     var diff = item.diff;
-//                     var floor=getNum(mname);
-//                     var active='';
-//                     var urlFloor= getUrlParams('floor');
-//                     if(urlFloor && urlFloor!=null){
-//                         if(urlFloor==floor){
-//                             active='active';
-//                         }
-//                     }
-//                     var status=statusFloorJudgement(exception,diff,active).status;
-//                     var statusImg=statusFloorJudgement(exception,diff,active).statusImg;
-//                     leftNav +=` <li class="${active}">
-//                                     <a href="/newIndex/noEnergy?floor=${floor}">
-//                                         <div class="clearfix">
-//                                             <div class="f-l p-r">
-//                                                 <div class="nav-l p-a">
-//                                                     <div class="floor">实验室-<span> ${mname} </span></div>
-//                                                     <div class="switch-hint">(<span class=" center-LNum">${centerLNum}</span> / <span
-//                                                             class="">48</span>)
-//                                                     </div>
-//                                                 </div>
-//                                             </div>
-//                                             <div class="f-l p-r">
-//                                                 <div class="nav-r p-a">
-//                                                     <div class="left-img">
-//                                                         ${statusImg}
-//                                                     </div>
-//                                                     <div class="switch-hint">${status}</div>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                     </a>
-//                                 </li>`;
-//                 });
-//                 var indexActive='';
-//                 var url=window.location.href;
-//                 if(url.indexOf('floor')==-1){
-//                     indexActive='active';
-//                 }
-//                 var leftIndex = `<li class="current ${indexActive}"><a href="/newIndex">首页</a></li>`;
-//                 $('.nave ul').append(leftIndex + leftNav);
-//             },
-//             error: function (err) {
-//                 reject('请求失败')
-//             }
-//         })
-//     })
-// };
+function ajaxLeftNav() {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: '/new/getLeft',
+            type: 'POST',
+            dataType: "json",
+            data:{"type":"1"},
+            success: function (res) {
+                resolve(res);
+                var leftFloors = res.leftFloors;
+                var leftNav = '';
+                $.each(leftFloors, function (i, item) {
+                    var mname=item.mname;
+                    var centerLNum=item.centerLNum;
+                    var exception = item.exception;
+                    var diff = item.diff;
+                    var floor=getNum(mname);
+                    var active='';
+                    var urlFloor= getUrlParams('floor');
+                    if(urlFloor && urlFloor!=null){
+                        if(urlFloor==floor){
+                            active='active';
+                        }
+                    }
+                    var status=statusFloorJudgement(exception,diff,active).status;
+                    var statusImg=statusFloorJudgement(exception,diff,active).statusImg;
+                    leftNav +=` <li class="${active}">
+                                    <a href="/newIndex/noEnergy?floor=${floor}">
+                                        <div class="clearfix">
+                                            <div class="f-l p-r">
+                                                <div class="nav-l p-a">
+                                                    <div class="floor">实验室-<span> ${mname} </span></div>
+                                                    <div class="switch-hint">(<span class=" center-LNum">${centerLNum}</span> / <span
+                                                            class="">48</span>)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="f-l p-r">
+                                                <div class="nav-r p-a">
+                                                    <div class="left-img">
+                                                        ${statusImg}
+                                                    </div>
+                                                    <div class="switch-hint">${status}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>`;
+                });
+                var indexActive='';
+                var url=window.location.href;
+                if(url.indexOf('floor')==-1){
+                    indexActive='active';
+                }
+                var leftIndex = `<li class="current ${indexActive}"><a href="/newIndex">首页</a></li>`;
+                $('.nave ul').append(leftIndex + leftNav);
+            },
+            error: function (err) {
+                reject('请求失败')
+            }
+        })
+    })
+};

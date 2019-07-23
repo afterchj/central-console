@@ -187,10 +187,9 @@
                 <div class="search  clearfix ">
                     <div class="f-l  floor-levels p-r long-line">
                         <div class="middle p-a nowFloor">
-                            <p class="floor">实验室-1层</p>
+                            <p class="floor">实验室- <span>1</span></p>
                             <p class="font-color">（<span>48</span> / <span>48</span>）</p>
                         </div>
-
                     </div>
                     <div class="f-l img-levels p-r long-line">
                         <div class="clearfix middle p-a">
@@ -253,18 +252,30 @@
             console.log("Socket 已打开！");
         };
         //收到消息事件
-        socket.onmessage = function (result) {
+        socket.onmessage = function(result) {
+            sleep(200);
+            $('.content').empty();
+            $('.nave ul').empty();
             console.log(JSON.parse(result.data).host);
             var host = JSON.parse(result.data).host;
-//            var hosStr = hostUrl.substring(hostUrl.length - 1, hostUrl.length);
             var hosStr=getFloorByHost(host);
             let floor = getUrlParams('floor');
             if (hosStr == floor) {
-                ajaxFloor('1', floor);
+                ajaxFloor('1', floor+'楼');
+            }else{
+                ajaxLeftNav();
             }
         }
-    };
-
+    }
+    function sleep(numberMillis) {
+        var now = new Date();
+        var exitTime = now.getTime() + numberMillis;
+        while (true) {
+            now = new Date();
+            if (now.getTime() > exitTime)
+                return;
+        }
+    }
 </script>
 <!--<script type="text/javascript" th:src="@{/static/new/js/common.js}"></script>-->
 <!--<script type="text/javascript" th:src="@{/static/new/js/noEnergy.js}"></script>-->

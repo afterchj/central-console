@@ -43,7 +43,6 @@ async function init() {
                 lightState = sort(lightState, 'mname');
 
             }
-            // console.log('lightState', lightState);
             //json数据格式转换调用方法
             lightState = lightStateM(lightState);
             placeLNumList = placeLNumListM(placeLNumList);
@@ -51,7 +50,6 @@ async function init() {
             operation(lightState, placeLNumList, centerLNumList, status)
         }
     })
-    // upLight("/getNewMonitor")
 }
 
 

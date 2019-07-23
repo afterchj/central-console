@@ -6,22 +6,15 @@ $(function () {
     water();
     swiper('.waterbubble', 3, 2, 'row')
     getInit();
-
 })
 
 async function getInit() {
     try {
-        let result1 = await ajaxIndex(); // 执行到这里报错，直接跳至下面 catch() 语句
-        // let result2 = await ajaxGet(result1.url);
-        // let result2 = await ajaxIndex();
-        // let result3 = await ajaxGet(result2.url);
-        // console.log('result1 ---> ', result1);
-        // console.log('result2 ---> ', result2);
-        // console.log('result3 ---> ', result3);
+        let result1 = await ajaxIndex();
     } catch (err) {
-        console.log(err) // ReferenceError: url111 is not defined
+        console.log(err);
     }
-};
+}
 
 function water() {
     var pDefault;
@@ -48,7 +41,6 @@ function ajaxIndex() {
             data:{"floor":"index","type":"0"} ,
             success: function (res) {
                 resolve(res);
-                console.log('res',res);
                 //左侧导航
                 var leftFloors = res.leftFloors;
                 var leftNav = '';
@@ -169,7 +161,8 @@ function ajaxIndex() {
                                             </div>
                                         </div>
                                     </div>`;
-                    })
+                    });
+                    
                     rightSwiper = `<div class="light-list f-l">
                                        <div class="swiper-container light-swiper">
                                            <div class="swiper-wrapper clearfix ">
@@ -180,7 +173,8 @@ function ajaxIndex() {
                                         </div>
                                    </div>`;
                     rightContent+=leftFloor+rightSwiper;
-                })
+                    
+                });
                 var content = `<div class="clearfix">${rightContent}</div>`;
                 $('.content').append(content)
                 $('.totalFloor').append(AllFloor);

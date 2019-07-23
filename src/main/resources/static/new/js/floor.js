@@ -5,13 +5,13 @@ $(function () {
     swiper('.light-hint-list .swiper-container', 3, 1, 'row');
     water();
     getInit();
-
-})
+});
 async function getInit() {
-    console.log('开始')
     try {
         let floor = getUrlParams('floor') + '楼';
-        let result1 = await ajaxFloor('0',floor);
+        let emp1= await $('.content').empty();
+        let emp2= await  $('.nave ul').empty();
+        let result1 = await ajaxFloor('1',floor);
     } catch (err) {
         console.log(err);
     }
@@ -24,7 +24,7 @@ function ajaxFloor(type,floor) {
                 dataType: "json",
                 data: {'floor': floor, "type": type},
                 success: function (res) {
-                    console.log(res)
+                    console.log('res',res);
                     resolve(res);
                     //左侧导航
                     var leftFloors = res.leftFloors;
@@ -67,6 +67,7 @@ function ajaxFloor(type,floor) {
                                     </a>
                                 </li>`;
                     });
+
                     var indexActive = '';
                     var url = window.location.href;
                     if (url.indexOf('floor') == -1) {
@@ -87,6 +88,7 @@ function ajaxFloor(type,floor) {
                     $('.switch-levels img').replaceWith(switchImg);
                     $('.nowState img').replaceWith(statusImg);
                     $('.nowFloor p span:first-child').text(lightNum);
+                    $('.nowFloor .floor span').text(floor);
                     var placeList = floorStatus.placeList;
                     $.each(placeList, function (i, placeItem) {
                         var place = placeItem.place;
@@ -127,12 +129,14 @@ function ajaxFloor(type,floor) {
                         $.each(groupList, function (i, groupItem) {
                             var groupId = groupItem.groupId;
                             var exception = groupItem.exception;
+                            var status=groupItem.status;
                             var normal = 4 - parseInt(exception);
                             var diff = groupItem.diff;
                             var statusImg = statusPlaceJudgement(exception, diff, 'blue').statusImg;
                             var switchImg = switchAllFloorJudgement(status);
                             var light = '';
                             var lightList = groupItem.lightList;
+                            console.log('组的状态',status);
                             var groupTitle = `<div class="place-title">
                                             <div class="clearfix ">
                                                 <div class="f-l p-r r-line">
@@ -160,13 +164,13 @@ function ajaxFloor(type,floor) {
                                                 </div>
                                             </div>
                                         </div>`;
-
                             $.each(lightList, function (i, lightItem) {
                                 var lname = lightItem.lname;
                                 var status = lightItem.status;
                                 var y = lightItem.y == "-60%" ? 'null' : lightItem.y;
                                 var switchImg = switchLightJudgement(status).switchImg;
                                 var className = switchLightJudgement(status).className;
+                                console.log('灯的状态',status);
                                 light += `<li class="clearfix">
                                                     <div class="f-l p-r r-min-line">
                                                         <div class="middle p-a light-name">
@@ -235,6 +239,7 @@ function water() {
     waterbubbleS('#floor-3', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault);
     waterbubbleS('#floor-4', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault);
     waterbubbleS('#floor-5', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault);
+
 }
 
 //点击单组
