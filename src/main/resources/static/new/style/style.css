@@ -43,8 +43,8 @@ html,body {
 	color: #fff;
 }
 .nave li img {
-	width: 30px;
-	height: 30px;
+	width: 25px;
+	height: 25px;
 }
 .nave li.active,.nave ul li:hover {
 	background-color: #33CCCC;
@@ -85,7 +85,7 @@ html,body {
 	height: 85px;
 }
 .nave ul li.current a {
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: bold;
 	height: 85px;
 }

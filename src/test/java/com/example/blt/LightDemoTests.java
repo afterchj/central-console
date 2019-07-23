@@ -71,19 +71,21 @@ public class LightDemoTests {
 
     @Test
     public void test5(){
-        List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
+//        List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
 //        List<CenterException> ms = webCmdDao.getMnames();
-        Map<String,Object> indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
-        System.out.println(indexFloorStatus.toString());
+//        Map<String,Object> indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
+//        System.out.println(indexFloorStatus.toString());
+        List<String> list;
+        System.out.println(111);
     }
 
     @Test
     public void test6(){
 //        List<LightDemo> floorLightStatus = newMonitorDao.getFloorLightStatus("1楼");
 //        System.out.println(floorLightStatus.toString());
-        List<LightDemo> lightState = newMonitorService.getFloorLights("1楼");
-        Map<String,Object> floorLights = newMonitorService.getFloorLightsStatus(lightState,"1楼");
-        System.out.println(floorLights.toString());
+//        List<LightDemo> lightState = newMonitorService.getFloorLights("1楼");
+//        Map<String,Object> floorLights = newMonitorService.getFloorLightsStatus(lightState,"1楼");
+//        System.out.println(floorLights.toString());
     }
 
 }

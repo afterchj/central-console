@@ -1,6 +1,5 @@
 package com.example.blt.controller;
 
-import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.dao.NewMonitorDao;
 import com.example.blt.dao.WebCmdDao;
 import com.example.blt.entity.CenterException;
@@ -12,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @program: central-console
@@ -28,9 +30,6 @@ public class NewMonitorController {
     private WebCmdDao webCmdDao;
 
     @Resource
-    private Monitor4Dao monitor4Dao;
-
-    @Resource
     private NewMonitorService newMonitorService;
 
     @Resource
@@ -38,49 +37,36 @@ public class NewMonitorController {
 
     /**
      * 主体内容
-     * @param floor
+     * @param floor,type 0巡检 1事件驱动
      * @return
      */
     @RequestMapping(value = "/getNewMonitor", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> getNewMonitor(String floor) {
+    public Map<String, Object> getNewMonitor(String type,String floor) {
+//        long start = System.currentTimeMillis();
         Map<String, Object> map = new HashMap<>();
-        List<String> exception = webCmdDao.getException();
-        List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
+        List<String> exception = newMonitorService.getException(type);
+        List<LightDemo> lightState = newMonitorService.getIntelligenceLightInfo(type);
         List<CenterException> mnames = webCmdDao.getMnames();
-        List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum();
+        List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum(type);
         List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
         Map<String, Object> indexFloorStatus = new HashMap<>();
         Map<String,Object> floorStatus = new HashMap<>();
+
         if ("index".equals(floor)){
             //首页
-            indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
+            indexFloorStatus = newMonitorService.getIndexFloorStatus(type);
         }else {
             //指定楼层
-            lightState = newMonitorService.getFloorLights(floor);
-            floorStatus = newMonitorService.getFloorLightsStatus(lightState,floor);
+            lightState = newMonitorService.getFloorLights(type,floor);
+            floorStatus = newMonitorService.getFloorLightsStatus(type,lightState,floor);
 
         }
         map.put("leftFloors", centerLNums);//左侧导航栏状态
         map.put("indexFloorStatus", indexFloorStatus);//首页
         map.put("floorStatus",floorStatus);//指定楼层
-        return map;
-    }
-
-    /**
-     * 左侧导航
-     * @return
-     */
-    @RequestMapping(value = "/getLeft", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getLeft() {
-        Map<String, Object> map = new HashMap<>();
-        List<String> exception = webCmdDao.getException();
-        List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
-        List<CenterException> mnames = webCmdDao.getMnames();
-        List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum();
-        List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
-        map.put("leftFloors", centerLNums);//左侧导航栏状态
+//        long end = System.currentTimeMillis();
+//        System.out.println(end-start);
         return map;
     }
 
