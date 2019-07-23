@@ -68,7 +68,21 @@ public class NewMonitorController {
 //        long end = System.currentTimeMillis();
 //        System.out.println(end-start);
         return map;
+
     }
+    @RequestMapping(value = "/getLeft", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getLeft(String type) {
+        Map<String, Object> map = new HashMap<>();
+        List<String> exception = newMonitorService.getException(type);
+        List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum(type);
+        List<CenterException> mnames = webCmdDao.getMnames();
+        List<LightDemo> lightState = newMonitorService.getIntelligenceLightInfo(type);
+        List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
+        map.put("leftFloors", centerLNums);//左侧导航栏状态
+        return map;
+    }
+
 
     public List<Map<String, Object>> getLeftCenter(List<LightDemo> lightState, List<CenterException> mnames,
                                                    List<Map<String, Object>> centerLNumList, List<String> exception) {

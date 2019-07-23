@@ -229,6 +229,7 @@ public class NewMonitorService {
         Map<String, Object> map = new HashMap<>();
         List<PlaceWeb> placesExceptions = new ArrayList<>();
         Integer centerLNum = 0;
+        List<LightDemo> realLightState = new ArrayList<>();
         List<PlaceWeb> places = newMonitorDao.getPlacesByFloor(floor);//单楼层内区域结构
         List<CenterException> ms = webCmdDao.getMnamesByFloor(floor);//单楼层结构
 //        List<PlaceWeb> placesExceptions = newMonitorDao.getPlacesExceptionsByFloor(floor);//单楼层内每个区域故障灯个数
@@ -239,7 +240,15 @@ public class NewMonitorService {
         }else if ("1".equals(type)){
             placesExceptions = eventDrivenDao.getPlacesExceptionsByFloor(floor);
             centerLNum = eventDrivenDao.getIntelligenceCenterLNumByFloor(floor);
+            realLightState = newMonitorDao.getRealLightStateByFloor(floor);
+            for (LightDemo lightDemo:lightState){
+                realLightState.stream().filter(realLight -> realLight.getLname().equals(lightDemo.getLname()) &&
+                        "-85%".equals(lightDemo.getY())).forEach(realLight -> {
+                    lightDemo.setY(realLight.getY());
+                });
+            }
         }
+
         for (int i = 0; i < ms.size(); i++) {
             int msPlace = ms.get(i).getPlace();
             int msGroupId = ms.get(i).getGroupId();
