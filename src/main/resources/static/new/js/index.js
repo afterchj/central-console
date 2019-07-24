@@ -10,7 +10,7 @@ $(function () {
 
 async function getInit() {
     try {
-        let result1 = await ajaxIndex('0');
+        let result1 = await ajaxIndex('1');
     } catch (err) {
         console.log(err);
     }
