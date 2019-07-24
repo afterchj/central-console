@@ -49,10 +49,13 @@ public class NewMonitorController {
         List<LightDemo> lightState = newMonitorService.getIntelligenceLightInfo(type);
         List<CenterException> mnames = webCmdDao.getMnames();
         List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum(type);
+//        long end = System.currentTimeMillis();
+//        System.out.println("controller: "+(end-start));
         List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
         Map<String, Object> indexFloorStatus = new HashMap<>();
         Map<String,Object> floorStatus = new HashMap<>();
-
+//        long last = System.currentTimeMillis();
+//        System.out.println("controller2: "+(last-end));
         if ("index".equals(floor)){
             //首页
             indexFloorStatus = newMonitorService.getIndexFloorStatus(type);
