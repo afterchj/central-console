@@ -188,8 +188,9 @@ public class MainTest {
     @Test
     public void testSet() {
         Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
-        Integer total = temp == null ? 0 : temp;
+        int total = temp == null ? -1 : temp;
         logger.warn("temp[{}] total[{}]",temp,total);
+//        ConsoleUtil.cleanKey(ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.lMAC.getValue());
 //        Set<String> set = new HashSet<>();
 //        for (int i = 1; i < 10; i++) {
 //            set.add("192.168.16." + i);

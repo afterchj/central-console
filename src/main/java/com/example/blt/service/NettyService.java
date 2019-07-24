@@ -12,14 +12,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
@@ -30,6 +32,8 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
+    @Resource
+    private RedisTemplate redisTemplate;
 
     //    @Scheduled(cron = "0/30 * * * * ?")
 //    public void cronTest1() {
@@ -50,56 +54,73 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //    }
 
     @Scheduled(cron = "0/20 * * * * ?")
-    public void checkSize() {
-        try {
-            Thread.sleep(20000);
-            Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
-            Integer total = temp == null ? 0 : temp;
-            Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-            Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
-            if (null != lmacSet) {
-                Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
-                if (ipSet.size() > 0) {
-                    logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
-                    if (null != vaddrSet) {
+    public void checkSize() throws InterruptedException {
+        Thread.sleep(10000);
+        ValueOperations valueOperations = getOpsForValue();
+        Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
+        int total = temp == null ? 0 : temp;
+        Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+        if (null != lmacSet) {
+            valueOperations.set(ConsoleKeys.LTIMES.getValue(), 1, 10, TimeUnit.MINUTES);
+            Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
+            if (ipSet.size() > 0) {
+                logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
+                if (null != vaddrSet) {
+                    Map params = new HashMap();
+                    Integer old_size;
+                    ConsoleUtil.saveInfo(ConsoleKeys.TSIZE.getValue(), vaddrSet.size());
+                    for (String ip : ipSet) {
+                        params.put("ip", ip);
+                        params.put("list", vaddrSet);
+                        old_size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
+                        int osize = old_size == null ? 0 : old_size;
+                        Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
+                        ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
+                        if (osize == size) {
+                            logger.warn("ip[{}] old_ize[{}] current_size[{}]", ip, osize, size);
+                            ipSet.remove(ip);
+                            updateLight(params);
+                        }
+                    }
+                    ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
+                    logger.warn(" flag[{}] ips{}", total == vaddrSet.size(), ipSet);
+                    if (total == vaddrSet.size()) {
+                        ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.LTIMES.getValue());
                         for (String ip : ipSet) {
-                            ConsoleUtil.saveInfo(ConsoleKeys.TSIZE.getValue(), vaddrSet.size());
-                            Integer osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
-                            Map params = new HashMap();
                             params.put("ip", ip);
                             params.put("list", vaddrSet);
-                            Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
-                            ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
-                            if (osize == size) {
-                                logger.warn("old_ize[{}] current_size[{}]", osize, size);
-                                ipSet.remove(ip);
-                                try {
-                                    ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
-                                } catch (NoTopicException e) {
-                                    sqlSessionTemplate.update("console.saveUpdate", params);
-                                }
-                            }
+                            updateLight(params);
                         }
-                        logger.warn("flag[{}]", total == vaddrSet.size());
-                        if (total == vaddrSet.size()) {
-                            ipSet.clear();
-                            ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
-                            ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
-                        }
+                        ipSet.clear();
                     }
                 }
                 for (String ip : ipSet) {
-                    ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                     JSONObject object = new JSONObject();
                     object.put("host", ip);
                     object.put("command", "7701012766");
                     ClientMain.sendCron(object.toJSONString());
                 }
+                valueOperations.increment(ConsoleKeys.LTIMES.getValue());
             }
-        } catch (Exception e) {
-            ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
-            logger.error("error[{}]", e.getMessage());
+            Integer result = (Integer) valueOperations.get(ConsoleKeys.LTIMES.getValue());
+            logger.warn("result [{}]", result);
+            if (result == 3) {
+                ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.LTIMES.getValue());
+            }
         }
+    }
+
+    private void updateLight(Map params) {
+        try {
+            ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
+        } catch (NoTopicException e) {
+            sqlSessionTemplate.update("console.saveUpdate", params);
+        }
+    }
+
+    public ValueOperations getOpsForValue() {
+        return redisTemplate.opsForValue();
     }
 
     @Override
