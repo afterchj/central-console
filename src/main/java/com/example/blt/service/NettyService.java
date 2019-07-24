@@ -51,15 +51,17 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() throws Exception {
         Thread.sleep(20000);
-        Integer total = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
+        Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
+        Integer total = temp == null ? 0 : temp;
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         if (null != lmacSet) {
             Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
             if (ipSet.size() > 0) {
-                logger.warn("lmacSize[{}]", lmacSet.size());
+                logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
                 if (null != vaddrSet) {
                     ConsoleUtil.saveInfo(ConsoleKeys.TSIZE.getValue(), vaddrSet.size());
+                    logger.warn("flag[{}]", total == vaddrSet.size());
                     for (String ip : ipSet) {
                         Integer osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
                         Map params = new HashMap();
@@ -82,7 +84,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                         object.put("command", "7701012766");
                         ClientMain.sendCron(object.toJSONString());
                     }
-                    logger.warn("ips{} flag[{}]", ipSet, total == vaddrSet.size());
                     if (total == vaddrSet.size()) {
                         ipSet.clear();
                         ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());

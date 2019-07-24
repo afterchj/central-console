@@ -2,7 +2,6 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
-import com.example.blt.utils.ConsoleUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
@@ -91,24 +90,25 @@ public class HomeController {
     @RequestMapping("/showHost")
     public Map showHost() {
         Map map = new LinkedHashMap();
-        Map info = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
+//        Map info = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
         ValueOperations<String, Set> operations = redisTemplate.opsForValue();
-//        Set lmacSet = operations.get(ConsoleKeys.lMAC.getValue());
-//        Set vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
-        Set lmacSet = (Set) info.get(ConsoleKeys.lMAC.getValue());
-        Set vaddrSet = (Set) info.get(ConsoleKeys.VADDR.getValue());
+        Set lmacSet = operations.get(ConsoleKeys.lMAC.getValue());
+        Set vaddrSet = operations.get(ConsoleKeys.VADDR.getValue());
+//        Set lmacSet = (Set) info.get(ConsoleKeys.lMAC.getValue());
+//        Set vaddrSet = (Set) info.get(ConsoleKeys.VADDR.getValue());
         Set ipSet = operations.get(ConsoleKeys.HOSTS.getValue());
         if (null != lmacSet) {
+            map.put("lmac", lmacSet);
             map.put("lmacSize", lmacSet.size());
         }
         if (null != vaddrSet) {
             map.put("vaddrSize", vaddrSet.size());
+            map.put("vaddr", vaddrSet);
         }
         if (null != ipSet) {
             map.put("hosts", ipSet);
             map.put("hostSize", ipSet.size());
         }
-        map.putAll(info);
         map.put("result", "ok");
         return map;
     }
