@@ -420,6 +420,7 @@ function ajaxLeftNav() {
             dataType: "json",
             data:{"type":"1"},
             success: function (res) {
+                $('.nave ul').empty();
                 resolve(res);
                 var leftFloors = res.leftFloors;
                 var leftNav = '';
