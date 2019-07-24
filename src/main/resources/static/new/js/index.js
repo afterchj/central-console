@@ -10,7 +10,7 @@ $(function () {
 
 async function getInit() {
     try {
-        let result1 = await ajaxIndex();
+        let result1 = await ajaxIndex('1');
     } catch (err) {
         console.log(err);
     }
@@ -32,15 +32,19 @@ function water() {
     waterbubbleS('#yesterdayElectric', '106.05KWh', pDefault, pDefault, 40, 0.45, 3, pDefault, '12px arial', pDefault)
 }
 
-function ajaxIndex() {
+function ajaxIndex(type) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/new/getNewMonitor',
             type: 'POST',
             dataType: "json",
-            data:{"floor":"index","type":"0"} ,
+            data:{"floor":"index","type":type} ,
             success: function (res) {
                 resolve(res);
+                $('.nave ul').empty();
+                $('.content').empty();
+                $('.totalFloor').empty();
+                console.log('res',res);
                 //左侧导航
                 var leftFloors = res.leftFloors;
                 var leftNav = '';
@@ -188,14 +192,18 @@ function ajaxIndex() {
 };
 
 //单楼层总开总关
-$(".content").on('click', ".centerL-btn", function () {
-    var src = $(this).children().attr('src');
-    var state = $(this).children();
-    src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
-    var centerOrder = $(this).parent().parent().parent().find('.mname').text();
-    centerOrder = centerOrder.substring(0, 1);
-    var host = getHostByFloor(centerOrder);
+$(".content").on('click', ".centerL-btn img", function () {
 
+    var src = $(this).attr('src');
+    var that=$(this);
+    console.log('我被点击了',src);
+    // var state = $(this).children('.min-font');
+    src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+    var centerOrder = $(this).parent().parent().siblings('.mname').text();
+
+    centerOrder = extractNum(centerOrder);
+    console.log('centerOrder',centerOrder);
+    var host = getHostByFloor(centerOrder);
     if (src == "off") {
         var command = '77010315373766';
     } else if (src == "on") {
@@ -205,12 +213,15 @@ $(".content").on('click', ".centerL-btn", function () {
         "command": command,
         "host": host
     }, function (msg) {
+        // console.log(msg)
         if (msg.success == 'success') {
-            // console.log(state)
-            if (src == "off") {
-                $(state).attr('src', '/static/new/img/light-on.PNG');
-            } else if (src == "on") {
-                $(state).attr('src', '/static/new/img/light-off.PNG');
+            console.log('src',src);
+            if (src=='off' ) {
+                console.log('我关')
+                that.attr('src', '/static/new/img/light-on.PNG');
+            } else if (src=='on') {
+                console.log('我开',$(this))
+                that.attr('src', '/static/new/img/light-off.PNG');
             }
         }
     })

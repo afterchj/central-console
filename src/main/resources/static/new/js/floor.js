@@ -9,8 +9,8 @@ $(function () {
 async function getInit() {
     try {
         let floor = getUrlParams('floor') + '楼';
-        let emp1= await $('.content').empty();
-        let emp2= await  $('.nave ul').empty();
+        // let emp1= await $('.content').empty();
+        // let emp2= await  $('.nave ul').empty();
         let result1 = await ajaxFloor('1',floor);
     } catch (err) {
         console.log(err);
@@ -25,6 +25,8 @@ function ajaxFloor(type,floor) {
                 data: {'floor': floor, "type": type},
                 success: function (res) {
                     console.log('res',res);
+                    $('.content').empty();
+                    $('.nave ul').empty();
                     resolve(res);
                     //左侧导航
                     var leftFloors = res.leftFloors;
