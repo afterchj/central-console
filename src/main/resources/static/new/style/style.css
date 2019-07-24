@@ -39,6 +39,10 @@ html,body {
 .nave li.active a {
 	color: #fff;
 }
+.left-img{
+	height: 33px;
+	line-height: 48px;
+}
 .nave li:hover a {
 	color: #fff;
 }
@@ -277,6 +281,7 @@ html,body {
 }
 .btn img {
 	width: 25px;
+	height: 25px;
 	vertical-align: middle;
 }
 .btn .img {

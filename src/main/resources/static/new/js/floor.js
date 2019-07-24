@@ -5,52 +5,46 @@ $(function () {
     swiper('.light-hint-list .swiper-container', 3, 1, 'row');
     water();
     getInit();
-
-})
+});
 async function getInit() {
-    console.log('开始')
     try {
-        let floor=getUrlParams('floor')+'楼';
-        let result1 = await ajaxFloor(floor);
-        // let result2 = await ajaxFloor(floor);
-        // console.log('floor',floor);
-        // let result3 = await ajaxGet(result2.url);
-        // console.log('result1 ---> ', result1);
-        // console.log('result2 ---> ', result2);
-        // console.log('result3 ---> ', result3);
+        let floor = getUrlParams('floor') + '楼';
+        let emp1= await $('.content').empty();
+        let emp2= await  $('.nave ul').empty();
+        let result1 = await ajaxFloor('1',floor);
     } catch (err) {
         console.log(err);
     }
 };
-function ajaxFloor(floor) {
+function ajaxFloor(type,floor) {
     return new Promise(function (resolve, reject) {
         $.ajax({
                 url: '/new/getNewMonitor',
                 type: 'POST',
                 dataType: "json",
-                data: {'floor': floor,"type":"0"},
+                data: {'floor': floor, "type": type},
                 success: function (res) {
-                    console.log(res)
+                    console.log('res',res);
                     resolve(res);
                     //左侧导航
                     var leftFloors = res.leftFloors;
                     var leftNav = '';
                     $.each(leftFloors, function (i, item) {
-                        var mname=item.mname;
-                        var centerLNum=item.centerLNum;
+                        var mname = item.mname;
+                        var centerLNum = item.centerLNum;
                         var exception = item.exception;
                         var diff = item.diff;
-                        var floor=getNum(mname);
-                        var active='';
-                        var urlFloor= getUrlParams('floor');
-                        if(urlFloor && urlFloor!=null){
-                            if(urlFloor==floor){
-                                active='active';
+                        var floor = getNum(mname);
+                        var active = '';
+                        var urlFloor = getUrlParams('floor');
+                        if (urlFloor && urlFloor != null) {
+                            if (urlFloor == floor) {
+                                active = 'active';
                             }
                         }
-                        var status=statusFloorJudgement(exception,diff,active).status;
-                        var statusImg=statusFloorJudgement(exception,diff,active).statusImg;
-                        leftNav +=` <li class="${active}">
+                        var status = statusFloorJudgement(exception, diff, active).status;
+                        var statusImg = statusFloorJudgement(exception, diff, active).statusImg;
+                        leftNav += ` <li class="${active}">
                                     <a href="/newIndex/noEnergy?floor=${floor}">
                                         <div class="clearfix">
                                             <div class="f-l p-r">
@@ -73,34 +67,36 @@ function ajaxFloor(floor) {
                                     </a>
                                 </li>`;
                     });
-                    var indexActive='';
-                    var url=window.location.href;
-                    if(url.indexOf('floor')==-1){
-                        indexActive='active';
+
+                    var indexActive = '';
+                    var url = window.location.href;
+                    if (url.indexOf('floor') == -1) {
+                        indexActive = 'active';
                     }
                     var leftIndex = `<li class="current ${indexActive}"><a href="/newIndex">首页</a></li>`;
                     $('.nave ul').append(leftIndex + leftNav);
 
                     //右侧
                     var placeContent = '';
-                    var floorStatus=res.floorStatus;
-                    var status=floorStatus.status;
-                    var exception=floorStatus.exception;
-                    var diff=floorStatus.diff;
-                    var lightNum=floorStatus.lightNum;
-                    var switchImg=switchAllFloorJudgement(status);
-                    var statusImg=statusFloorJudgement(exception,diff,'').statusImg;
+                    var floorStatus = res.floorStatus;
+                    var status = floorStatus.status;
+                    var exception = floorStatus.exception;
+                    var diff = floorStatus.diff;
+                    var lightNum = floorStatus.lightNum;
+                    var switchImg = switchAllFloorJudgement(status);
+                    var statusImg = statusFloorJudgement(exception, diff, '').statusImg;
                     $('.switch-levels img').replaceWith(switchImg);
                     $('.nowState img').replaceWith(statusImg);
                     $('.nowFloor p span:first-child').text(lightNum);
-                    var placeList=floorStatus.placeList;
+                    $('.nowFloor .floor span').text(floor);
+                    var placeList = floorStatus.placeList;
                     $.each(placeList, function (i, placeItem) {
                         var place = placeItem.place;
-                        var groupList=placeItem.groupList;
+                        var groupList = placeItem.groupList;
                         var exception = placeItem.exception;
                         var normal = 12 - parseInt(exception);
                         var on = placeItem.on;
-                        var switchImg=switchFloorJudgement(on);
+                        var switchImg = switchFloorJudgement(on);
                         var group = '';
                         var placeTitle = `<div class="on-off f-l">
                                 <div class="clearfix btn green ">
@@ -133,12 +129,14 @@ function ajaxFloor(floor) {
                         $.each(groupList, function (i, groupItem) {
                             var groupId = groupItem.groupId;
                             var exception = groupItem.exception;
+                            var status=groupItem.status;
                             var normal = 4 - parseInt(exception);
                             var diff = groupItem.diff;
-                            var statusImg=statusPlaceJudgement(exception,diff,'blue').statusImg;
-                            var switchImg=switchAllFloorJudgement(status);
+                            var statusImg = statusPlaceJudgement(exception, diff, 'blue').statusImg;
+                            var switchImg = switchAllFloorJudgement(status);
                             var light = '';
-                            var lightList=groupItem.lightList;
+                            var lightList = groupItem.lightList;
+                            console.log('组的状态',status);
                             var groupTitle = `<div class="place-title">
                                             <div class="clearfix ">
                                                 <div class="f-l p-r r-line">
@@ -166,13 +164,13 @@ function ajaxFloor(floor) {
                                                 </div>
                                             </div>
                                         </div>`;
-
                             $.each(lightList, function (i, lightItem) {
-                                var lname=lightItem.lname;
-                                var status=lightItem.status;
+                                var lname = lightItem.lname;
+                                var status = lightItem.status;
                                 var y = lightItem.y == "-60%" ? 'null' : lightItem.y;
-                                var switchImg=switchLightJudgement(status).switchImg;
-                                var className=switchLightJudgement(status).className;
+                                var switchImg = switchLightJudgement(status).switchImg;
+                                var className = switchLightJudgement(status).className;
+                                console.log('灯的状态',status);
                                 light += `<li class="clearfix">
                                                     <div class="f-l p-r r-min-line">
                                                         <div class="middle p-a light-name">
@@ -241,6 +239,7 @@ function water() {
     waterbubbleS('#floor-3', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault);
     waterbubbleS('#floor-4', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault);
     waterbubbleS('#floor-5', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault);
+
 }
 
 //点击单组
@@ -349,23 +348,23 @@ $(".middle.p-a").on('click', "p", function () {
     })
 });
 //实时状态
-function realTimeStatus() {
-    var exceptionPng = $(".content img");
-    var un = 0;
-    var abnoraml = 0;
-    exceptionPng.each(function () {
-        var src = $(this).attr('src');
-        src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
-        if (src == "un") {
-            un++;
-        } else if (src == "abnormal") {
-            abnoraml++;
-        }
-    })
-    $(".error.status").text(un + abnoraml);
-    $(".error.diff").text(un);
-    $(".error.exception").text(abnoraml);
-}
+// function realTimeStatus() {
+//     var exceptionPng = $(".content img");
+//     var un = 0;
+//     var abnoraml = 0;
+//     exceptionPng.each(function () {
+//         var src = $(this).attr('src');
+//         src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
+//         if (src == "un") {
+//             un++;
+//         } else if (src == "abnormal") {
+//             abnoraml++;
+//         }
+//     })
+//     $(".error.status").text(un + abnoraml);
+//     $(".error.diff").text(un);
+//     $(".error.exception").text(abnoraml);
+// }
 //点击应用场景
 $(".status.card").on('click', "button", function () {
     var command = $.trim($("select").val());
@@ -380,3 +379,4 @@ $(".status.card").on('click', "button", function () {
         }
     })
 });
+
