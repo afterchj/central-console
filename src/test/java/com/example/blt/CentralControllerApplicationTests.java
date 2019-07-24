@@ -128,10 +128,10 @@ public class CentralControllerApplicationTests {
 
     @Test
     public void testRedisIncrement() {
-        ConsoleUtil.saveInfo(ConsoleKeys.LTIMES.getValue(), 1);
-        for (int i = 0; i < 3; i++) {
-            redisTemplate.opsForValue().increment(ConsoleKeys.LTIMES.getValue());
-        }
+        redisTemplate.opsForValue().set(ConsoleKeys.LTIMES.getValue(), 3, 10, TimeUnit.MINUTES);
+//        for (int i = 0; i < 3; i++) {
+//            redisTemplate.opsForValue().increment(ConsoleKeys.LTIMES.getValue());
+//        }
         Integer result = (Integer) redisTemplate.opsForValue().get(ConsoleKeys.LTIMES.getValue());
         logger.warn("result [{}]", result);
     }
