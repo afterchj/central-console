@@ -50,6 +50,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() throws Exception {
+        Thread.sleep(20000);
         Integer total = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
         Map map = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
         Set lmacSet = (Set) map.get(ConsoleKeys.lMAC.getValue());
@@ -60,8 +61,8 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
             if (ipSet.size() > 0) {
                 logger.warn("lmacSize[{}]", lmacSet.size());
                 if (null != vaddrSet) {
+                    ConsoleUtil.saveInfo(ConsoleKeys.TSIZE.getValue(), vaddrSet.size());
                     for (String ip : ipSet) {
-                        ConsoleUtil.saveInfo(ConsoleKeys.TSIZE.getValue(), vaddrSet.size());
                         osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
                         Map params = new HashMap();
                         params.put("ip", ip);
@@ -86,6 +87,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     if (total == vaddrSet.size()) {
                         ipSet.clear();
                         ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
+                        logger.warn("checkSize ending...");
                     }
                 }
             }
