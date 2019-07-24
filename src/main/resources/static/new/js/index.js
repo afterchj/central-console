@@ -193,16 +193,11 @@ function ajaxIndex(type) {
 
 //单楼层总开总关
 $(".content").on('click', ".centerL-btn img", function () {
-
     var src = $(this).attr('src');
     var that=$(this);
-    console.log('我被点击了',src);
-    // var state = $(this).children('.min-font');
     src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
     var centerOrder = $(this).parent().parent().siblings('.mname').text();
-
     centerOrder = extractNum(centerOrder);
-    console.log('centerOrder',centerOrder);
     var host = getHostByFloor(centerOrder);
     if (src == "off") {
         var command = '77010315373766';
@@ -213,14 +208,11 @@ $(".content").on('click', ".centerL-btn img", function () {
         "command": command,
         "host": host
     }, function (msg) {
-        // console.log(msg)
         if (msg.success == 'success') {
-            console.log('src',src);
             if (src=='off' ) {
-                console.log('我关')
                 that.attr('src', '/static/new/img/light-on.PNG');
             } else if (src=='on') {
-                console.log('我开',$(this))
+               
                 that.attr('src', '/static/new/img/light-off.PNG');
             }
         }

@@ -3,7 +3,7 @@
  */
 
 //左侧导航栏鼠标悬浮
-$('.nave').on('mouseenter mouseleave', 'li', function () {
+$('.nave').on('mouseenter mouseleave', 'li:not(.active)', function () {
     var src = $(this).find('.left-img img').attr('src');
     if (src && src.indexOf('normal') != -1) {
         if (src == '/static/new/img/normal.png') {

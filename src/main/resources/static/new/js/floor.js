@@ -244,8 +244,8 @@ function water() {
 
 //点击单组
 $(".content").on('click', ".group-btn", function () {
-    var src = $(this).children().attr('src');
-    var state = $(this).children();
+    var src = $(this).children('img').attr('src');
+    var that = $(this);
     src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."))
     // console.log(src)
     var groupOrder = extractNum($(this).parent().parent().siblings().find('.max').text());
@@ -265,13 +265,11 @@ $(".content").on('click', ".group-btn", function () {
         "command": command,
         "host": host
     }, function (msg) {
-        // console.log(msg)
         if (msg.success == 'success') {
-            // console.log(state)
             if (src == "off") {
-                $(state).attr('src', '/static/new/img/light-on.PNG');
+                that.find('img').attr('src', '/static/new/img/light-on.PNG');
             } else if (src == "on") {
-                $(state).attr('src', '/static/new/img/light-off.PNG');
+                that.find('img').attr('src', '/static/new/img/light-off.PNG');
             }
         }
     })
