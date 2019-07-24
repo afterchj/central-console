@@ -105,8 +105,8 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                 }
                 valueOperations.increment(ConsoleKeys.LTIMES.getValue());
             }
-            logger.warn("result [{}]", result);
-            if (result == 3) {
+            logger.warn("result [{}]", times);
+            if (times == 3) {
                 ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.LTIMES.getValue());
             }
         }
