@@ -50,24 +50,25 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() throws Exception {
-        Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
+        Integer total = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
         Map map = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
-        Integer osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
         Set lmacSet = (Set) map.get(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = (Set) map.get(ConsoleKeys.VADDR.getValue());
-//        int size = ConsoleUtil.getLightSize("Office");
-//        Integer size = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
         if (null != lmacSet) {
+            Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
+            Integer osize;
             if (ipSet.size() > 0) {
-                logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
-                for (String ip : ipSet) {
-                    if (null != vaddrSet) {
+                logger.warn("lmacSize[{}]", lmacSet.size());
+                if (null != vaddrSet) {
+                    for (String ip : ipSet) {
+                        ConsoleUtil.saveInfo(ConsoleKeys.TSIZE.getValue(), vaddrSet.size());
+                        osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
                         Map params = new HashMap();
                         params.put("ip", ip);
                         params.put("list", vaddrSet);
                         Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
                         ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
-                        logger.warn("ip[{}] old_size[{}] current_size[{}]", ip, osize, size);
+                        logger.warn("ip{} old_size[{}] current_size[{}]", ipSet, osize, size);
                         if (osize == size) {
                             ipSet.remove(ip);
                             ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
@@ -77,14 +78,16 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                                 sqlSessionTemplate.update("console.saveUpdate", params);
                             }
                         }
+                        JSONObject object = new JSONObject();
+                        object.put("host", ip);
+                        object.put("command", "7701012766");
+                        ClientMain.sendCron(object.toJSONString());
                     }
-                    JSONObject object = new JSONObject();
-                    object.put("host", ip);
-                    object.put("command", "7701012766");
-                    ClientMain.sendCron(object.toJSONString());
+                    if (total == vaddrSet.size()) {
+                        ipSet.clear();
+                        ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
+                    }
                 }
-            } else {
-                ConsoleUtil.cleanKey(ConsoleKeys.LINFO.getValue(), ConsoleKeys.HOSTS.getValue());
             }
         }
     }

@@ -185,12 +185,12 @@ public class StrUtil {
                 }
                 break;
         }
+        String info = JSON.toJSONString(map);
         try {
-            String info = JSON.toJSONString(map);
-            WebSocket.sendMessage(info);
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
         } catch (NoTopicException e) {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
+            WebSocket.sendMessage(info);
         }
 //        logger.warn("result=" + JSON.toJSONString(map));
     }

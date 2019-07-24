@@ -9,6 +9,7 @@ public enum ConsoleKeys {
     VADDR("l_vaddr"),
     HOSTS("l_host"),
     LSIZE("l_size"),
+    TSIZE("t_size"),
     LINFO("l_info");
 
     ConsoleKeys(String value) {
