@@ -107,7 +107,7 @@ function ajaxIndex(type) {
                                                 <p>（全部楼层）</p>
                                             </div>
                                         </div>
-                                        <div class="f-l p-r">
+                                        <div class="f-l p-r switch">
                                             <div class="p-a middle">
                                                 <p class="pointer ">${switchImg}</p>
                                                 <p>开关</p>
@@ -227,9 +227,9 @@ $(".content").on('click', ".centerL-btn img", function () {
     })
 });
 //总楼层开关
-$(".p-a.middle").on('click', ".pointer", function () {
-    var src = $(this).children().attr('src');
-    var state = $(this).children();
+$(".totalFloor ").on('click', ".switch", function () {
+    var src = $(this).find('img').attr('src');
+    var that=$(this);
     src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
     var host = 'all';
     if (src == "off") {
@@ -241,12 +241,12 @@ $(".p-a.middle").on('click', ".pointer", function () {
         "command": command,
         "host": host
     }, function (msg) {
+        console.log('msg',msg);
         if (msg.success == 'success') {
-            // console.log(state)
             if (src == "off") {
-                $(state).attr('src', '/static/new/img/light-on.PNG');
+                that.find('img').attr('src', '/static/new/img/light-on.PNG');
             } else if (src == "on") {
-                $(state).attr('src', '/static/new/img/light-off.PNG');
+                that.find('img').attr('src', '/static/new/img/light-off.PNG');
             }
         }
     })

@@ -225,7 +225,7 @@
         //收到消息事件
         socket.onmessage = function (result) {
             console.log("type", typeof result, "receive", result.data);
-            sleep(200);
+//            sleep(200);
 //            $('.content').empty();
 //            $('.nave ul').empty();
             console.log(JSON.parse(result.data).host);
