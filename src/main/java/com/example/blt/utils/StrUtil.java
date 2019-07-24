@@ -41,8 +41,8 @@ public class StrUtil {
                 int index = str1.length();
                 String vaddr = str.substring(index, index + 8);
                 vaddrSet.add(vaddr);
-//                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
-                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.VADDR.getValue(), ip, vaddrSet);
+                ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
+//                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.VADDR.getValue(), ip, vaddrSet);
                 String x = str.substring(index + 10, index + 12);
                 String y = str.substring(index + 12, index + 14);
                 if (str.contains("3232")) {
@@ -70,8 +70,8 @@ public class StrUtil {
                 String mac = sortMac(lmac);
                 map.put("lmac", mac);
                 lmacSet.add(mac);
-//                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
-                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.lMAC.getValue(), ip, lmacSet);
+                ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
+//                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.lMAC.getValue(), ip, lmacSet);
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
