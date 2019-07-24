@@ -138,7 +138,6 @@ function ajaxFloor(type,floor) {
                             var switchImg = switchAllFloorJudgement(status);
                             var light = '';
                             var lightList = groupItem.lightList;
-                            console.log('组的状态',status);
                             var groupTitle = `<div class="place-title">
                                             <div class="clearfix ">
                                                 <div class="f-l p-r r-line">
@@ -172,7 +171,6 @@ function ajaxFloor(type,floor) {
                                 var y = lightItem.y == "-60%" ? 'null' : lightItem.y;
                                 var switchImg = switchLightJudgement(status).switchImg;
                                 var className = switchLightJudgement(status).className;
-                                console.log('灯的状态',status);
                                 light += `<li class="clearfix">
                                                     <div class="f-l p-r r-min-line">
                                                         <div class="middle p-a light-name">
@@ -279,24 +277,27 @@ $(".content").on('click', ".group-btn", function () {
     })
 })
 //区域开关
-$(".content").on('click', ".place-btn", function () {
-    var src = $(this).children().attr('src');
-    var state = $(this).children();
+$(".content").on('click', ".place-btn img", function () {
+    var src = $(this).attr('src');
+    var that=$(this);
+    console.log('我被点击了');
     src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
     if (src == "off") {
         var onOffOrder = '3737';
     } else if (src == "on") {
         var onOffOrder = '3232';
     }
-    var placeOrder = $(this).parent().parent().parent().next().find('.max');
+    var placeOrder = $(this).parent().parent().parent().parent().siblings('.light-list').find('.place');
     var groupOrder;
     var commandArr = [];
     var command;
     var floor = getUrlParams('floor');
     var host = getHostByFloor(floor);
+    console.log('floor',floor);
+    console.log('host',host);
     placeOrder.each(function (key, value) {
         // console.log("placeOrdr",$(this).text())
-        groupOrder = extractNum($(this).text());
+        groupOrder = extractNum($(this).find('.max').text());
         groupOrder = parseInt(groupOrder).toString(16).toUpperCase();
         command = '770104160' + groupOrder + onOffOrder + '66';
         commandArr[key] = command;
@@ -310,12 +311,13 @@ $(".content").on('click', ".place-btn", function () {
         // processData: false,
         data: "commands=" + commandArr + "&host=" + host,
         success: function (msg) {
+            console.log('msg',msg)
             if (msg.success == 'success') {
-                // console.log(state)
+
                 if (src == "off") {
-                    $(state).attr('src', '/static/new/img/light-on.PNG');
+                    that.attr('src', '/static/new/img/light-on.PNG');
                 } else if (src == "on") {
-                    $(state).attr('src', '/static/new/img/light-off.PNG');
+                    that.attr('src', '/static/new/img/light-off.PNG');
                 }
             }
         }

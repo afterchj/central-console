@@ -212,7 +212,8 @@
 <script type="text/javascript" th:src="@{/static/new/js/global.js}"></script>
 <script type="text/javascript" th:src="@{/static/new/js/index.js}"></script>
 <script>
-    let url = location.host;
+//    let url = location.host;
+    let url = '192.168.16.84:8080';
     if (typeof (WebSocket) == "undefined") {
         console.log("遗憾：您的浏览器不支持WebSocket");
     } else {

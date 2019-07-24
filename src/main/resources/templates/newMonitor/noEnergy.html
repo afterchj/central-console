@@ -256,8 +256,9 @@
             sleep(200);
             $('.content').empty();
             $('.nave ul').empty();
-            console.log(JSON.parse(result.data).host);
+
             var host = JSON.parse(result.data).host;
+            console.log('我接收到了',host);
             var hosStr=getFloorByHost(host);
             let floor = getUrlParams('floor');
             if (hosStr == floor) {
