@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,49 +50,55 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //    }
 
     @Scheduled(cron = "0/20 * * * * ?")
-    public void checkSize() throws Exception {
-        Thread.sleep(20000);
-        Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
-        Integer total = temp == null ? 0 : temp;
-        Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-        Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
-        if (null != lmacSet) {
-            Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
-            if (ipSet.size() > 0) {
-                logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
-                if (null != vaddrSet) {
-                    ConsoleUtil.saveInfo(ConsoleKeys.TSIZE.getValue(), vaddrSet.size());
-                    logger.warn("flag[{}]", total == vaddrSet.size());
-                    for (String ip : ipSet) {
-                        Integer osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
-                        Map params = new HashMap();
-                        params.put("ip", ip);
-                        params.put("list", vaddrSet);
-                        Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
-                        ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
-                        if (osize == size) {
-                            logger.warn("old_ize[{}] current_size[{}]", osize, size);
-                            ipSet.remove(ip);
-                            try {
-                                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
-                            } catch (NoTopicException e) {
-                                sqlSessionTemplate.update("console.saveUpdate", params);
+    public void checkSize() {
+        try {
+            Thread.sleep(20000);
+            Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
+            Integer total = temp == null ? 0 : temp;
+            Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+            Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+            if (null != lmacSet) {
+                Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
+                if (ipSet.size() > 0) {
+                    logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
+                    if (null != vaddrSet) {
+                        for (String ip : ipSet) {
+                            ConsoleUtil.saveInfo(ConsoleKeys.TSIZE.getValue(), vaddrSet.size());
+                            Integer osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
+                            Map params = new HashMap();
+                            params.put("ip", ip);
+                            params.put("list", vaddrSet);
+                            Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
+                            ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), size);
+                            if (osize == size) {
+                                logger.warn("old_ize[{}] current_size[{}]", osize, size);
+                                ipSet.remove(ip);
+                                try {
+                                    ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(params));
+                                } catch (NoTopicException e) {
+                                    sqlSessionTemplate.update("console.saveUpdate", params);
+                                }
                             }
                         }
-                        ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
-                        JSONObject object = new JSONObject();
-                        object.put("host", ip);
-                        object.put("command", "7701012766");
-                        ClientMain.sendCron(object.toJSONString());
-                    }
-                    if (total == vaddrSet.size()) {
-                        ipSet.clear();
-                        ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
-                        ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
-                        logger.warn("checkSize ending...");
+                        logger.warn("flag[{}]", total == vaddrSet.size());
+                        if (total == vaddrSet.size()) {
+                            ipSet.clear();
+                            ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
+                            ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
+                        }
                     }
                 }
+                for (String ip : ipSet) {
+                    ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
+                    JSONObject object = new JSONObject();
+                    object.put("host", ip);
+                    object.put("command", "7701012766");
+                    ClientMain.sendCron(object.toJSONString());
+                }
             }
+        } catch (Exception e) {
+            ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
+            logger.error("error[{}]", e.getMessage());
         }
     }
 

@@ -187,13 +187,16 @@ public class MainTest {
 
     @Test
     public void testSet() {
-        Set<String> set = new HashSet<>();
-        for (int i = 1; i < 10; i++) {
-            set.add("192.168.16." + i);
-        }
-        for (int i = set.size(); i > 0; i--) {
-            set.remove("192.168.16." + i);
-            logger.warn("set{} size[{}]",set, set.size());
-        }
+        Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
+        Integer total = temp == null ? 0 : temp;
+        logger.warn("temp[{}] total[{}]",temp,total);
+//        Set<String> set = new HashSet<>();
+//        for (int i = 1; i < 10; i++) {
+//            set.add("192.168.16." + i);
+//        }
+//        for (int i = set.size(); i > 0; i--) {
+//            set.remove("192.168.16." + i);
+//            logger.warn("set{} size[{}]",set, set.size());
+//        }
     }
 }

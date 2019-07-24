@@ -69,7 +69,7 @@ public class ExecuteTask {
             }
             map.put("host", ip);
             String cmd = str.substring(prefix.length());
-            String cid = cmd.substring(0, 2);
+            Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
             switch (prefix) {
                 case "77010416":
                     map.put("ctype", "CW");
