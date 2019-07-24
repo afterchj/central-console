@@ -224,6 +224,30 @@
         //收到消息事件
         socket.onmessage = function (result) {
             console.log("type", typeof result, "receive", result.data);
+            sleep(200);
+//            $('.content').empty();
+//            $('.nave ul').empty();
+            console.log(JSON.parse(result.data).host);
+            var host = JSON.parse(result.data).host;
+//            var hosStr=getFloorByHost(host);
+            console.log('我收到了消息',host);
+            ajaxIndex('1');
+            ajaxLeftNav();
+//            let floor = getUrlParams('floor');
+//            if (hosStr == floor) {
+//
+//            }else{
+//
+//            }
+        }
+    }
+    function sleep(numberMillis) {
+        var now = new Date();
+        var exitTime = now.getTime() + numberMillis;
+        while (true) {
+            now = new Date();
+            if (now.getTime() > exitTime)
+                return;
         }
     }
 </script>
