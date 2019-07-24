@@ -64,11 +64,11 @@ public class ConsoleUtil {
     }
 
     public static void cleanSet(Set lmacSet, Set vaddrSet, Set ipSet) {
-        Map map = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
-        Set lmac = (Set) map.get(ConsoleKeys.lMAC.getValue());
-        Set vaddr = (Set) map.get(ConsoleKeys.VADDR.getValue());
-//        Set lmac = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-//        Set vaddr = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+//        Map map = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
+//        Set lmac = (Set) map.get(ConsoleKeys.lMAC.getValue());
+//        Set vaddr = (Set) map.get(ConsoleKeys.VADDR.getValue());
+        Set lmac = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+        Set vaddr = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         Set ips = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
         if (lmac == null) {
             lmacSet.clear();
