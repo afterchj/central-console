@@ -3,7 +3,7 @@
  */
 
 //左侧导航栏鼠标悬浮
-$('.nave').on('mouseenter mouseleave', 'li', function () {
+$('.nave').on('mouseenter mouseleave', 'li:not(.active)', function () {
     var src = $(this).find('.left-img img').attr('src');
     if (src && src.indexOf('normal') != -1) {
         if (src == '/static/new/img/normal.png') {
@@ -420,6 +420,7 @@ function ajaxLeftNav() {
             dataType: "json",
             data:{"type":"1"},
             success: function (res) {
+                $('.nave ul').empty();
                 resolve(res);
                 var leftFloors = res.leftFloors;
                 var leftNav = '';

@@ -213,7 +213,7 @@
 <script type="text/javascript" th:src="@{/static/new/js/index.js}"></script>
 <script>
 //    let url = location.host;
-    let url = '192.168.16.84:8080';
+    let url = "192.168.16.84:8080";
     if (typeof (WebSocket) == "undefined") {
         console.log("遗憾：您的浏览器不支持WebSocket");
     } else {
@@ -225,10 +225,9 @@
         //收到消息事件
         socket.onmessage = function (result) {
             console.log("type", typeof result, "receive", result.data);
-            sleep(200);
+//            sleep(200);
 //            $('.content').empty();
 //            $('.nave ul').empty();
-            console.log(JSON.parse(result.data).host);
             var host = JSON.parse(result.data).host;
 //            var hosStr=getFloorByHost(host);
             console.log('我收到了消息',host);

@@ -107,7 +107,7 @@ function ajaxIndex(type) {
                                                 <p>（全部楼层）</p>
                                             </div>
                                         </div>
-                                        <div class="f-l p-r">
+                                        <div class="f-l p-r switch">
                                             <div class="p-a middle">
                                                 <p class="pointer ">${switchImg}</p>
                                                 <p>开关</p>
@@ -193,16 +193,11 @@ function ajaxIndex(type) {
 
 //单楼层总开总关
 $(".content").on('click', ".centerL-btn img", function () {
-
     var src = $(this).attr('src');
     var that=$(this);
-    console.log('我被点击了',src);
-    // var state = $(this).children('.min-font');
     src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
     var centerOrder = $(this).parent().parent().siblings('.mname').text();
-
     centerOrder = extractNum(centerOrder);
-    console.log('centerOrder',centerOrder);
     var host = getHostByFloor(centerOrder);
     if (src == "off") {
         var command = '77010315373766';
@@ -213,23 +208,20 @@ $(".content").on('click', ".centerL-btn img", function () {
         "command": command,
         "host": host
     }, function (msg) {
-        // console.log(msg)
         if (msg.success == 'success') {
-            console.log('src',src);
             if (src=='off' ) {
-                console.log('我关')
                 that.attr('src', '/static/new/img/light-on.PNG');
             } else if (src=='on') {
-                console.log('我开',$(this))
+               
                 that.attr('src', '/static/new/img/light-off.PNG');
             }
         }
     })
 });
 //总楼层开关
-$(".p-a.middle").on('click', ".pointer", function () {
-    var src = $(this).children().attr('src');
-    var state = $(this).children();
+$(".totalFloor ").on('click', ".switch", function () {
+    var src = $(this).find('img').attr('src');
+    var that=$(this);
     src = src.substring(src.lastIndexOf("-") + 1, src.lastIndexOf("."));
     var host = 'all';
     if (src == "off") {
@@ -241,12 +233,12 @@ $(".p-a.middle").on('click', ".pointer", function () {
         "command": command,
         "host": host
     }, function (msg) {
+        console.log('msg',msg);
         if (msg.success == 'success') {
-            // console.log(state)
             if (src == "off") {
-                $(state).attr('src', '/static/new/img/light-on.PNG');
+                that.find('img').attr('src', '/static/new/img/light-on.PNG');
             } else if (src == "on") {
-                $(state).attr('src', '/static/new/img/light-off.PNG');
+                that.find('img').attr('src', '/static/new/img/light-off.PNG');
             }
         }
     })

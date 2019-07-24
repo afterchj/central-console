@@ -242,7 +242,7 @@
 <script type="text/javascript" th:src="@{/static/new/js/global.js}"></script>
 <script type="text/javascript" th:src="@{/static/new/js/floor.js}"></script>
 <script>
-    let url = '192.168.16.84:8080';
+    let url = "192.168.16.84:8080";
     if (typeof (WebSocket) == "undefined") {
         console.log("遗憾：您的浏览器不支持WebSocket");
     } else {
@@ -253,7 +253,7 @@
         };
         //收到消息事件
         socket.onmessage = function(result) {
-            sleep(200);
+//            sleep(200);
 //            $('.content').empty();
 //            $('.nave ul').empty();
 
