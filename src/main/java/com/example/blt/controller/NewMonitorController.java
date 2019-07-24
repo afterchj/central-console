@@ -43,19 +43,19 @@ public class NewMonitorController {
     @RequestMapping(value = "/getNewMonitor", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getNewMonitor(String type,String floor) {
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         Map<String, Object> map = new HashMap<>();
         List<String> exception = newMonitorService.getException(type);
         List<LightDemo> lightState = newMonitorService.getIntelligenceLightInfo(type);
         List<CenterException> mnames = webCmdDao.getMnames();
         List<Map<String, Object>> centerLNumList = newMonitorService.getIntelligenceCenterLNum(type);
-        long end = System.currentTimeMillis();
-        System.out.println("controller: "+(end-start));
+//        long end = System.currentTimeMillis();
+//        System.out.println("controller: "+(end-start));
         List<Map<String, Object>> centerLNums = getLeftCenter(lightState, mnames, centerLNumList, exception);
         Map<String, Object> indexFloorStatus = new HashMap<>();
         Map<String,Object> floorStatus = new HashMap<>();
-        long last = System.currentTimeMillis();
-        System.out.println("controller2: "+(last-end));
+//        long last = System.currentTimeMillis();
+//        System.out.println("controller2: "+(last-end));
         if ("index".equals(floor)){
             //首页
             indexFloorStatus = newMonitorService.getIndexFloorStatus(type);
