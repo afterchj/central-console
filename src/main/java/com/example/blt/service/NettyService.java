@@ -88,7 +88,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                     logger.warn(" flag[{}] ips{}", total == vaddrSet.size(), ipSet);
                     if (total == vaddrSet.size()) {
-                        ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.LTIMES.getValue());
+                        ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
                         for (String ip : ipSet) {
                             params.put("ip", ip);
                             params.put("list", vaddrSet);
@@ -107,7 +107,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
             }
             logger.warn("result [{}]", times);
             if (times == 3) {
-                ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.LTIMES.getValue());
+                ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
             }
         }
     }

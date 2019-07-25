@@ -8,8 +8,10 @@ import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -18,6 +20,7 @@ public class MainTest {
 
     private static Logger logger = LoggerFactory.getLogger(MainTest.class);
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
     public static void main(String[] args) {
 //        ConsoleService consoleService = (ConsoleService) SpringJpaUtil.getBean(ConsoleService.class);
@@ -189,7 +192,7 @@ public class MainTest {
     public void testSet() {
         Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
         int total = temp == null ? -1 : temp;
-        logger.warn("temp[{}] total[{}]",temp,total);
+        logger.warn("temp[{}] total[{}]", temp, total);
 //        ConsoleUtil.cleanKey(ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.lMAC.getValue());
 //        Set<String> set = new HashSet<>();
 //        for (int i = 1; i < 10; i++) {
@@ -199,5 +202,10 @@ public class MainTest {
 //            set.remove("192.168.16." + i);
 //            logger.warn("set{} size[{}]",set, set.size());
 //        }
+    }
+
+    @Test
+    public void testRedisK() {
+        redisTemplate.opsForValue().set(ConsoleKeys.LTIMES.getValue(), 3, 10, TimeUnit.MINUTES);
     }
 }
