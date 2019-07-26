@@ -2,12 +2,16 @@ package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.vo.ConsoleVo;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +27,7 @@ import java.util.*;
 @Controller
 public class HomeController {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 //    @Autowired
 //    private MemCachedClient memCachedClient;
 
@@ -36,9 +41,15 @@ public class HomeController {
 
     @RequestMapping("/")
     public String index() {
-        return "index";
+        return "redirect:/index";
     }
 
+    @RequestMapping("/index")
+    public String index(ModelMap modelMap) {
+        List hosts = sqlSessionTemplate.selectList("console.getHostInfo");
+        modelMap.put("hosts", hosts);
+        return "index";
+    }
 //
 //    @RequestMapping("/newIndex")
 //    public String newIndex() {
@@ -116,7 +127,14 @@ public class HomeController {
     @ResponseBody
     @RequestMapping("/getHost")
     public List getHosts() {
-        List ips = sqlSessionTemplate.selectList("console.getHosts");
-        return ips;
+        List hosts = sqlSessionTemplate.selectList("console.getHostInfo");
+        return hosts;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/save")
+    public String saveHost(ConsoleVo consoleVo) {
+        sqlSessionTemplate.update("console.saveHost", consoleVo);
+        return "ok";
     }
 }

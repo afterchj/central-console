@@ -57,16 +57,16 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     public void checkSize() throws InterruptedException {
         Thread.sleep(10000);
         ValueOperations valueOperations = getOpsForValue();
-        Integer result = (Integer) valueOperations.get(ConsoleKeys.LTIMES.getValue());
-        int times = result == null ? 1 : result;
-        Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
-        int total = temp == null ? 0 : temp;
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         if (null != lmacSet) {
-            valueOperations.set(ConsoleKeys.LTIMES.getValue(), times, 10, TimeUnit.MINUTES);
             Set<String> ipSet = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
+            Integer result = (Integer) valueOperations.get(ConsoleKeys.LTIMES.getValue());
+            int times = result == null ? 1 : result;
+            Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
+            int total = temp == null ? 0 : temp;
             if (ipSet.size() > 0) {
+                valueOperations.set(ConsoleKeys.LTIMES.getValue(), times, 10, TimeUnit.MINUTES);
                 logger.warn("lmacSize[{}] ips{}", lmacSet.size(), ipSet);
                 if (null != vaddrSet) {
                     Map params = new HashMap();
@@ -88,7 +88,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                     logger.warn(" flag[{}] ips{}", total == vaddrSet.size(), ipSet);
                     if (total == vaddrSet.size()) {
-                        ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
+                        ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.LTIMES.getValue());
                         for (String ip : ipSet) {
                             params.put("ip", ip);
                             params.put("list", vaddrSet);
@@ -106,8 +106,8 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                 valueOperations.increment(ConsoleKeys.LTIMES.getValue());
             }
             logger.warn("result [{}]", times);
-            if (times == 3) {
-                ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue());
+            if (times >= 3) {
+                ConsoleUtil.cleanKey(ConsoleKeys.lMAC.getValue(), ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.LTIMES.getValue());
             }
         }
     }

@@ -7,7 +7,6 @@ import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
-import com.example.blt.utils.StrUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,6 +40,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
+        List<String> hosts = sqlSessionTemplate.selectList("console.getHosts");
+        String master = sqlSessionTemplate.selectOne("console.getHost");
         Channel channel = arg0.channel();
         String addr = channel.remoteAddress().toString();
         String host = addr.substring(1, addr.indexOf(":"));
@@ -51,11 +53,15 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             to = jsonObject.getString("host");
         } catch (Exception e) {
             if (arg1.indexOf("77020315") != -1) {
-                cmd = arg1.replace("02", "01");
                 to = "all";
+                cmd = arg1.replace("02", "01");
             } else {
                 to = host;
                 cmd = arg1;
+            }
+            if (host.equals(master)) {
+                logger.warn("master[{}] hosts{}", master, hosts);
+                to = "master";
             }
         }
         if (arg1.indexOf("182716324621") != -1) {
@@ -73,6 +79,12 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     if (!ip.equals("127.0.0.1")) {
                         if (to.equals("all")) {
                             ch.writeAndFlush(cmd);
+                        } else if (to.equals("master")) {
+                            for (String guest : hosts) {
+                                if (ip.equals(guest)) {
+                                    ch.writeAndFlush(cmd);
+                                }
+                            }
                         } else if (to.equals(ip)) {
                             ch.writeAndFlush(cmd);
                         }

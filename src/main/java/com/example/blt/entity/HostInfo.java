@@ -1,5 +1,6 @@
 package com.example.blt.entity;
 
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,50 +16,15 @@ public class HostInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(unique = true,length = 64)
+    @Column(unique = true, length = 64)
     private String ip;
-    private Boolean status=true;
+    @ColumnDefault("1")
+    private Boolean status;
+    @ColumnDefault("0")
+    private Boolean isMaster;
+    @ColumnDefault("0")
+    private Boolean isControl;
     private String other;
-    private Date log_date=new Date();
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public Date getLog_date() {
-        return log_date;
-    }
-
-    public void setLog_date(Date log_date) {
-        this.log_date = log_date;
-    }
-
-    public String getOther() {
-        return other;
-    }
-
-    public void setOther(String other) {
-        this.other = other;
-    }
+    private Date log_date = new Date();
 
 }

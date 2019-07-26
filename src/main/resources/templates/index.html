@@ -7,6 +7,17 @@
     <link th:href="@{/static/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
     <script th:src="@{/static/jquery.js}" type="text/javascript"></script>
 </head>
+<style type="text/css">
+    .host {
+        height: 20px;
+        width: 20px
+    }
+
+    #host td {
+        height: 30px;
+        border: #CCCCCC 1px solid;
+    }
+</style>
 <script type="text/javascript">
     let socket;
     $(function () {
@@ -15,7 +26,7 @@
         $("#show").html("jquery文件加载成功！");
         $.getJSON("/getHost", function (data) {
             $.each(data, function (i, val) {
-                $("#hosts").append("<option value='" + val + "'>" + val + "</option>");
+                $("#hosts").append("<option value='" + val.ip + "'>" + val.mname + "</option>");
             });
         });
         if (typeof (WebSocket) == "undefined") {
@@ -35,10 +46,18 @@
             let cmd = $("#txt").val();
             let host = $("#hosts").val();
             $.get("/test", {"command": cmd, "host": host}, function (result) {
-                console.log("cmd",cmd,"host",host,"result", result);
+                console.log("cmd", cmd, "host", host, "result", result);
             });
             socket.send(cmd);
         });
+
+        $(".host").click(function () {
+            let ip = $.trim($(this).val());
+            let flag = $(this).is(':checked');
+            $.get("/save", {"host": ip, "status": flag}, function (result) {
+                console.log("ip", ip, "flag", flag, "result", result);
+            });
+        })
     });
 
     function sendCmd(id) {
@@ -63,11 +82,38 @@
 <p>
     <label for="btn1">一键控制：</label>
     <button id="btn1" value="77010315373766" onclick="sendCmd(this.id)">开</button>
+    <label for="main">群控ip：</label>
+    <input id=main type="text" value="192.168.10.21">
 </p>
+<div style="width: 30%;height:30%;margin: 20px 20px">
+    <table id="host" style="text-align: center;border-collapse: collapse;width: 60%;height: 100px">
+        <th>
+            <tr>
+                <td>楼层</td>
+                <td>ip</td>
+                <td>是否被控</td>
+            </tr>
+        </th>
+        <tbody>
+        <tr th:each="host:${hosts}">
+            <td th:text="${host.mname}"></td>
+            <td th:text="${host.ip}"></td>
+            <td th:switch="${host.flag}">
+                <span th:case="true">
+                    <input class="host" type="checkbox" checked th:value="${host.ip}">
+                </span>
+                <span th:case="*">
+                    <input class="host" type="checkbox" th:value="${host.ip}">
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <p>
     <label for="test">获取灯信息：</label>
     <input style="width: 200px" type="text" id="txt" placeholder="默认ping指令7701011B66" value="7701011B66"/>
-    <select id="hosts" name="host">
+    <select id="hosts" name="host" style="height: 30px">
         <option value="all" selected>all</option>
     </select>
     <input type="button" id="test" value="测试"/>

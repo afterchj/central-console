@@ -64,6 +64,7 @@
         <property name="dataSource" ref="myDataSource"/>
         <!-- mapper扫描 -->
         <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        <property name="typeAliasesPackage" value="com.example.blt.entity"></property>
     </bean>
 
     <bean id="mySqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">

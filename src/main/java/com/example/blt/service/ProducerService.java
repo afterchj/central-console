@@ -1,6 +1,7 @@
 package com.example.blt.service;
 
 import com.example.blt.exception.NoTopicException;
+import com.example.blt.utils.PropertiesUtil;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
@@ -17,10 +18,10 @@ public class ProducerService {
     private static Logger logger = LoggerFactory.getLogger(ProducerService.class);
 
     public static void pushMsg(String... msg) throws NoTopicException {
+        String addr= PropertiesUtil.getValue("rocketmq.name-server");
         DefaultMQProducer producer = new DefaultMQProducer("blt_local_main_group");
         producer.setInstanceName(UUID.randomUUID().toString());
-        producer.setNamesrvAddr("119.3.49.192:9876");
-//        producer.setNamesrvAddr("127.0.0.1:9876");
+        producer.setNamesrvAddr(addr);
         producer.setVipChannelEnabled(false);
         try {
             producer.start();

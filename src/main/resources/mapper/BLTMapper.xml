@@ -28,7 +28,7 @@
     </parameterMap>
 
     <delete id="deleteHost">
-       delete from t_host_info where status is null
+       delete from t_host_info where ip is null
     </delete>
     <select id="saveLight" parameterMap="lightMapper" resultType="map" statementType="CALLABLE">
         CALL save_light(?,?,?,?,?,?,?,?,?,?)
@@ -42,10 +42,20 @@
         SELECT mname,COUNT(0) lmacn FROM f_light_demo GROUP BY mname
     </select>
 
-    <select id="getHosts" resultType="string">
-        SELECT ip FROM t_host_info WHERE ip !='127.0.0.1' AND status=1
+    <select id="getHostInfo" resultType="map">
+        SELECT mname,d.ip,h.is_control flag FROM f_light_demo d INNER JOIN t_host_info h ON h.ip=d.ip WHERE d.other='intelligence' AND h.status=1 GROUP BY ip
     </select>
 
+    <update id="saveHost" parameterType="ConsoleVo">
+         UPDATE t_host_info SET is_control=#{status} WHERE ip=#{host}
+    </update>
+
+    <select id="getHosts" resultType="string">
+        SELECT ip FROM t_host_info WHERE is_control=1 AND status=1
+    </select>
+    <select id="getHost" resultType="string">
+        SELECT ip FROM t_host_info WHERE is_master=1 LIMIT 1
+    </select>
     <select id="getVaddr" resultType="string">
         SELECT vaddr FROM t_light_info
     </select>
@@ -66,7 +76,7 @@
     </insert>
 
     <insert id="insertHost" parameterType="map">
-        REPLACE INTO t_host_info(ip,status,log_date) VALUE (#{ip},#{status},now())
+        REPLACE INTO t_host_info(ip,log_date) VALUE (#{ip},now())
     </insert>
 
     <select id="selectIn" parameterType="map" resultType="int">
