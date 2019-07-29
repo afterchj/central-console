@@ -48,12 +48,22 @@ public class LightDemoTests {
 //        List<LightDemo> exhibitionFromPhoneByGroup = lightListDao.getExhibitionFromPhoneByGroup(1, "0");
 //        exhibitionFromPhoneByGroup.stream().forEach(System.out::println);
 
-        Map<String,Object> map1 = new HashMap<>();
-        String test = null;
-        map1.put("test",test);
-        System.out.println(map1.toString());
 
-
+        List<Object> list = new ArrayList<>();
+        Map<String,Object> map = new HashMap<>();
+        List<Object> list2 = new ArrayList<>();
+        Map<String,Object> map2 = new HashMap<>();
+        List<Object> list3 = new ArrayList<>();
+        Map<String,Object> map3 = new HashMap<>();
+        map3.put("group",1);
+        list3.add(map3);
+        map2.put("place",list3);
+        map2.put("id",1);
+        list2.add(map2);
+        map.put("mname",list2);
+        map.put("id",1);
+        list.add(map);
+        System.out.println(list.toString());
     }
 
     @Test
@@ -87,5 +97,23 @@ public class LightDemoTests {
 //        Map<String,Object> floorLights = newMonitorService.getFloorLightsStatus(lightState,"1楼");
 //        System.out.println(floorLights.toString());
     }
+    static int getValue(int[] values, int length) {
+        if (length <= 0)
+            return 0;
+        int tmpMax = -1;
+        for (int i = 0; i < length; i++) {
+            int value = getValue(values,length-i-1);
+            tmpMax = Math.max(tmpMax, values[i] + value);
+        }
+        return tmpMax;
+    }
+
+    @Test
+   public void test7(){
+        int[] values = new int[]{3, 7, 1, 3, 9};
+        int rodLength = values.length;
+        System.out.println("Max rod value: " + getValue(values, rodLength));
+   }
+
 
 }

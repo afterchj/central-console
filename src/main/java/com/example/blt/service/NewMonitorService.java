@@ -64,13 +64,22 @@ public class NewMonitorService {
 //        long zh = System.currentTimeMillis();
 //        System.out.println("service1: "+(zh- start));
 //        int count1 = ms.size()*(groupOnStatuss.size()+groupOffStatuss.size());
+//        List<Object> floorList = new ArrayList<>();
+//        List<Object> placeList = new ArrayList<>();
+//        List<Object> groupList = new ArrayList<>();
+//        Map<String,Object> floorMap = new HashMap<>();
+//        Map<String,Object> placeMap = new HashMap<>();
+//        Map<String,Object> groupMap = new HashMap<>();
         for (CenterException m: ms) {
+//            groupMap.put("groupId",m.getGroupId());
+//            groupMap.put("on",m.getOn());
+//            groupMap.put("off",m.getOff());
             String msMname = m.getMname();
 //            int msPlace = m.getPlace();
             int msGroupId = m.getGroupId();
             if (groupOnStatuss.size()>0){
                 groupOnStatuss.stream().filter(groupOnStatus->msMname.equals(groupOnStatus.getMname()) &&
-                        msGroupId==groupOnStatus.getGroupId()).forEach(groupOnStatus->m.setOn(1));
+                        msGroupId==groupOnStatus.getGroupId()).forEach(groupOnStatus->{m.setOn(1);});
             }
             if (groupOffStatuss.size()>0){
                 groupOffStatuss.stream().filter(groupOffStatus->msMname.equals(groupOffStatus.getMname()) &&
