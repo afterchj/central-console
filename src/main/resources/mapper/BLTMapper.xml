@@ -76,7 +76,7 @@
     </insert>
 
     <insert id="insertHost" parameterType="map">
-        REPLACE INTO t_host_info(ip,log_date) VALUE (#{ip},now())
+        INSERT IGNORE INTO t_host_info(ip,log_date) VALUE (#{ip},now())
     </insert>
 
     <select id="selectIn" parameterType="map" resultType="int">
