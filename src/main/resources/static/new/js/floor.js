@@ -12,6 +12,10 @@ async function getInit() {
         // let emp1= await $('.content').empty();
         // let emp2= await  $('.nave ul').empty();
         let result1 = await ajaxFloor('1',floor);
+        let result2 = await setInterval(()=> {
+            ajaxFloor('0',floor);
+            console.log('动态数据更新执行完毕');
+        }, 600000);
     } catch (err) {
         console.log(err);
     }

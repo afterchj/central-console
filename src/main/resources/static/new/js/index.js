@@ -11,6 +11,10 @@ $(function () {
 async function getInit() {
     try {
         let result1 = await ajaxIndex('1');
+        let result2 = await setInterval(()=> {
+            ajaxIndex('0');
+            console.log('动态数据更新执行完毕');
+        }, 60000);
     } catch (err) {
         console.log(err);
     }

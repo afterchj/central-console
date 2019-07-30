@@ -604,27 +604,7 @@ $(".middle.p-a").on('click', "p", function () {
         }
     })
 });
-$(".status.card").on('click', "button", function () {
-    var command = $.trim($("select").val());
-    var floor = getUrlParams('floor');
-    var host = getHostByFloor(floor);
-    $.post("/sendSocket5", {
-        "command": command,
-        "host": host
-    }, function (msg) {
-        if (msg.success == 'success') {
-            $(".img-levels .f-l:eq(1) p[class='font-color']").text(command)
-        }
-    })
-});
-function water() {
-    var pDefault;
-    waterbubbleS('#floor-1', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
-    waterbubbleS('#floor-2', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
-    waterbubbleS('#floor-3', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
-    waterbubbleS('#floor-4', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
-    waterbubbleS('#floor-5', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
-}
+//实时状态
 function realTimeStatus() {
     var exceptionPng = $(".content img");
     var un = 0;
@@ -641,6 +621,29 @@ function realTimeStatus() {
     $(".error.status").text(un + abnoraml);
     $(".error.diff").text(un);
     $(".error.exception").text(abnoraml);
+}
+//点击应用场景
+$(".status.card").on('click', "button", function () {
+    var command = $.trim($("select").val());
+    var floor = getUrlParams('floor');
+    var host = getHostByFloor(floor);
+    $.post("/sendSocket5", {
+        "command": command,
+        "host": host
+    }, function (msg) {
+        if (msg.success == 'success') {
+            $(".img-levels .f-l:eq(1) p[class='font-color']").text(command)
+        }
+    })
+});
+
+function water() {
+    var pDefault;
+    waterbubbleS('#floor-1', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
+    waterbubbleS('#floor-2', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
+    waterbubbleS('#floor-3', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
+    waterbubbleS('#floor-4', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
+    waterbubbleS('#floor-5', '30%', pDefault, pDefault, 24, 0.3, pDefault, '#FE4C40', pDefault, pDefault)
 }
 
 function leftCenter(centerLNumList) {

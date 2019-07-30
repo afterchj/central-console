@@ -451,7 +451,7 @@ public class MonitorController {
         Map<String, Object> map = new HashMap<>();
         List<LightDemo> lightState = new ArrayList<>();
 //        map.put("lightState", lightState);
-        CommandLight commandInfo = monitor4Dao.getCommandInfo("1");
+        CommandLight commandInfo = monitor4Dao.getCommandInfo("192.168.10.253");
         if (commandInfo != null) {
             String ctype = commandInfo.getCtype();
             String status = null;
@@ -475,15 +475,10 @@ public class MonitorController {
                     status = "1";
                 }
                 lightState = monitor2Dao.getMonitorFromRemoteByStatus(status, "exhibition");
-            } else if ("C1".equals(ctype)) {
+            } else if ("C1".equals(ctype) || "CW".equals(commandInfo.getCtype())) {
                 //pad or 手机 组控
                 if (commandInfo.getCid()!=null){
                     int groupId = Integer.parseInt(commandInfo.getCid(), 16);
-//                if ("0A".equals(commandInfo.getCid())) {
-//                    groupId = 10;
-//                } else {
-//                    groupId = Integer.valueOf(commandInfo.getCid());
-//                }
                     if ("37".equals(commandInfo.getY())) {
                         status = "0";
                     } else {
@@ -536,12 +531,6 @@ public class MonitorController {
 //                    int groupId;
                     if (commandInfo.getCid()!=null){
                         int groupId = Integer.parseInt(commandInfo.getCid(), 16);
-//                    if ("0A".equals(commandInfo.getCid())) {
-//                        groupId = 10;
-//                    } else {
-//                        groupId = Integer.valueOf(commandInfo.getCid());
-//                    }
-
                         if ("32".equals(commandInfo.getY())) {
                             status = "1";
                         } else {
