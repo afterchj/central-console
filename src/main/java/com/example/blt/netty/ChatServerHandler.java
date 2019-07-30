@@ -44,8 +44,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = arg0.channel();
         String addr = channel.remoteAddress().toString();
         String host = addr.substring(1, addr.indexOf(":"));
-        List<String> hosts=null;
-        String master;
+        List<String> hosts = null;
         String cmd;
         String to;
         try {
@@ -57,12 +56,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 to = "all";
                 cmd = arg1.replace("02", "01");
             } else if (arg1.indexOf("77040A022A01") != -1) {
-                String temp = sqlSessionTemplate.selectOne("console.getHost");
                 hosts = sqlSessionTemplate.selectList("console.getHosts");
-                master = StringUtils.isEmpty(temp) ? "192.168.10.21" : temp;
                 to = "master";
                 cmd = arg1;
-                logger.warn("master[{}] hosts{} cmd[{}]", master, hosts, cmd);
+                logger.warn("master[{}] hosts[{}]", host, hosts);
             } else {
                 to = host;
                 cmd = arg1;
