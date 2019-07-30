@@ -14,6 +14,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         List<String> hosts = sqlSessionTemplate.selectList("console.getHosts");
-        String master = sqlSessionTemplate.selectOne("console.getHost");
+        String temp = sqlSessionTemplate.selectOne("console.getHost");
+        String master = StringUtils.isEmpty(temp) ? "192.168.10.21" : temp;
         Channel channel = arg0.channel();
         String addr = channel.remoteAddress().toString();
         String host = addr.substring(1, addr.indexOf(":"));
@@ -60,8 +62,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 cmd = arg1;
             }
             if (host.equals(master)) {
-                logger.warn("master[{}] hosts{}", master, hosts);
                 to = "master";
+                logger.warn("master[{}] hosts{},cmd[{}]", master, hosts, cmd);
             }
         }
         if (arg1.indexOf("182716324621") != -1) {
@@ -69,7 +71,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len < 21) {
+        if (len > 9 && len < 31) {
             ExecuteTask.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
