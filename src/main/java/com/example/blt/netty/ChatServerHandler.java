@@ -41,12 +41,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
-        List<String> hosts = sqlSessionTemplate.selectList("console.getHosts");
-        String temp = sqlSessionTemplate.selectOne("console.getHost");
-        String master = StringUtils.isEmpty(temp) ? "192.168.10.21" : temp;
         Channel channel = arg0.channel();
         String addr = channel.remoteAddress().toString();
         String host = addr.substring(1, addr.indexOf(":"));
+        List<String> hosts=null;
+        String master;
         String cmd;
         String to;
         try {
@@ -57,13 +56,16 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (arg1.indexOf("77020315") != -1) {
                 to = "all";
                 cmd = arg1.replace("02", "01");
+            } else if (arg1.indexOf("77040A022A01") != -1) {
+                String temp = sqlSessionTemplate.selectOne("console.getHost");
+                hosts = sqlSessionTemplate.selectList("console.getHosts");
+                master = StringUtils.isEmpty(temp) ? "192.168.10.21" : temp;
+                to = "master";
+                cmd = arg1;
+                logger.warn("master[{}] hosts{} cmd[{}]", master, hosts, cmd);
             } else {
                 to = host;
                 cmd = arg1;
-            }
-            if (host.equals(master)) {
-                to = "master";
-                logger.warn("master[{}] hosts{},cmd[{}]", master, hosts, cmd);
             }
         }
         if (arg1.indexOf("182716324621") != -1) {
