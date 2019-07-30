@@ -59,18 +59,18 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 hosts = sqlSessionTemplate.selectList("console.getHosts");
                 to = "master";
                 cmd = arg1;
-                logger.warn("master[{}] hosts[{}]", host, hosts);
             } else {
                 to = host;
                 cmd = arg1;
             }
         }
-        if (arg1.indexOf("182716324621") != -1) {
-            logger.error("ip [{}] cmd [{}]", to, cmd);
-        }
+        logger.warn("ip[{}] hosts[{}] cmd [{}]", host, hosts,cmd);
+//        if (arg1.indexOf("182716324621") != -1) {
+//            logger.error("ip [{}] cmd [{}]", to, cmd);
+//        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len < 31) {
+        if (len > 9 && len < 43) {
             ExecuteTask.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
