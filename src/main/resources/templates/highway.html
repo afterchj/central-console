@@ -1,0 +1,453 @@
+<!doctype html>
+<html class="no-js fixed-layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>公路Demo</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" type="image/png" th:href="@{/static/AmazeUI/i/favicon.png}">
+    <link rel="apple-touch-icon-precomposed" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/amazeui.basic.min.css}">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/amazeui.widgets.min.css}">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/amazeui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/checkboxes.min.css}">
+    <link rel="stylesheet" th:href="@{/static/css/highway.css}">
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+    以获得更好的体验！</p>
+<![endif]-->
+<header class="am-topbar am-topbar-inverse nav-background">
+    <div class="am-topbar-brand">
+        <strong>高速公路地灯Demo</strong>
+    </div>
+</header>
+<div class="am-container">
+    <div class="am-g ">
+        <div class="col-sm-2 col-lg-2">
+        </div>
+        <div class="col-sm-10 col-lg-10">
+            <div class="am-g  tree-list">
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-g ">
+        <div class="col-sm-2 col-lg-2">
+            <ul class="am-nav">
+                <li>
+                    <div class="am-g left-way">
+                        <div class="col-sm-6 col-lg-6">
+                            <p class="am-center">HighwayAll</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="ckbx-style-13 ckbx-medium ">
+                                <input type="checkbox" value="0" id="ckbx-style-13-1" name="ckbx-style-13">
+                                <label for="ckbx-style-13-1"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-g left-way">
+                        <div class="col-sm-6 col-lg-6">
+                            <p>Highway1</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="ckbx-style-13 ckbx-medium ">
+                                <input type="checkbox" id="ckbx-style-13-2" value="0" name="ckbx-style-13">
+                                <label for="ckbx-style-13-2"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-g left-way">
+                        <div class="col-sm-6 col-lg-6">
+                            <p>Highway2</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="ckbx-style-13 ckbx-medium ">
+                                <input type="checkbox" value="0" id="ckbx-style-13-3" name="ckbx-style-13">
+                                <label for="ckbx-style-13-3"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-g left-way">
+                        <div class="col-sm-6 col-lg-6">
+                            <p>Highway3</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="ckbx-style-13 ckbx-medium ">
+                                <input type="checkbox" value="0" id="ckbx-style-13-4" name="ckbx-style-13">
+                                <label for="ckbx-style-13-4"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li></li>
+                <li></li>
+                <li>
+                    <div class="am-g left-way">
+                        <div class="col-sm-6 col-lg-6">
+                            <p>Highway4</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="ckbx-style-13 ckbx-medium ">
+                                <input type="checkbox" value="0" name="ckbx-style-13">
+                                <label for="ckbx-style-13-1"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-g left-way">
+                        <div class="col-sm-6 col-lg-6">
+                            <p>Highway5</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="ckbx-style-13 ckbx-medium ">
+                                <input type="checkbox" value="0" name="ckbx-style-13">
+                                <label for="ckbx-style-13-1"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-g left-way">
+                        <div class="col-sm-6 col-lg-6">
+                            <p>Highway6</p>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="ckbx-style-13 ckbx-medium ">
+                                <input type="checkbox" value="0" name="ckbx-style-13">
+                                <label for="ckbx-style-13-1"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-10 col-lg-10 roadBackground">
+            <ul class="am-list">
+                <li class="p-r"><span class="hint-car shuli p-a top">应急车道</span></li>
+                <li class="center-tree-sibings ">
+                    <div class="am-g">
+                        <div class="col-sm-1-5 col-lg-1-5  light-move3 no-top">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                    </div>
+                </li>
+                <li class="no-line">
+                    <div class="am-g">
+                        <div class="col-sm-1-5 col-lg-1-5  light-move2">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                    </div>
+                </li>
+                <li class="center-tree-sibings no-line">
+                    <div class="am-g">
+                        <div class="col-sm-1-5 col-lg-1-5  light-move3">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                    </div>
+                </li>
+                <li class="center-tree">
+                    <div class="am-g  tree-list">
+                        <div class="col-sm-2 col-lg-2">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                        </div>
+                        <div class="col-sm-2 col-lg-2">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                        </div>
+                        <div class="col-sm-2 col-lg-2">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                        </div>
+                        <div class="col-sm-2 col-lg-2">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                        </div>
+                        <div class="col-sm-2 col-lg-2">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                        </div>
+                        <div class="col-sm-2 col-lg-2">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                            <img th:src="@{/static/img/three.png}" alt="">
+                        </div>
+                    </div>
+                </li>
+
+                <li class="center-tree-sibings two"></li>
+                <li class=" no-line">
+                    <div class="am-g">
+                        <div class="col-sm-1-5 col-lg-1-5  light-move3">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                    </div>
+                </li>
+                <li class=" center-tree-sibings two">
+                    <div class="am-g">
+                        <div class="col-sm-1-5 col-lg-1-5  light-move2">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move2">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-g">
+                        <div class="col-sm-1-5 col-lg-1-5  light-move3 no-top">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <img th:src="@{/static/img/light-on.png}" class="am-img-circle">
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                        <div class="col-sm-1-5 col-lg-1-5 light-move3 no-top">
+                            <!--<img th:src="@{/static/img/light-on.png}" class="am-img-circle">-->
+                        </div>
+                    </div>
+                </li>
+                <li style="height: 0;    border-color: transparent;" class="p-r"><span class="hint-car shuli p-a bottom">救援通道   严禁占用</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="am-g ">
+        <div class="col-sm-2 col-lg-2">
+        </div>
+        <div class="col-sm-10 col-lg-10">
+            <div class="am-g  tree-list">
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+                <div class="col-sm-2 col-lg-2">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                    <img th:src="@{/static/img/three.png}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script th:src="@{/static/AmazeUI/js/amazeui.ie8polyfill.min.js}"></script>
+<script th:src="@{/static/jquery-3.1.1.min.js}"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script th:src="@{/static/jquery-3.1.1.min.js}"></script>
+<!--<![endif]-->
+<script th:src="@{/static/jquery-3.1.1.min.js}"></script>
+<script th:src="@{/static/AmazeUI/js/zepto.min.js}"></script>
+<script th:src="@{/static/AmazeUI/js/amazeui.min.js}"></script>
+<script th:src="@{/static/AmazeUI/js/amazeui.basic.min.js}"></script>
+<!--<script th:src="@{/static/AmazeUI/js/app.js}"></script>-->
+</body>
+</html>

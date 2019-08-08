@@ -61,6 +61,11 @@ public class HomeController {
         return "newMonitor/index";
     }
 
+    @RequestMapping("/highway")
+    public String highway() {
+        return "highway";
+    }
+
     @RequestMapping("/newIndex/noEnergy")
     public String noEnergy() {
         return "newMonitor/noEnergy";
