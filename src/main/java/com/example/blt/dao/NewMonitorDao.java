@@ -17,7 +17,7 @@ import java.util.Map;
 @Mapper
 public interface NewMonitorDao {
 
-    @Select("select mname,count(*) as exception from f_light_demo d left join t_light_info i on d.lmac=i.lmac where  d.other='intelligence' and i.y is null and i.status is null Group by substring_index(mname,'楼',1)+0")
+    @Select("select d.mname,count(*) as exception from f_light_demo_intelligence d , t_light_info i where d.lmac=i.lmac and  i.status is null and i.y is null Group by d.mname")
     List<CenterException> getIndexFloorException();
 
     @Select("select mname from f_light_demo where other='intelligence' Group by substring_index(mname,'楼',1)+0")
@@ -26,7 +26,7 @@ public interface NewMonitorDao {
     @Select("select mname from f_light_demo where other='intelligence' Group by substring_index(mname,'楼',1)+0")
     List<Map<String,Object>> getMnamesByLeft();
 
-    @Select("select mname,Place,count(*) as exception from f_light_demo d left join t_light_info i on d.lmac=i.lmac where d.other='intelligence' and i.y is null and i.status is null Group by substring_index(mname,'楼',1)+0,Place")
+    @Select("select mname,Place,count(*) as exception from f_light_demo_intelligence d , t_light_info i where d.lmac=i.lmac and i.y is null and i.status is null Group by mname,Place")
     List<Place> getPlacesExceptions();
 
     @Select("select mname,Place from f_light_demo  where other='intelligence' Group by substring_index(mname,'楼',1)+0,Place")
@@ -41,16 +41,16 @@ public interface NewMonitorDao {
     @Select("select Place,count(*) as exception from f_light_demo d left join t_light_info i on d.lmac=i.lmac where d.other='intelligence' and i.y is null and i.status is null and d.mname=#{floor} Group by Place")
     List<PlaceWeb> getPlacesExceptionsByFloor(@Param("floor")String floor);
 
-    @Select("select count(*) as centerLNum,mname from f_light_demo d left join t_light_info i on d.lmac=i.lmac where i.status is not null and  d.other='intelligence' Group by substring_index(mname,'楼',1)+0")
+    @Select("select count(*) as centerLNum,mname from f_light_demo_intelligence d left join t_light_info i on d.lmac=i.lmac where i.status is not null  Group by mname")
     List<Map<String,Object>> getIntelligenceCenterLNum();
 
     @Select("select count(*) as centerLNum from f_light_demo d left join t_light_info i on d.lmac=i.lmac where i.status is not null and  d.other='intelligence' and d.mname=#{floor}")
     Integer getIntelligenceCenterLNumByFloor(@Param("floor")String floor);
 
-    @Select("select mname,place,groupId  FROM f_light_demo d LEFT JOIN t_light_info i ON d.lmac = i.lmac where d.other='intelligence' and (i.status='1' or (i.y!='32' and i.y is not null)) group by substring_index(mname,'楼',1)+0,place,groupId")
+    @Select("select mname,place,groupId  FROM f_light_demo_intelligence d LEFT JOIN t_light_info i ON d.lmac = i.lmac where (i.status='1' or (i.y!='32' and i.y is not null)) group by mname,place,groupId")
     List<LightDemo> getGroupOnStatus();
 
-    @Select("select mname,place,groupId  FROM f_light_demo d LEFT JOIN t_light_info i ON d.lmac = i.lmac where d.other='intelligence' and (i.status='0' or i.y='32') group by substring_index(mname,'楼',1)+0,place,groupId")
+    @Select("select mname,place,groupId  FROM f_light_demo_intelligence d LEFT JOIN t_light_info i ON d.lmac = i.lmac where  (i.status='0' or i.y='32') group by mname,place,groupId")
     List<LightDemo> getGroupOffStatus();
 
     @Select("SELECT d.mname,d.lname,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info) i ON d.lmac = i.lmac where d.other='intelligence' and d.mname=#{floor}")

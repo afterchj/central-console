@@ -70,13 +70,13 @@ public class ConsoleUtil {
         Set lmac = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddr = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         Set ips = ConsoleUtil.getInfo(ConsoleKeys.HOSTS.getValue());
-        if (lmac == null) {
+        if (lmacSet != null && lmac == null) {
             lmacSet.clear();
         }
-        if (vaddr == null) {
+        if (vaddrSet != null && vaddr == null) {
             vaddrSet.clear();
         }
-        if (ips == null) {
+        if (ipSet != null && ips == null) {
             ipSet.clear();
         }
     }

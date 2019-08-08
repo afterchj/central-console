@@ -27,7 +27,7 @@ public interface Monitor4Dao {
     List<LightDemo> getIntelligencePlaceLNum();//每一层每个区域的正常状态灯个数
 
 
-    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.Place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo d LEFT JOIN (select  lmac,x ,y,status from t_light_info) i ON d.lmac = i.lmac where d.other='intelligence'")
+    @Select("SELECT d.lmac ,d.mname,d.lname ,CASE WHEN i.y = '32' THEN '1' WHEN i.y != '32' and i.y is not null THEN '0'  when i.y is null and i.status  ='0' then '1' when i.y is null and i.status ='1' then '0'  when i.y is null and i.status is null then null  END AS status,d.Place,d.groupId,CONCAT((100-i.y*5),'%') AS y  FROM f_light_demo_intelligence d  JOIN (select  lmac,x ,y,status from t_light_info) i ON d.lmac = i.lmac ")
     List<LightDemo> getIntelligenceLightInfo();
 
     @Select("select mname,count(*) as PlaceLNum,Place from f_light_demo where other =#{other} Group by mname,Place ORDER BY substring_index(mname,'楼',1)+0,Place")

@@ -36,6 +36,7 @@ public class NewMonitorService {
 
 //    public Map<String, Object> getIndexFloorStatus(List<LightDemo> lightState) {
     public Map<String, Object> getIndexFloorStatus(String type) {
+
         List<CenterException> ms = webCmdDao.getMnames();
         List<Mnames> mnames = newMonitorDao.getMnames();
         List<Place> places = newMonitorDao.getPlaces();
@@ -43,10 +44,12 @@ public class NewMonitorService {
         List<CenterException> floorsExceptions = new ArrayList<>();
         List<Place> placesExceptions = new ArrayList<>();
         List<LightDemo> groupOnStatuss = new ArrayList<>();
+        List<LightDemo> groupOffStatuss = new ArrayList<>();
 //        List<CenterException> floorsExceptions = newMonitorDao.getIndexFloorException();//每个楼层故障灯的个数
 //        List<Place> placesExceptions = newMonitorDao.getPlacesExceptions();//每个区域故障灯个数
 //        List<LightDemo> groupOnStatuss = newMonitorDao.getGroupOnStatus();//存在开状态灯的组
-        List<LightDemo> groupOffStatuss = newMonitorDao.getGroupOffStatus();//存在关状态灯的组
+//        List<LightDemo> groupOffStatuss = newMonitorDao.getGroupOffStatus();//存在关状态灯的组
+//        long start = System.currentTimeMillis();
         if ("0".equals(type)){
             floorsExceptions = newMonitorDao.getIndexFloorException();
             placesExceptions = newMonitorDao.getPlacesExceptions();
@@ -58,14 +61,25 @@ public class NewMonitorService {
             groupOnStatuss = eventDrivenDao.getGroupOnStatus();
             groupOffStatuss = eventDrivenDao.getGroupOffStatus();
         }
-
+//        long zh = System.currentTimeMillis();
+//        System.out.println("service1: "+(zh- start));
+//        int count1 = ms.size()*(groupOnStatuss.size()+groupOffStatuss.size());
+//        List<Object> floorList = new ArrayList<>();
+//        List<Object> placeList = new ArrayList<>();
+//        List<Object> groupList = new ArrayList<>();
+//        Map<String,Object> floorMap = new HashMap<>();
+//        Map<String,Object> placeMap = new HashMap<>();
+//        Map<String,Object> groupMap = new HashMap<>();
         for (CenterException m: ms) {
+//            groupMap.put("groupId",m.getGroupId());
+//            groupMap.put("on",m.getOn());
+//            groupMap.put("off",m.getOff());
             String msMname = m.getMname();
 //            int msPlace = m.getPlace();
             int msGroupId = m.getGroupId();
             if (groupOnStatuss.size()>0){
                 groupOnStatuss.stream().filter(groupOnStatus->msMname.equals(groupOnStatus.getMname()) &&
-                        msGroupId==groupOnStatus.getGroupId()).forEach(groupOnStatus->m.setOn(1));
+                        msGroupId==groupOnStatus.getGroupId()).forEach(groupOnStatus->{m.setOn(1);});
             }
             if (groupOffStatuss.size()>0){
                 groupOffStatuss.stream().filter(groupOffStatus->msMname.equals(groupOffStatus.getMname()) &&
@@ -98,7 +112,7 @@ public class NewMonitorService {
 //            }
         }
 //        System.out.println(ms.toString());
-
+//        int count2 = places.size()*(placesExceptions.size()+ms.size());
         for (int i = 0; i < places.size(); i++) {
             int placePlace = places.get(i).getPlace();
             String placeMname = places.get(i).getMname();
@@ -124,6 +138,7 @@ public class NewMonitorService {
                 }
             }
         }
+//        int count3 = mnames.size()*(floorsExceptions.size()+places.size());
 //        System.out.println("places: "+places.toString());
         //楼层异常个数
         List<Map<String, Object>> placeList;
@@ -150,6 +165,7 @@ public class NewMonitorService {
             }
             mnames.get(i).setPlaceList(placeList);
         }
+//        int count4 = ms.size()*mnames.size();
 //        System.out.println(mnames.toString());
         //统计每个楼层组的开关状态
         int totalStatus = 1;//总楼层默认状态为关
@@ -211,6 +227,9 @@ public class NewMonitorService {
         map.put("status", totalStatus);
         map.put("floor", mnames);
 //        System.out.println(map.toString());
+//        System.out.println(count1+" : "+count2+" : "+count3+" : "+count4);
+//        long end = System.currentTimeMillis();
+//        System.out.println("service2: "+(end - zh));
         return map;
     }
 

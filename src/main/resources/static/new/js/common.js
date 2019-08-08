@@ -795,3 +795,40 @@ function getHostByFloor(floor) {
     }
     return host;
 }
+
+function getFloorByHost(host) {
+    var floor;
+    switch (host) {
+        case "192.168.10.11":
+            floor = "1";
+            break;
+        case "192.168.10.12":
+            floor = "2";
+            break;
+        case "192.168.10.13":
+            floor = '3';
+            break;
+        case "192.168.10.14":
+            floor = '4';
+            break;
+        case "192.168.10.15":
+            floor = '5';
+            break;
+        case "192.168.10.16":
+            floor = "6";
+            break;
+        case "192.168.10.17":
+            floor = "7";
+            break;
+        case "192.168.10.18":
+            floor = "8";
+            break;
+        case "192.168.10.19":
+            floor = "9";
+            break;
+        case "192.168.10.20":
+            floor = "10";
+            break;
+    }
+    return floor;
+}

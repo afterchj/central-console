@@ -7,7 +7,6 @@ import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
-import com.example.blt.utils.StrUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,11 +14,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,6 +44,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = arg0.channel();
         String addr = channel.remoteAddress().toString();
         String host = addr.substring(1, addr.indexOf(":"));
+        String temp = sqlSessionTemplate.selectOne("console.getHost");
+        String master = StringUtils.isEmpty(temp) ? "192.168.10.21" : temp;
+        List<String> hosts = null;
         String cmd;
         String to;
         try {
@@ -51,19 +55,25 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             to = jsonObject.getString("host");
         } catch (Exception e) {
             if (arg1.indexOf("77020315") != -1) {
-                cmd = arg1.replace("02", "01");
                 to = "all";
+                cmd = arg1.replace("02", "01");
             } else {
                 to = host;
                 cmd = arg1;
             }
+            if (host.equals(master)) {
+                hosts = sqlSessionTemplate.selectList("console.getHosts");
+                to = "master";
+                cmd = arg1;
+            }
         }
-        if (arg1.indexOf("182716324621") != -1) {
-            logger.error("ip [{}] cmd [{}]", to, cmd);
-        }
+        logger.warn("ip[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
+//        if (arg1.indexOf("182716324621") != -1) {
+//            logger.error("ip [{}] cmd [{}]", to, cmd);
+//        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len < 21) {
+        if (len > 9 && len < 43) {
             ExecuteTask.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
@@ -73,6 +83,12 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     if (!ip.equals("127.0.0.1")) {
                         if (to.equals("all")) {
                             ch.writeAndFlush(cmd);
+                        } else if (to.equals("master")) {
+                            for (String guest : hosts) {
+                                if (ip.equals(guest)) {
+                                    ch.writeAndFlush(cmd);
+                                }
+                            }
                         } else if (to.equals(ip)) {
                             ch.writeAndFlush(cmd);
                         }

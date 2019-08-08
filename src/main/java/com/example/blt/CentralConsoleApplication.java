@@ -19,7 +19,7 @@ public class CentralConsoleApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CentralConsoleApplication.class, args);
-        new NettyServer().start(8000);
+//        new NettyServer().start(8000);
         new ServerMain().run(8001);
     }
 

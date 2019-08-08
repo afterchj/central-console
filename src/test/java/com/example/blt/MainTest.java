@@ -8,8 +8,10 @@ import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -18,6 +20,7 @@ public class MainTest {
 
     private static Logger logger = LoggerFactory.getLogger(MainTest.class);
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
     public static void main(String[] args) {
 //        ConsoleService consoleService = (ConsoleService) SpringJpaUtil.getBean(ConsoleService.class);
@@ -82,18 +85,19 @@ public class MainTest {
 
     @Test
     public void testSqlSession() {
+        String temp = sqlSessionTemplate.selectOne("console.getHost");
         List hosts = sqlSessionTemplate.selectList("console.getHosts");
-        Set set = new HashSet(hosts);
-        Map map = new HashMap();
-        map.put("ip", "127.0.0.1");
-        map.put("status", true);
-        sqlSessionTemplate.insert("console.insertHost", map);
+//        Set set = new HashSet(hosts);
+//        Map map = new HashMap();
+//        map.put("ip", "127.0.0.1");
+//        map.put("status", true);
+//        sqlSessionTemplate.insert("console.insertHost", map);
 //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
 //        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
 //        String str = "77040F0227E9010000713232000000000000CC";
 //        StrUtil.buildLightInfo(str,"127.0.0.1");
 //        ExecuteTask.pingInfo("127.0.0.1", str);
-        System.out.println(hosts + "\t" + set);
+        System.out.println(hosts + "\t" + temp);
     }
 
     @Test
@@ -188,8 +192,9 @@ public class MainTest {
     @Test
     public void testSet() {
         Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
-        Integer total = temp == null ? 0 : temp;
-        logger.warn("temp[{}] total[{}]",temp,total);
+        int total = temp == null ? -1 : temp;
+        logger.warn("temp[{}] total[{}]", temp, total);
+//        ConsoleUtil.cleanKey(ConsoleKeys.VADDR.getValue(), ConsoleKeys.HOSTS.getValue(), ConsoleKeys.lMAC.getValue());
 //        Set<String> set = new HashSet<>();
 //        for (int i = 1; i < 10; i++) {
 //            set.add("192.168.16." + i);
@@ -198,5 +203,11 @@ public class MainTest {
 //            set.remove("192.168.16." + i);
 //            logger.warn("set{} size[{}]",set, set.size());
 //        }
+    }
+
+    @Test
+    public void testRedisK() {
+        System.out.println(Integer.parseInt("32",16));
+//        redisTemplate.opsForValue().set(ConsoleKeys.LTIMES.getValue(), 3, 10, TimeUnit.MINUTES);
     }
 }

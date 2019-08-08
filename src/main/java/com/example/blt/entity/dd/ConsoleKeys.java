@@ -10,6 +10,7 @@ public enum ConsoleKeys {
     HOSTS("l_host"),
     LSIZE("l_size"),
     TSIZE("t_size"),
+    LTIMES("l_times"),
     LINFO("l_info");
 
     ConsoleKeys(String value) {

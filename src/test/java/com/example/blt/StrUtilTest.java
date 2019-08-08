@@ -21,6 +21,8 @@ public class StrUtilTest {
 
     @Test
     public void test() {
+        String space = "77 04 0A 02 2A 01 00 00 00 C0 00 37 37 CC CC".replace(" ", "");
+        logger.warn("str=" + space + ",len=" + space.length());
         //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
         String c1 = "77 04 10 02 20 9D 01 00 00 C1 32 32 00 00 00 00 00 00 02 1E".replace(" ", "");
         String c0 = "77 04 0E 02 2A 9D 01 00 00 C0 00 37 37 00 00 00 00 09".replace(" ", "");
@@ -64,9 +66,9 @@ public class StrUtilTest {
                 }
                 logger.warn("flag=" + flag);
                 if ("01".equals(flag)) {
-                  ClientMain.sendCron(Groups.GROUPSA.getOn());
+                    ClientMain.sendCron(Groups.GROUPSA.getOn());
                 } else if ("02".equals(flag)) {
-                  ClientMain.sendCron(Groups.GROUPSA.getOff());
+                    ClientMain.sendCron(Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", flag);
@@ -113,26 +115,26 @@ public class StrUtilTest {
     }
 
     @Test
-    public void testA(){
-        System.out.println(Integer.parseInt("0a",16));
-        String on="77020315323266";
-        System.out.println(on.replace("02","01"));
+    public void testA() {
+        System.out.println(Integer.parseInt("0a", 16));
+        String on = "77020315323266";
+        System.out.println(on.replace("02", "01"));
         String strs = "77041002216501000052456365D7ACF0000200CCCC";
-        System.out.println(strs.indexOf("CC")+"\t"+strs.substring(0,strs.indexOf("CC")));
-        System.out.println(strs.length()+"\t"+strs.indexOf("770101"));
+        System.out.println(strs.indexOf("CC") + "\t" + strs.substring(0, strs.indexOf("CC")));
+        System.out.println(strs.length() + "\t" + strs.indexOf("770101"));
         System.out.println("77040F0227FD020000713232000000000000CC".length());
-        System.out.println("77040F0152406DD7ACF06900000008200102CCCC".length()+"\t"+"77040F0227A9000000710013000000000000CCCC".length());
-        String strA="77040F0152406DD7ACF06900000008200102CCCC77040F011D406DD7ACF06902000008200102CCCC77040F015E3F6DD7ACF06901000008200102CCCC77040F019B446DD7ACF02900000008200102CCCC77040F01BF406DD7ACF00900000008200102CCCC77040F010D3F6DD7ACF0A900000008200102CCCC77040F01103F6DD7ACF0E900000008200102CCCC";
-        String strB="77040F0227A9000000710013000000000000CCCC77040F022719000000710013000000000000CCCC77040F0227A9010000710013000000000000CCCC77040F0227E9000000710013000000000000CCCC77040F0227D9000000710013000000000000CCCC77040F022739000000710013000000000000CCCC77040F022759000000710013000000000000CCCC77040F0227A9020000710013000000000000CCCC77040F022799000000710013000000000000CCCC77040F0227F9000000710013000000000000CCCC77040F0227A9030000710013000000000000CCCC";
+        System.out.println("77040F0152406DD7ACF06900000008200102CCCC".length() + "\t" + "77040F0227A9000000710013000000000000CCCC".length());
+        String strA = "77040F0152406DD7ACF06900000008200102CCCC77040F011D406DD7ACF06902000008200102CCCC77040F015E3F6DD7ACF06901000008200102CCCC77040F019B446DD7ACF02900000008200102CCCC77040F01BF406DD7ACF00900000008200102CCCC77040F010D3F6DD7ACF0A900000008200102CCCC77040F01103F6DD7ACF0E900000008200102CCCC";
+        String strB = "77040F0227A9000000710013000000000000CCCC77040F022719000000710013000000000000CCCC77040F0227A9010000710013000000000000CCCC77040F0227E9000000710013000000000000CCCC77040F0227D9000000710013000000000000CCCC77040F022739000000710013000000000000CCCC77040F022759000000710013000000000000CCCC77040F0227A9020000710013000000000000CCCC77040F022799000000710013000000000000CCCC77040F0227F9000000710013000000000000CCCC77040F0227A9030000710013000000000000CCCC";
         String[] array = strB.split("CCCC");
         logger.warn("strArray.length [{}]", array.length);
-        System.out.println("len="+strA.length());
-        System.out.println("len="+strB.length());
-        String[] arrA=strA.split("CCCC");
-        String[] arrB=strB.split("CCCC");
-        String[] arr=strs.split("CCCC");
-        System.out.println(arr[0].length()+"\t"+arr[0]);
-        System.out.println(arrA.length+"\t"+arrA[0]);
-        System.out.println(arrB.length+"\t"+arrB[0]);
+        System.out.println("len=" + strA.length());
+        System.out.println("len=" + strB.length());
+        String[] arrA = strA.split("CCCC");
+        String[] arrB = strB.split("CCCC");
+        String[] arr = strs.split("CCCC");
+        System.out.println(arr[0].length() + "\t" + arr[0]);
+        System.out.println(arrA.length + "\t" + arrA[0]);
+        System.out.println(arrB.length + "\t" + arrB[0]);
     }
 }

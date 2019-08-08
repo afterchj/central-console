@@ -36,7 +36,7 @@ public class WebSocket {
     public void onOpen(Session session) {
         this.session = session;
         copyOnWriteArraySet.add(this);
-        logger.warn("websocket有新的连接, 总数:" + copyOnWriteArraySet.size());
+//        logger.warn("websocket有新的连接, 总数:" + copyOnWriteArraySet.size());
 //        sendMessage(session.getId());
     }
 
@@ -64,7 +64,7 @@ public class WebSocket {
      */
     @OnMessage
     public void onMessage(String message) {
-        logger.warn("websocket收到客户端" + session.getId() + "发来的消息:" + message);
+//        logger.warn("websocket收到客户端" + session.getId() + "发来的消息:" + message);
     }
 
     /**
