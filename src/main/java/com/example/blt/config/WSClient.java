@@ -1,11 +1,10 @@
 package com.example.blt.config;
 
-import com.alibaba.fastjson.JSONObject;
-import com.example.blt.controller.MainController;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.net.URI;
 
 /**
@@ -33,8 +32,8 @@ public class WSClient extends WebSocketClient {
 //                MainController mainController = new MainController();
 //                if("sendSocket4".equals(jsonStr.get("method"))) {
 //                    mainController.sendSocket4(String.valueOf(jsonStr.get("host")), String.valueOf(jsonStr.get("command")));
-//                }else if("sendSocket5".equals(jsonStr.get("method"))){
-//                    mainController.sendSocket5(String.valueOf(jsonStr.get("host")), String.valueOf(jsonStr.get("command")));
+//                }else if("sendSceneCmd".equals(jsonStr.get("method"))){
+//                    mainController.sendSceneCmd(String.valueOf(jsonStr.get("host")), String.valueOf(jsonStr.get("command")));
 //                }
 //            }
 //        } catch (Exception e) {
