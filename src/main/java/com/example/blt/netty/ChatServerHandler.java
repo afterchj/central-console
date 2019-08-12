@@ -119,7 +119,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        ctx.channel().writeAndFlush("200") ;
+        ctx.channel().writeAndFlush("77050101CCCC") ;
         insertOrUpdateHost(ctx);
     }
 
