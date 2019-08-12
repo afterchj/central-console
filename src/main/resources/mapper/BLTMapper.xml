@@ -43,11 +43,11 @@
     </select>
 
     <select id="getHostInfo" resultType="map">
-        SELECT mname,d.ip,h.is_control flag FROM f_light_demo d INNER JOIN t_host_info h ON h.ip=d.ip WHERE d.other='intelligence' AND h.status=1 GROUP BY ip
+        SELECT mname,d.mesh_id,h.is_control flag FROM f_light_demo d INNER JOIN t_host_info h ON h.mesh_id=d.mesh_id WHERE d.other='cloud' AND h.status=1
     </select>
 
     <update id="saveHost" parameterType="ConsoleVo">
-         UPDATE t_host_info SET is_control=#{status} WHERE ip=#{host}
+         UPDATE t_host_info SET is_control=#{status} WHERE mesh_id=#{host}
     </update>
 
     <select id="getHosts" resultType="string">
