@@ -3,14 +3,17 @@ package com.example.blt;
 import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.netty.ClientMain;
+import com.example.blt.utils.SpringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.crypto.MacSpi;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author hongjian.chen
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class StrUtilTest {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     @Test
     public void test() {
@@ -45,9 +49,15 @@ public class StrUtilTest {
 
     @Test
     public void testUUID() {
-        String arg1="7705090188888888CCCC";
+        String arg1 = "7705090188888888CCCC";
         String meshId = arg1.substring(arg1.length() - 12, arg1.length() - 4);
-        System.out.println("meshId="+meshId);
+        System.out.println("meshId=" + meshId);
+        Map map = new ConcurrentHashMap();
+        map.put("ip", "127.0.0.1");
+        if (StringUtils.isNotBlank(meshId)) {
+            map.put("meshId", meshId);
+        }
+        sqlSessionTemplate.insert("console.saveUpdateHost", map);
         System.out.println(UUID.randomUUID().toString());
     }
 
