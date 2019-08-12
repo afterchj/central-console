@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.crypto.MacSpi;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -44,6 +45,9 @@ public class StrUtilTest {
 
     @Test
     public void testUUID() {
+        String arg1="7705090188888888CCCC";
+        String meshId = arg1.substring(arg1.length() - 12, arg1.length() - 4);
+        System.out.println("meshId="+meshId);
         System.out.println(UUID.randomUUID().toString());
     }
 

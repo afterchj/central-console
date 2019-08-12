@@ -47,30 +47,29 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         String temp = sqlSessionTemplate.selectOne("console.getHost");
         String master = StringUtils.isEmpty(temp) ? "192.168.10.21" : temp;
         List<String> hosts = null;
-        String cmd;
+        String cmd = arg1;
         String to;
+        int len = cmd.length();
         try {
             JSONObject jsonObject = JSON.parseObject(arg1);
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
         } catch (Exception e) {
-            if (arg1.indexOf("77020315") != -1) {
-                to = "all";
-                cmd = arg1.replace("02", "01");
+            if (arg1.indexOf("77050901") != -1) {
+                String meshId = arg1.substring(len - 12, len - 4);
+                insertOrUpdateHost(arg0, meshId);
+                to = "127.0.0.1";
             } else {
                 to = host;
-                cmd = arg1;
             }
             if (host.equals(master)) {
                 hosts = sqlSessionTemplate.selectList("console.getHosts");
                 to = "master";
-                cmd = arg1;
             }
         }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);
 //        }
-        int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len < 43) {
             logger.warn("ip[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
@@ -119,8 +118,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        ctx.channel().writeAndFlush("77050101CCCC") ;
-        insertOrUpdateHost(ctx);
+        ctx.channel().writeAndFlush("77050101CCCC");
+        insertOrUpdateHost(ctx, "");
     }
 
     //退出链接
@@ -133,16 +132,19 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         ctx.close().sync();
     }
 
-    private void insertOrUpdateHost(ChannelHandlerContext ctx) {
+    private void insertOrUpdateHost(ChannelHandlerContext ctx, String meshId) {
         Map map = new ConcurrentHashMap();
         Channel channel = ctx.channel();
         String addr = channel.remoteAddress().toString();
         map.put("ip", addr.substring(1, addr.indexOf(":")));
         map.put("status", channel.isActive());
+        if (StringUtils.isNotBlank(meshId)) {
+            map.put("meshId", meshId);
+        }
         try {
             ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
         } catch (NoTopicException e) {
-            sqlSessionTemplate.insert("console.insertHost", map);
+            sqlSessionTemplate.insert("console.saveUpdateHost", map);
         }
     }
 }
