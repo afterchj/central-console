@@ -139,8 +139,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         map.put("hostId", channel.id().toString());
         if (StringUtils.isNotBlank(meshId)) {
             map.put("meshId", meshId);
-        }else {
-            map.put("meshId", "00000000");
         }
         try {
             ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
