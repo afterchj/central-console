@@ -56,7 +56,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             to = jsonObject.getString("host");
         } catch (Exception e) {
             if (arg1.indexOf("77050901") != -1) {
-                String meshId = arg1.substring(len - 12, len - 4);
+                String meshId = "";
+                for(int i=0;i<16;i+=2) {
+                    meshId += String.valueOf(Integer.parseInt(arg1.substring(len - 20, len - 4).substring(i, i+2),16));
+                }
                 insertOrUpdateHost(arg0, meshId);
                 to = "127.0.0.1";
             } else {
@@ -66,6 +69,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 hosts = sqlSessionTemplate.selectList("console.getHosts");
                 to = "master";
             }
+        }
+        if (to.equals("gc")) {
+            hosts = sqlSessionTemplate.selectList("console.getHosts");
+            to = "master";
         }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);

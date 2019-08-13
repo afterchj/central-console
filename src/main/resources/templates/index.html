@@ -71,7 +71,7 @@
             $("#" + id).val("77010315323266");
             $("#" + id).text("开")
         }
-        $.get("/switch", {"command": $("#" + id).val(), "host": "all"}, function (result) {
+        $.get("/switch", {"command": $("#" + id).val(), "host": "gc"}, function (result) {
             console.log("result", result);
         })
     }
