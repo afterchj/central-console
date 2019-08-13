@@ -60,7 +60,7 @@
         })
     });
 
-    function sendCmd(id) {
+    function sendCmd(id,flag) {
         console.log("id", id);
         let status = $("#" + id).text();
         console.log("value", status);
@@ -71,7 +71,7 @@
             $("#" + id).val("77010315323266");
             $("#" + id).text("开")
         }
-        $.get("/switch", {"command": $("#" + id).val(), "host": "gc"}, function (result) {
+        $.get("/switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
             console.log("result", result);
         })
     }
@@ -81,7 +81,9 @@
 <p id="show"></p>
 <p>
     <label for="btn1">一键控制：</label>
-    <button id="btn1" value="77010315373766" onclick="sendCmd(this.id)">开</button>
+    <button id="btn1" value="77010315373766" onclick="sendCmd(this.id,'all')">开</button>
+    <label for="btn2">群控：</label>
+    <button id="btn2" value="77010315373766" onclick="sendCmd(this.id,'gc')">开</button>
     <label for="main">群控mesh_id：</label>
     <input id=main type="text" value="88888888">
 </p>
