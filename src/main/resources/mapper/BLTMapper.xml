@@ -27,6 +27,13 @@
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
 
+    <parameterMap id="hostMapper" type="map">
+        <parameter property="ip" mode="IN"/>
+        <parameter property="meshId" mode="IN"/>
+        <parameter property="hostId" mode="IN"/>
+        <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
+    </parameterMap>
+
     <delete id="deleteHost">
        delete from t_host_info where ip is null
     </delete>
@@ -51,10 +58,10 @@
     </update>
 
     <select id="getHosts" resultType="string">
-        SELECT ip FROM t_host_info WHERE is_control=1 AND status=1
+        SELECT host_id FROM t_host_info WHERE is_control=1 AND status=1
     </select>
     <select id="getHost" resultType="string">
-        SELECT ip FROM t_host_info WHERE is_master=1 LIMIT 1
+        SELECT host_id FROM t_host_info WHERE is_master=1 LIMIT 1
     </select>
     <select id="getVaddr" resultType="string">
         SELECT vaddr FROM t_light_info
@@ -79,9 +86,9 @@
         INSERT IGNORE INTO t_host_info(ip,log_date) VALUE (#{ip},now())
     </insert>
 
-    <insert id="saveUpdateHost" parameterType="map">
-        REPLACE INTO t_host_info(ip,mesh_id,log_date) VALUE (#{ip},#{meshId},now())
-    </insert>
+    <select id="saveUpdateHosts" parameterMap="hostMapper" resultType="map" statementType="CALLABLE">
+        CALL saveUpdateHost(?,?,?,?)
+    </select>
 
     <select id="selectIn" parameterType="map" resultType="int">
         SELECT COUNT(0) lumn FROM t_light_info WHERE host=#{ip} AND vaddr IN

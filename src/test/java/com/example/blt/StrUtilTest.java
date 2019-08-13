@@ -46,6 +46,7 @@ public class StrUtilTest {
 
     @Test
     public void testUUID() {
+        System.out.println(Integer.parseInt("D",16));
         String arg1 = "770509010200010904080306CCCC";
         int len = arg1.length();
         String meshId = "";

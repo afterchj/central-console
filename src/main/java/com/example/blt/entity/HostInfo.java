@@ -19,6 +19,8 @@ public class HostInfo implements Serializable {
     @Column(length = 32)
     private String ip;
     @Column(unique = true, length = 32)
+    private String hostId;
+    @Column(unique = true, length = 32)
     private String meshId;
     @ColumnDefault("1")
     private Boolean status;

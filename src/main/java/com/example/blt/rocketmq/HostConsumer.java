@@ -31,7 +31,7 @@ public class HostConsumer implements RocketMQListener<String> {
     public void onMessage(String message) {
         try {
             Map map = JSON.parseObject(message);
-            sqlSessionTemplate.selectOne("console.saveUpdateHost", map);
+            sqlSessionTemplate.selectOne("console.saveUpdateHosts", map);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
