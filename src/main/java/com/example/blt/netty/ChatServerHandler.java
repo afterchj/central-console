@@ -19,6 +19,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.List;
 import java.util.Map;
@@ -45,41 +46,46 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         String addr = channel.remoteAddress().toString();
         String host = addr.substring(1, addr.indexOf(":"));
         String temp = sqlSessionTemplate.selectOne("console.getHost");
-        String master = StringUtils.isEmpty(temp) ? "192.168.10.21" : temp;
+        String master = StringUtils.isEmpty(temp) ? "127.0.0.1" : temp;
         List<String> hosts = null;
         String cmd = arg1;
         String to;
-        int len = cmd.length();
         try {
             JSONObject jsonObject = JSON.parseObject(arg1);
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
         } catch (Exception e) {
             if (arg1.indexOf("77050901") != -1) {
-                String meshId = "";
-                for(int i=0;i<16;i+=2) {
-                    meshId += String.valueOf(Integer.parseInt(arg1.substring(len - 20, len - 4).substring(i, i+2),16));
+                String meshId = arg1.substring(arg1.length() - 20, arg1.length() - 4);
+                char[] chars = meshId.toCharArray();
+                StringBuffer buffer = new StringBuffer();
+                for (int i = 0; i < chars.length; i++) {
+                    if (i % 2 != 0) {
+                        buffer.append(chars[i]);
+                    }
                 }
-                insertOrUpdateHost(arg0, meshId);
+//                for(int i=0;i<16;i+=2) {
+//                    meshId += String.valueOf(Integer.parseInt(arg1.substring(len - 20, len - 4).substring(i, i+2),16));
+//                }
+                insertOrUpdateHost(arg0, buffer.toString());
                 to = "127.0.0.1";
             } else {
                 to = host;
             }
             if (host.equals(master)) {
-                hosts = sqlSessionTemplate.selectList("console.getHosts");
                 to = "master";
             }
         }
-        if (to.equals("gc")) {
+        if (to.equals("master")) {
             hosts = sqlSessionTemplate.selectList("console.getHosts");
-            to = "master";
         }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);
 //        }
+        int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len < 43) {
-            logger.warn("ip[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
+            logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
             ExecuteTask.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
@@ -125,6 +131,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
+        InetSocketAddress ipSocket = (InetSocketAddress)ctx.channel().remoteAddress();
+        InetSocketAddress local = (InetSocketAddress)ctx.channel().localAddress();
+        String clientIp = ipSocket.getAddress().getHostAddress();
+        String serverIp = local.getAddress().getHostAddress();
+        logger.warn("client ip[{}] server ip[{}]",clientIp,serverIp);
         ctx.channel().writeAndFlush("77050101CCCC");
         insertOrUpdateHost(ctx, "");
     }
