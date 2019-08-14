@@ -26,7 +26,7 @@
         $("#show").html("jquery文件加载成功！");
         $.getJSON("/getHost", function (data) {
             $.each(data, function (i, val) {
-                $("#hosts").append("<option value='" + val.mesh_id + "'>" + val.mname + "</option>");
+                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mname + "</option>");
             });
         });
         if (typeof (WebSocket) == "undefined") {
