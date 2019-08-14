@@ -19,6 +19,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.SocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,7 +54,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             to = jsonObject.getString("host");
         } catch (Exception e) {
             if (arg1.indexOf("77050901") != -1) {
-                cmd="000";
+                cmd = "000";
                 String meshId = arg1.substring(arg1.length() - 20, arg1.length() - 4);
                 char[] chars = meshId.toCharArray();
                 StringBuffer buffer = new StringBuffer();
@@ -80,17 +81,24 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
             ExecuteTask.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
-                String ip = ch.id().toString();
-                if (to.equals("all")) {
-                    ch.writeAndFlush(cmd);
-                } else if (to.equals("master")) {
-                    for (String guest : hosts) {
-                        if (ip.equals(guest)) {
+                SocketAddress address = ch.remoteAddress();
+                if (address != null) {
+                    String str = address.toString();
+                    String ip = str.substring(1, str.indexOf(":"));
+                    if (!ip.equals("127.0.0.1")) {
+                        String id = ch.id().toString();
+                        if (to.equals("all")) {
+                            ch.writeAndFlush(cmd);
+                        } else if (to.equals("master")) {
+                            for (String guest : hosts) {
+                                if (id.equals(guest)) {
+                                    ch.writeAndFlush(cmd);
+                                }
+                            }
+                        } else if (to.equals(id)) {
                             ch.writeAndFlush(cmd);
                         }
                     }
-                } else if (to.equals(ip)) {
-                    ch.writeAndFlush(cmd);
                 }
             }
         }
