@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.service.CommandService;
-import com.example.blt.utils.ConsoleUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
+@EnableScheduling
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//随机生成一个端口号
 public class CentralControllerApplicationTests {
 
@@ -42,6 +43,9 @@ public class CentralControllerApplicationTests {
 //
 //    @Autowired
 //    private LightService lightService;
+
+//    @Autowired
+//    private DynamicScheduledTask dynamicScheduledTask;
 
     @Test
     public void testRedis() {
@@ -135,4 +139,5 @@ public class CentralControllerApplicationTests {
         Integer result = (Integer) redisTemplate.opsForValue().get(ConsoleKeys.LTIMES.getValue());
         logger.warn("result [{}]", result);
     }
+
 }
