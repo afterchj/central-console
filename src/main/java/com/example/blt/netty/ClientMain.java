@@ -30,7 +30,7 @@ public class ClientMain {
 
     public static void main(String[] args) throws IOException {
 //        run(AddrUtil.getIp(true), 8001);
-        run("122.112.156.232", 8001);
+        run("iotsztp.cn", 8001);
     }
 
     public static void run(String host, int port) throws IOException {
