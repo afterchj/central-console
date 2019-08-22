@@ -1,6 +1,9 @@
 package com.example.blt;
 
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.dd.Topics;
+import com.example.blt.exception.NoTopicException;
+import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
@@ -175,18 +178,22 @@ public class MainTest {
 
     @Test
     public void testRocketMQ() {
-        String c0 = "77010315323266";
-        String c1 = "7701041601373766";
-        String c2 = "7701021906";
-        ExecuteTask.parseLocalCmd(c0, "127.0.0.1");
-        ExecuteTask.parseLocalCmd(c1, "127.0.0.1");
-        ExecuteTask.parseLocalCmd(c2, "127.0.0.1");
-//        for (int i = 0; i < 10; i++) {
-//            Map map = new HashMap();
-//            map.put("topic", "topic_test");
-//            map.put("message", "Just is test messages " + i);
-//            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(),"Just is test messages " + i);
-//        }
+//        String c0 = "77010315323266";
+//        String c1 = "7701041601373766";
+//        String c2 = "7701021906";
+//        ExecuteTask.parseLocalCmd(c0, "127.0.0.1");
+//        ExecuteTask.parseLocalCmd(c1, "127.0.0.1");
+//        ExecuteTask.parseLocalCmd(c2, "127.0.0.1");
+        for (int i = 0; i < 10; i++) {
+            Map map = new HashMap();
+            map.put("topic", "topic_test");
+            map.put("message", "Just is test messages " + i);
+            try {
+                ProducerService.pushMsg("demo_topic","Just is test messages " + i);
+            } catch (NoTopicException e) {
+                logger.error(e.getMessage());
+            }
+        }
     }
 
     @Test
