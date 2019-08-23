@@ -50,11 +50,13 @@ public class HomeController {
         modelMap.put("hosts", hosts);
         return "index";
     }
-//
-//    @RequestMapping("/newIndex")
-//    public String newIndex() {
-//        return "newMonitor/index";
-//    }
+
+    @RequestMapping("/myIndex")
+    public String myIndex(ModelMap modelMap) {
+        List hosts = sqlSessionTemplate.selectList("console.getHostInfo");
+        modelMap.put("hosts", hosts);
+        return "myIndex";
+    }
 
 
     @RequestMapping("/welcome")

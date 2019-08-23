@@ -23,7 +23,7 @@ public class StrUtilTest {
 
     @Test
     public void test() {
-        String space = "77 04 0A 02 2A 01 00 00 00 C0 00 37 37 CC CC".replace(" ", "");
+        String space = "77 01 12 65 FF FF FF FF 2A 05 00 00 00 C0 00 37 37 00 00 00 00 CC CC ".replace(" ", "");
         logger.warn("str=" + space + ",len=" + space.length());
         //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
         String c1 = "77 04 10 02 20 9D 01 00 00 C1 32 32 00 00 00 00 00 00 02 1E".replace(" ", "");

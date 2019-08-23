@@ -8,13 +8,26 @@
     <script th:src="@{/static/jquery.js}" type="text/javascript"></script>
 </head>
 <style type="text/css">
-    .host,.master {
+    .host {
         height: 20px;
         width: 20px
     }
 
-    #host td {
-        height: 50px;
+    .main td {
+        /*height: 30px;*/
+        width: 80px;
+        border: #CCCCCC 1px solid;
+    }
+    .slave{
+        border: 0;
+    }
+    .box{
+        margin: 10px 10px;
+        text-align: center;
+    }
+    .slave td {
+        /*height: 30px;*/
+        text-align: center;
         border: #CCCCCC 1px solid;
     }
 </style>
@@ -27,7 +40,7 @@
         $.getJSON("/getHost", function (data) {
             $.each(data, function (i, val) {
                 $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
-                $("#master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+                $(".master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
             });
         });
         if (typeof (WebSocket) == "undefined") {
@@ -105,39 +118,39 @@
     <!--    </select>-->
 </p>
 <div style="width: 30%;margin: 20px 20px">
-    <table id="host" style="text-align: center;border-collapse: collapse;width: 60%;height: 100px">
+    <table class="main" style="text-align: center;border-collapse: collapse;width: 60%;">
         <th>
             <tr>
-                <td>id</td>
-                <td>meshId</td>
-                <td>controller</td>
-<!--                <td>是否被控</td>-->
-                <td>test</td>
+                <td>楼层</td>
+<!--                <td>meshId</td>-->
+                <td>主控网络</td>
+                <td>meshId/是否被控</td>
             </tr>
         </th>
         <tbody>
         <tr th:each="host:${hosts}">
             <td th:text="${host.mname}"></td>
-            <td th:text="${host.mesh_id}"></td>
-            <td th:switch="${host.is_master}">
-                <span th:case="true">
-                    <input class="master" type="checkbox" checked th:value="${host.mesh_id}">
-                </span>
-                <span th:case="*">
-                    <input class="master" type="checkbox" th:value="${host.mesh_id}">
-                </span>
+<!--            <td th:text="${host.mesh_id}"></td>-->
+            <td>
+                <select class="master"></select>
             </td>
             <td>
-                <button id="btn3" value="77010315373766" onclick="sendCmd(this.id,'master')">开</button>
+               <div class="box">
+                   <table class="slave">
+                       <tr th:each="slave:${hosts}">
+                           <td th:text="${slave.mesh_id}"></td>
+                           <td th:switch="${slave.is_control}">
+                            <span th:case="true">
+                                <input class="host" type="checkbox" checked th:value="${slave.mesh_id}">
+                             </span>
+                               <span th:case="*">
+                                 <input class="host" type="checkbox" th:value="${slave.mesh_id}">
+                            </span>
+                           </td>
+                       </tr>
+                   </table>
+               </div>
             </td>
-<!--            <td th:switch="${host.is_control}">-->
-<!--                <span th:case="true">-->
-<!--                    <input class="host" type="checkbox" checked th:value="${host.mesh_id}">-->
-<!--                </span>-->
-<!--                <span th:case="*">-->
-<!--                    <input class="host" type="checkbox" th:value="${host.mesh_id}">-->
-<!--                </span>-->
-<!--            </td>-->
         </tr>
         </tbody>
     </table>

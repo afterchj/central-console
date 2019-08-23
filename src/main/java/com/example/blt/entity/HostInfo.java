@@ -26,7 +26,7 @@ public class HostInfo implements Serializable {
     private Boolean status;
     @ColumnDefault("0")
     private Boolean isMaster;
-    @ColumnDefault("0")
+    @ColumnDefault("1")
     private Boolean isControl;
     private String other;
     private Date log_date = new Date();

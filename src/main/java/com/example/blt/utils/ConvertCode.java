@@ -192,7 +192,7 @@ public class ConvertCode {
         String hex = "w\u0004\u000F\u0001ﾩ\u0010dￗﾬ\uFFF0}   DO\u0003\nￌￌ";
         String productNo = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC".replace(" ","");
         System.out.println(receiveHexToString(hex.getBytes()));
-        System.out.println(hexString2String("3737303130333135333233323636"));
+        System.out.println(hexString2String("373730353031303343434343"));
     }
 
 }
