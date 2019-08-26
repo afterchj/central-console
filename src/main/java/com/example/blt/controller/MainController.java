@@ -34,6 +34,10 @@ public class MainController {
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
+        String host=consoleVo.getHost();
+        if ("master".equals(host)){
+
+        }
         String info = JSON.toJSONString(consoleVo);
         ControlTask task = new ControlTask(info);
         String result = ExecuteTask.sendCmd(task);
