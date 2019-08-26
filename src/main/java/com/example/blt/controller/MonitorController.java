@@ -451,7 +451,7 @@ public class MonitorController {
         Map<String, Object> map = new HashMap<>();
         List<LightDemo> lightState = new ArrayList<>();
 //        map.put("lightState", lightState);
-        CommandLight commandInfo = monitor4Dao.getCommandInfo("192.168.10.253");
+        CommandLight commandInfo = monitor4Dao.getCommandInfo2("192.168.10.11");
         if (commandInfo != null) {
             String ctype = commandInfo.getCtype();
             String status = null;
