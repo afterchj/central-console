@@ -20,6 +20,7 @@ public class ProducerService {
     public static void pushMsg(String... msg) throws NoTopicException {
         String addr= PropertiesUtil.getValue("rocketmq.name-server");
         DefaultMQProducer producer = new DefaultMQProducer("blt_local_main_group");
+        producer.setSendMsgTimeout(300);
         producer.setInstanceName(UUID.randomUUID().toString());
         producer.setNamesrvAddr(addr);
         producer.setVipChannelEnabled(false);
