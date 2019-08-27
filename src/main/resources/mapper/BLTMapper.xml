@@ -35,9 +35,9 @@
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
 
-    <delete id="deleteHost">
-       delete from t_host_info where ip is null
-    </delete>
+    <select id="refreshHost" statementType="CALLABLE">
+        CALL refreshHost()
+    </select>
     <select id="saveLight" parameterMap="lightMapper" resultType="map" statementType="CALLABLE">
         CALL save_light(?,?,?,?,?,?,?,?,?,?)
     </select>
