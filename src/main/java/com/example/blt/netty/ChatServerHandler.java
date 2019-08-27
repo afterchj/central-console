@@ -63,7 +63,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         buffer.append(chars[i]);
                     }
                 }
-                insertOrUpdateHost(arg0, buffer.toString());
+                insertOrUpdateHost(channel, buffer.toString());
             }
             if (host.equals(master)) {
                 to = "master";
@@ -125,13 +125,16 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        ctx.channel().writeAndFlush("77050101CCCC");
-        insertOrUpdateHost(ctx, "");
+        Channel channel = ctx.channel();
+        channel.writeAndFlush("77050101CCCC");
+        insertOrUpdateHost(channel, "");
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+        Channel channel = ctx.channel();
+        insertOrUpdateHost(channel, "");
     }
 
     @Override
@@ -139,12 +142,13 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         ctx.close().sync();
     }
 
-    private void insertOrUpdateHost(ChannelHandlerContext ctx, String meshId) {
+    private void insertOrUpdateHost(Channel channel, String meshId) {
+        logger.warn("hostId [{}] status [{}]",channel.id(),channel.isActive());
         Map map = new ConcurrentHashMap();
-        Channel channel = ctx.channel();
         String addr = channel.remoteAddress().toString();
         map.put("ip", addr.substring(1, addr.indexOf(":")));
         map.put("hostId", channel.id().toString());
+        map.put("status",channel.isActive());
         if (StringUtils.isNotBlank(meshId)) {
             map.put("meshId", meshId);
         }
