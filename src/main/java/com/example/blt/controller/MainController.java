@@ -34,10 +34,6 @@ public class MainController {
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
-        String host=consoleVo.getHost();
-        if ("master".equals(host)){
-
-        }
         String info = JSON.toJSONString(consoleVo);
         ControlTask task = new ControlTask(info);
         String result = ExecuteTask.sendCmd(task);
@@ -147,51 +143,6 @@ public class MainController {
         map.put("success", success);
         return map;
     }
-
-//    @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, String> sendSocket4(String host, String command) {
-//        Map<String, String> map = new HashMap<>();
-//        String success = "success";
-//        String host1 = "192.168.1.191";//茶室
-//        String host2 = "192.168.1.192";//活动室
-//        String host3 = "192.168.1.193";//客餐厅
-//        String host4 = "192.168.1.195";//洽谈室
-//        String host5 = "192.168.1.194";//办公大厅
-//        if (command.equalsIgnoreCase("ON")) {
-//            //开
-//            command = "77010315373766";
-//        } else if (command.equalsIgnoreCase("OFF")) {
-//            //关
-//            command = "77010315323266";
-//        }
-//        if (host.equals("all")) {
-//            //向所有地址发信息
-//            String cmd1 = host1 + ":" + command;
-//            String cmd2 = host2 + ":" + command;
-//            String cmd3 = host3 + ":" + command;
-//            String cmd4 = host4 + ":" + command;
-//            String cmd5 = host5 + ":" + command;
-//            String code1 = SocketUtil.sendCmd2(host1, cmd1);
-//            String code2 = SocketUtil.sendCmd2(host2, cmd2);
-//            String code3 = SocketUtil.sendCmd2(host3, cmd3);
-//            String code4 = SocketUtil.sendCmd2(host4, cmd4);
-//            String code5 = SocketUtil.sendCmd2(host5, cmd5);
-//            if ("1".equals(code1) || "1".equals(code2) || "1".equals(code3) || "1".equals(code4) || "1".equals
-// (code5)) {
-//                //            失败
-//                success = "error";
-//            }
-//        } else {
-//            String cmd = host + ":" + command;
-//            String code = SocketUtil.sendCmd2(host, cmd);
-//            if ("1".equals(code)) {
-//                success = "error";
-//            }
-//        }
-//        map.put("success", success);
-//        return map;
-//    }
 
     @RequestMapping(value = "/sendSocket5", method = RequestMethod.POST)
     @ResponseBody

@@ -132,6 +132,13 @@ public class HomeController {
     }
 
     @ResponseBody
+    @RequestMapping("/refreshHosts")
+    public String refreshHosts() {
+        sqlSessionTemplate.selectOne("console.refreshHost");
+        return "ok";
+    }
+
+    @ResponseBody
     @RequestMapping("/getHost")
     public List getHosts() {
         List hosts = sqlSessionTemplate.selectList("console.getHostInfo");

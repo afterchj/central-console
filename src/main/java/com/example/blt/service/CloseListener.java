@@ -23,7 +23,7 @@ public class CloseListener implements ApplicationListener<ContextClosedEvent> {
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
-        logger.warn("nettyService stopping...");
         sqlSessionTemplate.selectOne("console.refreshHost");
+        logger.warn("nettyService stopping...");
     }
 }
