@@ -13,7 +13,7 @@ $(function () {
         // light();
         light2();
         console.log('light2')
-    }, 10000)
+    }, 100000)
 })
 
 function light2() {
@@ -131,10 +131,10 @@ function light() {
         dataType: "json",
         success: function (data) {
             var lightState = data.lightState;
-            var placeLNumList = data.placeLNumList;
-            var centerLNumList = data.centerLNumList;
+            // var placeLNumList = data.placeLNumList;
+            // var centerLNumList = data.centerLNumList;
             // if (centerLNumList.length > 0) {
-                $('.switch-part.total .page>span:first-child').text(centerLNumList);
+            //     $('.switch-part.total .page>span:first-child').text(centerLNumList);
             // } else {
             //     $('.switch-part.total .page>span:first-child').text('0');
             // }
@@ -332,12 +332,12 @@ function light() {
             }
 
 
-            $('.switch-part').not('.scene,.total').each(function () {
-                var that = $(this);
-                var groupName = parseInt($(this).find('.groupName').text());
-                $.each(placeLNumList, function (i, val) {
-                    var place = val.place;
-                    var placeLNum = val.placeLNum;
+            // $('.switch-part').not('.scene,.total').each(function () {
+            //     var that = $(this);
+            //     var groupName = parseInt($(this).find('.groupName').text());
+            //     $.each(placeLNumList, function (i, val) {
+            //         var place = val.place;
+            //         var placeLNum = val.placeLNum;
                     // if (place == groupName){
                     //     switch (place){
                     //         case 1:
@@ -355,11 +355,11 @@ function light() {
                     //     }
                     // }
 
-                    if (place == groupName) {
-                        that.find('.page>span:first-child').text(placeLNum);
-                    }
-                })
-            })
+                    // if (place == groupName) {
+                    //     that.find('.page>span:first-child').text(placeLNum);
+                    // }
+                // })
+            // })
             //     // var lightGroupPart = lightGroup[parseInt(groupName) - 1];
             //     // if (isAllEqual(lightGroupPart) && lightGroupPart.indexOf(null) != -1) {
             //     //     // $(this).find('img').attr('src', '/static/img/2.png')
@@ -420,7 +420,7 @@ $('.on-off>div').click(function () {
     } else if ($(this).attr("alt") == "total-off") {
         var command = '77010315323266';
     }
-    var host = '192.168.10.252';
+    var host = '192.168.10.11';
     $.post("/sendSocket6", {
         "command": command,
         "host": host
@@ -429,7 +429,7 @@ $('.on-off>div').click(function () {
 })
 $("select").change(function () {
     var command = $.trim($(this).val());
-    var host = '192.168.10.252';
+    var host = '192.168.10.11';
     $.post("/sendSocket5", {
         "command": command,
         "host": host

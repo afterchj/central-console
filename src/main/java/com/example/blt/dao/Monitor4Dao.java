@@ -19,6 +19,10 @@ public interface Monitor4Dao {
     @Select("select id,cid,ctype,host,x,y from t_command_info where ctype is not null and (SUBSTRING_INDEX(SUBSTRING_INDEX(host,'.',-2),'.',1)='10' or host='all')  order by id desc limit 1")
     CommandLight getCommandInfo(@Param("host") String host);
 
+    @Select("select id,cid,ctype,host,x,y from t_command_info where ctype is not null and (host=#{host} or " +
+            "host='all')  order by id desc limit 1")
+    CommandLight getCommandInfo2(@Param("host") String host);
+
     @Select("select count(*) as centerLNum,mname from f_light_demo d,t_light_info i where d.lmac=i.lmac and  (i.y is not null)and d.other='intelligence' Group by substring_index(mname,'楼',1)+0")
     List<Map<String,Object>> getIntelligenceCenterLNum();//每一层正常状态的灯个数
 
