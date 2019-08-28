@@ -3,7 +3,7 @@ package com.example.blt.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.vo.ConsoleVo;
-import com.example.blt.service.BLTservice;
+import com.example.blt.service.BLTService;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
@@ -31,7 +31,7 @@ public class MainController {
     @Resource
     private GuavaCacheManager guavaCacheManager;
     @Resource
-    private BLTservice blTservice;
+    private BLTService blTservice;
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {

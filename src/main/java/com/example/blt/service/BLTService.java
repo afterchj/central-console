@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Service
-public class BLTservice {
+public class BLTService {
 
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;

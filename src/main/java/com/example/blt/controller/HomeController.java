@@ -3,7 +3,7 @@ package com.example.blt.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
-import com.example.blt.service.BLTservice;
+import com.example.blt.service.BLTService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -32,7 +32,7 @@ public class HomeController {
     @Resource
     private RedisTemplate redisTemplate;
     @Resource
-    private BLTservice blTservice;
+    private BLTService blTservice;
 
     @RequestMapping("/")
     public String index() {
