@@ -3,7 +3,7 @@ package com.example.blt.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
-import org.mybatis.spring.SqlSessionTemplate;
+import com.example.blt.service.BLTservice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -28,16 +28,11 @@ import java.util.*;
 public class HomeController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-//    @Autowired
-//    private MemCachedClient memCachedClient;
-
-//    @Resource
-//    private WebSocket webSocket;
 
     @Resource
     private RedisTemplate redisTemplate;
     @Resource
-    private SqlSessionTemplate sqlSessionTemplate;
+    private BLTservice blTservice;
 
     @RequestMapping("/")
     public String index() {
@@ -46,14 +41,14 @@ public class HomeController {
 
     @RequestMapping("/index")
     public String index(ModelMap modelMap) {
-        List hosts = sqlSessionTemplate.selectList("console.getHostInfo");
+        List hosts = blTservice.getHostInfo();
         modelMap.put("hosts", hosts);
         return "index";
     }
 
     @RequestMapping("/myIndex")
     public String myIndex(ModelMap modelMap) {
-        List hosts = sqlSessionTemplate.selectList("console.getHostInfo");
+        List hosts = blTservice.getHostInfo();
         modelMap.put("hosts", hosts);
         return "myIndex";
     }
@@ -134,21 +129,21 @@ public class HomeController {
     @ResponseBody
     @RequestMapping("/refreshHosts")
     public String refreshHosts() {
-        sqlSessionTemplate.selectOne("console.refreshHost");
+        blTservice.refreshHost();
         return "ok";
     }
 
     @ResponseBody
     @RequestMapping("/getHost")
     public List getHosts() {
-        List hosts = sqlSessionTemplate.selectList("console.getHostInfo");
+        List hosts = blTservice.getHostInfo();
         return hosts;
     }
 
     @ResponseBody
     @RequestMapping(value = "/save")
     public String saveHost(ConsoleVo consoleVo) {
-        sqlSessionTemplate.update("console.saveHost", consoleVo);
+        blTservice.saveHost(consoleVo);
         return "ok";
     }
 }

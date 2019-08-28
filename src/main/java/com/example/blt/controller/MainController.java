@@ -7,7 +7,6 @@ import com.example.blt.service.BLTservice;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
-import com.example.blt.utils.SocketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -26,14 +25,13 @@ import java.util.Map;
 
 @RestController
 public class MainController {
-    @Resource
-    private GuavaCacheManager guavaCacheManager;
-    //    @Resource
-//    private SqlSessionTemplate sqlSessionTemplate;
-    @Resource
-    private BLTservice blTservice;
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
+
+    @Resource
+    private GuavaCacheManager guavaCacheManager;
+    @Resource
+    private BLTservice blTservice;
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {

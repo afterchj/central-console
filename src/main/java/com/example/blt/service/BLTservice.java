@@ -1,5 +1,6 @@
 package com.example.blt.service;
 
+import com.example.blt.entity.vo.ConsoleVo;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,21 @@ public class BLTservice {
     public String getHostId(String host) {
         return sqlSessionTemplate.selectOne("console.getHostId", host);
     }
+
     public List<String> getHosts() {
-        return  sqlSessionTemplate.selectList("console.getHosts");
+        return sqlSessionTemplate.selectList("console.getHosts");
+    }
+
+    public List getHostInfo() {
+        return sqlSessionTemplate.selectList("console.getHostInfo");
+    }
+
+    public void refreshHost() {
+        sqlSessionTemplate.selectOne("console.refreshHost");
+    }
+
+    public void saveHost(ConsoleVo consoleVo) {
+        sqlSessionTemplate.update("console.saveHost", consoleVo);
     }
 
 }
