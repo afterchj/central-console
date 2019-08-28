@@ -3,11 +3,11 @@ package com.example.blt.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.vo.ConsoleVo;
+import com.example.blt.service.BLTservice;
 import com.example.blt.service.CacheableService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SocketUtil;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -28,8 +28,11 @@ import java.util.Map;
 public class MainController {
     @Resource
     private GuavaCacheManager guavaCacheManager;
+    //    @Resource
+//    private SqlSessionTemplate sqlSessionTemplate;
     @Resource
-    private SqlSessionTemplate sqlSessionTemplate;
+    private BLTservice blTservice;
+
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @RequestMapping("/switch")
@@ -42,7 +45,7 @@ public class MainController {
 
     @RequestMapping("/test")
     public String ping(ConsoleVo consoleVo) {
-        List<String> ips = sqlSessionTemplate.selectList("console.getHosts");
+        List<String> ips = blTservice.getHosts();
         String host = consoleVo.getHost();
         String info = JSON.toJSONString(consoleVo);
         ControlTask task = new ControlTask(info);
@@ -61,6 +64,7 @@ public class MainController {
     @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendSocket4(String host, String command) {
+        host = blTservice.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String result;
         if (command.equalsIgnoreCase("ON")) {
@@ -78,75 +82,10 @@ public class MainController {
         return map;
     }
 
-    @RequestMapping(value = "/sendSocket", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> sendSocket(String host, String command) {
-        Map<String, String> map = new HashMap<>();
-        String success = "success";
-        if ("开".equals(command)) {
-            command = "1";
-        } else if ("关".equals(command)) {
-            command = "2";
-        }
-        String cmd = host + ":" + command;
-        logger.warn("cmd=" + command);
-        String code = SocketUtil.sendCmd2(host, cmd);
-        if ("1".equals(code)) {
-//            失败
-            success = "error";
-        }
-        map.put("success", success);
-        return map;
-    }
-
-    @RequestMapping(value = "/sendSocket2", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> sendSocket2(String host1, String host2, String command) {
-        Map<String, String> map = new HashMap<>();
-        String success1 = "success";
-        String success2 = "success";
-        if ("开".equals(command)) {
-            command = "1";
-        } else if ("关".equals(command)) {
-            command = "2";
-        }
-        logger.warn("cmd=" + command);
-        String cmd1 = host1 + ":" + command;
-        String cmd2 = host2 + ":" + command;
-        String code1 = SocketUtil.sendCmd2(host1, cmd1);
-        String code2 = SocketUtil.sendCmd2(host2, cmd2);
-        if ("1".equals(code1)) {
-//            失败
-            success1 = "error";
-        }
-        if ("1".equals(code2)) {
-//            失败
-            success2 = "error";
-        }
-        map.put("success1", success1);
-        map.put("success2", success2);
-        return map;
-    }
-
-    @RequestMapping(value = "/sendSocket3", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> sendSocket3(String host, String command) {
-        Map<String, String> map = new HashMap<>();
-        String success = "success";
-        String cmd = host + ":" + command;
-        logger.warn("cmd=" + command);
-        String code = SocketUtil.sendCmd2(host, cmd);
-        if ("1".equals(code)) {
-//            失败
-            success = "error";
-        }
-        map.put("success", success);
-        return map;
-    }
-
     @RequestMapping(value = "/sendSocket5", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendSocket5(String host, String command) {
+        host = blTservice.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
         if (command.equals("场景一")) {
@@ -189,6 +128,7 @@ public class MainController {
     @RequestMapping(value = "/sendSocket6", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendSocket6(String host, String command) {
+        host = blTservice.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
         String cmd1 = host + ":" + command;
@@ -209,6 +149,7 @@ public class MainController {
     @RequestMapping(value = "/sendSocket7", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendSocket7(@RequestParam("commands") List<String> commands, String host) {
+        host = blTservice.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
         for (int i = 0; i < commands.size(); i++) {
