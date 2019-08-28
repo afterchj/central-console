@@ -1,7 +1,5 @@
 package com.example.blt;
 
-import com.example.blt.netty.ServerMain;
-import com.example.blt.socket.NettyServer;
 import com.example.blt.utils.FrameSpringBeanUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,8 +17,6 @@ public class CentralConsoleApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CentralConsoleApplication.class, args);
-//        new NettyServer().start(8000);
-        new ServerMain().run(8001);
     }
 
     /**

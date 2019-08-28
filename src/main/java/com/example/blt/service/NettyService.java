@@ -6,6 +6,7 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.exception.NoTopicException;
 import com.example.blt.netty.ClientMain;
+import com.example.blt.netty.ServerMain;
 import com.example.blt.utils.ConsoleUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -126,6 +127,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        new ServerMain().run(8001);
         sqlSessionTemplate.delete("console.deleteHost");
         logger.warn("nettyService starting...");
 //        ExecuteTask.pingStatus(true, 3);
