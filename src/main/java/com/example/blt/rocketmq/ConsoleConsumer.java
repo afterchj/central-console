@@ -33,7 +33,7 @@ public class ConsoleConsumer implements RocketMQListener<String> {
         try {
             Map map = JSON.parseObject(message);
             sqlSessionTemplate.selectOne("console.saveConsole", map);
-            WebSocket.sendMessage(message);
+            WebSocket.sendMessage(map);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

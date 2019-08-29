@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author hongjian.chen
@@ -46,7 +47,7 @@ public class StringBuildUtilsTest {
 
     @Test
     public void testUUID() {
-        System.out.println(Integer.parseInt("D",16));
+        System.out.println(Integer.parseInt("D", 16));
         String arg1 = "770509010200010904080306CCCC";
         int len = arg1.length();
         String meshId = "";
@@ -162,5 +163,14 @@ public class StringBuildUtilsTest {
         System.out.println(arr[0].length() + "\t" + arr[0]);
         System.out.println(arrA.length + "\t" + arrA[0]);
         System.out.println(arrB.length + "\t" + arrB[0]);
+    }
+
+    @Test
+    public void testMap() {
+        Map map = new ConcurrentHashMap();
+        map.put("host", "1270.0.01");
+        map.put("status", 0);
+        System.out.println(map.containsKey("ctype"));
+
     }
 }

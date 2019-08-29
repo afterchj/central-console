@@ -183,14 +183,13 @@ public class StringBuildUtils {
                 }
                 break;
         }
-        String info = JSON.toJSONString(map);
+        if (!map.containsKey("ctype")) return;
         try {
+            String info = JSON.toJSONString(map);
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
         } catch (Exception e) {
-            if (map.containsKey("ctype")) {
-                sqlSessionTemplate.selectOne("console.saveConsole", map);
-                WebSocket.sendMessage(info);
-            }
+            sqlSessionTemplate.selectOne("console.saveConsole", map);
+            WebSocket.sendMessage(map);
         }
     }
 

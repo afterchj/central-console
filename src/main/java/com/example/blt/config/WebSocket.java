@@ -1,11 +1,13 @@
 package com.example.blt.config;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -81,7 +83,9 @@ public class WebSocket {
      * @Parameters：
      * @Return：
      */
-    public static void sendMessage(String message) {
+    public static void sendMessage(Map map) {
+        if (!map.containsKey("ctype")) return;
+        String message = JSON.toJSONString(map);
         //遍历客户端
         for (Session session : copyOnWriteArraySet) {
 //             logger.warn("websocket广播消息：" + message);
