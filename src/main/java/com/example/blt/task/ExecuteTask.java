@@ -93,8 +93,10 @@ public class ExecuteTask {
             try {
                 ProducerService.pushMsg(Topics.LOCAL_TOPIC.getTopic(), info);
             } catch (Exception e) {
-                sqlSessionTemplate.selectOne("console.saveConsole", map);
-                WebSocket.sendMessage(info);
+                if(map.containsKey("ctype")){
+                    sqlSessionTemplate.selectOne("console.saveConsole", map);
+                    WebSocket.sendMessage(info);
+                }
             }
         });
     }

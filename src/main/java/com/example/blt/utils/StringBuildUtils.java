@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -19,9 +18,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 /**
  * Created by hongjian.chen on 2019/6/14.
  */
-public class StrUtil {
+public class StringBuildUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(StringBuildUtils.class);
     private static Set<String> ipSet = new CopyOnWriteArraySet<>();
     private static Set<String> lmacSet = new CopyOnWriteArraySet<>();
     private static Set<String> vaddrSet = new CopyOnWriteArraySet<>();
@@ -35,7 +34,6 @@ public class StrUtil {
             String str1 = "77040F0227";
             map.put("host", ip);
             map.put("status", 1);
-//            map.put("other", str);
             if (str.indexOf(str1) != -1) {
                 ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                 int index = str1.length();
@@ -55,7 +53,7 @@ public class StrUtil {
                 map.put("y", y);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-                } catch (NoTopicException e) {
+                } catch (Exception e) {
                     sqlSessionTemplate.selectOne("console.saveLight", map);
                 }
             } else if (str.indexOf("77040F01") != -1) {
@@ -75,7 +73,7 @@ public class StrUtil {
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-                } catch (NoTopicException e) {
+                } catch (Exception e) {
                     sqlSessionTemplate.selectOne("console.saveLight", map);
                 }
             } else {
@@ -188,11 +186,12 @@ public class StrUtil {
         String info = JSON.toJSONString(map);
         try {
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
-        } catch (NoTopicException e) {
-            sqlSessionTemplate.selectOne("console.saveConsole", map);
-            WebSocket.sendMessage(info);
+        } catch (Exception e) {
+            if (map.containsKey("ctype")) {
+                sqlSessionTemplate.selectOne("console.saveConsole", map);
+                WebSocket.sendMessage(info);
+            }
         }
-//        logger.warn("result=" + JSON.toJSONString(map));
     }
 
     public static void formatStr(String str, String ip) {
@@ -219,13 +218,8 @@ public class StrUtil {
         }
         try {
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
-        } catch (NoTopicException e) {
+        } catch (Exception e) {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.warn("result=" + map.get("result"));
         }
     }
-
-//    public static void main(String[] args) {
-//        tempFormat("77041002216501000052456365D7ACF0000200","");
-//    }
 }

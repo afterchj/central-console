@@ -104,7 +104,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         }
         if (len >= 22) {
             if (arg1.indexOf("CCCC") != -1) {
-//                StrUtil.buildLightInfo(host, arg1);
+//                StringBuildUtils.buildLightInfo(host, arg1);
                 ExecuteTask.pingInfo(host, arg1);
             }
         }
@@ -155,7 +155,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         }
         try {
             ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
-        } catch (NoTopicException e) {
+        } catch (Exception e) {
             sqlSessionTemplate.insert("console.saveUpdateHosts", map);
         }
     }

@@ -98,7 +98,7 @@ public class MainTest {
 //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
 //        String str = "77040F01A91064D7ACF07D000000444F030ACCCC";
 //        String str = "77040F0227E9010000713232000000000000CC";
-//        StrUtil.buildLightInfo(str,"127.0.0.1");
+//        StringBuildUtils.buildLightInfo(str,"127.0.0.1");
 //        ExecuteTask.pingInfo("127.0.0.1", str);
         System.out.println(hosts + "\t" + temp);
     }
@@ -190,7 +190,7 @@ public class MainTest {
             map.put("message", "Just is test messages " + i);
             try {
                 ProducerService.pushMsg("demo_topic","Just is test messages " + i);
-            } catch (NoTopicException e) {
+            } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }

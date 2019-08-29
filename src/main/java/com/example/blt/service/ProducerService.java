@@ -20,7 +20,7 @@ public class ProducerService {
     public static void pushMsg(String... msg) throws NoTopicException {
         String addr= PropertiesUtil.getValue("rocketmq.name-server");
         DefaultMQProducer producer = new DefaultMQProducer("blt_local_main_group");
-        producer.setSendMsgTimeout(300);
+        producer.setSendMsgTimeout(100);
         producer.setInstanceName(UUID.randomUUID().toString());
         producer.setNamesrvAddr(addr);
         producer.setVipChannelEnabled(false);
@@ -29,6 +29,7 @@ public class ProducerService {
             Message message = new Message(msg[0], msg[1].getBytes());
             producer.send(message);
         } catch (Exception e) {
+            logger.error("pushMsg error [{}]",e.getMessage());
             throw new NoTopicException("Topic Not Exist!");
         } finally {
             producer.shutdown();
