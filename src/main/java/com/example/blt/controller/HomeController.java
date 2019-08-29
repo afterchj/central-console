@@ -79,7 +79,7 @@ public class HomeController {
 
     @RequestMapping("/poeConsole/index")
     public String poeConsole() {
-        return "/poeConsole/index";
+        return "poeConsole/index";
     }
 
     @RequestMapping("/newIndex/noEnergy")
