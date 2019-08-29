@@ -139,6 +139,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws InterruptedException {
+        logger.error("socketInactive error [{}]",cause.getMessage());
         ctx.close().sync();
     }
 
