@@ -77,6 +77,11 @@ public class HomeController {
         return "highway";
     }
 
+    @RequestMapping("/poeConsole/index")
+    public String poeConsole() {
+        return "/poeConsole/index";
+    }
+
     @RequestMapping("/newIndex/noEnergy")
     public String noEnergy() {
         return "newMonitor/noEnergy";
