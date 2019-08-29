@@ -171,11 +171,12 @@ public class StringBuildUtils {
                 map.put("y", str.substring(8, 12));
                 break;
             default:
+//                场景77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83
                 //42代表场景控制，02字段是场景ID
+//               77 04 10 02 20 05 00 00 00 C1 32 32 00 00 00 00 00 00 01 CC CC
                 //C1代表组控，32 32字段是x、y值, 02字段是组ID
 //               C4，RGB组控77 04 10 02 20 95 00 00 00 C4 5F 02 00 00 00 00 00 00 02 4F
-//                灯状态信息77 04 0F 02 27 35 00 00 00 71 00 13 00 00 00 00 00 00 0E
-                if ("C1".equals(prefix) || "C4".equals(prefix) || "71".equals(prefix) || "42".equals(prefix)) {
+                if ("C1".equals(prefix) || "C4".equals(prefix)|| "42".equals(prefix)) {
                     map.put("ctype", prefix);
                     map.put("x", str.substring(2, 4));
                     map.put("y", str.substring(4, 6));
