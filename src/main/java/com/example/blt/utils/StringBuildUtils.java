@@ -28,21 +28,21 @@ public class StringBuildUtils {
 
     public static void buildLightInfo(String ip, String msg) {
         String[] array = msg.split("CCCC");
+        int index=18;
         for (String str : array) {
             Map map = new HashMap();
 //        String str = msg.replace(" ", "");
-            String str1 = "77040F0227";
+//            String str1 = "77011365";
             map.put("host", ip);
             map.put("status", 1);
-            if (str.indexOf(str1) != -1) {
+            if (str.indexOf("77011365") != -1) {
                 ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
-                int index = str1.length();
-                String vaddr = str.substring(index, index + 8);
+                String vaddr = str.substring(18, 26);
                 vaddrSet.add(vaddr);
                 ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
 //                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.VADDR.getValue(), ip, vaddrSet);
-                String x = str.substring(index + 10, index + 12);
-                String y = str.substring(index + 12, index + 14);
+                String x = str.substring(28, 30);
+                String y = str.substring(30, 32);
                 if (str.contains("3232")) {
                     map.put("status", 0);
                 } else {
@@ -56,20 +56,18 @@ public class StringBuildUtils {
                 } catch (Exception e) {
                     sqlSessionTemplate.selectOne("console.saveLight", map);
                 }
-            } else if (str.indexOf("77040F01") != -1) {
+            } else if (str.indexOf("77011366") != -1) {
                 ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                 ipSet.add(ip);
-//            String prefix = str.substring(0, 8);
-                String lmac = str.substring(8, 20).toLowerCase();
-                String vaddr = str.substring(20, 28);
-                String productId = str.substring(28, 32);
+                String lmac = str.substring(16, 28).toLowerCase();
+                String vaddr = str.substring(28, 36);
+                String productId = str.substring(36, 44);
                 map.put("vaddr", vaddr);
                 map.put("product_id", productId);
                 String mac = sortMac(lmac);
                 map.put("lmac", mac);
                 lmacSet.add(mac);
                 ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
-//                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.lMAC.getValue(), ip, lmacSet);
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
@@ -82,6 +80,7 @@ public class StringBuildUtils {
                     tempFormat(str, ip);
                 }
             }
+//            logger.warn("map="+JSON.toJSONString(map));
         }
     }
 
@@ -176,7 +175,7 @@ public class StringBuildUtils {
 //               77 04 10 02 20 05 00 00 00 C1 32 32 00 00 00 00 00 00 01 CC CC
                 //C1代表组控，32 32字段是x、y值, 02字段是组ID
 //               C4，RGB组控77 04 10 02 20 95 00 00 00 C4 5F 02 00 00 00 00 00 00 02 4F
-                if ("C1".equals(prefix) || "C4".equals(prefix)|| "42".equals(prefix)) {
+                if ("C1".equals(prefix) || "C4".equals(prefix)) {
                     map.put("ctype", prefix);
                     map.put("x", str.substring(2, 4));
                     map.put("y", str.substring(4, 6));

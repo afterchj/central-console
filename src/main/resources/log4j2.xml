@@ -23,16 +23,16 @@
                 <pattern>${pattern}</pattern>
             </PatternLayout>
         </File>
-<!--        &lt;!&ndash; 滚动文件 &ndash;&gt;-->
-<!--        <RollingFile name="rollingFile" fileName="/temp/log/${displayName}_info.log" filePattern="${displayName}_%d{yyyy-MM-dd}.log">-->
-<!--            &lt;!&ndash;  控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） &ndash;&gt;-->
-<!--            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>-->
-<!--            <PatternLayout>-->
-<!--                <pattern>${pattern}</pattern>-->
-<!--            </PatternLayout>-->
-<!--            &lt;!&ndash; 按大小划分 &ndash;&gt;-->
-<!--            <SizeBasedTriggeringPolicy size="1MB" />-->
-<!--        </RollingFile>-->
+        <!-- 滚动文件 -->
+        <RollingFile name="rollingFile" fileName="/temp/log/${displayName}_day.log" filePattern="${displayName}_%d{yyyy-MM-dd}.log">
+            <!--  控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <!-- 按大小划分 -->
+            <SizeBasedTriggeringPolicy size="1MB" />
+        </RollingFile>
     </Appenders>
     <Loggers>
         <!-- <Logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"
@@ -46,7 +46,7 @@
         <Root level="WARN">
             <AppenderRef ref="console"></AppenderRef>
             <AppenderRef ref="error"></AppenderRef>
-<!--            <AppenderRef ref="rollingFile"></AppenderRef>-->
+            <AppenderRef ref="rollingFile"></AppenderRef>
         </Root>
     </Loggers>
 </configuration>

@@ -3,7 +3,6 @@ package com.example.blt.netty;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
@@ -54,7 +53,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             to = jsonObject.getString("host");
         } catch (Exception e) {
             if (arg1.indexOf("77050901") != -1) {
-                cmd = "000";
+                cmd = "77050103";
                 String meshId = arg1.substring(arg1.length() - 20, arg1.length() - 4);
                 char[] chars = meshId.toCharArray();
                 StringBuffer buffer = new StringBuffer();
@@ -72,13 +71,15 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (to.equals("master")) {
             hosts = sqlSessionTemplate.selectList("console.getHosts");
         }
+        if (cmd.indexOf("77050103") == -1) {
+            logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
+        }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);
 //        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len < 48) {
-            logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
             ExecuteTask.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
@@ -139,17 +140,17 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws InterruptedException {
-        logger.error("socketInactive error [{}]",cause.getMessage());
+        logger.error("socketInactive error [{}]", cause.getMessage());
         ctx.close().sync();
     }
 
     private void insertOrUpdateHost(Channel channel, String meshId) {
-        logger.warn("hostId [{}] status [{}]",channel.id(),channel.isActive());
+        logger.warn("hostId [{}] status [{}]", channel.id(), channel.isActive());
         Map map = new ConcurrentHashMap();
         String addr = channel.remoteAddress().toString();
         map.put("ip", addr.substring(1, addr.indexOf(":")));
         map.put("hostId", channel.id().toString());
-        map.put("status",channel.isActive());
+        map.put("status", channel.isActive());
         if (StringUtils.isNotBlank(meshId)) {
             map.put("meshId", meshId);
         }
