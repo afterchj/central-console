@@ -29,7 +29,6 @@ public class ProducerService {
             Message message = new Message(msg[0], msg[1].getBytes());
             producer.send(message);
         } catch (Exception e) {
-            logger.error("pushMsg error [{}]",e.getMessage());
             throw new NoTopicException("Topic Not Exist!");
         } finally {
             producer.shutdown();

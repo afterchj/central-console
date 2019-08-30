@@ -33,15 +33,18 @@ public class StringBuildUtilsTest {
         String c1 = "77 04 10 02 20 9D 01 00 00 C1 32 32 00 00 00 00 00 00 02 1E".replace(" ", "");
         String c0 = "77 04 0E 02 2A 9D 01 00 00 C0 00 37 37 00 00 00 00 09".replace(" ", "");
         String c4 = "77 04 10 02 20 95 00 00 00 C4 5F 02 00 00 00 00 00 00 02 4F".replace(" ", "");
-
         String c71 = "77 04 0F 02 27 35 00 00 00 71 00 13 00 00 00 00 00 00 0E".replace(" ", "");
         String c52 = "77 04 10 02 21 69 00 00 00 52 77 65 65 D7 AC F0 00 01 00 85".replace(" ", "");//7704100221F505000052456365D7ACF0000200CCCC
         String c42 = "77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83".replace(" ", "");
         String str = "77040E020103000000C000373700000000CC";
+        String CS = "77011265FFFFFFFF20010000004200000000000003CCCC";
+        String C0 = "77011265FFFFFFFF2A01000000C000323200000000CCCC";
         String pinStrA = "77011366FFFFFFFF04456DD7ACF09D01000008200102CCCC";
         String pinStrB = "77011365FFFFFFFF2755010000711413000000000000CCCC";
-        StringBuildUtils.buildLightInfo("127.0.0.1",pinStrA);
-        StringBuildUtils.buildLightInfo("127.0.0.1",pinStrB);
+        int len = CS.length();
+        System.out.println(CS.substring(len-6,len-4)+"\t"+"77011265FFFFFFFF".length() + "\t" + "77011265FFFFFFFF2001000000".length());
+        StringBuildUtils.buildLightInfo("127.0.0.1",CS);
+        StringBuildUtils.buildLightInfo("127.0.0.1",C0);
 //        StringBuildUtils.tempFormat(str,"127.0.0.1");
 //        System.out.println(pinStrA.substring(16) + "\t" + pinStrB.length());
 //        String str = "F0ACD7009501".toLowerCase();

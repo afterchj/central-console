@@ -71,15 +71,15 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (to.equals("master")) {
             hosts = sqlSessionTemplate.selectList("console.getHosts");
         }
-        if (cmd.indexOf("77050103") == -1) {
-            logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
-        }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);
 //        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len < 48) {
+        if (len > 9 && len < 47) {
+            if (cmd.indexOf("77050103") == -1) {
+                logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
+            }
             ExecuteTask.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
@@ -102,8 +102,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     }
                 }
             }
-        }
-        if (len >= 22) {
+        } else {
             if (arg1.indexOf("CCCC") != -1) {
 //                StringBuildUtils.buildLightInfo(host, arg1);
                 ExecuteTask.pingInfo(host, arg1);
