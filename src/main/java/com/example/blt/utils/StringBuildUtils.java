@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -19,9 +18,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 /**
  * Created by hongjian.chen on 2019/6/14.
  */
-public class StrUtil {
+public class StringBuildUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(StrUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(StringBuildUtils.class);
     private static Set<String> ipSet = new CopyOnWriteArraySet<>();
     private static Set<String> lmacSet = new CopyOnWriteArraySet<>();
     private static Set<String> vaddrSet = new CopyOnWriteArraySet<>();
@@ -35,7 +34,6 @@ public class StrUtil {
             String str1 = "77040F0227";
             map.put("host", ip);
             map.put("status", 1);
-//            map.put("other", str);
             if (str.indexOf(str1) != -1) {
                 ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                 int index = str1.length();
@@ -55,7 +53,7 @@ public class StrUtil {
                 map.put("y", y);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-                } catch (NoTopicException e) {
+                } catch (Exception e) {
                     sqlSessionTemplate.selectOne("console.saveLight", map);
                 }
             } else if (str.indexOf("77040F01") != -1) {
@@ -75,7 +73,7 @@ public class StrUtil {
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 try {
                     ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-                } catch (NoTopicException e) {
+                } catch (Exception e) {
                     sqlSessionTemplate.selectOne("console.saveLight", map);
                 }
             } else {
@@ -173,11 +171,12 @@ public class StrUtil {
                 map.put("y", str.substring(8, 12));
                 break;
             default:
+//                场景77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83
                 //42代表场景控制，02字段是场景ID
+//               77 04 10 02 20 05 00 00 00 C1 32 32 00 00 00 00 00 00 01 CC CC
                 //C1代表组控，32 32字段是x、y值, 02字段是组ID
 //               C4，RGB组控77 04 10 02 20 95 00 00 00 C4 5F 02 00 00 00 00 00 00 02 4F
-//                灯状态信息77 04 0F 02 27 35 00 00 00 71 00 13 00 00 00 00 00 00 0E
-                if ("C1".equals(prefix) || "C4".equals(prefix) || "71".equals(prefix) || "42".equals(prefix)) {
+                if ("C1".equals(prefix) || "C4".equals(prefix)|| "42".equals(prefix)) {
                     map.put("ctype", prefix);
                     map.put("x", str.substring(2, 4));
                     map.put("y", str.substring(4, 6));
@@ -185,14 +184,14 @@ public class StrUtil {
                 }
                 break;
         }
-        String info = JSON.toJSONString(map);
+        if (!map.containsKey("ctype")) return;
         try {
+            String info = JSON.toJSONString(map);
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
-        } catch (NoTopicException e) {
+        } catch (Exception e) {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
-            WebSocket.sendMessage(info);
+            WebSocket.sendMessage(map);
         }
-//        logger.warn("result=" + JSON.toJSONString(map));
     }
 
     public static void formatStr(String str, String ip) {
@@ -219,13 +218,8 @@ public class StrUtil {
         }
         try {
             ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
-        } catch (NoTopicException e) {
+        } catch (Exception e) {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
-            logger.warn("result=" + map.get("result"));
         }
     }
-
-//    public static void main(String[] args) {
-//        tempFormat("77041002216501000052456365D7ACF0000200","");
-//    }
 }

@@ -26,7 +26,7 @@ public class ServerMain {
         EventLoopGroup worker = new NioEventLoopGroup();
         final ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.option(ChannelOption.SO_BACKLOG, 1024); //设置TCP相关信息
-        bootstrap.option(ChannelOption.ALLOW_HALF_CLOSURE, true);
+        bootstrap.childOption(ChannelOption.ALLOW_HALF_CLOSURE, true);
         bootstrap.group(acceptor, worker);//设置循环线程组，前者用于处理客户端连接事件，后者用于处理网络IO
         bootstrap.channel(NioServerSocketChannel.class);//用于构造socketchannel工厂
 //        bootstrap.handler(new ChatServerHandler());
@@ -38,7 +38,7 @@ public class ServerMain {
             // 监听服务器关闭监听
             //channel.closeFuture().sync();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("ServerMain Error[{}]",e.getMessage());
         } finally {
 //             退出
 //            acceptor.shutdownGracefully();

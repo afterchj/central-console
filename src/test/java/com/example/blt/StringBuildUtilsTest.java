@@ -3,25 +3,28 @@ package com.example.blt;
 import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.netty.ClientMain;
+import com.example.blt.utils.SpringUtils;
 import org.junit.Test;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author hongjian.chen
  * @date 2019/6/27 16:24
  */
-public class StrUtilTest {
+public class StringBuildUtilsTest {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     @Test
     public void test() {
-        String space = "77 04 0A 02 2A 01 00 00 00 C0 00 37 37 CC CC".replace(" ", "");
+        String space = "77 01 12 65 FF FF FF FF 2A 05 00 00 00 C0 00 37 37 00 00 00 00 CC CC ".replace(" ", "");
         logger.warn("str=" + space + ",len=" + space.length());
         //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
         String c1 = "77 04 10 02 20 9D 01 00 00 C1 32 32 00 00 00 00 00 00 02 1E".replace(" ", "");
@@ -31,12 +34,12 @@ public class StrUtilTest {
         String c52 = "77 04 10 02 21 69 00 00 00 52 77 65 65 D7 AC F0 00 01 00 85".replace(" ", "");//7704100221F505000052456365D7ACF0000200CCCC
         String c42 = "77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83".replace(" ", "");
         String str = "77040E020103000000C000373700000000CC";
-//        StrUtil.buildLightInfo(c52,"127.0.0.1");
-//        StrUtil.buildLightInfo(c71,"127.0.0.1");
-//        StrUtil.tempFormat(str,"127.0.0.1");
+//        StringBuildUtils.buildLightInfo(c52,"127.0.0.1");
+//        StringBuildUtils.buildLightInfo(c71,"127.0.0.1");
+//        StringBuildUtils.tempFormat(str,"127.0.0.1");
         System.out.println(c52 + "\t" + c52.length());
 //        String str = "F0ACD7009501".toLowerCase();
-//        System.out.println("bufferStr=" + StrUtil.buildMac(str));
+//        System.out.println("bufferStr=" + StringBuildUtils.buildMac(str));
 //        String str1 = "77040F01A91064D7ACF07D000000444F030ACCCC";
 //        String str2 = "77040F022769000000710032000000000000CC";
 //        buildLightInfo(str1,"127.0.0.1");
@@ -44,7 +47,31 @@ public class StrUtilTest {
 
     @Test
     public void testUUID() {
-        System.out.println(UUID.randomUUID().toString());
+        System.out.println(Integer.parseInt("D", 16));
+        String arg1 = "770509010200010904080306CCCC";
+        int len = arg1.length();
+        String meshId = "";
+        for (int i = 0; i < 16; i += 2) {
+            meshId += String.valueOf(Integer.parseInt(arg1.substring(len - 20, len - 4).substring(i, i + 2), 16));
+        }
+        char[] chars = "0200010904080306".toCharArray();
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < chars.length; i++) {
+            if (i % 2 != 0) {
+                buffer.append(chars[i]);
+            }
+        }
+        System.out.println(meshId + "\t" + buffer.toString());
+//        String arg1 = "770509010200010904080306CCCC";
+//        String meshId = arg1.substring(arg1.length() - 20, arg1.length() - 4).replace("0", "");
+//        System.out.println("meshId=" + meshId);
+//        Map map = new ConcurrentHashMap();
+//        map.put("ip", "127.0.0.1");
+//        if (StringUtils.isNotBlank(meshId)) {
+//            map.put("meshId", meshId);
+//        }
+//        sqlSessionTemplate.insert("console.saveUpdateHost", map);
+//        System.out.println(UUID.randomUUID().toString());
     }
 
     @Test
@@ -136,5 +163,14 @@ public class StrUtilTest {
         System.out.println(arr[0].length() + "\t" + arr[0]);
         System.out.println(arrA.length + "\t" + arrA[0]);
         System.out.println(arrB.length + "\t" + arrB[0]);
+    }
+
+    @Test
+    public void testMap() {
+        Map map = new ConcurrentHashMap();
+        map.put("host", "1270.0.01");
+        map.put("status", 0);
+        System.out.println(map.containsKey("ctype"));
+
     }
 }

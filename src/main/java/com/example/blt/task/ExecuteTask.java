@@ -89,12 +89,14 @@ public class ExecuteTask {
                 default:
                     break;
             }
-            String info = JSON.toJSONString(map);
             try {
+                String info = JSON.toJSONString(map);
                 ProducerService.pushMsg(Topics.LOCAL_TOPIC.getTopic(), info);
             } catch (Exception e) {
-                sqlSessionTemplate.selectOne("console.saveConsole", map);
-                WebSocket.sendMessage(info);
+                if(map.containsKey("ctype")){
+                    sqlSessionTemplate.selectOne("console.saveConsole", map);
+                    WebSocket.sendMessage(map);
+                }
             }
         });
     }

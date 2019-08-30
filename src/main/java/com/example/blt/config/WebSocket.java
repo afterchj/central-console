@@ -1,12 +1,13 @@
 package com.example.blt.config;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -19,10 +20,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @ServerEndpoint(value = "/ws/webSocket")
 public class WebSocket {
     private static Logger logger = LoggerFactory.getLogger(WebSocket.class);
-    //每个客户端都会有相应的session,服务端可以发送相关消息
-    private Session session;
     //J.U.C包下线程安全的类，主要用来存放每个客户端对应的webSocket连接
-    private static CopyOnWriteArraySet<WebSocket> copyOnWriteArraySet = new CopyOnWriteArraySet<WebSocket>();
+    private static CopyOnWriteArraySet<Session> copyOnWriteArraySet = new CopyOnWriteArraySet();
 
     /**
      * @Name：onOpen
@@ -34,10 +33,7 @@ public class WebSocket {
      */
     @OnOpen
     public void onOpen(Session session) {
-        this.session = session;
-        copyOnWriteArraySet.add(this);
-//        logger.warn("websocket有新的连接, 总数:" + copyOnWriteArraySet.size());
-//        sendMessage(session.getId());
+        copyOnWriteArraySet.add(session);
     }
 
     /**
@@ -49,9 +45,8 @@ public class WebSocket {
      * @Return：
      */
     @OnClose
-    public void onClose() {
-        copyOnWriteArraySet.remove(this);
-        logger.warn("websocket连接断开, 总数:" + copyOnWriteArraySet.size());
+    public void onClose(Session session) {
+        copyOnWriteArraySet.remove(session);
     }
 
     /**
@@ -77,20 +72,7 @@ public class WebSocket {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        logger.warn("发生错误：" + error.getMessage() + "; sessionId:" + session.getId());
-    }
-
-    public void sendMessage(Object object) {
-        //遍历客户端
-        for (WebSocket webSocket : copyOnWriteArraySet) {
-            logger.warn("websocket广播消息：" + object.toString());
-            try {
-                //服务器主动推送
-                webSocket.session.getBasicRemote().sendObject(object);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        logger.warn("session ERROR [{}] session ID [{}]", error.getMessage(), session.getId());
     }
 
     /**
@@ -101,41 +83,20 @@ public class WebSocket {
      * @Parameters：
      * @Return：
      */
-    public static void sendMessage(String message) {
+    public static void sendMessage(Map map) {
+        if (!map.containsKey("ctype")) return;
+        String message = JSON.toJSONString(map);
         //遍历客户端
-        for (WebSocket webSocket : copyOnWriteArraySet) {
+        for (Session session : copyOnWriteArraySet) {
 //             logger.warn("websocket广播消息：" + message);
             try {
                 //服务器主动推送
-                webSocket.session.getBasicRemote().sendText(message);
+                synchronized (session) {
+                    session.getBasicRemote().sendText(message);
+                }
             } catch (Exception e) {
-                logger.error("params [{}] info [{}]", message, e.getMessage());
+                logger.error("params [{}] error [{}]", message, e.getMessage());
             }
-        }
-    }
-
-    /**
-     * @Name：sendMessage
-     * @Description：用于发送给指定客户端消息
-     * @Author：mYunYu
-     * @Create Date：14:47 2018/11/15
-     * @Parameters：
-     * @Return：
-     */
-    public static void sendMessage(String sessionId, String message) throws IOException {
-        Session session = null;
-        WebSocket tempWebSocket = null;
-        for (WebSocket webSocket : copyOnWriteArraySet) {
-            if (webSocket.session.getId().equals(sessionId)) {
-                tempWebSocket = webSocket;
-                session = webSocket.session;
-                break;
-            }
-        }
-        if (session != null) {
-            tempWebSocket.session.getBasicRemote().sendText(message);
-        } else {
-            logger.warn("没有找到你指定ID的会话：{}" + "; sessionId:" + sessionId);
         }
     }
 
@@ -148,6 +109,5 @@ public class WebSocket {
 //    public ServerEndpointExporter serverEndpointExporter() {
 //        return new ServerEndpointExporter();
 //    }
-
 
 }

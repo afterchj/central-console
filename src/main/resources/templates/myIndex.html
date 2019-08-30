@@ -8,13 +8,26 @@
     <script th:src="@{/static/jquery.js}" type="text/javascript"></script>
 </head>
 <style type="text/css">
-    .host,.master {
+    .host {
         height: 20px;
         width: 20px
     }
 
-    #host td {
-        height: 50px;
+    .main td {
+        /*height: 30px;*/
+        width: 80px;
+        border: #CCCCCC 1px solid;
+    }
+    .slave{
+        border: 0;
+    }
+    .box{
+        margin: 10px 10px;
+        text-align: center;
+    }
+    .slave td {
+        /*height: 30px;*/
+        text-align: center;
         border: #CCCCCC 1px solid;
     }
 </style>
@@ -23,10 +36,11 @@
     $(function () {
         let url = location.host;
         console.log(location.href, url);
+        $("#show").html("jquery文件加载成功！");
         $.getJSON("/getHost", function (data) {
             $.each(data, function (i, val) {
                 $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
-                $("#master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+                $(".master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
             });
         });
         if (typeof (WebSocket) == "undefined") {
@@ -63,6 +77,9 @@
             let flag = $(this).is(':checked');
             $.get("/save", {"host": mesh_id, "is_master": flag}, function (result) {
                 console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+                // if (result == "ok") {
+                //     $("#master").val(mesh_id);
+                // }
             });
         })
         // $("#master").click(function () {
@@ -72,36 +89,9 @@
     });
 
     function sendCmd(id, flag) {
-        let single = $('.master').is(':checked');
-        // let mesh_id;
-        let status = $("#" + id).text().trim();
-        console.log("flag", flag, "status", status, "single", single);
-        if (flag == 'master') {
-            if (single == false) {
-                return;
-            }
-        }
-        if (status == '开') {
-            $("#" + id).val("77010315373766");
-            $("#" + id).text("关")
-        } else if (status == '关') {
-            $("#" + id).val("77010315323266");
-            $("#" + id).text("开")
-        }
-        console.log("id", id, "flag", flag);
-        $.get("/switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
-            console.log("result", result);
-        })
-    }
-
-    function sendCmd2(id) {
-        // let mesh_id;
-        let status = $("#" + id).text().trim();
-        console.log("status", status, "single");
-        // flag=$('#'+id).parent('td').prev('td').text();
-        let flag = $('#' + id).attr('alt');
-        let checked = $('#' + id).parent('td').next('td').children('input').is(':checked');
-        console.log("checked", checked);
+        console.log("id", id);
+        let status = $("#" + id).text();
+        console.log("value", status);
         if (status == '开') {
             $("#" + id).val("77010315373766");
             $("#" + id).text("关")
@@ -115,50 +105,63 @@
     }
 </script>
 <body>
-
+<h1>Welcome to Spring Boot world!</h1>
+<p id="show"></p>
+<p>
+    <label for="btn1">一键控制：</label>
+    <button id="btn1" value="77010315373766" onclick="sendCmd(this.id,'all')">开</button>
+    <label for="btn2">群控：</label>
+    <button id="btn2" value="77010315373766" onclick="sendCmd(this.id,'master')">开</button>
+    <!--    <label for="master">群控mesh_id：</label>-->
+    <!--    <input type="text" id="master" value="88888888">-->
+    <!--    <select id="master">-->
+    <!--    </select>-->
+</p>
 <div style="width: 30%;margin: 20px 20px">
-    <p>
-        <label for="btn1">All control:</label>
-        <button id="btn1" value="77010315373766" onclick="sendCmd(this.id,'all')">开</button>
-    </p>
-    <p>
-        <label for="btn2">Bridge Sync：</label>
-        <button id="btn2" value="77010315373766" onclick="sendCmd(this.id,'master')">开</button>
-    </p>
-    <table id="host" style="text-align: center;border-collapse: collapse;width: 60%;height: 100px">
+    <table class="main" style="text-align: center;border-collapse: collapse;width: 60%;">
         <th>
             <tr>
-                <!--                <td>id</td>-->
-                <td>meshId</td>
-                <td>test</td>
-                <td>Bridge Sync</td>
-                <!--                <td>是否被控</td>-->
+                <td>楼层</td>
+<!--                <td>meshId</td>-->
+                <td>主控网络</td>
+                <td>meshId/是否被控</td>
             </tr>
         </th>
         <tbody>
         <tr th:each="host:${hosts}">
-            <!--            <td th:text="${host.mname}"></td>-->
-            <td th:text="${host.mesh_id}"></td>
+            <td th:text="${host.mname}"></td>
+<!--            <td th:text="${host.mesh_id}"></td>-->
             <td>
-                <button th:id="${host.mname}" value="77010315373766" th:alt="${host.host_id}"
-                        onclick="sendCmd2(this.id)">开
-                </button>
+                <select class="master"></select>
             </td>
-            <td th:switch="${host.is_master}">
-                <input th:case="true" class="master" type="checkbox" checked th:value="${host.mesh_id}">
-                <input th:case="*" class="master" type="checkbox" th:value="${host.mesh_id}">
+            <td>
+               <div class="box">
+                   <table class="slave">
+                       <tr th:each="slave:${hosts}">
+                           <td th:text="${slave.mesh_id}"></td>
+                           <td th:switch="${slave.is_control}">
+                            <span th:case="true">
+                                <input class="host" type="checkbox" checked th:value="${slave.mesh_id}">
+                             </span>
+                               <span th:case="*">
+                                 <input class="host" type="checkbox" th:value="${slave.mesh_id}">
+                            </span>
+                           </td>
+                       </tr>
+                   </table>
+               </div>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<!--<p>-->
-<!--    <label for="test">获取灯信息：</label>-->
-<!--    <input style="width: 200px" type="text" id="txt" placeholder="默认ping指令7701011B66" value="7701011B66"/>-->
-<!--    <select id="hosts" name="host" style="height: 30px">-->
-<!--        <option value="all" selected>all</option>-->
-<!--    </select>-->
-<!--    <input type="button" id="test" value="测试"/>-->
-<!--</p>-->
+<p>
+    <label for="test">获取灯信息：</label>
+    <input style="width: 200px" type="text" id="txt" placeholder="默认ping指令7701011B66" value="7701011B66"/>
+    <select id="hosts" name="host" style="height: 30px">
+        <option value="all" selected>all</option>
+    </select>
+    <input type="button" id="test" value="测试"/>
+</p>
 </body>
 </html>

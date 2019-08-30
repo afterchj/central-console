@@ -16,7 +16,7 @@
             </PatternLayout>
         </Console>
         <!-- 文件 每次运行程序会自动清空，由append属性决定 -->
-        <File name="error" fileName="/temp/log/${displayName}_console.log" append="false">
+        <File name="error" fileName="/temp/log/${displayName}_error.log" append="false">
             <!-- 指定error 级别的日志 -->
             <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
             <PatternLayout>

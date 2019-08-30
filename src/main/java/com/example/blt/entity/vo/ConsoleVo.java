@@ -8,6 +8,8 @@ public class ConsoleVo {
     private String command;
     private String host;
     private Boolean status;
+    private Boolean is_master;
+    private Boolean is_control;
 
     public String getCommand() {
         return command;
@@ -31,5 +33,21 @@ public class ConsoleVo {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Boolean getIs_master() {
+        return is_master;
+    }
+
+    public void setIs_master(Boolean is_master) {
+        this.is_master = is_master;
+    }
+
+    public Boolean getIs_control() {
+        return is_control;
+    }
+
+    public void setIs_control(Boolean is_control) {
+        this.is_control = is_control;
     }
 }
