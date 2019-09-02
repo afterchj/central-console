@@ -6,6 +6,7 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.netty.ServerMain;
+import com.example.blt.task.DynamicScheduledTask;
 import com.example.blt.utils.ConsoleUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ import java.util.concurrent.TimeUnit;
 public class NettyService implements ApplicationListener<ContextRefreshedEvent> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Resource
+    private DynamicScheduledTask dynamicScheduledTask;
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
     @Resource
@@ -110,6 +113,10 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.warn("nettyService starting...");
         new ServerMain().run(8001);
+        String corn = "0 0 9 ? * SUN-SAT";
+//        dynamicScheduledTask.configureTasks("0/10 * * * * ?");
+//        dynamicScheduledTask.configureTasks("0/30 * * * * ?");
+        dynamicScheduledTask.configureTasks(corn);
 //        ExecuteTask.pingStatus(true, 3);
     }
 }
