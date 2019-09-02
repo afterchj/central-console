@@ -198,6 +198,8 @@ public class MainTest {
 
     @Test
     public void testSet() {
+        redisTemplate.opsForValue().increment(ConsoleKeys.LTIMES.getValue());
+        System.out.println(redisTemplate.opsForValue().get(ConsoleKeys.LTIMES.getValue()));
         Integer temp = (Integer) ConsoleUtil.getValue(ConsoleKeys.TSIZE.getValue());
         int total = temp == null ? -1 : temp;
         logger.warn("temp[{}] total[{}]", temp, total);

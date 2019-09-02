@@ -144,7 +144,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     }
 
     private void insertOrUpdateHost(Channel channel, String meshId) {
-        logger.warn("hostId [{}] status [{}]", channel.id(), channel.isActive());
+        logger.warn("hostId [{}] meshId [{}] status [{}]", channel.id(), meshId, channel.isActive());
         Map map = new ConcurrentHashMap();
         String addr = channel.remoteAddress().toString();
         map.put("ip", addr.substring(1, addr.indexOf(":")));

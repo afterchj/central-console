@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "blt_console_topic", consumerGroup = "blt_consumer_console_group")
+@RocketMQMessageListener(topic = "blt_console_topic", consumerGroup = "blt_dev_consumer_console_group")
 public class ConsoleConsumer implements RocketMQListener<String> {
 
     @Resource
