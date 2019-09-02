@@ -1,6 +1,5 @@
 package com.example.blt;
 
-import com.example.blt.netty.ServerMain;
 import com.example.blt.utils.FrameSpringBeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,6 @@ public class CentralConsoleApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CentralConsoleApplication.class, args);
-        new ServerMain().run(8001);
     }
 
     /**
