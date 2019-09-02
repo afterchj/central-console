@@ -1,10 +1,7 @@
 package com.example.blt;
 
 import com.example.blt.entity.dd.ConsoleKeys;
-import com.example.blt.entity.dd.Topics;
-import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
-import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
 import org.junit.Test;
@@ -14,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -189,7 +185,7 @@ public class MainTest {
             map.put("topic", "topic_test");
             map.put("message", "Just is test messages " + i);
             try {
-                ProducerService.pushMsg("demo_topic","Just is test messages " + i);
+                ProducerService.pushMsg("demo_topic", "Just is test messages " + i);
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
@@ -216,7 +212,15 @@ public class MainTest {
 
     @Test
     public void testRedisK() {
-        System.out.println(Integer.parseInt("32",16));
+        System.out.println(Integer.parseInt("32", 16));
 //        redisTemplate.opsForValue().set(ConsoleKeys.LTIMES.getValue(), 3, 10, TimeUnit.MINUTES);
+    }
+
+    @Test
+    public void testRedisPublish() {
+
+        for (int i = 0; i < 10; i++) {
+            redisTemplate.convertAndSend("channel_cron", "redis publish message " + i);
+        }
     }
 }

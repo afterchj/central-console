@@ -3,6 +3,7 @@ package com.example.blt;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.service.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -31,6 +32,9 @@ public class CentralControllerApplicationTests {
 
     @Resource
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private RedisService redisService;
 
 //    @Resource
 //    CommandService commandService;
@@ -139,4 +143,10 @@ public class CentralControllerApplicationTests {
         logger.warn("result [{}]", result);
     }
 
+    @Test
+    public void testRedisPublish() {
+        for (int i = 0; i < 10; i++) {
+            redisService.pushMsg("redis publish message " + i);
+        }
+    }
 }

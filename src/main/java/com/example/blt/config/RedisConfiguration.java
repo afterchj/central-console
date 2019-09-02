@@ -1,5 +1,6 @@
 package com.example.blt.config;
 
+import com.example.blt.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
@@ -12,6 +13,9 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -60,5 +64,19 @@ public class RedisConfiguration implements CachingConfigurer {
         stringRedisTemplate.setKeySerializer(new StringRedisSerializer());
         stringRedisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         return stringRedisTemplate;
+    }
+
+    @Bean
+    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter recvAdapter) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.addMessageListener(recvAdapter, new PatternTopic("channel_cron"));//将订阅者1与channel1频道绑定
+        return container;
+    }
+
+    @Bean
+    MessageListenerAdapter recvAdapter(RedisService receiver) {
+        //与channel1绑定的适配器,收到消息时执行RedisConsumer类中的consumeMsg方法
+        return new MessageListenerAdapter(receiver, "consumeMsg");
     }
 }
