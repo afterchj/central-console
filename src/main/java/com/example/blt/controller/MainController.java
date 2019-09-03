@@ -255,6 +255,7 @@ public class MainController {
                             map2.put("lightStatus", timePointList.get(k).getLight_status());
                             JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
                             redisService.pushMsg(jsonObject);
+                            logger.warn("jsonObject []",jsonObject);
                             monitor4Dao.insertTimePoint(map2);
                         } else {
                             List<TimePointParams> detailvalueList = timePointList.get(k).getDetailvalueList();

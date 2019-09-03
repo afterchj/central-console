@@ -30,25 +30,30 @@ public class RedisService {
     }
 
     public void consumeMsg(String msg) {
-        logger.warn("收到消息{}", msg);
-        JSONObject object = JSONObject.parseObject(msg);
-        CronVo cronVo = new CronVo();
-        cronVo.setSecond(object.getString("second"));
-        cronVo.setMinute("*");
-        cronVo.setHour("*");
-        cronVo.setWeek(getWeek(object.getString("week")));
-        cronVo.setMeshId(object.getString("meshId"));
-        cronVo.setItem_set(object.getInteger("item_set"));
-        boolean flag = object.getInteger("item_set") == 0;
-        logger.warn("flag [{}]", flag);
-        if (flag) {
-            ScheduledFuture future = dynamicScheduledTask.futures.get(object.getString("meshId"));
-            if (future != null) {
-                future.cancel(true);
-                logger.warn("isCancel [{}]" + future.isCancelled());
+        try {
+            JSONObject object = JSONObject.parseObject(msg);
+            logger.warn("收到消息{}", object);
+            int item_set = object.getInteger("item_set");
+            CronVo cronVo = new CronVo();
+            cronVo.setMinute(object.getString("minute"));
+            cronVo.setHour(object.getString("hour"));
+            cronVo.setScene_index(object.getInteger("sceneId"));
+            cronVo.setWeek(getWeek(object.getString("week")));
+            cronVo.setMeshId(object.getString("meshId"));
+            cronVo.setItem_set(item_set);
+            boolean flag = item_set == 0;
+            logger.warn("flag [{}]", flag);
+            if (flag) {
+                ScheduledFuture future = dynamicScheduledTask.futures.get(object.getString("meshId"));
+                if (future != null) {
+                    future.cancel(true);
+                    logger.warn("isCancel [{}]" + future.isCancelled());
+                }
+            } else {
+                dynamicScheduledTask.configureTasks(cronVo);
             }
-        } else {
-            dynamicScheduledTask.configureTasks(cronVo);
+        } catch (Exception e) {
+            logger.error("cron error [] ", e);
         }
     }
 

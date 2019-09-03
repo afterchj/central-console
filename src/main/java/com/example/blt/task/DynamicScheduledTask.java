@@ -26,8 +26,9 @@ public class DynamicScheduledTask {
     public Map<String, ScheduledFuture> futures = new ConcurrentHashMap<>();
     private ScheduledFuture future;
 
-    public void configureTasks(CronVo cron) {
-        future = threadPoolTaskScheduler.schedule(new DetailTask(cron.getCron()), new CronTrigger(cron.getCron()));
-        futures.put(cron.getMeshId(), future);
+    public void configureTasks(CronVo cronVo) {
+        logger.warn("执行时间[{}]", cronVo.getCron());
+        future = threadPoolTaskScheduler.schedule(new DetailTask(cronVo), new CronTrigger(cronVo.getCron()));
+        futures.put(cronVo.getMeshId(), future);
     }
 }
