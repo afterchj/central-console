@@ -37,7 +37,7 @@ public class RedisService {
             CronVo cronVo = new CronVo();
             cronVo.setMinute(object.getString("minute"));
             cronVo.setHour(object.getString("hour"));
-            cronVo.setScene_index(object.getInteger("sceneId"));
+            cronVo.setSceneId(object.getInteger("sceneId"));
             cronVo.setWeek(getWeek(object.getString("week")));
             cronVo.setMeshId(object.getString("meshId"));
             cronVo.setItem_set(item_set);
