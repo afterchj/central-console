@@ -14,6 +14,7 @@ public class TimerLine {
     private JSONObject dayObj;
     private String tname;
     private String repetition;
+    private Integer tid;
     private Integer item_tag;
     private String item_title;
 
@@ -88,6 +89,14 @@ public class TimerLine {
 
     public void setItem_tag(Integer item_tag) {
         this.item_tag = item_tag;
+    }
+
+    public Integer getTid() {
+        return tid;
+    }
+
+    public void setTid(Integer tid) {
+        this.tid = tid;
     }
 
     public String getItem_title() {

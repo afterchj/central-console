@@ -60,7 +60,7 @@ public interface Monitor4Dao {
     List<Integer> getStatusOfFloor(@Param("mname") String mname,@Param("Place") int place,@Param("groupId") int groupId);
 
 
-    @Insert("insert into f_time_line (tname,mesh_id,repetition,week,dayObj,ischoose,item_desc,item_set,item_tag,create_date,update_date) values (#{tname},#{meshId},#{repetition},#{week},#{dayObj},#{ischoose},#{item_desc},#{item_set},#{item_tag},NOW(),NOW())")
+    @Insert("insert into f_time_line (tname,tid,mesh_id,repetition,week,dayObj,ischoose,item_desc,item_set,item_tag,create_date,update_date) values (#{tname},#{tid},#{meshId},#{repetition},#{week},#{dayObj},#{ischoose},#{item_desc},#{item_set},#{item_tag},NOW(),NOW())")
     @SelectKey(statement="select last_insert_id()",before=false,keyProperty="id",resultType=Integer.class,keyColumn="id")
     void insertTimeLine(Map<String, Object> map);
 
