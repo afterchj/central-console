@@ -1,5 +1,6 @@
 package com.example.blt.task;
 
+import com.example.blt.entity.vo.CronVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -20,11 +23,11 @@ public class DynamicScheduledTask {
     @Autowired
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private ScheduledFuture<?> future;
-    //时间表达式  每2秒执行一次
-//    private String cron = "0 50 11 ? * SUN-SAT";
+    public Map<String, ScheduledFuture> futures = new ConcurrentHashMap<>();
+    private ScheduledFuture future;
 
-    public void configureTasks(String cron) {
-        future = threadPoolTaskScheduler.schedule(new DetailTask(cron), new CronTrigger(cron));
+    public void configureTasks(CronVo cron) {
+        future = threadPoolTaskScheduler.schedule(new DetailTask(cron.getCron()), new CronTrigger(cron.getCron()));
+        futures.put(cron.getMeshId(), future);
     }
 }

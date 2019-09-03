@@ -1,5 +1,6 @@
 package com.example.blt;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
@@ -218,9 +219,59 @@ public class MainTest {
 
     @Test
     public void testRedisPublish() {
+        JSONObject object = new JSONObject();
+        object.put("meshId", "00000000");
+        object.put("item_set", "1");
+        object.put("second", "0/30");
+        object.put("week", "重复,周日,周一,周二,周三,周四,周五,周六");
+        redisTemplate.convertAndSend("channel_cron", object);
+        object.put("meshId", "88888888");
+        object.put("second", "0/10");
+        object.put("week", "重复,周日,周一,周二");
+        System.out.println(object);
+        redisTemplate.convertAndSend("channel_cron", object);
+    }
 
-        for (int i = 0; i < 10; i++) {
-            redisTemplate.convertAndSend("channel_cron", "redis publish message " + i);
+    @Test
+    public void getWeek() {
+        JSONObject object = new JSONObject();
+        object.put("meshId", "00000000");
+        object.put("item_set", "1");
+        object.put("second", "0/30");
+        object.put("week", "重复,周日,周一,周二,周三,周四,周五,周六");
+        String[] weeks = object.getString("week").split(",");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 1; i < weeks.length; i++) {
+            switch (weeks[i]) {
+                case "周日":
+                    weeks[i] = "SUN";
+                    break;
+                case "周一":
+                    weeks[i] = "MON";
+                    break;
+                case "周二":
+                    weeks[i] = "TUE";
+                    break;
+                case "周三":
+                    weeks[i] = "WED";
+                    break;
+                case "周四":
+                    weeks[i] = "THU";
+                    break;
+                case "周五":
+                    weeks[i] = "FRI";
+                    break;
+                case "周六":
+                    weeks[i] = "SAT";
+                    break;
+            }
+            if (i==weeks.length-1){
+                stringBuilder.append(weeks[i]);
+            }else {
+                stringBuilder.append(weeks[i]+",");
+            }
         }
+
+        System.out.println(stringBuilder.toString());
     }
 }
