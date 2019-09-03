@@ -8,7 +8,7 @@ public class TimePointParams {
     private Integer light_status;
     private Integer time;
     private Integer minute;
-    private String sence_index;
+    private Integer sence_index;
     private List<TimePointParams> detailvalueList;
 
     public Integer getHour() {
@@ -43,11 +43,11 @@ public class TimePointParams {
         this.minute = minute;
     }
 
-    public String getSence_index() {
+    public Integer getSence_index() {
         return sence_index;
     }
 
-    public void setSence_index(String sence_index) {
+    public void setSence_index(Integer sence_index) {
         this.sence_index = sence_index;
     }
 
