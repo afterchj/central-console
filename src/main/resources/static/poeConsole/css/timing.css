@@ -4,17 +4,36 @@
     /* margin-top: 1rem; */
     margin: 1rem;
 }
+.left-timing-title li.active:after{
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-top: .5rem solid transparent;
+    border-bottom: .5rem solid transparent;
+    border-left: .8rem solid #3BB4F2;
+    right: -.8rem;
+    top: 45%;
+}
 .timing-show-list p{
     margin: 0;
     font-size: 1.2rem;
+    color: #696969;
+}
+.timing-show-list p:first-child{
+    margin-bottom: .2rem;
+    font-weight: bold;
+    color: #393939;
 }
 .left-timing-title li.active,.right-timing-detail.active{
     border:1px solid #3BB4F2;
     z-index: 999;
 }
-.left-timing-title li.active p，.right-timing-detail.active{
+.left-timing-title li.active p,.right-timing-detail.active{
     color: #3BB4F2;
 }
 .topNav section.am-panel-default{
-
+    width: 99%;
+    margin-left: 1%;
 }
