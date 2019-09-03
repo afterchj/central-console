@@ -145,8 +145,8 @@ public class CentralControllerApplicationTests {
 
     @Test
     public void testRedisPublish() {
-        for (int i = 0; i < 10; i++) {
-            redisService.pushMsg("redis publish message " + i);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            redisService.pushMsg("redis publish message " + i);
+//        }
     }
 }
