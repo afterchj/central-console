@@ -1,7 +1,12 @@
 package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.dao.Monitor4Dao;
+import com.example.blt.entity.ProjectData;
+import com.example.blt.entity.TimePointParams;
+import com.example.blt.entity.TimerList;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
 import com.example.blt.service.CacheableService;
@@ -11,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
@@ -32,6 +39,9 @@ public class MainController {
     private GuavaCacheManager guavaCacheManager;
     @Resource
     private BLTService blTservice;
+
+    @Resource
+    private Monitor4Dao monitor4Dao;
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
@@ -189,7 +199,6 @@ public class MainController {
     @RequestMapping(value = "/getMsgByMF2", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> getMsgByMF2(@RequestBody String params) {
-
         Map<String, String> map = new HashMap<>();
         map.put("result", "success");
         System.out.println(params);
@@ -205,5 +214,60 @@ public class MainController {
         System.out.println(new Date() + " : " + msg);
         return map;
     }
+
+
+    @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
+    public Map<String, String> uploadDataFromAlink(@RequestBody Map<String, Object> data, ModelMap model) {
+        Map<String, String> map = new HashMap<>();
+        String uid = String.valueOf(data.get("uid"));
+        String time = String.valueOf(data.get("time"));
+        int projectId = (int) data.get("projectId");
+        String project_data =  JSON.toJSONString(data.get("project_data"));
+        try {
+                List<ProjectData> projectDataList = JSONArray.parseArray(project_data, ProjectData.class);
+                for(int i =0;i<projectDataList.size();i++){
+                    Map<String,Object> map2 = new ConcurrentHashMap<>();
+                    map2.put("meshId",projectDataList.get(i).getMeshId());
+                    List<TimerList> timerListList = projectDataList.get(i).getTimerList();
+                    for(int j=0;j<timerListList.size();j++){
+                        map2.put("ischoose",timerListList.get(j).getTimerLine().getIschoose());
+                        map2.put("item_set",timerListList.get(j).getTimerLine().getItem_set());
+                        map2.put("item_desc",timerListList.get(j).getTimerLine().getItem_desc());
+                        map2.put("week",timerListList.get(j).getTimerLine().getWeek());
+                        map2.put("dayObj",JSON.toJSONString(timerListList.get(j).getTimerLine().getDayObj()));
+                        map2.put("tname",timerListList.get(j).getTimerLine().getTname());
+                        map2.put("repetition",timerListList.get(j).getTimerLine().getRepetition());
+                        map2.put("item_tag",timerListList.get(j).getTimerLine().getItem_tag());
+                        monitor4Dao.insertTimeLine(map2);
+                        List<TimePointParams> timePointList = timerListList.get(j).getTimerLine().getTimePointList();
+                        for(int k=0;k<timePointList.size();k++){
+                            if(timePointList.get(k).getDetailvalueList()==null){
+                                map2.put("hour",timePointList.get(k).getHour());
+                                map2.put("minute",timePointList.get(k).getMinute());
+                                map2.put("time",timePointList.get(k).getTime());
+                                map2.put("sid",timePointList.get(k).getSence_index());
+                                map2.put("lightStatus",timePointList.get(k).getLight_status());
+                                monitor4Dao.insertTimePoint(map2);
+                            }else {
+                                List<TimePointParams> detailvalueList = timePointList.get(k).getDetailvalueList();
+                                for (TimePointParams timePointParams : detailvalueList) {
+                                    map2.put("hour",timePointParams.getHour());
+                                    map2.put("minute",timePointParams.getMinute());
+                                    map2.put("time",timePointParams.getTime());
+                                    map2.put("sid",timePointList.get(k).getSence_index());
+                                    map2.put("lightStatus",timePointParams.getLight_status());
+                                    monitor4Dao.insertTimePoint(map2);
+                                }
+                            }
+                        }
+                    }
+                }
+            map.put("result", "000");
+        } catch (Exception e) {
+            map.put("result", "200");
+        }
+        return map;
+    }
+
 
 }

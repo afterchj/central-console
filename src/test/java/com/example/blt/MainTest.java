@@ -4,6 +4,7 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -24,6 +25,16 @@ public class MainTest {
     public static void main(String[] args) {
 //        ConsoleService consoleService = (ConsoleService) SpringJpaUtil.getBean(ConsoleService.class);
 //        logger.warn("id=" + consoleService.getByIp("192.168.56.1").getId());
+//        String arg1 = "770509010606060606060606CCCC";
+//        String meshId = arg1.substring(arg1.length() - 12, arg1.length() - 4);
+//        System.out.println(meshId);
+        String meshId="";
+        for(int i=0;i<16;i+=2) {
+            meshId += String.valueOf(Integer.parseInt("0200010904080306".substring(i, i+2),16));
+        }
+        System.out.println(meshId);
+        System.out.println(1);
+
     }
 
     @Test
@@ -87,7 +98,7 @@ public class MainTest {
         String temp = sqlSessionTemplate.selectOne("console.getHost");
         List hosts = sqlSessionTemplate.selectList("console.getHosts");
 //        Set set = new HashSet(hosts);
-//        Map map = new HashMap();
+        Map map = new HashMap();
 //        map.put("ip", "127.0.0.1");
 //        map.put("status", true);
 //        sqlSessionTemplate.insert("console.insertHost", map);
