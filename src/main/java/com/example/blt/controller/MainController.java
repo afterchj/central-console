@@ -242,19 +242,27 @@ public class MainController {
                     List<TimePointParams> timePointList = timerListList.get(j).getTimerLine().getTimePointList();
                     for (int k = 0; k < timePointList.size(); k++) {
                         if (timePointList.get(k).getDetailvalueList() == null) {
+                            Integer sceneId = timePointList.get(k).getSence_index();
+                            if(sceneId!=21&&sceneId!=22){
+                                sceneId=sceneId-1;
+                            }
                             map2.put("hour", timePointList.get(k).getHour());
                             map2.put("minute", timePointList.get(k).getMinute());
                             map2.put("time", timePointList.get(k).getTime());
-                            map2.put("sceneId", timePointList.get(k).getSence_index()-1);
+                            map2.put("sceneId", sceneId);
                             map2.put("lightStatus", timePointList.get(k).getLight_status());
                             monitor4Dao.insertTimePoint(map2);
                         } else {
                             List<TimePointParams> detailvalueList = timePointList.get(k).getDetailvalueList();
                             for (TimePointParams timePointParams : detailvalueList) {
+                                Integer sceneId = timePointParams.getSence_index();
+                                if(sceneId!=21&&sceneId!=22){
+                                    sceneId=sceneId-1;
+                                }
                                 map2.put("hour", timePointParams.getHour());
                                 map2.put("minute", timePointParams.getMinute());
                                 map2.put("time", timePointParams.getTime());
-                                map2.put("sceneId", timePointList.get(k).getSence_index()-1);
+                                map2.put("sceneId", sceneId);
                                 map2.put("lightStatus", timePointParams.getLight_status());
                                 monitor4Dao.insertTimePoint(map2);
                             }
