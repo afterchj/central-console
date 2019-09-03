@@ -58,7 +58,7 @@
                     <a class="ellipsis am-list-title" href="javascript:void(0);">XXX项目中的网络</a>
                 </li>
                 <li ><a class="ellipsis" href="javascript:void(0);">网络列表</a></li>
-                <li ><a class="ellipsis" href="javascript:void(0);">组1很长的网络名网络组1很长的网络名网络</a></li>
+                <li ><a class="ellipsis" href="javascript:void(0);">88888888</a></li>
                 <li ><a class="ellipsis" href="javascript:void(0);">组2</a></li>
                 <li ><a class="ellipsis" href="javascript:void(0);">组3</a></li>
             </ul>
@@ -74,25 +74,19 @@
                     <div class="am-g timing-show-list">
                         <div class="col-sm-6 col-lg-6 left-timing-title">
                             <ul class="am-list am-list-static am-list-border no-margin">
-                                <li>
-                                    <p>TimeLine08</p>
-                                    <p>停用，不重复，周日，周一，周二，周三，周四，周五，周六</p>
-                                </li>
-                                <li>
-                                    <p>TimeLine09</p>
-                                    <p>停用，不重复，周日，周一，周二，周三</p>
+                                <li th:each="timeLine,timeLineStat:${timeLines}"
+                                    th:class="${timeLineStat.index==0 and timeLine!=null}?'active'" >
+                                    <input type="hidden" th:value="${timeLine.id}" name="id">
+                                    <p th:text="${timeLine.tname}"></p>
+                                    <p th:text="${timeLine.week}"></p>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-sm-5 col-lg-5 col-sm-offset-1 col-lg-offset-1 right-timing-detail">
                             <ul class="am-list am-list-static am-list-border  no-margin ">
-                                <li class="am-g">
-                                    <div class="col-sm-6 col-lg-6">01:00</div>
-                                    <div class="col-sm-6 col-lg-6">场景1</div>
-                                </li>
-                                <li class="am-g">
-                                    <div class="col-sm-6 col-lg-6">02:00</div>
-                                    <div class="col-sm-6 col-lg-6">场景2</div>
+                                <li class="am-g" th:each="timePoint:${timePoints}">
+                                    <div class="col-sm-6 col-lg-6" th:text="${timePoint.time}"></div>
+                                    <div class="col-sm-6 col-lg-6" th:text="${timePoint.sname}"></div>
                                 </li>
                             </ul>
                         </div>
@@ -110,7 +104,26 @@
 <script th:src="@{/static/AmazeUI/js/amazeui.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/poeConsole/js/common.js}" type="text/javascript"></script>
 <script>
-
+    $(".left-timing-title li").click(function () {
+        var tsid = $(this).find('input').val();
+        $.post("/control/timePointList",{"tsid":tsid},function (data) {
+//            var timePoints = [];
+            var timePoints = data.timePoints;
+            $(".right-timing-detail").empty();
+            if (timePoints.length>0){
+//                console.log(timePoints);
+                var ul = '<ul class="am-list am-list-static am-list-border  no-margin ">';
+                $.each(timePoints,function (key,value) {
+                    ul += '<li class="am-g">' +
+                            '<div class="col-sm-6 col-lg-6">'+value.time+'</div>' +
+                            '<div class="col-sm-6 col-lg-6">'+value.sname+'</div>' +
+                            '</li>';
+                })
+                ul += '</ul>';
+                $(".right-timing-detail").append(ul);
+            }
+        });
+    });
 </script>
 </body>
 </html>
