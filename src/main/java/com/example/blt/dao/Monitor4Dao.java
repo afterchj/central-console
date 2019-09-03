@@ -65,6 +65,6 @@ public interface Monitor4Dao {
     void insertTimeLine(Map<String, Object> map);
 
 
-    @Insert("insert into f_time_point (tsid,sid,time,hour,minute,light_status,create_date,update_date) values (#{id},#{sid},#{time},#{hour},#{minute},#{lightStatus},NOW(),NOW())")
+    @Insert("insert into f_time_point (tsid,scene_id,time,hour,minute,light_status,create_date,update_date) values (#{id},#{sceneId},#{time},#{hour},#{minute},#{lightStatus},NOW(),NOW())")
     void insertTimePoint(Map<String, Object> map);
 }
