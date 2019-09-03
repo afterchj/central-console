@@ -15,14 +15,15 @@
     text-align: center;
 }
 .leftNav-list li.active{
-    background-color: #445164;
+    background-color:#1C3B50;
 }
 .leftNav-background {
-    background-color: #55677B;
+    background-color: #244964;
 }
 
 .leftNav-background li, .leftNav-background li a {
     color: #fff;
+    opacity: .95;
 }
 
 .am-nav-divider {
@@ -34,7 +35,10 @@
 }
 
 .leftNav-list img {
-    /*width: 25%;*/
+    width: 2.2rem;
+    /* height: 2.2rem; */
+    /* height: auto; */
+    margin: .5rem;
 }
 
 .am-with-topbar-fixed-top {
@@ -49,7 +53,7 @@
     margin: 0;
     height: auto;
     /*min-height: 700px;*/
-    background-color: #DCE4EE;
+    background-color: transparent;
 }
 
 .topNav .am-breadcrumb {
@@ -85,21 +89,29 @@
 
 .leftNav-list .am-nav-header {
     padding: .4em .3em;
-}
 
+}
+.leftNav2 a.am-list-title{
+    color: #3a3a3a;
+    font-weight: bold;
+}
 .leftNav2 {
-    background-color: #fff;
-    color: #555;
+    background-color:#F7F7F7;
+    color: #5d5d5d;
+    -webkit-box-shadow: 4px 0px 5px #eaeaea;
+    box-shadow: 4px 0px 5px #eaeaea;
+    z-index: 999;
 }
 
 .leftNav2 .am-nav li.active {
-    background-color: #EDF2FF;
+    background-color:#D8DDE1;
 }
-
+.leftNav2 .am-nav li{
+    padding: .4rem;
+}
 .leftNav2 a {
-    color: #333;
+    color: #474747;
     font-size: 1.3rem;
-    padding: 1rem !important;
     text-align: center;
 }
 

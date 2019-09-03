@@ -74,23 +74,23 @@
                 <header class="am-panel-hd">
                     <h3 class="am-panel-title">网络1的定时详情</h3>
                 </header>
-                <div class="am-panel-bd">
-                    <div class="am-g timing-show-list">
-                        <div class="col-sm-6 col-lg-6 left-timing-title">
-                            <ul class="am-list am-list-static am-list-border no-margin">
+                <div class="am-panel-bd no-margin no-padding">
+                    <div class="am-g timing-show-list no-margin no-padding">
+                        <div class="col-sm-6 col-lg-6 left-timing-title no-margin no-padding">
+                            <ul class="am-list am-list-static am-list-border no-margin no-padding">
                                 <li th:each="timeLine,timeLineStat:${timeLines}"
                                     th:class="${timeLineStat.index==0 and timeLine!=null}?'active'" >
                                     <input type="hidden" th:value="${timeLine.id}" name="id">
-                                    <p th:text="${timeLine.tname}"></p>
+                                    <p class="first" th:text="${timeLine.tname}"></p>
                                     <p th:text="${timeLine.week}"></p>
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-sm-5 col-lg-5 col-sm-offset-1 col-lg-offset-1 right-timing-detail">
-                            <ul class="am-list am-list-static am-list-border  no-margin ">
-                                <li class="am-g" th:each="timePoint:${timePoints}">
-                                    <div class="col-sm-6 col-lg-6" th:text="${timePoint.time}"></div>
-                                    <div class="col-sm-6 col-lg-6" th:text="${timePoint.sname}"></div>
+                        <div class="col-sm-5 col-lg-5 col-sm-offset-1 col-lg-offset-1 right-timing-detail" th:alt="${timePoints}">
+                            <ul class="am-list am-list-static am-list-border  no-margin  ">
+                                <li class="am-g no-padding" th:each="timePoint:${timePoints}" >
+                                    <div class="col-sm-4 col-lg-4 t-center right-line padding-1" th:text="${timePoint.time}"></div>
+                                    <div class="col-sm-8 col-lg-8 padding-1 " th:text="${timePoint.sname}"></div>
                                 </li>
                             </ul>
                         </div>
