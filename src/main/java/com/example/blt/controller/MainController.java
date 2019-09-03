@@ -10,10 +10,12 @@ import com.example.blt.entity.TimerList;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
 import com.example.blt.service.CacheableService;
+import com.example.blt.service.RedisService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.ui.ModelMap;
@@ -39,6 +41,9 @@ public class MainController {
     private GuavaCacheManager guavaCacheManager;
     @Resource
     private BLTService blTservice;
+
+    @Autowired
+    private RedisService redisService;
 
     @Resource
     private Monitor4Dao monitor4Dao;
@@ -251,6 +256,8 @@ public class MainController {
                             map2.put("time", timePointList.get(k).getTime());
                             map2.put("sceneId", sceneId);
                             map2.put("lightStatus", timePointList.get(k).getLight_status());
+                            JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+                            redisService.pushMsg(jsonObject);
                             monitor4Dao.insertTimePoint(map2);
                         } else {
                             List<TimePointParams> detailvalueList = timePointList.get(k).getDetailvalueList();
@@ -264,6 +271,8 @@ public class MainController {
                                 map2.put("time", timePointParams.getTime());
                                 map2.put("sceneId", sceneId);
                                 map2.put("lightStatus", timePointParams.getLight_status());
+                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+                                redisService.pushMsg(jsonObject);
                                 monitor4Dao.insertTimePoint(map2);
                             }
                         }
