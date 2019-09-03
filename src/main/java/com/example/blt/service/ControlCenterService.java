@@ -64,6 +64,23 @@ public class ControlCenterService {
     }
 
     public  List<TimePoint> getTimePointByTsid(Integer tsid) {
-        return controlCenterDao.getTimePointByTsid(tsid);
+        List<TimePoint> timePoints = controlCenterDao.getTimePointByTsid(tsid);
+        StringBuffer sb;
+        for (TimePoint timePoint:timePoints){
+            Integer scene_id = timePoint.getScene_id();
+            switch (scene_id){
+                case 21:
+                    timePoint.setSname("ALL OFF");
+                    break;
+                case 22:
+                    timePoint.setSname("ALL ON");
+                    break;
+                default:
+                    sb = new StringBuffer();
+                    timePoint.setSname(sb.append("场景").append(scene_id).toString());
+                    break;
+            }
+        }
+        return timePoints;
     }
 }
