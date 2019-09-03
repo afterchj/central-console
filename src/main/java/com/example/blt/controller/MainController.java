@@ -241,6 +241,7 @@ public class MainController {
                     map2.put("week", timerListList.get(j).getTimerLine().getWeek());
                     map2.put("dayObj", JSON.toJSONString(timerListList.get(j).getTimerLine().getDayObj()));
                     map2.put("tname", timerListList.get(j).getTimerLine().getTname());
+                    map2.put("tid",timerListList.get(j).getTimerLine().getTid());
                     map2.put("repetition", timerListList.get(j).getTimerLine().getRepetition());
                     map2.put("item_tag", timerListList.get(j).getTimerLine().getItem_tag());
                     monitor4Dao.insertTimeLine(map2);
