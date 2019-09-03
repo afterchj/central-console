@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Title</title>-->
+<!--</head>-->
+<body>
+<!--<div class="sidebar"  >-->
+<ul class="am-nav  leftNav-list leftNav-background p-r" th:fragment="left(list)">
+    <li class="am-nav-header">
+        <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/console.png}" alt="">
+        <p class="">POE控制台</p>
+    </li>
+    <li class="am-nav-divider"></li>
+    <li th:if="${list}=='device'" class="active">
+        <a th:href="@{/poeConsole/device}">
+            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/device.png}" alt="">
+            <p class="">我的设备</p>
+        </a>
+    </li>
+    <li th:if="${list}!='device'" >
+        <a th:href="@{/poeConsole/device}">
+            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/device.png}" alt="">
+            <p class="">我的设备</p>
+        </a>
+    </li>
+    <li th:if="${list}=='index'" class="active">
+        <a th:href="@{/poeConsole/index}">
+            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/group-control.png}" alt="">
+            <p class="">群控</p>
+        </a>
+    </li>
+    <li th:if="${list}!='index'">
+        <a th:href="@{/poeConsole/index}">
+            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/group-control.png}" alt="">
+            <p class="">群控</p>
+        </a>
+    </li>
+    <li th:if="${list}=='timing'" class="active">
+        <a th:href="@{/poeConsole/timing}">
+            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/timing.png}" alt="">
+            <p class="">定时</p>
+        </a>
+    </li>
+    <li th:if="${list}!='timing'" >
+        <a th:href="@{/poeConsole/timing}">
+            <img class="am-vertical-align-middle" th:src="@{/static/img/poeConsole/timing.png}" alt="">
+            <p class="">定时</p>
+        </a>
+    </li>
+    <li class="to-bottom-2 p-a">
+        <a >
+            <img th:src="@{/static/poeConsole/img/user.png}" alt="">
+            <p class="">Admin</p>
+        </a>
+    </li>
+    <li class="to-bottom-1 p-a">
+        <a th:href="@{/control/login}">
+            <img th:src="@{/static/poeConsole/img/exit3.png}" alt="">
+            <p class="" >退出</p>
+        </a>
+    </li>
+</ul>
+<!--</div>-->
+</body>
+</html>

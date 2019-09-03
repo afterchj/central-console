@@ -1,0 +1,108 @@
+#poeConsole, #poeConsole .content.am-g, .leftNav, .topNav, .leftNav-list {
+    height: 100%;
+}
+
+.am-container {
+    max-width: none;
+    margin: 0;
+}
+
+.leftNav-list {
+    padding: .4rem 0;
+}
+
+.leftNav-list li {
+    text-align: center;
+}
+.leftNav-list li.active{
+    background-color: #445164;
+}
+.leftNav-background {
+    background-color: #55677B;
+}
+
+.leftNav-background li, .leftNav-background li a {
+    color: #fff;
+}
+
+.am-nav-divider {
+    margin: 0 1em !important;
+}
+
+.leftNav-list p {
+    margin: 0;
+}
+
+.leftNav-list img {
+    /*width: 25%;*/
+}
+
+.am-with-topbar-fixed-top {
+    padding-top: auto;
+}
+
+.topNav {
+    /*margin-left: calc(16.66667% - 1.9rem);*/
+    /*width: calc(100% - (16.66667% - 3rem));*/
+    /*background-color: #fff;*/
+    padding: 0;
+    margin: 0;
+    height: auto;
+    /*min-height: 700px;*/
+    background-color: #DCE4EE;
+}
+
+.topNav .am-breadcrumb {
+    background-color: #fff;
+    border-radius: 0;
+    padding: 1rem .5rem;
+}
+
+.am-topbar-fixed-top {
+    top: 0;
+    left: 13.66667%;
+    width: 100%;
+    /* padding-left: 0; */
+    margin-left: -0.3rem !important;
+    background-color: #fff;
+}
+
+.am-topbar-fixed-top-left {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    -webkit-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    /* margin-left: -1.5rem !important; */
+    /* padding-right: 0; */
+    background-color: #55677B;
+    padding: 0;
+}
+
+.leftNav-list .am-nav-header {
+    padding: .4em .3em;
+}
+
+.leftNav2 {
+    background-color: #fff;
+    color: #555;
+}
+
+.leftNav2 .am-nav li.active {
+    background-color: #EDF2FF;
+}
+
+.leftNav2 a {
+    color: #333;
+    font-size: 1.3rem;
+    padding: 1rem !important;
+    text-align: center;
+}
+
+.leftNav2 a:hover {
+    background-color: #EDF2FF;
+}
