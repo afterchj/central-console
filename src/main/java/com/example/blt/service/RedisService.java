@@ -32,7 +32,6 @@ public class RedisService {
     public void consumeMsg(String msg) {
         try {
             JSONObject object = JSONObject.parseObject(msg);
-            logger.warn("收到消息{}", object);
             int item_set = object.getInteger("item_set");
             CronVo cronVo = new CronVo();
             cronVo.setMinute(object.getString("minute"));

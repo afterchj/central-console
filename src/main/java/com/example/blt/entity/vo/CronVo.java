@@ -80,7 +80,7 @@ public class CronVo {
 
     public String getCron() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(" " + second);
+        stringBuilder.append(second);
         stringBuilder.append(" " + minute);
         stringBuilder.append(" " + hour);
         stringBuilder.append(" " + "? *");
