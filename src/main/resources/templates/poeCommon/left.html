@@ -37,27 +37,26 @@
         </a>
     </li>
     <li th:if="${list}=='timing'" class="active">
-        <a th:href="@{/poeConsole/timing}">
+        <a th:href="@{/control/timer}">
             <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/timing.png}" alt="">
             <p class="">定时</p>
         </a>
     </li>
     <li th:if="${list}!='timing'" >
-        <a th:href="@{/poeConsole/timing}">
-            <img class="am-vertical-align-middle" th:src="@{/static/img/poeConsole/timing.png}" alt="">
+        <a th:href="@{/control/timer}">
+            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/timing.png}" alt="">
             <p class="">定时</p>
         </a>
     </li>
     <li class="to-bottom-2 p-a">
-        <a >
-            <img th:src="@{/static/poeConsole/img/user.png}" alt="">
-            <p class="">Admin</p>
+        <a   >
+            <img  th:src="@{/static/poeConsole/img/project.png}" alt="">
+            <p class="">XX项目</p>
         </a>
     </li>
     <li class="to-bottom-1 p-a">
         <a th:href="@{/control/login}">
-            <img th:src="@{/static/poeConsole/img/exit3.png}" alt="">
-            <p class="" >退出</p>
+            <img th:src="@{/static/poeConsole/img/set.png}" alt="">
         </a>
     </li>
 </ul>

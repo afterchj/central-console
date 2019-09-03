@@ -23,13 +23,22 @@ body {
 .no-padding {
     padding: 0;
 }
+.am-list-title{
+    font-weight: bold;
+}
+.leftNav2 .am-nav li:first-child.active{
+    background-color: transparent;
+}
 /*.to-bottom-1{*/
     /*bottom: 1rem;*/
 /*}*/
 /*.to-bottom-2{*/
     /*bottom: 5rem;*/
 /*}*/
-
+.am-nav > li.p-a{
+    position: absolute;
+    width: 100%;
+}
 
 .line-clamp-1 {
     overflow: hidden;
@@ -101,7 +110,7 @@ and (-webkit-min-device-pixel-ratio: 1.5) {
 
 /* Portrait ipadPro竖屏 */
 @media only screen
-and (min-device-width: 1024px)
+and (min-device-width: 1025px)
 and (max-device-width: 1366px)
 and (orientation: portrait)
 and (-webkit-min-device-pixel-ratio: 1.5) {
@@ -113,7 +122,7 @@ and (-webkit-min-device-pixel-ratio: 1.5) {
 
 /* Landscape ipadPro横屏 */
 @media only screen
-and (min-device-width: 1024px)
+and (min-device-width: 1025px)
 and (max-device-width: 1366px)
 and (orientation: landscape)
 and (-webkit-min-device-pixel-ratio: 1.5) {
