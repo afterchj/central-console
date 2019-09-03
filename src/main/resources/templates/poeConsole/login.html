@@ -72,7 +72,7 @@
 </head>
 <body>
 <div class="am-container " id="poeConsole">
-    <div class="login">
+    <div class="login ">
         <!--<div class="col-sm-1 col-lg-1 no-padding leftNav">-->
         <!--<div th:replace="poeCommon/left::left('index')" ></div>-->
         <!--</div>-->
@@ -80,44 +80,65 @@
         <!--<nav th:replace="poeCommon/head::head"  class=""></nav>-->
         <!--<div></div>-->
         <!--</div>-->
-        <section class="am-panel am-panel-default">
-            <header class="am-panel-hd">
-                <div class="am-g login-title">
-                    <div class="col-sm-6 col-lg-6 no-padding">
-                        <img th:src="@{/static/img/console.png}" alt=""/>
-                    </div>
-                    <div class="col-sm-6 col-lg-6 no-padding"> <p class="am-text-sm">POE控制台</p></div>
-                </div>
 
 
-            </header>
-            <div class="am-panel-bd">
-                <form class="am-form" action="/control/toLogin" method="post">
-                    <fieldset>
-                        <div class="am-input-group am-form-group">
-                            <span class="am-input-group-label"><i class="am-icon-user"></i></span>
-                            <input type="text" class="am-form-field" placeholder="Username">
-                        </div>
-
-                        <div class="am-input-group am-form-group">
-                            <span class="am-input-group-label"><i class="am-icon-lock"></i></span>
-                            <input type="text" class="am-form-field" placeholder="Password">
-                        </div>
-                        <div class="am-form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="am-btn am-btn-default">提交登入</button>
+            <section class="am-panel am-panel-default">
+                <div class="am-panel-bd am-g">
+                    <div class="col-sm-6 col-lg-6 no-margin ">
+                        <div class="am-cf logo am-center am-vertical-align-middle">
+                            <div class="am-fl">
+                                <img th:src="@{/static/poeConsole/img/console.png}" alt="">
                             </div>
+                            <div class="am-fl"><p>群控中心</p></div>
                         </div>
-                    </fieldset>
-                </form>
+                    </div>
+                    <div class="col-sm-6 col-lg-6 no-margin  form-login">
+                        <form class="am-form am-form-horizontal" action="/control/toLogin" method="post">
+                            <fieldset>
+                                <div class="am-input-group am-form-group">
+                                    <span class="am-input-group-label"><i class="am-icon-user"></i></span>
+                                    <input type="text" class="am-form-field" placeholder="用户名">
+                                </div>
+                                <div class="am-input-group am-form-group am-input-group-seconday">
+                                    <span class="am-input-group-label"><i class="am-icon-lock"></i></span>
+                                    <input  type="password" class="am-form-field" placeholder="登录密码">
+                                </div>
+                                <!--<div class="am-form-group">-->
 
-            </div>
-        </section>
-        <!--<div class="col-sm-6 col-lg-6">-->
+                                    <!--&lt;!&ndash;<span class="am-input-group-label"></span>&ndash;&gt;-->
+                                    <!--<label for="doc-ipt-pwd-2" class="col-sm-2 am-form-label"><i class="am-icon-lock"></i></label>-->
+                                    <!--<div class="col-sm-10">-->
+                                        <!--<input id="doc-ipt-pwd-2" type="password" class="am-form-field" placeholder="登录密码">-->
+                                    <!--</div>-->
 
-        <!--</div>-->
-        <!--<div class="col-sm-6 col-lg-6">-->
+                                <!--</div>-->
+                                <div class="am-form-group am-text-center">
+                                    <!--<div class="col-sm-offset-2 col-sm-10">-->
+                                    <button type="submit" class="am-btn am-btn-secondary am-btn-sm"  >提交登入</button>
+                                    <!--</div>-->
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </section>
 
+        <!--<div class="col-sm-6 col-lg-6 no-margin no-padding">-->
+            <!--<section class="am-panel am-panel-default">-->
+                <!--&lt;!&ndash;<header class="am-panel-hd">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="am-g login-title">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="col-sm-6 col-lg-6 no-padding">&ndash;&gt;-->
+                <!--&lt;!&ndash;<img th:src="@{/static/poeConsole/img/console.png}" alt=""/>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="col-sm-6 col-lg-6 no-padding am-vertical-align-middle"> <p class="am-text-sm">POE控制台</p></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+                <!--&lt;!&ndash;</header>&ndash;&gt;-->
+                <!--<div class="am-panel-bd">-->
+                  <!---->
+                <!--</div>-->
+            <!--</section>-->
         <!--</div>-->
     </div>
 </div>

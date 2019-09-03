@@ -12,7 +12,7 @@ public class CronVo {
     private int repetition;
     private int item_set;
     private String meshId;
-    private int scene_index;
+    private int sceneId;
 
     public String getMeshId() {
         return meshId;
@@ -22,12 +22,12 @@ public class CronVo {
         this.meshId = meshId;
     }
 
-    public int getScene_index() {
-        return scene_index;
+    public int getSceneId() {
+        return sceneId;
     }
 
-    public void setScene_index(int scene_index) {
-        this.scene_index = scene_index;
+    public void setSceneId(int sceneId) {
+        this.sceneId = sceneId;
     }
 
     public String getSecond() {
@@ -80,7 +80,7 @@ public class CronVo {
 
     public String getCron() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(" " + second);
+        stringBuilder.append(second);
         stringBuilder.append(" " + minute);
         stringBuilder.append(" " + hour);
         stringBuilder.append(" " + "? *");

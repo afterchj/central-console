@@ -14,28 +14,34 @@ body {
 .no-margin {
     margin: 0;
 }
-.p-a{
+
+.p-a {
     position: absolute;
 }
-.p-r{
+
+.p-r {
     position: relative;
 }
+
 .no-padding {
     padding: 0;
 }
-.am-list-title{
+
+.am-list-title {
     font-weight: bold;
 }
-.leftNav2 .am-nav li:first-child.active{
+
+.leftNav2 .am-nav li:first-child.active {
     background-color: transparent;
 }
+
 /*.to-bottom-1{*/
-    /*bottom: 1rem;*/
+/*bottom: 1rem;*/
 /*}*/
 /*.to-bottom-2{*/
-    /*bottom: 5rem;*/
+/*bottom: 5rem;*/
 /*}*/
-.am-nav > li.p-a{
+.am-nav > li.p-a {
     position: absolute;
     width: 100%;
 }
@@ -48,23 +54,35 @@ body {
     -webkit-box-orient: vertical;
 }
 
-/*单行文本溢出显示省略号*/
-.ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
+.am-btn {
+    cursor: pointer;
+    word-wrap: normal;
     white-space: nowrap;
-    /*width: 130 px;*/
-    /*background-color: red;*/
+    /* box-shadow: inset 0 1px 0 rgba(255,255,255,0.5); */
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(#6dbde4, #399dd8);
+}
+
+.am-btn:hover {
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(#399dd8, #399dd8);
+}
+
+fieldset {
+    margin: 0;
 }
 
 .topNav .am-panel-default > .am-panel-hd {
     background-color: #fff;
 
 }
-.topNav .am-panel-default > .am-panel-hd .am-panel-title{
+
+.topNav .am-panel-default > .am-panel-hd .am-panel-title {
     font-size: 1.4rem;
 }
-.topNav .am-panel-default > .am-panel-hd .am-panel-title:before{
+
+.topNav .am-panel-default > .am-panel-hd .am-panel-title:before {
     content: '';
     display: inline-block;
     width: .2rem;
@@ -74,6 +92,7 @@ body {
     line-height: 20px;
     margin: .4rem;
 }
+
 /* 判断ipad */
 @media only screen
 and (min-device-width: 768px)
@@ -86,16 +105,17 @@ and (max-device-width: 1024px) {
 and (min-device-width: 768px)
 and (max-device-width: 1024px)
 and (orientation: landscape) {
-    .topNav .am-panel-default{
+    .topNav .am-panel-default {
         min-height: 768px !important;
     }
 }
+
 /* ipad竖屏 */
 @media only screen
-and (min-device-width : 768px)
-and (max-device-width : 1024px)
-and (orientation : portrait){
-    .topNav .am-panel-default{
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: portrait) {
+    .topNav .am-panel-default {
         min-height: 1024px !important;
     }
 }
@@ -114,11 +134,10 @@ and (min-device-width: 1025px)
 and (max-device-width: 1366px)
 and (orientation: portrait)
 and (-webkit-min-device-pixel-ratio: 1.5) {
-    .topNav .am-panel-default{
+    .topNav .am-panel-default {
         min-height: 1366px !important;
     }
 }
-
 
 /* Landscape ipadPro横屏 */
 @media only screen
@@ -126,7 +145,7 @@ and (min-device-width: 1025px)
 and (max-device-width: 1366px)
 and (orientation: landscape)
 and (-webkit-min-device-pixel-ratio: 1.5) {
-    .topNav .am-panel-default{
+    .topNav .am-panel-default {
         min-height: 1024px !important;
     }
 }
