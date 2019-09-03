@@ -1,5 +1,5 @@
 .login{
-    width: 50%;
+    width: 60%;
     margin: 10% auto;
 }
 .login-title{
@@ -7,4 +7,48 @@
 }
 .login-title p{
     margin: 0;
+}
+.login  .am-form-group:first-child{
+    margin-top:2.5rem;
+}
+.login .am-panel-bd{
+    padding: 0;
+    background-color: #55677B;
+}
+.login .form-login{
+background-color: #fff;
+}
+.login form input[type=text], .am-form input[type=password]{
+    border: 1px solid transparent;
+    /*border-bottom-color: #ccc;*/
+    height: 100%;
+    font-size: 1.2rem;
+    background-color: transparent;
+    color: #999;
+    padding: .6rem 0;
+}
+.login .am-input-group-label{
+    background-color: transparent;
+    border: 1px solid transparent;
+    /*border-bottom-color: #ccc;*/
+    font-size: 1.5rem;
+    color: #999;
+    padding: .6rem 1rem;
+}
+.login .am-form-group{
+    border-bottom:1px solid  #ccc;
+}
+.login .am-form-group:last-child{
+    border-bottom-width: 0;
+}
+.logo{
+    color: #fff;
+    font-size: 1.4rem;
+    margin-top: 30%;
+    margin-left: 25%;
+    left: 50%;
+    top: 50%;
+}
+.logo p{
+    margin: .4rem 1rem;
 }
