@@ -52,7 +52,7 @@ public class StringBuildUtils {
             } else if (str.indexOf("77011366") != -1) {
                 ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                 ipSet.add(ip);
-                String lmac = str.substring(16, 28).toLowerCase();
+                String lmac = str.substring(16, 28);
                 String vaddr = str.substring(28, 36);
                 String productId = str.substring(36, 44);
                 map.put("vaddr", vaddr);
@@ -96,7 +96,7 @@ public class StringBuildUtils {
                 sortMac.append(strArr[i]);
             }
         }
-        return sortMac.toString();
+        return sortMac.toString().toLowerCase();
     }
 
     public static void tempFormat(String format, String ip) {
