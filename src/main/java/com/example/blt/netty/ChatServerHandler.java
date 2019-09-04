@@ -62,7 +62,12 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         buffer.append(chars[i]);
                     }
                 }
-                insertOrUpdateHost(channel, buffer.toString());
+                insertOrUpdateHost(channel, buffer.toString(),"");
+            }
+            if (arg1.indexOf("77050705") != -1) {
+                cmd = "77050103";
+                String mac = arg1.substring(8, 20);
+                insertOrUpdateHost(channel,"", mac);
             }
             if (host.equals(master)) {
                 to = "master";
@@ -113,6 +118,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
+        channel.writeAndFlush("77050105CCCC");
         group.add(channel);
     }
 
@@ -127,14 +133,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
         channel.writeAndFlush("77050101CCCC");
-        insertOrUpdateHost(channel, "");
+        insertOrUpdateHost(channel, "","");
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        insertOrUpdateHost(channel, "");
+        insertOrUpdateHost(channel, "","");
     }
 
     @Override
@@ -143,7 +149,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         ctx.close().sync();
     }
 
-    private void insertOrUpdateHost(Channel channel, String meshId) {
+    private void insertOrUpdateHost(Channel channel, String meshId, String mac) {
         logger.warn("hostId [{}] meshId [{}] status [{}]", channel.id(), meshId, channel.isActive());
         Map map = new ConcurrentHashMap();
         String addr = channel.remoteAddress().toString();
@@ -152,6 +158,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         map.put("status", channel.isActive());
         if (StringUtils.isNotBlank(meshId)) {
             map.put("meshId", meshId);
+        }
+        if (StringUtils.isNotBlank(mac)) {
+            map.put("mac", mac);
         }
         try {
             ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
