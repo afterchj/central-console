@@ -72,7 +72,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 //        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len < 43) {
+        if (len > 9 && len < 47) {
             logger.warn("ip[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             ExecuteTask.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
@@ -95,8 +95,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     }
                 }
             }
-        }
-        if (len >= 22) {
+        } else {
             if (arg1.indexOf("CCCC") != -1) {
 //                StrUtil.buildLightInfo(host, arg1);
                 ExecuteTask.pingInfo(host, arg1);
