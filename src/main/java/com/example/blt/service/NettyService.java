@@ -65,7 +65,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                         if (osize == size) {
                             logger.warn("ip[{}] old_ize[{}] current_size[{}]", ip, osize, size);
                             ipSet.remove(ip);
-                            updateLight(params);
+                            updateLight(params, false);
                         }
                     }
                     ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
@@ -75,7 +75,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                         for (String ip : ipSet) {
                             params.put("ip", ip);
                             params.put("list", vaddrSet);
-                            updateLight(params);
+                            updateLight(params, false);
                         }
                         ipSet.clear();
                     }
@@ -95,10 +95,14 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         }
     }
 
-    private void updateLight(Map params) {
-        try {
-            ProducerService.pushMsg(Topics.UPDATE_TOPIC.getTopic(), JSON.toJSONString(params));
-        } catch (Exception e) {
+    private void updateLight(Map params, boolean flag) {
+        if (flag) {
+            try {
+                ProducerService.pushMsg(Topics.UPDATE_TOPIC.getTopic(), JSON.toJSONString(params));
+            } catch (Exception e) {
+                sqlSessionTemplate.update("console.saveUpdate", params);
+            }
+        } else {
             sqlSessionTemplate.update("console.saveUpdate", params);
         }
     }

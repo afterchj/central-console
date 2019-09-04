@@ -6,6 +6,7 @@ import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
+import com.example.blt.utils.StringBuildUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -62,7 +63,12 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         buffer.append(chars[i]);
                     }
                 }
-                insertOrUpdateHost(channel, buffer.toString());
+                insertOrUpdateHost(channel, buffer.toString(), "");
+            }
+            if (arg1.indexOf("77050705") != -1) {
+                cmd = "77050103";
+                String mac = StringBuildUtils.sortMac(arg1.substring(8, 20));
+                insertOrUpdateHost(channel, "", mac);
             }
             if (host.equals(master)) {
                 to = "master";
@@ -80,7 +86,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (cmd.indexOf("77050103") == -1) {
                 logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
             }
-            ExecuteTask.parseLocalCmd(cmd, to);
+            StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
                 if (address != null) {
@@ -113,6 +119,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
+        channel.writeAndFlush("77050105CCCC");
         group.add(channel);
     }
 
@@ -127,14 +134,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
         channel.writeAndFlush("77050101CCCC");
-        insertOrUpdateHost(channel, "");
+        insertOrUpdateHost(channel, "", "");
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        insertOrUpdateHost(channel, "");
+        insertOrUpdateHost(channel, "", "");
     }
 
     @Override
@@ -143,8 +150,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         ctx.close().sync();
     }
 
-    private void insertOrUpdateHost(Channel channel, String meshId) {
-        logger.warn("hostId [{}] meshId [{}] status [{}]", channel.id(), meshId, channel.isActive());
+    private void insertOrUpdateHost(Channel channel, String meshId, String mac) {
+        logger.warn("hostId [{}] meshId [{}] mac [{}] status [{}]", channel.id(), meshId, mac, channel.isActive());
         Map map = new ConcurrentHashMap();
         String addr = channel.remoteAddress().toString();
         map.put("ip", addr.substring(1, addr.indexOf(":")));
@@ -153,9 +160,20 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (StringUtils.isNotBlank(meshId)) {
             map.put("meshId", meshId);
         }
-        try {
-            ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
-        } catch (Exception e) {
+        if (StringUtils.isNotBlank(mac)) {
+            map.put("mac", mac);
+        }
+        saveHost(map, false);
+    }
+
+    public void saveHost(Map map, boolean flag) {
+        if (flag) {
+            try {
+                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (Exception e) {
+                sqlSessionTemplate.insert("console.saveUpdateHosts", map);
+            }
+        } else {
             sqlSessionTemplate.insert("console.saveUpdateHosts", map);
         }
     }

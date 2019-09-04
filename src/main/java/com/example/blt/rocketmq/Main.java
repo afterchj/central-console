@@ -13,7 +13,7 @@ public class Main {
 //    }
 
     public static void consumerMsg() {
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("consumer_group");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("cloud_consumer_group");
         consumer.setInstanceName("consumer_mq");
         consumer.setVipChannelEnabled(false);
         consumer.setNamesrvAddr("119.3.49.192:9876");

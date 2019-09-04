@@ -48,15 +48,11 @@ public class StringBuildUtils {
                 map.put("vaddr", vaddr);
                 map.put("x", x);
                 map.put("y", y);
-                try {
-                    ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-                } catch (Exception e) {
-                    sqlSessionTemplate.selectOne("console.saveLight", map);
-                }
+                saveLight(map, false);
             } else if (str.indexOf("77011366") != -1) {
                 ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                 ipSet.add(ip);
-                String lmac = str.substring(16, 28).toLowerCase();
+                String lmac = str.substring(16, 28);
                 String vaddr = str.substring(28, 36);
                 String productId = str.substring(36, 44);
                 map.put("vaddr", vaddr);
@@ -66,11 +62,7 @@ public class StringBuildUtils {
                 lmacSet.add(mac);
                 ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
-                try {
-                    ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-                } catch (Exception e) {
-                    sqlSessionTemplate.selectOne("console.saveLight", map);
-                }
+                saveLight(map, false);
             } else {
                 tempFormat(str, ip);
             }
@@ -104,7 +96,7 @@ public class StringBuildUtils {
                 sortMac.append(strArr[i]);
             }
         }
-        return sortMac.toString();
+        return sortMac.toString().toLowerCase();
     }
 
     public static void tempFormat(String format, String ip) {
@@ -185,13 +177,41 @@ public class StringBuildUtils {
                 break;
         }
         if (!map.containsKey("ctype")) return;
-        try {
-            String info = JSON.toJSONString(map);
-            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
-        } catch (Exception e) {
-            sqlSessionTemplate.selectOne("console.saveConsole", map);
-            WebSocket.sendMessage(map);
+        saveConsole(map, false);
+    }
+
+    public static void parseLocalCmd(String str, String ip) {
+        Map map = new ConcurrentHashMap();
+        String prefix = str.substring(0, 8);
+        if (str.contains("3232")) {
+            map.put("status", 0);
+        } else {
+            map.put("status", 1);
         }
+        map.put("host", ip);
+        String cmd = str.substring(prefix.length());
+        Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
+        switch (prefix) {
+            case "77010416":
+                map.put("ctype", "CW");
+                map.put("x", cmd.substring(2, 4));
+                map.put("y", cmd.substring(4, 6));
+                map.put("cid", cid);
+                break;
+            case "77010315":
+                map.put("ctype", "C0");
+                map.put("x", cmd.substring(0, 2));
+                map.put("y", cmd.substring(2, 4));
+                break;
+            case "77010219":
+                map.put("ctype", "42");
+                map.put("cid", cid);
+                break;
+            default:
+                break;
+        }
+        if (!map.containsKey("ctype")) return;
+        saveConsole(map, false);
     }
 
     public static void formatStr(String str, String ip) {
@@ -216,10 +236,32 @@ public class StringBuildUtils {
                 }
                 break;
         }
-        try {
-            ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), JSON.toJSONString(map));
-        } catch (Exception e) {
+        saveConsole(map, false);
+    }
+
+    public static void saveLight(Map map, boolean flag) {
+        if (flag) {
+            try {
+                ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (Exception e) {
+                sqlSessionTemplate.selectOne("console.saveLight", map);
+            }
+        } else {
             sqlSessionTemplate.selectOne("console.saveConsole", map);
         }
+    }
+
+    public static void saveConsole(Map map, boolean flag) {
+        if (flag) {
+            try {
+                String info = JSON.toJSONString(map);
+                ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
+            } catch (Exception e) {
+                sqlSessionTemplate.selectOne("console.saveConsole", map);
+            }
+        } else {
+            sqlSessionTemplate.selectOne("console.saveConsole", map);
+        }
+        WebSocket.sendMessage(map);
     }
 }

@@ -25,10 +25,14 @@ public class StringBuildUtilsTest {
 
     @Test
     public void test() {
+        String key = String.format("task_%s_%s", "88888888", 1);
+        System.out.println(key);
+        String mac = StringBuildUtils.sortMac("7705070504456DD7ACF0CCCC".substring(8, 20));
+        System.out.println(mac);
         String space = "77 01 12 65 FF FF FF FF 2A 05 00 00 00 C0 00 37 37 00 00 00 00 CC CC ".replace(" ", "");
         String ping = "77 01 0A 65 FF FF FF FF FE 00 00 00 00 CC CC".replace(" ", "");
-//        logger.warn("str=" + ping + ",len=" + ping.length());
-//        logger.warn("str=" + space + ",len=" + space.length());
+        logger.warn("ping=" + ping + ",len=" + ping.length());
+        logger.warn("space=" + space + ",len=" + space.length());
         //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
         String c1 = "77 04 10 02 20 9D 01 00 00 C1 32 32 00 00 00 00 00 00 02 1E".replace(" ", "");
         String c0 = "77 04 0E 02 2A 9D 01 00 00 C0 00 37 37 00 00 00 00 09".replace(" ", "");
@@ -43,8 +47,8 @@ public class StringBuildUtilsTest {
         String pinStrB = "77011365FFFFFFFF2755010000711413000000000000CCCC";
         int len = CS.length();
         System.out.println(CS.substring(len-6,len-4)+"\t"+"77011265FFFFFFFF".length() + "\t" + "77011265FFFFFFFF2001000000".length());
-        StringBuildUtils.buildLightInfo("127.0.0.1",CS);
-        StringBuildUtils.buildLightInfo("127.0.0.1",C0);
+//        StringBuildUtils.buildLightInfo("127.0.0.1",CS);
+//        StringBuildUtils.buildLightInfo("127.0.0.1",C0);
 //        StringBuildUtils.tempFormat(str,"127.0.0.1");
 //        System.out.println(pinStrA.substring(16) + "\t" + pinStrB.length());
 //        String str = "F0ACD7009501".toLowerCase();

@@ -37,5 +37,4 @@ public class BLTService {
     public void saveHost(ConsoleVo consoleVo) {
         sqlSessionTemplate.update("console.saveHost", consoleVo);
     }
-
 }

@@ -5,6 +5,7 @@ import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.dao.NewMonitorDao;
 import com.example.blt.dao.WebCmdDao;
 import com.example.blt.entity.LightDemo;
+import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.NewMonitorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,9 @@ public class LightDemoTests {
 
     @Resource
     private Monitor4Dao monitor4Dao;
+
+    @Resource
+    private ControlCenterService controlCenterService;
 
     @Test
     public void test() {
@@ -115,5 +119,12 @@ public class LightDemoTests {
         System.out.println("Max rod value: " + getValue(values, rodLength));
    }
 
+   @Test
+    public void getGroups(){
+//       List<ControlMesh> controlGroups = controlCenterService.getControlGroups();
+//       Object o = JSONObject.toJSON(controlGroups);
+//
+//       System.out.println(controlGroups.toString());
+    }
 
 }
