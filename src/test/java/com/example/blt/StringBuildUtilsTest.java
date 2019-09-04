@@ -25,6 +25,8 @@ public class StringBuildUtilsTest {
 
     @Test
     public void test() {
+        String key = String.format("task_%s_%s", "88888888", 1);
+        System.out.println(key);
         String mac = StringBuildUtils.sortMac("7705070504456DD7ACF0CCCC".substring(8, 20));
         System.out.println(mac);
         String space = "77 01 12 65 FF FF FF FF 2A 05 00 00 00 C0 00 37 37 00 00 00 00 CC CC ".replace(" ", "");

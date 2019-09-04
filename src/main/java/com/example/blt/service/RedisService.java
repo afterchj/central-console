@@ -32,18 +32,20 @@ public class RedisService {
     public void consumeMsg(String msg) {
         try {
             JSONObject object = JSONObject.parseObject(msg);
+            String meshId = object.getString("meshId");
+            int sceneId = object.getInteger("sceneId");
             int item_set = object.getInteger("item_set");
+            int repetition = object.getInteger("repetition");
             CronVo cronVo = new CronVo();
             cronVo.setMinute(object.getString("minute"));
             cronVo.setHour(object.getString("hour"));
-            cronVo.setSceneId(object.getInteger("sceneId"));
             cronVo.setWeek(getWeek(object.getString("week")));
-            cronVo.setMeshId(object.getString("meshId"));
+            cronVo.setSceneId(sceneId);
+            cronVo.setMeshId(meshId);
             cronVo.setItem_set(item_set);
-            boolean flag = item_set == 0;
-            logger.warn("flag [{}]", flag);
-            if (flag) {
-                ScheduledFuture future = dynamicScheduledTask.futures.get(object.getString("meshId"));
+            String key = String.format("task_%s_%s", meshId, sceneId);
+            if (item_set == 0 || repetition == 0) {
+                ScheduledFuture future = dynamicScheduledTask.futures.get(key);
                 if (future != null) {
                     future.cancel(true);
                     logger.warn("isCancel [{}]" + future.isCancelled());
@@ -52,7 +54,7 @@ public class RedisService {
                 dynamicScheduledTask.configureTasks(cronVo);
             }
         } catch (Exception e) {
-            logger.error("cron error [] ", e);
+            logger.error("cron error [{}] ", e);
         }
     }
 
