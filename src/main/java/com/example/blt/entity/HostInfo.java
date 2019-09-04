@@ -28,6 +28,8 @@ public class HostInfo implements Serializable {
     private Boolean isMaster;
     @ColumnDefault("1")
     private Boolean isControl;
+    @Column(unique = true, length = 32)
+    private String mac;
     private String other;
     private Date log_date = new Date();
 

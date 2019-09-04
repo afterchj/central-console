@@ -31,6 +31,7 @@
         <parameter property="ip" mode="IN"/>
         <parameter property="meshId" mode="IN"/>
         <parameter property="hostId" mode="IN"/>
+        <parameter property="mac" mode="IN"/>
         <parameter property="status" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
@@ -102,7 +103,7 @@
     </insert>
 
     <select id="saveUpdateHosts" parameterMap="hostMapper" resultType="map" statementType="CALLABLE">
-        CALL saveUpdateHost(?,?,?,?,?)
+        CALL saveUpdateHost(?,?,?,?,?,?)
     </select>
 
     <select id="selectIn" parameterType="map" resultType="int">
@@ -141,4 +142,12 @@
             )
         </foreach>
     </insert>
+
+    <delete id="deleteTimerData" parameterType="map">
+            DELETE FROM f_time_point WHERE tsid IN (SELECT l.id from (SELECT id FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid}) AS l);
+             DELETE FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid};
+    </delete>
+
+
+
 </mapper>
