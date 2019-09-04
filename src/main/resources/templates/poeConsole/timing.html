@@ -71,7 +71,7 @@
 
             <section class="am-panel am-panel-default">
                 <header class="am-panel-hd">
-                    <h3 class="am-panel-title">网络1的定时详情</h3>
+                    <h3 class="am-panel-title"><span th:text="${mname}"></span><span>的定时详情</span></h3>
                 </header>
                 <div class="am-panel-bd no-margin no-padding">
                     <div class="am-g timing-show-list no-margin no-padding">
@@ -117,9 +117,9 @@
 //                console.log(timePoints);
                 var ul = '<ul class="am-list am-list-static am-list-border  no-margin ">';
                 $.each(timePoints,function (key,value) {
-                    ul += '<li class="am-g">' +
-                            '<div class="col-sm-6 col-lg-6">'+value.time+'</div>' +
-                            '<div class="col-sm-6 col-lg-6">'+value.sname+'</div>' +
+                    ul += '<li class="am-g no-padding">' +
+                            '<div class="col-sm-4 col-lg-4 t-center right-line padding-1">'+value.time+'</div>' +
+                            '<div class="col-sm-8 col-lg-8 padding-1 ">'+value.sname+'</div>' +
                             '</li>';
                 })
                 ul += '</ul>';

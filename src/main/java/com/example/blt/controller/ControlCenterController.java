@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +32,6 @@ public class ControlCenterController {
 
     /**
      * 跳转到login.html
-     *
      * @return
      */
     @RequestMapping("/login")
@@ -39,29 +40,32 @@ public class ControlCenterController {
     }
 
     /**
-     * 点击登录 跳转到index.html
-     * @param model
-     * @param username
-     * @param password
+     * 点击登录
+     * @param request session
+     * @param username 用户名
      * @return
      */
     @RequestMapping("/toLogin")
-    public String toLogin(Model model, String username, String password) {
-//        if (username.equals("admin") && password.equals("admin")){
-//            return "poeConsole/index";
-//        }else {
-        return "poeConsole/index";
-//        }
+    @ResponseBody
+    public String toLogin(HttpServletRequest request,String username){
+        HttpSession session = request.getSession();
+        session.setAttribute("username",username);
+        return "success";
+    }
+
+    @RequestMapping("/loginOut")
+    public String loginOut(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute("username");
+        return "redirect:login";
     }
 
     /**
      * 跳转到index.html
-     *
-     * @param model
      * @return
      */
     @RequestMapping("/index")
-    public String index(Model model) {
+    public String index() {
         return "poeConsole/index";
     }
 
@@ -82,6 +86,7 @@ public class ControlCenterController {
             model.addAttribute("timeLines",timeLines);
             model.addAttribute("timePoints",timePoints);
         }
+
         List<Map> meshs = new ArrayList<>();
         Map<String,String> meshMap = new HashMap<>();
         meshMap.put("meshId","88888888");
@@ -91,6 +96,11 @@ public class ControlCenterController {
         meshMap.put("meshId","77777777");
         meshMap.put("mname","网络7");
         meshs.add(meshMap);
+        for (Map mesh:meshs){
+            if (mesh.get("meshId").equals(meshId)){
+                model.addAttribute("mname",mesh.get("mname"));
+            }
+        }
         model.addAttribute("meshs",meshs);
         return "poeConsole/timing";
     }
@@ -114,4 +124,6 @@ public class ControlCenterController {
     public String netWorkGroupConsole(Model model) {
         return "poeConsole/device";
     }
+
+    
 }
