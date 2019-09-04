@@ -6,6 +6,7 @@ import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
+import com.example.blt.utils.StringBuildUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -80,7 +81,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (cmd.indexOf("77050103") == -1) {
                 logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
             }
-            ExecuteTask.parseLocalCmd(cmd, to);
+            StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
                 if (address != null) {
@@ -153,9 +154,17 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (StringUtils.isNotBlank(meshId)) {
             map.put("meshId", meshId);
         }
-        try {
-            ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
-        } catch (Exception e) {
+        saveHost(map, false);
+    }
+
+    public void saveHost(Map map, boolean flag) {
+        if (flag) {
+            try {
+                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (Exception e) {
+                sqlSessionTemplate.insert("console.saveUpdateHosts", map);
+            }
+        } else {
             sqlSessionTemplate.insert("console.saveUpdateHosts", map);
         }
     }

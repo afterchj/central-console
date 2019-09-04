@@ -21,6 +21,6 @@ public class DetailTask implements Runnable {
 
     @Override
     public void run() {
-        logger.warn("meshId [{}] scene_id [{}]" , cronVo.getMeshId(),cronVo.getSceneId());
+        logger.warn("meshId [{}] sceneId [{}]" , cronVo.getMeshId(),cronVo.getSceneId());
     }
 }
