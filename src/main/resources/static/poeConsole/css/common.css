@@ -3,8 +3,9 @@ body, html {
 }
 
 body {
-    background-color: #DCE4EE;
+    /*background-color: #DCE4EE;*/
     font-size: 1.2rem;
+    color: #474747;
 }
 
 .am-container {
@@ -12,9 +13,14 @@ body {
 }
 
 .no-margin {
-    margin: 0;
+    margin: 0 !important;
 }
-
+.t-center{
+    text-align: center;
+}
+.padding-1{
+    padding: 1rem;
+}
 .p-a {
     position: absolute;
 }
@@ -24,7 +30,7 @@ body {
 }
 
 .no-padding {
-    padding: 0;
+    padding: 0 !important;
 }
 
 .am-list-title {
@@ -75,11 +81,13 @@ fieldset {
 
 .topNav .am-panel-default > .am-panel-hd {
     background-color: #fff;
-
+    padding: .9rem 1.25rem;
+    border-color: #dee4e8;
 }
 
 .topNav .am-panel-default > .am-panel-hd .am-panel-title {
     font-size: 1.4rem;
+    color: #3a3a3a;
 }
 
 .topNav .am-panel-default > .am-panel-hd .am-panel-title:before {
@@ -87,7 +95,7 @@ fieldset {
     display: inline-block;
     width: .2rem;
     height: 1rem;
-    background-color: #1875a4;
+    background-color: #85C0CB;
     vertical-align: top;
     line-height: 20px;
     margin: .4rem;
