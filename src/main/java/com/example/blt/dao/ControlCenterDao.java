@@ -2,9 +2,10 @@ package com.example.blt.dao;
 
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.example.blt.entity.control.ControlMesh;
+import com.example.blt.entity.control.GroupList;
+import com.example.blt.entity.control.MeshList;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,4 +23,45 @@ public interface ControlCenterDao {
 
     @Select("SELECT tsid,concat(IF( LENGTH( hour ) = 1, CONCAT( '0', hour ), hour ),':',IF( LENGTH( minute ) = 1, concat( '0', minute ), minute ) ) AS time, scene_id  FROM f_time_point WHERE tsid = #{tsid} order by time")
     List<TimePoint> getTimePointByTsid(@Param("tsid") Integer tsid);
+
+    List<ControlMesh> getControlGroups();
+
+    @Insert("INSERT INTO t_group(gname,create_date,update_date) VALUES(#{gname},now(),now())")
+    void createGroup(@Param("gname") String gname);
+
+    @Select("select count(*) from t_group where gname=#{gname}")
+    Integer getGname(String gname);
+
+    @Update("update t_group set gname=#{gname} where id=#{id}")
+    void renameGroup(@Param("gname") String gname,@Param("id") Integer id);
+
+    @Select("select id,gname from t_group")
+    List<GroupList> getGroups();
+
+    @Select("select count(*) from t_master_subordinate where mname=#{mname}")
+    Integer getMname(@Param("mname") String mname);
+
+    @Update("update t_master_subordinate set mname=#{mname} where mesh_id=#{meshId}")
+    void renameMesh(@Param("mname")String mname, @Param("meshId")String meshId);
+
+    @Select("select count(*) FROM t_host_info WHERE other=#{pname}")
+    Integer getPname(@Param("pname") String pname);
+
+    @Update("update t_host_info set other=#{pname} where host_id=#{mac}")
+    void renamePname(@Param("pname") String pname, @Param("mac") String mac);
+
+    @Delete("DELETE FROM t_host_info where host_id=#{mac}")
+    void deleteHost(@Param("mac") String mac);
+
+    @Delete("DELETE FROM t_group where id=#{id}")
+    void deleteGroup(@Param("id") Integer id);
+
+    @Update("update t_master_subordinate set master_id=1 where mesh_id=#{meshId}")
+    void updatetMaster(@Param("meshId") String meshId);
+
+    @Update("update t_host_info set is_master=1 where mesh_id=#{meshId}")
+    void updateHostInfo(@Param("meshId")String meshId);
+
+    @Select("select id,mesh_id as meshId,ifnull(mname,mesh_id) as mname from t_master_subordinate")
+    List<MeshList> getMeshs();
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.blt.dao.ControlCenterDao" >
+
+	<!--<resultMap id="getGroups" type="com.example.blt.entity.control.ControlGroup">-->
+		<!--<id column="id" property="id"/>-->
+		<!--<result column="gname" property="gname"/>-->
+	<resultMap id="getGroups" type="com.example.blt.entity.control.ControlMesh">
+		<!--<collection property="controlMeshes" ofType="com.example.blt.entity.control.ControlMesh">-->
+			<id column="id" property="id"/>
+			<result column="meshId" property="meshId"/>
+			<result column="mname" property="mname"/>
+			<result column="gname" property="gname"/>
+			<result column="masterId" property="masterId"/>
+			<result column="gid" property="gid"/>
+			<collection property="controlHosts" ofType="com.example.blt.entity.control.ControlHost">
+				<result column="ip" property="ip"/>
+				<result column="pname" property="pname"/>
+				<result column="isMaster" property="isMaster"/>
+				<result column="hostId" property="hostId"/>
+				<result column="state" property="state"/>
+			</collection>
+		<!--</collection>-->
+	</resultMap>
+	<!--</resultMap>-->
+    <select id="getControlGroups" resultMap="getGroups">
+        SELECT
+        	g.gname AS gname,
+			m.id as id,
+        	m.mesh_id AS meshId,
+        	ifnull( m.mname, m.mesh_id ) AS mname,
+			m.master_id as masterId,
+			m.gid as gid,
+        	h.ip,
+        	ifnull( h.other, h.host_id ) AS pname,
+        	h.is_master AS isMaster,
+        	h.host_id AS hostId,
+			if(h.status='1','在线','离线') as state
+        FROM
+        	t_host_info h
+        	LEFT JOIN t_master_subordinate m ON h.mesh_id = m.mesh_id
+        	LEFT JOIN t_group g ON m.gid = g.id
+    </select>
+
+</mapper>

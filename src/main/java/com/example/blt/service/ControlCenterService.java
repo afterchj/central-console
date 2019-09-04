@@ -4,6 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.ControlCenterDao;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
+import com.example.blt.entity.control.ControlHost;
+import com.example.blt.entity.control.ControlMesh;
+import com.example.blt.entity.control.GroupList;
+import com.example.blt.entity.control.MeshList;
 import com.example.blt.entity.dd.Week;
 import org.springframework.stereotype.Service;
 
@@ -82,5 +86,93 @@ public class ControlCenterService {
             }
         }
         return timePoints;
+    }
+
+    public List<ControlMesh> getControlGroups() {
+        List<ControlMesh> controlMeshs = controlCenterDao.getControlGroups();
+        if (controlMeshs.size()>0){
+            for (ControlMesh controlMesh:controlMeshs){
+                List<ControlHost> controlHosts = controlMesh.getControlHosts();
+                Integer pNum = controlHosts.size();//面板数量
+                if (pNum>0){
+                    controlMesh.setpNum(pNum);
+                }
+                Integer normalNum=0,abnormalNum=0;//正常/异常面板数量
+                for (ControlHost controlHost:controlHosts){
+                    Boolean status = controlHost.isStatus();
+                    if (!status){//在线
+                        normalNum = normalNum + 1;
+                    }else {
+                        abnormalNum = abnormalNum + 1;
+                    }
+                }
+                if (pNum == normalNum){//所有面板正常
+                    controlMesh.setState("网络在线");
+                }else if (pNum == abnormalNum){//所有面板异常
+                    controlMesh.setpState("离线");
+                    controlMesh.setState("网络离线");
+                }else {//面板既有正常又有离线
+                    controlMesh.setpState("存在异常");
+                    controlMesh.setState("网络在线");
+                }
+            }
+        }
+
+        return controlMeshs;
+    }
+
+    public Integer getGname(String gname) {
+        return controlCenterDao.getGname(gname);
+    }
+
+    public Boolean groupOperation(String gname, String type,Integer id) {
+        if (type.equals("delete")){
+            controlCenterDao.deleteGroup(id);
+        }else {
+            Integer count = controlCenterDao.getGname(gname);
+            if (count >0){//组名重复
+                return false;
+            }
+            if (type.equals("create")){
+                controlCenterDao.createGroup(gname);
+            }else if (type.equals("rename")){
+                controlCenterDao.renameGroup(gname,id);
+            }
+        }
+        return true;
+    }
+
+    public List<GroupList> getGroups() {
+        return controlCenterDao.getGroups();
+    }
+
+    public Integer getMname(String mname) {
+        return controlCenterDao.getMname(mname);
+    }
+
+    public void renameMesh(String mname, String meshId) {
+        controlCenterDao.renameMesh(mname,meshId);
+    }
+
+    public Boolean panelOperations(String mac, String pname, String type) {
+        if (type.equals("create")){
+            Integer count = controlCenterDao.getPname(pname);
+            if (count > 0){//名称重复
+                return false;
+            }
+            controlCenterDao.renamePname(pname,mac);
+        }else if (type.equals("delete")){
+            controlCenterDao.deleteHost(mac);
+        }
+        return true;
+    }
+
+    public void updateMaster(String meshId) {
+        controlCenterDao.updatetMaster(meshId);
+        controlCenterDao.updateHostInfo(meshId);
+    }
+
+    public List<MeshList> getMeshs() {
+        return controlCenterDao.getMeshs();
     }
 }
