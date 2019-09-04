@@ -1,12 +1,10 @@
 package com.example.blt;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.LightListDao;
 import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.dao.NewMonitorDao;
 import com.example.blt.dao.WebCmdDao;
 import com.example.blt.entity.LightDemo;
-import com.example.blt.entity.control.ControlMesh;
 import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.NewMonitorService;
 import org.junit.Test;
@@ -123,10 +121,10 @@ public class LightDemoTests {
 
    @Test
     public void getGroups(){
-       List<ControlMesh> controlGroups = controlCenterService.getControlGroups();
-       Object o = JSONObject.toJSON(controlGroups);
-
-       System.out.println(controlGroups.toString());
+//       List<ControlMesh> controlGroups = controlCenterService.getControlGroups();
+//       Object o = JSONObject.toJSON(controlGroups);
+//
+//       System.out.println(controlGroups.toString());
     }
 
 }
