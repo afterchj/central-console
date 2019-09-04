@@ -65,6 +65,5 @@ public class DetailTask implements Runnable {
                 break;
         }
         ClientMain.sendCron(object.toJSONString());
-        logger.warn("cmdInfo", object.toJSONString());
     }
 }
