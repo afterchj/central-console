@@ -64,4 +64,11 @@ public interface ControlCenterDao {
 
     @Select("select id,mesh_id as meshId,ifnull(mname,mesh_id) as mname from t_master_subordinate")
     List<MeshList> getMeshs();
+
+    List<ControlMesh> getControlGroupsByGname(@Param("gname") String gname);
+
+    List<ControlMesh> getControlGroupsByAllGroup(String gname);
+
+    @Update("update t_master_subordinate set gid=(select id from t_group where gname=#{gname}) where mesh_id=#{meshId}")
+    void selectGroup(@Param("gname")String gname, @Param("meshId")String meshId);
 }

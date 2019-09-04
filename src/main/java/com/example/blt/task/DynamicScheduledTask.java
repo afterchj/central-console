@@ -28,7 +28,8 @@ public class DynamicScheduledTask {
 
     public void configureTasks(CronVo cronVo) {
         logger.warn("执行时间[{}]", cronVo.getCron());
+        String key = String.format("task_%s_%s", cronVo.getMeshId(), cronVo.getSceneId());
         future = threadPoolTaskScheduler.schedule(new DetailTask(cronVo), new CronTrigger(cronVo.getCron()));
-        futures.put(cronVo.getMeshId(), future);
+        futures.put(key, future);
     }
 }

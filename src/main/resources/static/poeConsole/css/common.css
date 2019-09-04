@@ -1,5 +1,6 @@
 body, html {
     height: 100%;
+    color: #4A4A4A;
 }
 
 body {
@@ -24,23 +25,43 @@ body {
 .p-a {
     position: absolute;
 }
-
+.gary{
+    color: #aaa !important;
+}
+.violet{
+    color: #aeb9d1 !important;
+}
 .p-r {
     position: relative;
 }
-
+.off-line{
+    color: #FF5151 !important;
+}
 .no-padding {
     padding: 0 !important;
+}
+.d-panel-msg{
+    background-color: #f2f2f2 !important;
 }
 
 .am-list-title {
     font-weight: bold;
 }
-
+.text-blue{
+    color: #226697;
+}
 .leftNav2 .am-nav li:first-child.active {
     background-color: transparent;
 }
-
+.blue-green{
+    color: #86c0cc;
+}
+.am-table-bd {
+    border-color: #dee4e8;
+}
+.am-table > thead > tr > th, .am-table > tbody > tr > th, .am-table > tfoot > tr > th, .am-table > thead > tr > td, .am-table > tbody > tr > td, .am-table > tfoot > tr > td{
+    border-color: #dee4e8;
+}
 /*.to-bottom-1{*/
 /*bottom: 1rem;*/
 /*}*/

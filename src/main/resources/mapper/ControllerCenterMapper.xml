@@ -23,23 +23,44 @@
 		<!--</collection>-->
 	</resultMap>
 	<!--</resultMap>-->
+    <sql id="groupColumns">
+        g.gname AS gname,
+        m.id as id,
+        m.mesh_id AS meshId,
+        ifnull( m.mname, m.mesh_id ) AS mname,
+        m.master_id as masterId,
+        m.gid as gid,
+        h.ip,
+        ifnull( h.other, h.host_id ) AS pname,
+        h.is_master AS isMaster,
+        h.host_id AS hostId,
+        if(h.status='1','在线','离线') AS state
+    </sql>
     <select id="getControlGroups" resultMap="getGroups">
         SELECT
-        	g.gname AS gname,
-			m.id as id,
-        	m.mesh_id AS meshId,
-        	ifnull( m.mname, m.mesh_id ) AS mname,
-			m.master_id as masterId,
-			m.gid as gid,
-        	h.ip,
-        	ifnull( h.other, h.host_id ) AS pname,
-        	h.is_master AS isMaster,
-        	h.host_id AS hostId,
-			if(h.status='1','在线','离线') as state
+        	<include refid="groupColumns"/>
         FROM
         	t_host_info h
         	LEFT JOIN t_master_subordinate m ON h.mesh_id = m.mesh_id
         	LEFT JOIN t_group g ON m.gid = g.id
+    </select>
+
+    <select id="getControlGroupsByGname" resultMap="getGroups">
+        SELECT
+            <include refid="groupColumns"/>
+        FROM
+            t_host_info h
+            LEFT JOIN t_master_subordinate m ON h.mesh_id = m.mesh_id
+            LEFT JOIN t_group g ON m.gid = g.id where g.gname=#{gname}
+    </select>
+
+    <select id="getControlGroupsByAllGroup" resultMap="getGroups">
+        SELECT
+            <include refid="groupColumns"/>
+        FROM
+            t_host_info h
+            LEFT JOIN t_master_subordinate m ON h.mesh_id = m.mesh_id
+            LEFT JOIN t_group g ON m.gid = g.id where g.gname is not null
     </select>
 
 </mapper>

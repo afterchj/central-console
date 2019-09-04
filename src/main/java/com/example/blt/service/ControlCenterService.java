@@ -9,6 +9,7 @@ import com.example.blt.entity.control.ControlMesh;
 import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.control.MeshList;
 import com.example.blt.entity.dd.Week;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -88,8 +89,17 @@ public class ControlCenterService {
         return timePoints;
     }
 
-    public List<ControlMesh> getControlGroups() {
-        List<ControlMesh> controlMeshs = controlCenterDao.getControlGroups();
+    public List<ControlMesh> getControlGroups(String gname) {
+        List<ControlMesh> controlMeshs;
+        if (StringUtils.isNotBlank(gname)){
+            if ("全部".equals(gname)){//全选组
+                controlMeshs = controlCenterDao.getControlGroupsByAllGroup(gname);
+            }else {//单选组
+                controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
+            }
+        }else {
+            controlMeshs = controlCenterDao.getControlGroups();
+        }
         if (controlMeshs.size()>0){
             for (ControlMesh controlMesh:controlMeshs){
                 List<ControlHost> controlHosts = controlMesh.getControlHosts();
@@ -125,9 +135,11 @@ public class ControlCenterService {
         return controlCenterDao.getGname(gname);
     }
 
-    public Boolean groupOperation(String gname, String type,Integer id) {
+    public Boolean groupOperation(String gname, String type,Integer id,String meshId) {
         if (type.equals("delete")){
             controlCenterDao.deleteGroup(id);
+        }else if (type.equals("select")){
+            controlCenterDao.selectGroup(gname,meshId);
         }else {
             Integer count = controlCenterDao.getGname(gname);
             if (count >0){//组名重复
@@ -155,7 +167,7 @@ public class ControlCenterService {
     }
 
     public Boolean panelOperations(String mac, String pname, String type) {
-        if (type.equals("create")){
+        if (type.equals("rename")){
             Integer count = controlCenterDao.getPname(pname);
             if (count > 0){//名称重复
                 return false;
