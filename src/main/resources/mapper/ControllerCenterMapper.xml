@@ -17,8 +17,8 @@
 				<result column="ip" property="ip"/>
 				<result column="pname" property="pname"/>
 				<result column="isMaster" property="isMaster"/>
-				<result column="hostId" property="hostId"/>
-				<result column="state" property="state"/>
+				<result column="mac" property="mac"/>
+				<result column="status" property="status"/>
 			</collection>
 		<!--</collection>-->
 	</resultMap>
@@ -30,37 +30,38 @@
         ifnull( m.mname, m.mesh_id ) AS mname,
         m.master_id as masterId,
         m.gid as gid,
+        h.status,
         h.ip,
-        ifnull( h.other, h.host_id ) AS pname,
+        ifnull( h.other, h.mac ) AS pname,
         h.is_master AS isMaster,
-        h.host_id AS hostId,
-        if(h.status='1','在线','离线') AS state
+        h.mac AS mac
+--         if(h.status='1','在线','离线') AS state
     </sql>
     <select id="getControlGroups" resultMap="getGroups">
         SELECT
         	<include refid="groupColumns"/>
         FROM
-        	t_host_info h
+            t_host_info_copy1 h
         	LEFT JOIN t_master_subordinate m ON h.mesh_id = m.mesh_id
-        	LEFT JOIN t_group g ON m.gid = g.id
+        	LEFT JOIN t_group g ON m.gid = g.id where h.ip!='127.0.0.1' and h.mesh_id is not null and h.mac is not null
     </select>
 
     <select id="getControlGroupsByGname" resultMap="getGroups">
         SELECT
             <include refid="groupColumns"/>
         FROM
-            t_host_info h
+            t_host_info_copy1 h
             LEFT JOIN t_master_subordinate m ON h.mesh_id = m.mesh_id
-            LEFT JOIN t_group g ON m.gid = g.id where g.gname=#{gname}
+            LEFT JOIN t_group g ON m.gid = g.id where g.gname=#{gname} AND h.ip!='127.0.0.1' and h.mesh_id is not null and h.mac is not null
     </select>
 
     <select id="getControlGroupsByAllGroup" resultMap="getGroups">
         SELECT
             <include refid="groupColumns"/>
         FROM
-            t_host_info h
+            t_host_info_copy1 h
             LEFT JOIN t_master_subordinate m ON h.mesh_id = m.mesh_id
-            LEFT JOIN t_group g ON m.gid = g.id where g.gname is not null
+            LEFT JOIN t_group g ON m.gid = g.id where g.gname is not null AND h.ip!='127.0.0.1' and h.mesh_id is not null and h.mac is not null
     </select>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.example.blt.controller;
 
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
+import com.example.blt.entity.control.ControlHost;
 import com.example.blt.entity.control.ControlMesh;
 import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.control.MeshList;
@@ -123,6 +124,15 @@ public class ControlCenterController {
         model.addAttribute("groupList",groupList);//组列表
         model.addAttribute("controlMeshs",controlMeshs);//组列表
         return "poeConsole/control";
+    }
+
+    @RequestMapping("/getPanels")
+    @ResponseBody
+    public Map<String,Object> getPanels(String meshId){
+        Map<String,Object> panelMap = new HashMap<>();
+        List<ControlHost> controlHosts = controlCenterService.getPanels(meshId);
+        panelMap.put("controlHosts",controlHosts);
+        return panelMap;
     }
 
     /**

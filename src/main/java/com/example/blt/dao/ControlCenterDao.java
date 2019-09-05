@@ -2,6 +2,7 @@ package com.example.blt.dao;
 
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
+import com.example.blt.entity.control.ControlHost;
 import com.example.blt.entity.control.ControlMesh;
 import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.control.MeshList;
@@ -44,13 +45,13 @@ public interface ControlCenterDao {
     @Update("update t_master_subordinate set mname=#{mname} where mesh_id=#{meshId}")
     void renameMesh(@Param("mname")String mname, @Param("meshId")String meshId);
 
-    @Select("select count(*) FROM t_host_info WHERE other=#{pname}")
+    @Select("select count(*) FROM t_host_info_copy1 WHERE other=#{pname}")
     Integer getPname(@Param("pname") String pname);
 
-    @Update("update t_host_info set other=#{pname} where host_id=#{mac}")
+    @Update("update t_host_info_copy1 set other=#{pname} where mac=#{mac}")
     void renamePname(@Param("pname") String pname, @Param("mac") String mac);
 
-    @Delete("DELETE FROM t_host_info where host_id=#{mac}")
+    @Delete("DELETE FROM t_host_info_copy1 where mac=#{mac}")
     void deleteHost(@Param("mac") String mac);
 
     @Delete("DELETE FROM t_group where id=#{id}")
@@ -59,7 +60,7 @@ public interface ControlCenterDao {
     @Update("update t_master_subordinate set master_id=1 where mesh_id=#{meshId}")
     void updatetMaster(@Param("meshId") String meshId);
 
-    @Update("update t_host_info set is_master=1 where mesh_id=#{meshId}")
+    @Update("update t_host_info_copy1 set is_master=1 where mesh_id=#{meshId}")
     void updateHostInfo(@Param("meshId")String meshId);
 
     @Select("select id,mesh_id as meshId,ifnull(mname,mesh_id) as mname from t_master_subordinate")
@@ -71,4 +72,7 @@ public interface ControlCenterDao {
 
     @Update("update t_master_subordinate set gid=(select id from t_group where gname=#{gname}) where mesh_id=#{meshId}")
     void selectGroup(@Param("gname")String gname, @Param("meshId")String meshId);
+
+    @Select("select if(status='1','在线','离线') AS state,ifnull( other, mac ) AS pname, mac from t_host_info_copy1 where mesh_id=#{meshId}")
+    List<ControlHost> getPanels(@Param("meshId")String meshId);
 }
