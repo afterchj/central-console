@@ -16,12 +16,14 @@ public class HostInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 32)
     private String ip;
+    private Integer gid;
     @Column(unique = true, length = 32)
     private String hostId;
-    @Column(unique = true, length = 32)
+    @Column(length = 32)
     private String meshId;
+    @Column(length = 32)
+    private String meshName;
     @ColumnDefault("1")
     private Boolean status;
     @ColumnDefault("0")
