@@ -5,6 +5,7 @@
     <title>禁止删除面板</title>
 </head>
 <body>
+
 <!--<div class="am-modal " tabindex="-1" id="deletePanel-modal" th:fragment="deletePanel">-->
     <!--<div class="am-modal-dialog">-->
         <!--<div class="am-modal-hd">删除-->
@@ -24,16 +25,30 @@
         <!--</div>-->
     <!--</div>-->
 <!--</div>-->
-<div class="am-modal am-modal-no-btn" tabindex="-1" id="forbidDelete" th:fragment="forbidDelete">
-    <div class="am-modal-dialog">
-        <div class="am-modal-hd">温馨提示 <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a></div>
-        <div class="am-modal-bd">
-           <p class="am-text-default" style=" margin: 0;">不可删除！</p>
+<div class="modal fade"   role="dialog"  tabindex="-1" id="forbidDelete" th:fragment="forbidDelete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >删除</h4>
+            </div>
+            <div class="modal-body">
+                <div class="am-modal-bd">
+                    <p class="am-text-default" style=" margin: 0;">不可删除！</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default reduce" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary yes" onclick="createMeshyYes()">确定</button>
+            </div>
         </div>
-        <!--<div class="am-modal-footer">-->
-            <!--<span class="am-modal-btn">确定</span>-->
-        <!--</div>-->
     </div>
+    <!--<div class="am-modal-dialog">-->
+        <!--<div class="am-modal-hd">温馨提示 <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a></div>-->
+        <!--<div class="am-modal-bd">-->
+           <!--<p class="am-text-default" style=" margin: 0;">不可删除！</p>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>
 </body>
 </html>
