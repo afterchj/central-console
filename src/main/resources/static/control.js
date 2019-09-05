@@ -7,7 +7,15 @@ $(function () {
         var val = $(this).parent().prev().find('input[id="mesh-name"]').val();
         var title = $(this).parent().prev().prev().find('span').text();
         if (title == '创建网组'){//创建组
-            $.post('/control/group');
+            $.post('/control/group',{'gname':val,'type':'create'},function (data) {
+                var exitGroup = data.exitGroup;
+                if (exitGroup == 1){//组名重复
+                    $(this).parent().find('label').text('已存在，请重新出入');
+                }else {
+                    window.location.href="/control/netWorkGroupConsole";
+                    $(this).parent().find('label').text('请输入 2-8 位汉字、字母、数字');
+                }
+            });
         }
         console.log("title",title);
     });
