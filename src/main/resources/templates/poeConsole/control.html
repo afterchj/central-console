@@ -75,37 +75,17 @@
                                                 <span>+</span>创建网组
                                             </button>
                                         </li>
-                                        <li class="am-dropdown-header am-text-sm">全部</li>
-                                        <li class="am-text-xs p-r">
-                                            <a href="#">组1</a>
+                                        <li class="am-dropdown-header am-text-sm">
+                                            <a th:href="@{/control/netWorkGroupConsole(gname='全部')}">全部</a>
+                                        </li>
+                                        <li class="am-text-xs p-r" th:each="group:${groupList}">
+                                            <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname})}"
+                                               th:text="${group.gname}">
 
+                                            </a>
                                             <i class="fa fa-caret-right p-a mesh-rename"  aria-hidden="true"></i>
                                             <div class="am-cf  rename-delete p-a">
                                                 <div class="am-fl am-center" data-am-modal="{target: '#renameGroup-modal'}">
-                                                    重命名
-                                                </div>
-                                                <div class="am-fl am-center" data-am-modal="{target: '#deleteGroup-modal'}">
-                                                    删除
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="am-text-xs p-r">
-                                            <a href="#">组2</a>
-                                            <i class="fa fa-caret-right p-a mesh-rename"  aria-hidden="true"></i>
-                                            <div class="am-cf  rename-delete p-a">
-                                                <div class="am-fl am-center"  data-am-modal="{target: '#renameGroup-modal'}">
-                                                    重命名
-                                                </div>
-                                                <div class="am-fl am-center" data-am-modal="{target: '#deleteGroup-modal'}">
-                                                    删除
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="am-text-xs p-r">
-                                            <a href="#">组3</a>
-                                            <i class="fa fa-caret-right p-a mesh-rename"  aria-hidden="true"></i>
-                                            <div class="am-cf  rename-delete p-a">
-                                                <div class="am-fl am-center"  data-am-modal="{target: '#renameGroup-modal'}">
                                                     重命名
                                                 </div>
                                                 <div class="am-fl am-center" data-am-modal="{target: '#deleteGroup-modal'}">
@@ -119,9 +99,9 @@
                             </tr>
                             </thead>
                             <tbody class="am-text-sm">
-                            <tr>
+                            <tr th:each="controlMesh:${controlMeshs}">
                                 <td class="p-r ">
-                                    网络1
+                                    <span th:text="${controlMesh.mname}"></span>
                                     <img th:src="@{/static/poeConsole/img/dot.png}" alt=""  class=" p-a  tool am-animation-fade first-rename" style="width: 1.7%;">
                                     <!--<i class="fa fa-ellipsis-v  p-a gary" aria-hidden="true"></i>-->
 
@@ -131,18 +111,21 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>88888888</td>
-                                <td>网络在线</td>
-                                <td class="p-r">1
+                                <td th:text="${controlMesh.meshId}"></td>
+                                <td th:text="${controlMesh.state}"></td>
+                                <td class="p-r" >
+                                    <span th:text="${controlMesh.pNum}"></span>
+                                    <span class="am-text-xs" th:if="${controlMesh.pState!=null}" th:text="${controlMesh.pState}"></span>
                                     <img th:src="@{/static/poeConsole/img/open.png}" alt=""  class=" p-a  tool">
                                 </td>
-                                <td class="p-r">组1
+                                <td class="p-r" >
+                                    <span th:text="${controlMesh.gname}"></span>
                                     <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool" >
                                 </td>
                                 <td>
                                     <div class="am-checkbox table-checkbox">
                                         <label class="blue-green">
-                                            <input type="checkbox" checked> 主控
+                                            <input type="checkbox" th:checked="${controlMesh.masterId==1}"> 主控
                                         </label>
                                     </div>
                                 </td>
