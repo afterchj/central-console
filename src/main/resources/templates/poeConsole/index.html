@@ -1,0 +1,129 @@
+<!doctype html >
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>欢迎页</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="icon" type="image/png" th:href="@{/static/AmazeUI/i/favicon.png}">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="apple-touch-icon-precomposed" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" th:content="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/amazeui.min.css}">
+    <link rel="stylesheet" th:href="@{/static/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/app.css}">
+    <link rel="stylesheet" th:href="@{/static/poeConsole/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/poeConsole/css/left.css}">
+    <link rel="stylesheet" th:href="@{/static/poeConsole/css/index.css}">
+    <style>
+        .welcome{
+            top: 15%;
+            left: 35%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="am-container  " id="poeConsole">
+    <div class="am-g content">
+        <div class="col-sm-1 col-lg-1 no-padding leftNav">
+            <div th:replace="poeCommon/left::left('timing')"></div>
+        </div>
+        <div class="col-sm-11 col-lg-11  no-padding topNav p-r" style="height: 100%;">
+            <div class="welcome p-a">
+                <img th:src="@{/static/poeConsole/img/hi.png}" alt="" style="width: 10rem;"/>
+                <h1 style="margin: 0 auto; font-size: 2.8rem;font-weight: normal;">欢迎使用群控中心</h1>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div th:replace="poeModel/createMesh::createMesh"></div>
+<div th:replace="poeModel/renameMesh::renameMesh"></div>
+<div th:replace="poeModel/renameGroup::renameGroup"></div>
+<div th:replace="poeModel/deleteGroup::deleteGroup"></div>
+<div th:replace="poeModel/renamePanel::renamePanel"></div>
+<div th:replace="poeModel/deletePanel::deletePanel"></div>
+<div th:replace="poeModel/forbidDelete::forbidDelete"></div>
+<!--   Core JS Files   -->
+<script th:src="@{/static/AmazeUI/js/zepto.min.js}" type="text/javascript"></script>
+<script th:src="@{/static/AmazeUI/js/app.js}" type="text/javascript"></script>
+<!--<script  th:src="@{/static/AmazeUI/js/handlebars.min.js}"  type="text/javascript"></script>-->
+<!--<script th:src="@{/static/AmazeUI/js/amazeui.basic.min.js}" type="text/javascript"></script>-->
+<script th:src="@{/static/AmazeUI/js/amazeui.min.js}" type="text/javascript"></script>
+<script th:src="@{/static/poeConsole/js/common.js}" type="text/javascript"></script>
+<script>
+    //    document.addEventListener('touchstart', function(event) {
+    //        event.preventDefault();
+    //    }, false);
+    $(function () {
+        $('.rename-delete').hide();
+        $('.panel-show-detail').hide();
+        $('.data-show-table .am-dropdown-content li').click(function () {
+//            e.preventDefault();
+            $(this).addClass('active').siblings('li').removeClass('active');
+        });
+        $('.create-mesh-list').click(function () {
+//            e.preventDefault();
+            $(this).parent().siblings().find('.rename-delete').hide();
+            $(this).parent().siblings().find('.am-dropdown-content li').removeClass('active');
+        });
+        $('.mesh-rename').click(function (e) {
+//            e.preventDefault();
+            e.stopPropagation();
+            $(this).next('.rename-delete').toggle();
+            $(this).parent().siblings().find('.rename-delete').hide();
+        });
+        $('.data-show-table table .am-dropdown a').click(function(e){
+            e.stopPropagation();
+            e.preventDefault();
+        });
+        $('.first-rename').click(function (e) {
+            e.preventDefault();
+            $(this).next('.rename-delete').toggle();
+            $(this).parent().parent().siblings().find('.rename-delete').hide();
+        });
+        $('.panel-show-msg').click(function (e) {
+            e.preventDefault();
+            var status=$(this).attr('src');
+            if(status.indexOf('open')!=-1){
+                var reg=/open/g;
+                status=status.replace(reg,'close');
+            }else if(status.indexOf('close')!=-1){
+                var reg=/close/g;
+                status=status.replace(reg,'open');
+            }
+            $(this).attr('src',status);
+            $(this).parent().parent().siblings('.panel-show-detail').toggle();
+        });
+    });
+
+</script>
+</body>
+</html>

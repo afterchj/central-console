@@ -60,8 +60,8 @@ public interface ControlCenterDao {
     @Update("update t_master_subordinate set master_id=1 where mesh_id=#{meshId}")
     void updatetMaster(@Param("meshId") String meshId);
 
-    @Update("update t_host_info_copy1 set is_master=1 where mesh_id=#{meshId}")
-    void updateHostInfo(@Param("meshId")String meshId);
+    @Update("update t_host_info_copy1 set is_master=1 where mesh_id=#{meshId} and is_master=#{type}")
+    void updateHostInfo(@Param("meshId")String meshId,@Param("type") String type);
 
     @Select("select id,mesh_id as meshId,ifnull(mname,mesh_id) as mname from t_master_subordinate")
     List<MeshList> getMeshs();
