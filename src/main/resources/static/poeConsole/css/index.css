@@ -141,3 +141,7 @@ ul.am-dropdown-content > li > a:hover, ul.am-dropdown-content > li > a:focus {
 /*min-width: 100%;*/
 /*margin: 0;*/
 /*}*/
+.am-input-group-label{
+    background-color: transparent;
+    border-color: transparent;
+}
