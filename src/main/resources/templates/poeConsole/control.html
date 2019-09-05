@@ -352,6 +352,7 @@
         $('.create-mesh-list').click(function (e) {
             e.preventDefault();
             $(this).parent().siblings().find('.rename-delete').hide();
+            $(this).parent().siblings().find('.am-dropdown-content li').removeClass('active');
         });
         $('.mesh-rename').click(function (e) {
             e.preventDefault();
