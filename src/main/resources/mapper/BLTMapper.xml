@@ -83,7 +83,7 @@
     </select>
 
     <select id="getHost" resultType="string">
-        SELECT host_id FROM t_host_info WHERE is_master=1 LIMIT 1
+        SELECT host_id FROM t_host_info WHERE is_master=1 AND host_id = #{host} LIMIT 1
     </select>
 
     <select id="getHostId" resultType="string">

@@ -2,11 +2,9 @@ package com.example.blt;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
-import com.example.blt.netty.ClientMain;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -30,9 +28,9 @@ public class MainTest {
 //        String arg1 = "770509010606060606060606CCCC";
 //        String meshId = arg1.substring(arg1.length() - 12, arg1.length() - 4);
 //        System.out.println(meshId);
-        String meshId="";
-        for(int i=0;i<16;i+=2) {
-            meshId += String.valueOf(Integer.parseInt("0200010904080306".substring(i, i+2),16));
+        String meshId = "";
+        for (int i = 0; i < 16; i += 2) {
+            meshId += String.valueOf(Integer.parseInt("0200010904080306".substring(i, i + 2), 16));
         }
         System.out.println(meshId);
         System.out.println(1);
@@ -277,10 +275,10 @@ public class MainTest {
                     weeks[i] = "SAT";
                     break;
             }
-            if (i==weeks.length-1){
+            if (i == weeks.length - 1) {
                 stringBuilder.append(weeks[i]);
-            }else {
-                stringBuilder.append(weeks[i]+",");
+            } else {
+                stringBuilder.append(weeks[i] + ",");
             }
         }
 
@@ -288,9 +286,11 @@ public class MainTest {
     }
 
     @Test
-    public void testSend(){
+    public void testSend() {
         List<String> hosts = sqlSessionTemplate.selectList("console.getHostsByGid", "45642");
-        System.out.println(hosts.size());
+        String host = sqlSessionTemplate.selectOne("console.getHost", "bc10b37");
+        System.out.println("flag=" + "master".equals(host));
+        System.out.println(hosts.size() + "\t" + host);
 //        JSONObject object = new JSONObject();
 //        object.put("host", "master");
 //        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
