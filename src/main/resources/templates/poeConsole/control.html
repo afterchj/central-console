@@ -71,16 +71,18 @@
                                     </a>
                                     <ul class="am-dropdown-content ">
                                         <li>
-                                            <button type="button" data-am-modal="{target: '#creatMesh-modal'}" class="am-btn  am-btn-primary am-btn-xs btn-white">
+                                            <button type="button" data-am-modal="{target: '#creatMesh-modal'}"
+                                                    class="am-btn  am-btn-primary am-btn-xs btn-white create-group">
                                                 <span>+</span>创建网组
                                             </button>
                                         </li>
                                         <li class="am-dropdown-header am-text-sm">
-                                            <a th:href="@{/control/netWorkGroupConsole(gname='全部')}">全部</a>
+                                            <a th:href="@{/control/netWorkGroupConsole(gname='全部')}"
+                                               class="all-group">全部</a>
                                         </li>
                                         <li class="am-text-xs p-r" th:each="group:${groupList}">
                                             <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname})}"
-                                               th:text="${group.gname}">
+                                               th:text="${group.gname}" class="one-group">
 
                                             </a>
                                             <i class="fa fa-caret-right p-a mesh-rename"  aria-hidden="true"></i>
@@ -119,7 +121,7 @@
                                     <img th:src="@{/static/poeConsole/img/open.png}" alt=""  class=" p-a  tool">
                                 </td>
                                 <td class="p-r" >
-                                    <span th:text="${controlMesh.gname==null}?'--空--':${controlMesh.gname}"></span>
+                                    <span th:text="${controlMesh.gname==null}?'-空-':${controlMesh.gname}"></span>
                                     <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool" >
                                 </td>
                                 <td>
@@ -341,6 +343,7 @@
 <!--<script th:src="@{/static/AmazeUI/js/amazeui.basic.min.js}" type="text/javascript"></script>-->
 <script th:src="@{/static/AmazeUI/js/amazeui.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/poeConsole/js/common.js}" type="text/javascript"></script>
+<script th:src="@{/static/control.js}" type="text/javascript"></script>
 <script>
     $(function () {
         $('.rename-delete').hide();
