@@ -119,7 +119,7 @@
                                     <img th:src="@{/static/poeConsole/img/open.png}" alt=""  class=" p-a  tool">
                                 </td>
                                 <td class="p-r" >
-                                    <span th:text="${controlMesh.gname}"></span>
+                                    <span th:text="${controlMesh.gname==null}?'--空--':${controlMesh.gname}"></span>
                                     <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool" >
                                 </td>
                                 <td>
