@@ -87,7 +87,11 @@ body {
     white-space: nowrap;
     /* box-shadow: inset 0 1px 0 rgba(255,255,255,0.5); */
     text-shadow: 0 -1px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(#6dbde4, #399dd8);
+    /*background-color: #226697 ;*/
+    /*background-color: #226697;*/
+    background: linear-gradient(#1299da, #226097);
+    border-color: #1299da;
+    /*background: linear-gradient(#6dbde4, #399dd8);*/
 }
 
 .am-btn:hover {
