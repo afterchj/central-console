@@ -57,7 +57,7 @@
                 </header>
                 <div class="am-panel-bd no-margin no-padding">
                     <div class="data-show-table">
-                        <p class="am-text-right am-text-xs blue-green">（温馨提示：若改变隶属组，则进入新组时，角色为群众）</p>
+                        <p class="am-text-right am-text-xs blue-green" style=" margin: 0 0 .5rem 0;">（温馨提示：若改变隶属组，则进入新组时，角色为群众）</p>
                         <table class="am-table am-table-bd ">
                             <thead class="am-text-sm " style="color: #3a3a3a;">
                             <tr >
@@ -67,11 +67,11 @@
                                 <th style="width: 15%;" class="am-text-center">面板数量</th>
                                 <th  class="p-r am-dropdown am-text-center" data-am-dropdown>
                                     <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-                                        隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt="" class=" p-a  tool" style="width: 1.5rem;">
+                                        隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt="" class=" p-a create-mesh-list  tool" style="width: 1.5rem;">
                                     </a>
                                     <ul class="am-dropdown-content ">
                                         <li>
-                                            <button type="button" data-am-modal="{target: '#creatMesh-modal'}" class="am-btn am-btn-primary am-btn-xs btn-white">
+                                            <button type="button" data-am-modal="{target: '#creatMesh-modal'}" class="am-btn  am-btn-primary am-btn-xs btn-white">
                                                 <span>+</span>创建网组
                                             </button>
                                         </li>
@@ -348,7 +348,11 @@
         $('.data-show-table .am-dropdown-content li').click(function (e) {
             e.preventDefault();
             $(this).addClass('active').siblings('li').removeClass('active');
-        })
+        });
+        $('.create-mesh-list').click(function (e) {
+            e.preventDefault();
+            $(this).parent().siblings().find('.rename-delete').hide();
+        });
         $('.mesh-rename').click(function (e) {
             e.preventDefault();
             $(this).next('.rename-delete').toggle();
@@ -365,7 +369,6 @@
             if(status.indexOf('open')!=-1){
                 var reg=/open/g;
                 status=status.replace(reg,'close');
-
             }else if(status.indexOf('close')!=-1){
                 var reg=/close/g;
                 status=status.replace(reg,'open');
