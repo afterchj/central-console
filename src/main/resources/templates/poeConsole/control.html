@@ -84,11 +84,12 @@
                                             <a th:href="@{/control/netWorkGroupConsole(gname='全部')}" class="all-group">全部</a>
                                         </li>
                                         <li class="am-text-xs p-r" th:each="group:${groupList}">
+                                            <input type="hidden" th:value="${group.id}">
                                             <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname})}"
                                                th:text="${group.gname}" style="z-index: 9999;" class="one-group">
 
                                             </a>
-                                            <i class="fa fa-caret-right p-a mesh-rename" aria-hidden="true"></i>
+                                            <i class="fa fa-caret-right p-a mesh-rename group-operation" aria-hidden="true"></i>
                                             <div class="am-cf  rename-delete p-a">
                                                 <div class="am-fl am-center"
                                                      data-am-modal="{target: '#renameGroup-modal'}">
@@ -114,7 +115,7 @@
                                     <!--<i class="fa fa-ellipsis-v  p-a gary" aria-hidden="true"></i>-->
 
                                     <div class="am-cf  rename-delete p-a left">
-                                        <div class="am-fl am-center" data-am-modal="{target: '#renameMesh-modal'}">
+                                        <div class="am-fl am-center rename-mesh" data-am-modal="{target: '#renameMesh-modal'}">
                                             重命名
                                         </div>
                                     </div>

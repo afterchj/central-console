@@ -202,9 +202,9 @@ public class ControlCenterController {
      */
     @RequestMapping("/setMaster")
     @ResponseBody
-    public Map<String,Object> setMaster(String meshId){
+    public Map<String,Object> setMaster(String meshId,String type){
         Map<String,Object> masterMap = new HashMap<>();
-        controlCenterService.updateMaster(meshId);
+        controlCenterService.updateMaster(meshId,type);
         masterMap.put("success","success");
         return masterMap;
     }

@@ -184,9 +184,9 @@ public class ControlCenterService {
         return true;
     }
 
-    public void updateMaster(String meshId) {
-        controlCenterDao.updatetMaster(meshId);
-        controlCenterDao.updateHostInfo(meshId);
+    public void updateMaster(String meshId,String type) {
+//        controlCenterDao.updatetMaster(meshId);
+        controlCenterDao.updateHostInfo(meshId,type);
     }
 
     public List<MeshList> getMeshs() {
