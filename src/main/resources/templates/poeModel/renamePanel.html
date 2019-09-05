@@ -5,27 +5,50 @@
     <title>重命名面板</title>
 </head>
 <body>
-<div class="am-modal " tabindex="-1" id="renamePanel-modal" th:fragment="renamePanel">
-    <div class="am-modal-dialog">
-        <div class="am-modal-hd">重命名
-            <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
-        </div>
-        <div class="am-modal-bd">
-            <form action="" class="am-form">
-                <div class="am-form-group">
-                    <label class="am-form-label am-text-danger am-text-left" for="mesh-name">请输入 2-8 位汉字、字母、数字</label>
-                    <div class="am-input-group  am-input-group-sm">
-                        <span class="am-input-group-label">新名称:</span>
-                        <input type="text" class="am-form-field" id="mesh-name" placeholder="请输入 2-8 位汉字、字母、数字">
+<div  class="modal fade"   role="dialog" tabindex="-1" id="renamePanel-modal" th:fragment="renamePanel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >重命名</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" class="am-form">
+                    <div class="am-form-group">
+                        <label class="am-form-label am-text-danger am-text-left" for="mesh-name">请输入 2-8 位汉字、字母、数字</label>
+                        <div class="am-input-group  am-input-group-sm">
+                            <span class="am-input-group-label">新名称:</span>
+                            <input type="text" class="am-form-field" id="mesh-name" placeholder="请输入 2-8 位汉字、字母、数字">
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-        <div class="am-modal-footer">
-            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
-            <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default reduce" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary yes" onclick="createMeshyYes()">确定</button>
+            </div>
         </div>
     </div>
+    <!--<div class="am-modal-dialog">-->
+        <!--<div class="am-modal-hd">重命名-->
+            <!--<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>-->
+        <!--</div>-->
+        <!--<div class="am-modal-bd">-->
+            <!--<form action="" class="am-form">-->
+                <!--<div class="am-form-group">-->
+                    <!--<label class="am-form-label am-text-danger am-text-left" for="mesh-name">请输入 2-8 位汉字、字母、数字</label>-->
+                    <!--<div class="am-input-group  am-input-group-sm">-->
+                        <!--<span class="am-input-group-label">新名称:</span>-->
+                        <!--<input type="text" class="am-form-field" id="mesh-name" placeholder="请输入 2-8 位汉字、字母、数字">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+        <!--<div class="am-modal-footer">-->
+            <!--<span class="am-modal-btn" data-am-modal-cancel>取消</span>-->
+            <!--<span class="am-modal-btn" data-am-modal-confirm>确定</span>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>
 </body>
 </html>
