@@ -25,14 +25,17 @@ public class StringBuildUtilsTest {
 
     @Test
     public void test() {
+        String[] array ="77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC".split("CCCC");
+        System.out.println("array="+array[0]+"\t"+"77011365FFFFFFFF210D000000".length());
         String key = String.format("task_%s_%s", "88888888", 1);
         System.out.println(key);
         String mac = StringBuildUtils.sortMac("7705070504456DD7ACF0CCCC".substring(8, 20));
         System.out.println(mac);
         String space = "77 01 12 65 FF FF FF FF 2A 05 00 00 00 C0 00 37 37 00 00 00 00 CC CC ".replace(" ", "");
+        String mobile = "77 01 13 65 FF FF FF FF 21 0D 00 00 00 52 1F EA 62 D7 AC F0 01 01 CC CC ".replace(" ", "");
         String ping = "77 01 0A 65 FF FF FF FF FE 00 00 00 00 CC CC".replace(" ", "");
         logger.warn("ping=" + ping + ",len=" + ping.length());
-        logger.warn("space=" + space + ",len=" + space.length());
+        logger.warn("mobile=" + mobile + ",len=" + mobile.length());
         //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
         String c1 = "77 04 10 02 20 9D 01 00 00 C1 32 32 00 00 00 00 00 00 02 1E".replace(" ", "");
         String c0 = "77 04 0E 02 2A 9D 01 00 00 C0 00 37 37 00 00 00 00 09".replace(" ", "");

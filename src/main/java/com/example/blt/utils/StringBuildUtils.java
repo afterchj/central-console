@@ -1,9 +1,12 @@
 package com.example.blt.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.dd.Topics;
+import com.example.blt.netty.ClientMain;
 import com.example.blt.service.ProducerService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -28,6 +31,9 @@ public class StringBuildUtils {
 
     public static void buildLightInfo(String ip, String msg) {
         String[] array = msg.split("CCCC");
+        if (array.length == 1) {
+            tempFormat(array[0], ip);
+        }
         for (String str : array) {
             Map map = new HashMap();
             map.put("host", ip);
@@ -63,8 +69,6 @@ public class StringBuildUtils {
                 ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 saveLight(map, false);
-            } else {
-                tempFormat(str, ip);
             }
         }
     }
@@ -115,19 +119,24 @@ public class StringBuildUtils {
         } else {
             map.put("status", 1);
         }
+//        logger.warn("format [{}] prefix [{}]", str,prefix);
         switch (prefix) {
             case "42":
                 map.put("ctype", prefix);
                 map.put("cid", cid);
                 break;
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
+                JSONObject object = new JSONObject();
+                object.put("host", "master");
+                object.put("command", format + "CCCC");
+                ClientMain.sendCron(object.toJSONString());
                 String cmd = str.substring(len - 4);
                 if ("01".equals(cmd)) {
                     status = 0;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
                 } else if ("02".equals(cmd)) {
                     status = 1;
-//                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
+                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", mid);

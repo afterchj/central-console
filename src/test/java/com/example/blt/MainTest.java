@@ -2,6 +2,7 @@ package com.example.blt;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.netty.ClientMain;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
@@ -284,5 +285,13 @@ public class MainTest {
         }
 
         System.out.println(stringBuilder.toString());
+    }
+
+    @Test
+    public void testSend(){
+        JSONObject object = new JSONObject();
+        object.put("host", "master");
+        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
+        ClientMain.sendCron(object.toJSONString());
     }
 }
