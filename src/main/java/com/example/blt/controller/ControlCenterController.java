@@ -122,7 +122,7 @@ public class ControlCenterController {
         List<GroupList> groupList = controlCenterService.getGroups();
         model.addAttribute("groupList",groupList);//组列表
         model.addAttribute("controlMeshs",controlMeshs);//组列表
-        return "poeConsole/device";
+        return "poeConsole/control";
     }
 
     /**
