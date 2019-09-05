@@ -264,7 +264,6 @@ public class MainController {
                                 Integer sceneId = timePointList.get(k).getSence_index();
                                 map2.put("hour", timePointList.get(k).getHour());
                                 map2.put("minute", timePointList.get(k).getMinute());
-                                map2.put("time", timePointList.get(k).getTime());
                                 map2.put("sceneId", sceneId);
                                 map2.put("lightStatus", timePointList.get(k).getLight_status());
                                 JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
@@ -276,7 +275,6 @@ public class MainController {
                                     Integer sceneId = timePointParams.getSence_index();
                                     map2.put("hour", timePointParams.getHour());
                                     map2.put("minute", timePointParams.getMinute());
-                                    map2.put("time", timePointParams.getTime());
                                     map2.put("sceneId", sceneId);
                                     map2.put("lightStatus", timePointParams.getLight_status());
                                     JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));

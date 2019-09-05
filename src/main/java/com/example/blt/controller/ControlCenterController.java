@@ -2,6 +2,7 @@ package com.example.blt.controller;
 
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
+import com.example.blt.entity.control.ControlHost;
 import com.example.blt.entity.control.ControlMesh;
 import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.control.MeshList;
@@ -117,16 +118,25 @@ public class ControlCenterController {
      * @return
      */
     @RequestMapping("/netWorkGroupConsole")
-    public String netWorkGroupConsole(Model model) {
-        List<ControlMesh> controlMeshs = controlCenterService.getControlGroups();
+    public String netWorkGroupConsole(Model model,String gname) {
+        List<ControlMesh> controlMeshs = controlCenterService.getControlGroups(gname);
         List<GroupList> groupList = controlCenterService.getGroups();
         model.addAttribute("groupList",groupList);//组列表
         model.addAttribute("controlMeshs",controlMeshs);//组列表
-        return "poeConsole/device";
+        return "poeConsole/control";
+    }
+
+    @RequestMapping("/getPanels")
+    @ResponseBody
+    public Map<String,Object> getPanels(String meshId){
+        Map<String,Object> panelMap = new HashMap<>();
+        List<ControlHost> controlHosts = controlCenterService.getPanels(meshId);
+        panelMap.put("controlHosts",controlHosts);
+        return panelMap;
     }
 
     /**
-     * 创建/重命名/删除组
+     * 创建/重命名/删除组/选择组
      * @param gname 组名
      * @param type 操作类型
      * @param id 组id
@@ -134,9 +144,9 @@ public class ControlCenterController {
      */
     @RequestMapping("/group")
     @ResponseBody
-    public Map<String,Object> group(String gname,String type,Integer id){
+    public Map<String,Object> group(String gname,String type,Integer id,String meshId){
         Map<String,Object> groupMap = new HashMap<>();
-        Boolean flag = controlCenterService.groupOperation(gname,type,id);
+        Boolean flag = controlCenterService.groupOperation(gname,type,id,meshId);
         if (!flag){//组名重复
             groupMap.put("exitGroup",1);
         }else {

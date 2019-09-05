@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>重命名</title>
+</head>
+<body>
+<div class="am-modal " tabindex="-1" id="renameMesh-modal" th:fragment="renameMesh">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">重命名
+            <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+        </div>
+        <div class="am-modal-bd">
+            <form action="" class="am-form">
+                <div class="am-form-group">
+                    <label class="am-form-label am-text-danger am-text-left" for="mesh-name">请输入 2-8 位汉字、字母、数字</label>
+                    <div class="am-input-group  am-input-group-sm">
+                        <span class="am-input-group-label">新名称:</span>
+                        <input type="text" class="am-form-field" id="mesh-name" placeholder="请输入 2-8 位汉字、字母、数字">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+            <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

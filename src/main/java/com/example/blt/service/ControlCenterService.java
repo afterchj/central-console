@@ -9,9 +9,11 @@ import com.example.blt.entity.control.ControlMesh;
 import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.control.MeshList;
 import com.example.blt.entity.dd.Week;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -88,36 +90,49 @@ public class ControlCenterService {
         return timePoints;
     }
 
-    public List<ControlMesh> getControlGroups() {
-        List<ControlMesh> controlMeshs = controlCenterDao.getControlGroups();
-        if (controlMeshs.size()>0){
-            for (ControlMesh controlMesh:controlMeshs){
+    public List<ControlMesh> getControlGroups(String gname) {
+        List<ControlMesh> controlMeshs;
+        if (StringUtils.isNotBlank(gname)){
+            if ("全部".equals(gname)){//全选组
+                controlMeshs = controlCenterDao.getControlGroupsByAllGroup(gname);
+            }else {//单选组
+                controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
+            }
+        }else {
+            controlMeshs = controlCenterDao.getControlGroups();
+        }
+        if (controlMeshs.size()>0) {
+            Iterator<ControlMesh> controlMeshIterator = controlMeshs.iterator();
+            while (controlMeshIterator.hasNext()) {
+                ControlMesh controlMesh = controlMeshIterator.next();
                 List<ControlHost> controlHosts = controlMesh.getControlHosts();
                 Integer pNum = controlHosts.size();//面板数量
-                if (pNum>0){
+                if (pNum > 0) {
                     controlMesh.setpNum(pNum);
                 }
-                Integer normalNum=0,abnormalNum=0;//正常/异常面板数量
-                for (ControlHost controlHost:controlHosts){
+                Integer normalNum = 0, abnormalNum = 0;//正常/异常面板数量
+                Iterator<ControlHost> controlHostIterator = controlHosts.iterator();
+                while (controlHostIterator.hasNext()){
+                    ControlHost controlHost = controlHostIterator.next();
                     Boolean status = controlHost.isStatus();
-                    if (!status){//在线
+                    if (status) {//在线
                         normalNum = normalNum + 1;
-                    }else {
+                    } else {
                         abnormalNum = abnormalNum + 1;
                     }
+                    controlHostIterator.remove();
                 }
-                if (pNum == normalNum){//所有面板正常
+                if (pNum == normalNum) {//所有面板正常
                     controlMesh.setState("网络在线");
-                }else if (pNum == abnormalNum){//所有面板异常
-                    controlMesh.setpState("离线");
+                } else if (pNum == abnormalNum) {//所有面板异常
+                    controlMesh.setpState("（离线）");
                     controlMesh.setState("网络离线");
-                }else {//面板既有正常又有离线
-                    controlMesh.setpState("存在异常");
+                } else {//面板既有正常又有离线
+                    controlMesh.setpState("（存在异常）");
                     controlMesh.setState("网络在线");
                 }
             }
         }
-
         return controlMeshs;
     }
 
@@ -125,9 +140,11 @@ public class ControlCenterService {
         return controlCenterDao.getGname(gname);
     }
 
-    public Boolean groupOperation(String gname, String type,Integer id) {
+    public Boolean groupOperation(String gname, String type,Integer id,String meshId) {
         if (type.equals("delete")){
             controlCenterDao.deleteGroup(id);
+        }else if (type.equals("select")){
+            controlCenterDao.selectGroup(gname,meshId);
         }else {
             Integer count = controlCenterDao.getGname(gname);
             if (count >0){//组名重复
@@ -155,7 +172,7 @@ public class ControlCenterService {
     }
 
     public Boolean panelOperations(String mac, String pname, String type) {
-        if (type.equals("create")){
+        if (type.equals("rename")){
             Integer count = controlCenterDao.getPname(pname);
             if (count > 0){//名称重复
                 return false;
@@ -174,5 +191,9 @@ public class ControlCenterService {
 
     public List<MeshList> getMeshs() {
         return controlCenterDao.getMeshs();
+    }
+
+    public List<ControlHost> getPanels(String meshId) {
+        return controlCenterDao.getPanels(meshId);
     }
 }

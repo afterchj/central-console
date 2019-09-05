@@ -13,7 +13,7 @@ public class ControlHost {
     private boolean status;
     private boolean isMaster;
     private String meshId;
-    private String hostId;
+    private String mac;
     private String pname;
     private String state;
 
@@ -73,12 +73,12 @@ public class ControlHost {
         this.meshId = meshId;
     }
 
-    public String getHostId() {
-        return hostId;
+    public String getMac() {
+        return mac;
     }
 
-    public void setHostId(String hostId) {
-        this.hostId = hostId;
+    public void setMac(String mac) {
+        this.mac = mac;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ControlHost {
                 ", status=" + status +
                 ", isMaster=" + isMaster +
                 ", meshId='" + meshId + '\'' +
-                ", hostId='" + hostId + '\'' +
+                ", mac='" + mac + '\'' +
                 ", pname='" + pname + '\'' +
                 ", state='" + state + '\'' +
                 '}';

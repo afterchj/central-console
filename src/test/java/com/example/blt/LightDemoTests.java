@@ -1,6 +1,5 @@
 package com.example.blt;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.LightListDao;
 import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.dao.NewMonitorDao;
@@ -123,9 +122,8 @@ public class LightDemoTests {
 
    @Test
     public void getGroups(){
-       List<ControlMesh> controlGroups = controlCenterService.getControlGroups();
-       Object o = JSONObject.toJSON(controlGroups);
-
+       String gname=null;
+       List<ControlMesh> controlGroups = controlCenterService.getControlGroups(gname);
        System.out.println(controlGroups.toString());
     }
 

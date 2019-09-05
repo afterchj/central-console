@@ -1,9 +1,10 @@
 body, html {
     height: 100%;
+    color: #4A4A4A;
 }
-
+* { touch-action: pan-y; }
 body {
-    /*background-color: #DCE4EE;*/
+    background-color: #DCE4EE;
     font-size: 1.2rem;
     color: #474747;
 }
@@ -24,23 +25,43 @@ body {
 .p-a {
     position: absolute;
 }
-
+.gary{
+    color: #aaa !important;
+}
+.violet{
+    color: #aeb9d1 !important;
+}
 .p-r {
     position: relative;
 }
-
+.off-line{
+    color: #FF5151 !important;
+}
 .no-padding {
     padding: 0 !important;
+}
+.d-panel-msg{
+    background-color: #f2f2f2 !important;
 }
 
 .am-list-title {
     font-weight: bold;
 }
-
+.text-blue{
+    color: #226697;
+}
 .leftNav2 .am-nav li:first-child.active {
     background-color: transparent;
 }
-
+.blue-green{
+    color: #86c0cc;
+}
+.am-table-bd {
+    border-color: #dee4e8;
+}
+.am-table > thead > tr > th, .am-table > tbody > tr > th, .am-table > tfoot > tr > th, .am-table > thead > tr > td, .am-table > tbody > tr > td, .am-table > tfoot > tr > td{
+    border-color: #dee4e8;
+}
 /*.to-bottom-1{*/
 /*bottom: 1rem;*/
 /*}*/
@@ -66,7 +87,11 @@ body {
     white-space: nowrap;
     /* box-shadow: inset 0 1px 0 rgba(255,255,255,0.5); */
     text-shadow: 0 -1px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(#6dbde4, #399dd8);
+    /*background-color: #226697 ;*/
+    /*background-color: #226697;*/
+    background: linear-gradient(#1299da, #226097);
+    border-color: #1299da;
+    /*background: linear-gradient(#6dbde4, #399dd8);*/
 }
 
 .am-btn:hover {
@@ -101,6 +126,29 @@ fieldset {
     margin: .4rem;
 }
 
+/*模态框*/
+.am-modal-hd {
+    padding: 10px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    border-bottom: 1px solid #ddd;
+    /* font-weight: bold; */
+}
+.am-modal-bd{
+    background-color: #fff;
+    padding: 2rem 6rem 3rem 6rem !important;
+}
+.am-modal-bd .am-form-group{
+    margin-bottom: 0;
+}
+.am-modal-btn:last-child {
+    background-color: #226697;
+    color: #fff;
+}
+.am-modal-btn:first-child {
+    border-radius: 0 0 0 2px;
+    color: #226697;
+}
 /* 判断ipad */
 @media only screen
 and (min-device-width: 768px)
