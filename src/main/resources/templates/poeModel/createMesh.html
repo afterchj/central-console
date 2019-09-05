@@ -5,7 +5,7 @@
     <title>创建网组</title>
 </head>
 <body>
-<div class="am-modal " tabindex="-1" id="creatMesh-modal" th:fragment="createMesh">
+<div class="am-modal am-modal-alert" tabindex="-1" id="creatMesh-modal" th:fragment="createMesh">
     <div class="am-modal-dialog">
         <div class="am-modal-hd">
             <span>创建网组</span>
@@ -25,7 +25,8 @@
         </div>
         <div class="am-modal-footer">
             <span class="am-modal-btn" data-am-modal-cancel>取消</span>
-            <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+            <span class="am-modal-btn yes"   onclick="return addSubChannel();">确定</span>
+            <!--data-am-modal-confirm-->
         </div>
     </div>
 </div>
