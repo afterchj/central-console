@@ -68,10 +68,10 @@
                                 <th style="width: 15%;" class="am-text-center">网络状态</th>
                                 <th style="width: 15%;" class="am-text-center">面板数量</th>
                                 <th class="p-r am-dropdown am-text-center" data-am-dropdown>
-                                    <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                                    <span class="am-dropdown-toggle" data-am-dropdown-toggle >
                                         隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""
                                                   class=" p-a create-mesh-list  tool"  style="width: 1.5rem;">
-                                    </a>
+                                    </span>
                                     <ul class="am-dropdown-content ">
                                         <li>
                                             <!--data-am-modal="{target: '#creatMesh-modal'}"-->
@@ -382,13 +382,13 @@
             $(this).parent().parent().siblings('.panel-show-detail').toggle();
         });
     });
-    function createMeshyYes() {
-        console.log('wo bei');
-        var isTrue=true;
-        if(isTrue){
-            $('#creatMesh-modal').modal('hide');
-        }
-    }
+//    function createMeshyYes() {
+//        console.log('wo bei');
+//        var isTrue=true;
+//        if(isTrue){
+//            $('#creatMesh-modal').modal('hide');
+//        }
+//    }
 
 </script>
 </body>
