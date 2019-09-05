@@ -13,7 +13,13 @@
 }
 .login .am-panel-bd{
     padding: 0;
-    background-color: #55677B;
+    /* background-color: #226697; */
+    background: linear-gradient(#1299da, #226097);
+    margin-bottom: -.1rem;
+}
+.am-panel-default {
+    border-color: #ccc;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .2);
 }
 .login .form-login{
 background-color: #fff;
@@ -50,5 +56,6 @@ background-color: #fff;
     top: 50%;
 }
 .logo p{
-    margin: .4rem 1rem;
+    margin: 1.4rem 1rem 1.4rem 1rem;
+    opacity: .9;
 }
