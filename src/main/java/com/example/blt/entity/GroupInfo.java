@@ -15,8 +15,6 @@ public class GroupInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(length = 32)
-    private Integer masterId;
-    @Column(length = 32)
     private String gname;
     private String other;
     private Date createDate = new Date();

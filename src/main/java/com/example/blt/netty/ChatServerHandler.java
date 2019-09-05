@@ -43,8 +43,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         Channel channel = arg0.channel();
         String host = channel.id().toString();
-        String temp = sqlSessionTemplate.selectOne("console.getHost");
-        String master = StringUtils.isEmpty(temp) ? "88888888" : temp;
+        String master = sqlSessionTemplate.selectOne("console.getHost");
         List<String> hosts = null;
         String cmd = arg1;
         String to = host;
@@ -75,7 +74,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         if (to.equals("master")) {
-            hosts = sqlSessionTemplate.selectList("console.getHosts");
+            hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
+            if (hosts.size() == 0) {
+                hosts = sqlSessionTemplate.selectList("console.getHosts");
+            }
         }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);

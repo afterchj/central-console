@@ -289,9 +289,11 @@ public class MainTest {
 
     @Test
     public void testSend(){
-        JSONObject object = new JSONObject();
-        object.put("host", "master");
-        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
-        ClientMain.sendCron(object.toJSONString());
+        List<String> hosts = sqlSessionTemplate.selectList("console.getHostsByGid", "45642");
+        System.out.println(hosts.size());
+//        JSONObject object = new JSONObject();
+//        object.put("host", "master");
+//        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
+//        ClientMain.sendCron(object.toJSONString());
     }
 }
