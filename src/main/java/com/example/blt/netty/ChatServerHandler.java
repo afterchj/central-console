@@ -43,7 +43,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         Channel channel = arg0.channel();
         String host = channel.id().toString();
-        String master = sqlSessionTemplate.selectOne("console.getHost");
+        String master = sqlSessionTemplate.selectOne("console.getHost",host);
         List<String> hosts = null;
         String cmd = arg1;
         String to = host;
