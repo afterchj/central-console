@@ -36,7 +36,7 @@ public interface ControlCenterDao {
     @Select("select id,gname from t_group")
     List<GroupList> getGroups();
 
-    @Select("select count(*) from t_host_info where mesh_name=#{mname}")
+    @Select("select count(*) from t_host_info where mesh_name=#{mname}  where ip!='127.0.0.1'")
     Integer getMname(@Param("mname") String mname);
 
     @Update("update t_host_info set mesh_name=#{mname} where mesh_id=#{meshId}")
@@ -60,7 +60,7 @@ public interface ControlCenterDao {
     @Update("update t_host_info set is_master=#{type} where mesh_id=#{meshId}")
     void updateHostInfo(@Param("meshId")String meshId,@Param("type") int type);
 
-    @Select("select id,mesh_id as meshId,ifnull(mesh_name,mesh_id) as mname from t_host_info")
+    @Select("select id,mesh_id as meshId,ifnull(mesh_name,mesh_id) as mname from t_host_info where ip!='127.0.0.1' and mesh_id is not null")
     List<MeshList> getMeshs();
 
     List<ControlMaster> getControlGroupsByGname(@Param("gname") String gname);
