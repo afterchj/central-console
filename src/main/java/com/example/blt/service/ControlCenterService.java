@@ -127,6 +127,7 @@ public class ControlCenterService {
 
     public Boolean groupOperation(String gname, String type,Integer id,String meshId) {
         if (type.equals("delete")){
+            controlCenterDao.updateMasterByGid(id);
             controlCenterDao.deleteGroup(id);
         }else if (type.equals("select")){
             controlCenterDao.selectGroup(gname,meshId);

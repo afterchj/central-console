@@ -106,83 +106,11 @@
                             </tr>
                             </thead>
                             <tbody class="am-text-sm">
-                            <!--<tr>-->
-                            <!--<td class="p-r text-blue">网络2-->
-                            <!--<img th:src="@{/static/poeConsole/img/dot.png}" alt=""-->
-                            <!--class=" p-a  tool first-rename" style="width: 1.7%;">-->
-                            <!--<div class="am-cf  rename-delete p-a left">-->
-                            <!--<div class="am-fl am-center"  data-toggle="modal" data-target="#renameMesh-modal">-->
-                            <!--重命名-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--</td>-->
-                            <!--<td><span>88888888</span></td>-->
-                            <!--<td class="text-blue">网络在线</td>-->
-                            <!--<td class="p-r text-blue">2<span class="am-text-xs">（存在异常）</span>-->
-                            <!--&lt;!&ndash;<i class="fa fa-chevron-circle-down p-a violet" aria-hidden="true"></i>&ndash;&gt;-->
-                            <!--<img th:src="@{/static/poeConsole/img/open.png}" alt=""-->
-                            <!--class=" p-a  tool panel-show-msg">-->
-                            <!--</td>-->
-                            <!--<td class="p-r">组1-->
-                            <!--<img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool">-->
-                            <!--</td>-->
-                            <!--<td>-->
-                            <!--<div class="am-checkbox table-checkbox">-->
-                            <!--<label>-->
-                            <!--<input type="checkbox"> 主控-->
-                            <!--</label>-->
-                            <!--</div>-->
-                            <!--</td>-->
-                            <!--</tr>-->
-                            <!--<tr class="am-text-xs panel-show-detail">-->
-                            <!--<th rowspan="3" class="am-text-center"></th>-->
-                            <!--<th class="d-panel-msg am-text-center">面板名称</th>-->
-                            <!--<th class="d-panel-msg am-text-center">面板MAC</th>-->
-                            <!--<th class="d-panel-msg am-text-center">版本型号</th>-->
-                            <!--<th class="d-panel-msg am-text-center">面板状态</th>-->
-                            <!--<th rowspan="3"></th>-->
-                            <!--</tr>-->
-                            <!--<tr class="am-text-xs panel-show-detail">-->
-                            <!--<td class="d-panel-msg p-r ">-->
-                            <!--<span>面板1</span>-->
-                            <!--<img th:src="@{/static/poeConsole/img/dot.png}" alt="" class=" p-a  tool first-rename" style="width: 1.">-->
-                            <!--<div class="am-cf  rename-delete p-a left">-->
-                            <!--<div class="am-fl am-center" style="border-right: 1px solid #ccc;"-->
-                            <!--data-toggle="modal" data-target="#renamePanel-modal">-->
-                            <!--重命名-->
-                            <!--</div>-->
-                            <!--<div class="am-fl am-center"   data-toggle="modal" data-target="#deletePanel-modal">-->
-                            <!--删除-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--</td>-->
-                            <!--<td class="d-panel-msg ">888888</td>-->
-                            <!--<td class="d-panel-msg ">版本(型号1)</td>-->
-                            <!--<td class="d-panel-msg ">在线</td>-->
-                            <!--</tr>-->
-                            <!--<tr class="am-text-xs panel-show-detail">-->
-                            <!--<td class="d-panel-msg p-r">面板2-->
-                            <!--<img th:src="@{/static/poeConsole/img/dot.png}" alt=""-->
-                            <!--class=" p-a  tool first-rename" style="width: 1.7%;">-->
-                            <!--<div class="am-cf  rename-delete p-a left">-->
-                            <!--<div class="am-fl am-center" style="border-right: 1px solid #ccc;"-->
-                            <!--data-toggle="modal" data-target="#renamePanel-modal">-->
-                            <!--重命名-->
-                            <!--</div>-->
-                            <!--<div class="am-fl am-center" data-toggle="modal" data-target="#forbidDelete" >-->
-                            <!--删除-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--</td>-->
-                            <!--<td class="d-panel-msg">99999</td>-->
-                            <!--<td class="d-panel-msg">版本(型号2)</td>-->
-                            <!--<td class="am-text-danger d-panel-msg">离线</td>-->
-                            <!--</tr>-->
                             <tr th:each="controlMaster:${controlMasters}">
                                 <td class="p-r ">
                                     <span th:text="${controlMaster.mname}"></span>
                                     <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
-                                         class=" p-a  tool am-animation-fade first-rename" style="width: 1.7%;">
+                                         class=" p-a  tool am-animation-fade first-rename mesh-ope" style="width: 1.7%;">
                                     <!--<i class="fa fa-ellipsis-v  p-a gary" aria-hidden="true"></i>-->
 
                                     <div class="am-cf  rename-delete p-a left">
@@ -279,11 +207,14 @@
             e.stopPropagation();
             e.preventDefault();
         });
-        $('.first-rename').click(function (e) {
-            e.preventDefault();
-            $(this).next('.rename-delete').toggle();
-            $(this).parent().parent().siblings().find('.rename-delete').hide();
-        });
+//        $(".am-text-sm").on('click','.first-rename',function () {
+//            e.preventDefault();
+//            $(this).next('.rename-delete').toggle();
+//            $(this).parent().parent().siblings().find('.rename-delete').hide();
+//        })
+//        $('.first-rename').click(function (e) {
+//
+//        });
 //        $('.panel-show-msg').click(function (e) {
 //            e.preventDefault();
 //            var status = $(this).attr('src');
