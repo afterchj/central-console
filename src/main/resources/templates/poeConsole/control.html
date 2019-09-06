@@ -106,9 +106,9 @@
                             </tr>
                             </thead>
                             <tbody class="am-text-sm">
-                            <tr th:each="controlMesh:${controlMeshs}">
+                            <tr th:each="controlMaster:${controlMasters}">
                                 <td class="p-r ">
-                                    <span th:text="${controlMesh.mname}"></span>
+                                    <span th:text="${controlMaster.mname}"></span>
                                     <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
                                          class=" p-a  tool am-animation-fade first-rename" style="width: 1.7%;">
                                     <!--<i class="fa fa-ellipsis-v  p-a gary" aria-hidden="true"></i>-->
@@ -119,25 +119,85 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td th:text="${controlMesh.meshId}"></td>
-                                <td th:text="${controlMesh.state}"></td>
+                                <td th:text="${controlMaster.meshId}"></td>
+                                <td th:text="${controlMaster.mState}"></td>
                                 <td class="p-r">
-                                    <span th:text="${controlMesh.pNum}"></span>
-                                    <span class="am-text-xs" th:if="${controlMesh.pState!=null}"
-                                          th:text="${controlMesh.pState}"></span>
-                                    <img th:src="@{/static/poeConsole/img/open.png}" alt="" class=" p-a  tool">
+                                    <span th:text="${controlMaster.pNum}"></span>
+                                    <span class="am-text-xs" th:if="${controlMaster.pState!=null}"
+                                          th:text="${controlMaster.pState}"></span>
+                                    <img th:src="@{/static/poeConsole/img/open.png}" alt="" class=" p-a  tool panel-show-msg">
                                 </td>
-                                <td class="p-r">
-                                    <span th:text="${controlMesh.gname==null}?'--空--':${controlMesh.gname}"></span>
-                                    <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool">
+                                <!--<td class="p-r">-->
+                                    <!---->
+                                    <!--<img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool">-->
+                                <!--</td>-->
+                                <td class="p-r am-dropdown" data-am-dropdown>
+                                    <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                                        <span th:text="${controlMaster.gname==null}?' - 空 - ':${controlMaster.gname}"></span>
+                                        <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt=""
+                                                class=" p-a  tool">
+                                    </a>
+                                    <ul class="am-dropdown-content ">
+                                        <li class="am-dropdown-header am-text-sm"> - 空 -</li>
+                                        <li class="am-text-xs p-r" th:each="group:${groupList}">
+                                            <input type="hidden" th:value="${controlMaster.meshId}">
+                                            <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname},meshId=${controlMaster.meshId})}"
+                                               th:text="${group.gname}" class="select-group"></a>
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td>
                                     <div class="am-checkbox table-checkbox">
                                         <label class="blue-green">
-                                            <input type="checkbox" th:checked="${controlMesh.masterId==1}"> 主控
+                                            <input type="hidden" th:value="${controlMaster.meshId}">
+                                            <input type="checkbox" th:checked="${controlMaster.master}"> 主控
                                         </label>
                                     </div>
                                 </td>
+                            </tr>
+                            <tr class="am-text-xs panel-show-detail">
+                                <th rowspan="3" class="am-text-center"></th>
+                                <th class="d-panel-msg am-text-center">面板名称</th>
+                                <th class="d-panel-msg am-text-center">面板MAC</th>
+                                <th class="d-panel-msg am-text-center">版本型号</th>
+                                <th class="d-panel-msg am-text-center">面板状态</th>
+                                <th rowspan="3"></th>
+                            </tr>
+                            <tr class="am-text-xs panel-show-detail">
+                                <td class="d-panel-msg p-r ">
+                                    <span>面板1</span>
+                                    <img th:src="@{/static/poeConsole/img/dot.png}" alt="" class=" p-a  tool first-rename" style="width: 1.">
+                                    <div class="am-cf  rename-delete p-a left">
+                                        <div class="am-fl am-center" style="border-right: 1px solid #ccc;"
+                                             data-toggle="modal" data-target="#renamePanel-modal">
+                                            重命名
+                                        </div>
+                                        <div class="am-fl am-center"   data-toggle="modal" data-target="#deletePanel-modal">
+                                            删除
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="d-panel-msg ">888888</td>
+                                <td class="d-panel-msg ">版本(型号1)</td>
+                                <td class="d-panel-msg ">在线</td>
+                            </tr>
+                            <tr class="am-text-xs panel-show-detail">
+                                <td class="d-panel-msg p-r">面板2
+                                    <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
+                                         class=" p-a  tool first-rename" style="width: 1.7%;">
+                                    <div class="am-cf  rename-delete p-a left">
+                                        <div class="am-fl am-center" style="border-right: 1px solid #ccc;"
+                                             data-toggle="modal" data-target="#renamePanel-modal">
+                                            重命名
+                                        </div>
+                                        <div class="am-fl am-center" data-toggle="modal" data-target="#forbidDelete" >
+                                            删除
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="d-panel-msg">99999</td>
+                                <td class="d-panel-msg">版本(型号2)</td>
+                                <td class="am-text-danger d-panel-msg">离线</td>
                             </tr>
                             <tr>
                                 <td class="p-r text-blue">网络2
@@ -177,9 +237,8 @@
                             </tr>
                             <tr class="am-text-xs panel-show-detail">
                                 <td class="d-panel-msg p-r ">
-                                    面板1
-                                    <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
-                                         class=" p-a  tool first-rename" style="width: 1.7%;">
+                                    <span>面板1</span>
+                                    <img th:src="@{/static/poeConsole/img/dot.png}" alt="" class=" p-a  tool first-rename" style="width: 1.">
                                     <div class="am-cf  rename-delete p-a left">
                                         <div class="am-fl am-center" style="border-right: 1px solid #ccc;"
                                             data-toggle="modal" data-target="#renamePanel-modal">
@@ -211,106 +270,6 @@
                                 <td class="d-panel-msg">99999</td>
                                 <td class="d-panel-msg">版本(型号2)</td>
                                 <td class="am-text-danger d-panel-msg">离线</td>
-                            </tr>
-                            <tr>
-                                <td class="p-r ">
-                                    网络3
-                                    <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
-                                         class=" p-a  tool first-rename" style="width: 1.7%;">
-                                    <div class="am-cf  rename-delete p-a left">
-                                        <div class="am-fl am-center"  data-toggle="modal" data-target="#renameMesh-modal">
-                                            重命名
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>88888888</td>
-                                <td>网络离线</td>
-                                <td class="p-r am-text-danger">1 <span class="am-text-xs">（离线）</span>
-                                    <img th:src="@{/static/poeConsole/img/close.png}" class=" p-a  tool" alt="">
-                                    <!--<i class="fa fa-chevron-circle-up p-a violet" aria-hidden="true"></i>-->
-                                </td>
-                                <td class="p-r am-dropdown" data-am-dropdown>
-                                    <!--<img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool" >-->
-                                    <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-                                        组1 <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt=""
-                                                class=" p-a  tool">
-                                    </a>
-                                    <ul class="am-dropdown-content ">
-                                        <li class="am-dropdown-header am-text-sm"> - 空 -</li>
-                                        <li class="am-text-xs p-r">
-                                            <a href="#">组1</a>
-                                        </li>
-                                        <li class="am-text-xs p-r">
-                                            <a href="#">组2</a>
-                                        </li>
-                                        <li class="am-text-xs p-r">
-                                            <a href="#">组3</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <div class="am-checkbox table-checkbox">
-                                        <label class="blue-green">
-                                            <input type="checkbox" checked> 主控
-                                        </label>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="p-r text-blue">
-                                    网络4
-                                    <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
-                                         class=" p-a  tool first-rename" style="width: 1.7%;">
-                                    <div class="am-cf  rename-delete p-a left">
-                                        <div class="am-fl am-center"   data-toggle="modal" data-target="#renameMesh-modal">
-                                            重命名
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>88888888</td>
-                                <td class="text-blue">网络在线</td>
-                                <td class="p-r text-blue">2<span class="am-text-xs">（存在异常）</span>
-                                    <!--<i class="fa fa-chevron-circle-down p-a violet" aria-hidden="true"></i>-->
-                                    <img th:src="@{/static/poeConsole/img/close.png}" class=" p-a  tool " alt=""/>
-                                </td>
-                                <td class="p-r ">组2
-                                    <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool">
-                                </td>
-                                <td>
-                                    <div class="am-checkbox table-checkbox">
-                                        <label>
-                                            <input type="checkbox"> 主控
-                                        </label>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="p-r text-blue">
-                                    网络5
-                                    <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
-                                         class=" p-a  tool first-rename" style="width: 1.7%;">
-                                    <div class="am-cf  rename-delete p-a left">
-                                        <div class="am-fl am-center" data-toggle="modal" data-target="#renameMesh-modal">
-                                            重命名
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>88888888</td>
-                                <td class="text-blue">网络在线</td>
-                                <td class="p-r text-blue">2<span class="am-text-xs">（存在异常）</span>
-                                    <!--<i class="fa fa-chevron-circle-down p-a violet" aria-hidden="true"></i>-->
-                                    <img th:src="@{/static/poeConsole/img/close.png}" class=" p-a  tool" alt="">
-                                </td>
-                                <td class="p-r"> - 空 -
-                                    <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool">
-                                </td>
-                                <td>
-                                    <div class="am-checkbox table-checkbox">
-                                        <label>
-                                            <input type="checkbox"> 主控
-                                        </label>
-                                    </div>
-                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -368,19 +327,21 @@
             $(this).next('.rename-delete').toggle();
             $(this).parent().parent().siblings().find('.rename-delete').hide();
         });
-        $('.panel-show-msg').click(function (e) {
-            e.preventDefault();
-            var status = $(this).attr('src');
-            if (status.indexOf('open') != -1) {
-                var reg = /open/g;
-                status = status.replace(reg, 'close');
-            } else if (status.indexOf('close') != -1) {
-                var reg = /close/g;
-                status = status.replace(reg, 'open');
-            }
-            $(this).attr('src', status);
-            $(this).parent().parent().siblings('.panel-show-detail').toggle();
-        });
+//        $('.panel-show-msg').click(function (e) {
+//            e.preventDefault();
+//            var status = $(this).attr('src');
+//            if (status.indexOf('open') != -1) {//开
+//                var reg = /open/g;
+//                status = status.replace(reg, 'close');
+//
+//            } else if (status.indexOf('close') != -1) {//关
+//                var reg = /close/g;
+//                status = status.replace(reg, 'open');
+//            }
+//            $(this).attr('src', status);
+//
+//            $(this).parent().parent().siblings('.panel-show-detail').toggle();
+//        });
     });
 //    function createMeshyYes() {
 //        console.log('wo bei');

@@ -2,10 +2,7 @@ package com.example.blt.controller;
 
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
-import com.example.blt.entity.control.ControlHost;
-import com.example.blt.entity.control.ControlMesh;
-import com.example.blt.entity.control.GroupList;
-import com.example.blt.entity.control.MeshList;
+import com.example.blt.entity.control.*;
 import com.example.blt.service.ControlCenterService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -118,11 +115,11 @@ public class ControlCenterController {
      * @return
      */
     @RequestMapping("/netWorkGroupConsole")
-    public String netWorkGroupConsole(Model model,String gname) {
-        List<ControlMesh> controlMeshs = controlCenterService.getControlGroups(gname);
+    public String netWorkGroupConsole(Model model,String gname,String meshId) {
+        List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gname,meshId);
         List<GroupList> groupList = controlCenterService.getGroups();
         model.addAttribute("groupList",groupList);//组列表
-        model.addAttribute("controlMeshs",controlMeshs);//组列表
+        model.addAttribute("controlMasters",controlMasters);//网络列表
         return "poeConsole/control";
     }
 
@@ -154,6 +151,7 @@ public class ControlCenterController {
         }
         return groupMap;
     }
+
 
     /**
      * 重命名网络名
@@ -202,7 +200,7 @@ public class ControlCenterController {
      */
     @RequestMapping("/setMaster")
     @ResponseBody
-    public Map<String,Object> setMaster(String meshId,String type){
+    public Map<String,Object> setMaster(String meshId,int type){
         Map<String,Object> masterMap = new HashMap<>();
         controlCenterService.updateMaster(meshId,type);
         masterMap.put("success","success");
