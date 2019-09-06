@@ -229,8 +229,7 @@ public class MainController {
 
 
     @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
-    public Map<String, String> uploadDataFromAlink(HttpServletRequest request,
-                                                   HttpServletResponse response) {
+    public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         String params = request.getParameter("params");
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
@@ -294,6 +293,7 @@ public class MainController {
             map.put("result", "000");
         } catch (Exception e) {
             map.put("result", "200");
+            logger.warn("********************"+e);
         }
         return map;
     }
