@@ -126,17 +126,13 @@ public class StringBuildUtils {
                 map.put("cid", cid);
                 break;
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
-                JSONObject object = new JSONObject();
-                object.put("host", "master");
-                object.put("command", format + "CCCC");
-                ClientMain.sendCron(object.toJSONString());
                 String cmd = str.substring(len - 4);
                 if ("01".equals(cmd)) {
                     status = 0;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
                 } else if ("02".equals(cmd)) {
                     status = 1;
-                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
+//                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", mid);
