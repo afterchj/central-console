@@ -5,6 +5,9 @@
 .login-title{
     width: 45%;
 }
+.down-right{
+    left:100% !important;
+}
 .login-title p{
     margin: 0;
 }

@@ -23,6 +23,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -227,12 +229,15 @@ public class MainController {
 
 
     @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
-    public Map<String, String> uploadDataFromAlink(@RequestBody Map<String, Object> data, ModelMap model) {
+    public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
-        String uid = String.valueOf(data.get("uid"));
-        String time = String.valueOf(data.get("time"));
-        int projectId = (int) data.get("projectId");
-        String project_data = JSON.toJSONString(data.get("project_data"));
+        String params = request.getParameter("params");
+        JSONObject jsonObjectParams = JSONObject.parseObject(params);
+        String uid = String.valueOf(jsonObjectParams.get("uid"));
+        logger.warn("*****************"+uid);
+        String time = String.valueOf(jsonObjectParams.get("time"));
+        int projectId = (int) jsonObjectParams.get("projectId");
+        String project_data = JSON.toJSONString(jsonObjectParams.get("project_data"));
         try {
             List<ProjectData> projectDataList = JSONArray.parseArray(project_data, ProjectData.class);
             for (int i = 0; i < projectDataList.size(); i++) {
@@ -288,6 +293,7 @@ public class MainController {
             map.put("result", "000");
         } catch (Exception e) {
             map.put("result", "200");
+            logger.warn("********************"+e);
         }
         return map;
     }

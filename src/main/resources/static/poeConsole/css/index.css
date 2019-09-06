@@ -17,11 +17,15 @@
     width: 1rem;
 }
 
-.data-show-table table .am-dropdown {
+.data-show-table table thead .am-dropdown {
     display: block;
     border-width: 0;
 }
-
+.data-show-table table tbody .am-dropdown{
+    display: block;
+    border: none;
+    border-top: 1px solid #dee4e8;
+}
 .data-show-table table .am-dropdown a {
     color: #4a4a4a;
 }

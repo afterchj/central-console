@@ -29,7 +29,13 @@
 .left-timing-title li.active,.right-timing-detail.active{
     background-color: #dee4e8;
     z-index: 999;
+    border: 1px solid #dee4e8;
+}
+.left-timing-title li.active{
     border-color: #dee4e8;
+}
+.right-timing-detail.active{
+    border-color: #fff;
 }
 .left-timing-title li{
     border-color: #dee4e8;
@@ -44,7 +50,7 @@
     /*margin-left: 1%;*/
 }
 .right-timing-detail{
-    border:1px solid  #dee4e8;
+    /*border:1px solid  #dee4e8;*/
     margin: 3rem 0;
 }
 .right-line{

@@ -36,10 +36,10 @@ public interface ControlCenterDao {
     @Select("select id,gname from t_group")
     List<GroupList> getGroups();
 
-    @Select("select count(*) from t_master_subordinate where mname=#{mname}")
+    @Select("select count(*) from t_host_info where mesh_name=#{mname}")
     Integer getMname(@Param("mname") String mname);
 
-    @Update("update t_host_info set mname=#{mname} where mesh_id=#{meshId}")
+    @Update("update t_host_info set mesh_name=#{mname} where mesh_id=#{meshId}")
     void renameMesh(@Param("mname")String mname, @Param("meshId")String meshId);
 
     @Select("select count(*) FROM t_host_info WHERE other=#{pname}")
@@ -54,27 +54,30 @@ public interface ControlCenterDao {
     @Delete("DELETE FROM t_group where id=#{id}")
     void deleteGroup(@Param("id") Integer id);
 
-    @Update("update t_master_subordinate set master_id=1 where mesh_id=#{meshId}")
+    @Update("update t_host_info set master_id=1 where mesh_id=#{meshId}")
     void updatetMaster(@Param("meshId") String meshId);
 
     @Update("update t_host_info set is_master=#{type} where mesh_id=#{meshId}")
     void updateHostInfo(@Param("meshId")String meshId,@Param("type") int type);
 
-    @Select("select id,mesh_id as meshId,ifnull(mname,mesh_id) as mname from t_master_subordinate")
+    @Select("select id,mesh_id as meshId,ifnull(mesh_name,mesh_id) as mname from t_host_info")
     List<MeshList> getMeshs();
 
     List<ControlMaster> getControlGroupsByGname(@Param("gname") String gname);
 
     List<ControlMaster> getControlGroupsByAllGroup(String gname);
 
-    @Update("update t_master_subordinate set gid=(select id from t_group where gname=#{gname}) where mesh_id=#{meshId}")
+    @Update("update t_host_info set gid=(select id from t_group where gname=#{gname}) where mesh_id=#{meshId}")
     void selectGroup(@Param("gname")String gname, @Param("meshId")String meshId);
 
-    @Select("select if(status='1','在线','离线') AS state,ifnull( other, mac ) AS pname, mac from t_host_info where mesh_id=#{meshId}")
+    @Select("select if(status='1','在线','离线') AS state,ifnull( other, ip ) AS pname, ifnull(mac,ip) as mac from t_host_info where mesh_id=#{meshId} ")
     List<ControlHost> getPanels(@Param("meshId")String meshId);
 
     List<ControlMaster> getMasterStates();
 
     @Update("update t_host_info set gid=(select id from t_group WHERE gname=#{gname}) , is_master=0 where mesh_id=#{meshId}")
     void updateMasterGidByMeshId(@Param("meshId")String meshId, @Param("gname")String gname);
+
+    @Update("update t_host_info set gid=null where gid=#{gid}")
+    void updateMasterByGid(@Param("gid") Integer id);
 }
