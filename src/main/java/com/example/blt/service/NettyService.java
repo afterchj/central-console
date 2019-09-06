@@ -100,11 +100,9 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
             try {
                 ProducerService.pushMsg(Topics.UPDATE_TOPIC.getTopic(), JSON.toJSONString(params));
             } catch (Exception e) {
-                sqlSessionTemplate.update("console.saveUpdate", params);
             }
-        } else {
-            sqlSessionTemplate.update("console.saveUpdate", params);
         }
+        sqlSessionTemplate.update("console.saveUpdate", params);
     }
 
     public ValueOperations getOpsForValue() {

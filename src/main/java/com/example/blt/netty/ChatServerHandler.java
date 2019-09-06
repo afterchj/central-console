@@ -43,7 +43,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         Channel channel = arg0.channel();
         String host = channel.id().toString();
-        String master = sqlSessionTemplate.selectOne("console.getHost",host);
+        String master = sqlSessionTemplate.selectOne("console.getHost", host);
         List<String> hosts = null;
         String cmd = arg1;
         String to = host;
@@ -69,6 +69,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 String mac = StringBuildUtils.sortMac(arg1.substring(8, 20));
                 insertOrUpdateHost(channel, "", mac);
             }
+            if (arg1.substring(26, 28).equals("52")) {
+                to = "master";
+            }
             if (host.equals(master)) {
                 to = "master";
             }
@@ -84,7 +87,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 //        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len <= 46) {
+        if (len > 9 && len <= 50) {
             if (cmd.indexOf("77050103") == -1) {
                 logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
             }
@@ -173,10 +176,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             try {
                 ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
             } catch (Exception e) {
-                sqlSessionTemplate.insert("console.saveUpdateHosts", map);
             }
-        } else {
-            sqlSessionTemplate.insert("console.saveUpdateHosts", map);
         }
+        sqlSessionTemplate.insert("console.saveUpdateHosts", map);
     }
 }
