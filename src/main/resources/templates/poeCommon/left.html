@@ -36,17 +36,27 @@
         </a>
     </li>
     <li class="to-bottom-2 p-a">
-        <a   >
+        <a  href="javacript:void(0);">
             <img  th:src="@{/static/poeConsole/img/project.png}" alt="">
             <p class="">XX项目</p>
         </a>
     </li>
-    <li class="to-bottom-1 p-a">
-        <a th:href="@{/control/loginOut}">
-            <img th:src="@{/static/poeConsole/img/set.png}" alt="">
-        </a>
+    <li class="to-bottom-1 p-a am-dropdown am-dropdown-up down-right"  data-am-dropdown>
+        <!--<a th:href="@{/control/loginOut}">-->
+            <!--<img th:src="@{/static/poeConsole/img/set.png}" alt="">-->
+        <!--</a>-->
+        <img th:src="@{/static/poeConsole/img/set.png}" class="am-dropdown-toggle" alt="" data-am-dropdown-toggle>
+        <!-- <a th:href="@{/control/loginOut}">-->
+        <!--<ul class="am-list am-list-static am-list-border">-->
+            <!--<li>...</li>-->
+        <!--</ul>-->
+        <ul class="am-dropdown-content" style="left:95%;bottom:-20px; min-width: 8rem;">
+            <li style="border-bottom: 1px solid #eee;" data-toggle="modal" data-target="#controlInformation-modal"><a href="javacript:void(0);" >中控信息</a></li>
+            <li><a th:href="@{/control/loginOut}">退出登录</a></li>
+        </ul>
     </li>
 </ul>
+<div th:replace="poeModel/controlInformation::controlInformation"></div>
 <!--</div>-->
 </body>
 </html>
