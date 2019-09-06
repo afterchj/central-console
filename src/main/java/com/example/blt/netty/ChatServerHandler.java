@@ -69,6 +69,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 String mac = StringBuildUtils.sortMac(arg1.substring(8, 20));
                 insertOrUpdateHost(channel, "", mac);
             }
+            if (arg1.substring(26,28).equals("52")){
+                to="master";
+            }
             if (host.equals(master)) {
                 to = "master";
             }
