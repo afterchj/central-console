@@ -52,9 +52,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
         } catch (Exception e) {
-            if (arg1.indexOf("77050901") != -1) {
+            if (arg1.indexOf("77050901") !=-1) {
                 cmd = "77050103";
-                String meshId = arg1.substring(arg1.length() - 20, arg1.length() - 4);
+                String meshId = arg1.substring(8, 24);
                 char[] chars = meshId.toCharArray();
                 StringBuffer buffer = new StringBuffer();
                 for (int i = 0; i < chars.length; i++) {
@@ -66,11 +66,16 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
             if (arg1.indexOf("77050705") != -1) {
                 cmd = "77050103";
-                String mac = StringBuildUtils.sortMac(arg1.substring(8, 20));
+                String mac = StringBuildUtils.sortMac(arg1.substring(36, 48));
                 insertOrUpdateHost(channel, "", mac);
             }
-            if (arg1.substring(26, 28).equals("52")) {
-                to = "master";
+            if (arg1.indexOf("77050304") != -1) {
+                cmd = "77050103";
+            }
+            if (arg1.length() > 46 && arg1.length() <= 50) {
+                if (arg1.substring(26, 28).equals("52")) {
+                    to = "master";
+                }
             }
             if (host.equals(master)) {
                 to = "master";
@@ -113,8 +118,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     }
                 }
             }
-        } else {
+        }
+        if (len >= 46) {
             if (arg1.indexOf("CCCC") != -1) {
+//                logger.warn("info [{}]", arg1);
 //                StringBuildUtils.buildLightInfo(host, arg1);
                 ExecuteTask.pingInfo(host, arg1);
             }
@@ -124,7 +131,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        channel.writeAndFlush("77050105CCCC");
         group.add(channel);
     }
 
@@ -138,8 +144,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        channel.writeAndFlush("77050101CCCC");
         insertOrUpdateHost(channel, "", "");
+        channel.writeAndFlush("77050101CCCC");
+        channel.writeAndFlush("77050105CCCC");
     }
 
     //退出链接
