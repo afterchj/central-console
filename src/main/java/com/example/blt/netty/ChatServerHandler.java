@@ -45,12 +45,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         String host = channel.id().toString();
         String master = sqlSessionTemplate.selectOne("console.getHost", host);
         List<String> hosts = null;
+        String type = null;
         String cmd = arg1;
         String to = host;
         try {
             JSONObject jsonObject = JSON.parseObject(arg1);
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
+            type = jsonObject.getString("select");
         } catch (Exception e) {
             int len = arg1.length();
             if (arg1.indexOf("77050901") != -1) {
@@ -85,7 +87,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (to.equals("master")) {
             hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
             if (hosts.size() == 0) {
-                hosts = sqlSessionTemplate.selectList("console.getHosts");
+                hosts = sqlSessionTemplate.selectList("console.getHosts", type);
             }
         }
 //        if (arg1.indexOf("182716324621") != -1) {
