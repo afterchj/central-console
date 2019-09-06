@@ -109,21 +109,28 @@ fieldset {
     padding: .9rem 1.25rem;
     border-color: #dee4e8;
 }
-
+.col-sm-1.col-lg-1.no-padding.leftNav{
+    z-index: 999;
+}
 .topNav .am-panel-default > .am-panel-hd .am-panel-title {
     font-size: 1.4rem;
     color: #3a3a3a;
 }
-
+.modal-open .modal {
+    z-index: 10001;
+}
+/*.fade.in {*/
+    /*z-index: 10000;*/
+/*}*/
 .topNav .am-panel-default > .am-panel-hd .am-panel-title:before {
     content: '';
     display: inline-block;
-    width: .2rem;
+    width: .1rem;
     height: 1rem;
     background-color: #85C0CB;
-    vertical-align: top;
+    vertical-align: middle;
     line-height: 20px;
-    margin: .4rem;
+    margin: 0 .3rem .2rem 0;
 }
 
 /*模态框*/
@@ -159,6 +166,7 @@ fieldset {
 .modal.in .modal-dialog{
     width: 50%;
     text-align: center;
+    top: 20%;
 }
 .modal-footer {
     padding: .8rem 1rem;
