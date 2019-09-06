@@ -54,20 +54,20 @@ public interface ControlCenterDao {
     @Delete("DELETE FROM t_group where id=#{id}")
     void deleteGroup(@Param("id") Integer id);
 
-    @Update("update t_master_subordinate set master_id=1 where mesh_id=#{meshId}")
+    @Update("update t_host_info set master_id=1 where mesh_id=#{meshId}")
     void updatetMaster(@Param("meshId") String meshId);
 
     @Update("update t_host_info set is_master=#{type} where mesh_id=#{meshId}")
     void updateHostInfo(@Param("meshId")String meshId,@Param("type") int type);
 
-    @Select("select id,mesh_id as meshId,ifnull(mname,mesh_id) as mname from t_master_subordinate")
+    @Select("select id,mesh_id as meshId,ifnull(mesh_name,mesh_id) as mname from t_host_info")
     List<MeshList> getMeshs();
 
     List<ControlMaster> getControlGroupsByGname(@Param("gname") String gname);
 
     List<ControlMaster> getControlGroupsByAllGroup(String gname);
 
-    @Update("update t_master_subordinate set gid=(select id from t_group where gname=#{gname}) where mesh_id=#{meshId}")
+    @Update("update t_host_info set gid=(select id from t_group where gname=#{gname}) where mesh_id=#{meshId}")
     void selectGroup(@Param("gname")String gname, @Param("meshId")String meshId);
 
     @Select("select if(status='1','在线','离线') AS state,ifnull( other, ip ) AS pname, ifnull(mac,ip) as mac from t_host_info where mesh_id=#{meshId} ")
