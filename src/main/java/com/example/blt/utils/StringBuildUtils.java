@@ -136,7 +136,7 @@ public class StringBuildUtils {
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
                 } else if ("02".equals(cmd)) {
                     status = 1;
-                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
+//                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", mid);
