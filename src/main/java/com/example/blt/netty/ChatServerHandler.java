@@ -75,11 +75,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     insertOrUpdateHost(channel, "", mac);
                 }
             }
-            if (len > 46 && len <= 50) {
-                if (arg1.substring(26, 28).equals("52")) {
-                    to = "master";
-                }
-            }
             if (host.equals(master)) {
                 to = "master";
             }
@@ -97,7 +92,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len <= 50) {
             if (cmd.indexOf("77050103") == -1) {
-                logger.warn("ip[{}] hosts[{}] cmd [{}]", to, hosts, cmd);
+                logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             }
             StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
