@@ -1,12 +1,9 @@
 package com.example.blt.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
-import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.netty.ClientMain;
 import com.example.blt.service.ProducerService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -182,7 +179,7 @@ public class StringBuildUtils {
                 break;
         }
         if (!map.containsKey("ctype")) return;
-        saveConsole(map, false);
+        saveConsole(Topics.CONSOLE_TOPIC.getTopic(),map, false);
     }
 
     public static void parseLocalCmd(String str, String ip) {
@@ -216,32 +213,7 @@ public class StringBuildUtils {
                 break;
         }
         if (!map.containsKey("ctype")) return;
-        saveConsole(map, false);
-    }
-
-    public static void formatStr(String str, String ip) {
-        Map map = new ConcurrentHashMap<>();
-        String prefix = str.substring(0, 2);
-        map.put("host", ip);
-        map.put("lmac", str.substring(2, 14));
-        map.put("mesh_id", str.substring(14, 22));
-//        map.put("other", str);
-        switch (prefix) {
-            case "02":
-                map.put("cid", str.substring(34, 36));
-                map.put("x", str.substring(36, 38));
-                map.put("y", str.substring(38, 40));
-                break;
-            default:
-                if ("03".equals(prefix)) {
-                    map.put("ctype", str.substring(34, 36));
-                    map.put("cid", str.substring(36, 38));
-                    map.put("x", str.substring(38, 40));
-                    map.put("y", str.substring(40));
-                }
-                break;
-        }
-        saveConsole(map, false);
+        saveConsole(Topics.LOCAL_TOPIC.getTopic(),map, false);
     }
 
     public static void saveLight(Map map, boolean flag) {
@@ -249,24 +221,20 @@ public class StringBuildUtils {
             try {
                 ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
             } catch (Exception e) {
-                sqlSessionTemplate.selectOne("console.saveLight", map);
             }
-        } else {
-            sqlSessionTemplate.selectOne("console.saveConsole", map);
         }
+        sqlSessionTemplate.selectOne("console.saveLight", map);
     }
 
-    public static void saveConsole(Map map, boolean flag) {
+    public static void saveConsole(String topic, Map map, boolean flag) {
         if (flag) {
             try {
                 String info = JSON.toJSONString(map);
-                ProducerService.pushMsg(Topics.CONSOLE_TOPIC.getTopic(), info);
+                ProducerService.pushMsg(topic, info);
             } catch (Exception e) {
-                sqlSessionTemplate.selectOne("console.saveConsole", map);
             }
-        } else {
-            sqlSessionTemplate.selectOne("console.saveConsole", map);
         }
+        sqlSessionTemplate.selectOne("console.saveConsole", map);
         WebSocket.sendMessage(map);
     }
 }

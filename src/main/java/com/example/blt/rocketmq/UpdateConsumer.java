@@ -7,6 +7,7 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,9 +27,12 @@ public class UpdateConsumer implements RocketMQListener<String> {
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Value("${rocketmq.model}")
+    private String mode;
 
     @Override
     public void onMessage(String message) {
+        if ("local".equals(mode)) return;
         try {
             Map map = JSON.parseObject(message);
             sqlSessionTemplate.selectOne("console.saveUpdate", map);

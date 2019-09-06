@@ -192,9 +192,9 @@ public class MainTest {
 //        ExecuteTask.parseLocalCmd(c1, "127.0.0.1");
 //        ExecuteTask.parseLocalCmd(c2, "127.0.0.1");
         for (int i = 0; i < 10; i++) {
-            Map map = new HashMap();
-            map.put("topic", "topic_test");
-            map.put("message", "Just is test messages " + i);
+//            Map map = new HashMap();
+//            map.put("topic", "topic_test");
+//            map.put("message", "Just is test messages " + i);
             try {
                 ProducerService.pushMsg("demo_topic", "Just is test messages " + i);
             } catch (Exception e) {

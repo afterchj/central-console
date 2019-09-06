@@ -69,8 +69,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 String mac = StringBuildUtils.sortMac(arg1.substring(8, 20));
                 insertOrUpdateHost(channel, "", mac);
             }
-            if (arg1.substring(26,28).equals("52")){
-                to="master";
+            if (arg1.substring(26, 28).equals("52")) {
+                to = "master";
             }
             if (host.equals(master)) {
                 to = "master";
@@ -176,10 +176,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             try {
                 ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
             } catch (Exception e) {
-                sqlSessionTemplate.insert("console.saveUpdateHosts", map);
             }
-        } else {
-            sqlSessionTemplate.insert("console.saveUpdateHosts", map);
         }
+        sqlSessionTemplate.insert("console.saveUpdateHosts", map);
     }
 }
