@@ -34,7 +34,6 @@ public class ConsoleConsumer implements RocketMQListener<String> {
     @Override
     public void onMessage(String message) {
         if ("local".equals(mode)) return;
-        logger.warn("receiveMsg[{}]", message);
         try {
             Map map = JSON.parseObject(message);
             sqlSessionTemplate.selectOne("console.saveConsole", map);
