@@ -26,7 +26,7 @@ public class StringBuildUtilsTest {
     @Test
     public void test() {
         String[] array ="77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC".split("CCCC");
-        System.out.println("array="+array[0]+"\t"+"77011365FFFFFFFF210D000000".length());
+        System.out.println("array="+array[0]+"\t"+"77011365FFFFFFFF2109000000521FEA62D7ACF00102CCCC".length());
         String key = String.format("task_%s_%s", "88888888", 1);
         System.out.println(key);
         String mac = StringBuildUtils.sortMac("7705070504456DD7ACF0CCCC".substring(8, 20));
