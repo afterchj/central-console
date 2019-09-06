@@ -52,7 +52,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
         } catch (Exception e) {
-            if (arg1.indexOf("77050901") !=-1) {
+            int len = arg1.length();
+            if (arg1.indexOf("77050901") != -1) {
                 cmd = "77050103";
                 String meshId = arg1.substring(8, 24);
                 char[] chars = meshId.toCharArray();
@@ -64,15 +65,17 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 }
                 insertOrUpdateHost(channel, buffer.toString(), "");
             }
-            if (arg1.indexOf("77050705") != -1) {
-                cmd = "77050103";
-                String mac = StringBuildUtils.sortMac(arg1.substring(36, 48));
-                insertOrUpdateHost(channel, "", mac);
-            }
             if (arg1.indexOf("77050304") != -1) {
                 cmd = "77050103";
             }
-            if (arg1.length() > 46 && arg1.length() <= 50) {
+            if (len >= 48 && len <= 52) {
+                if (arg1.indexOf("77050705") != -1) {
+                    cmd = "77050103";
+                    String mac = StringBuildUtils.sortMac(arg1.substring(36, 48));
+                    insertOrUpdateHost(channel, "", mac);
+                }
+            }
+            if (len > 46 && len <= 50) {
                 if (arg1.substring(26, 28).equals("52")) {
                     to = "master";
                 }
