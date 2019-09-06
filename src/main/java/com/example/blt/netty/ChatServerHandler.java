@@ -68,6 +68,13 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (arg1.indexOf("77050304") != -1) {
                 cmd = "77050103";
             }
+            if (len >= 48 && len <= 52) {
+                if (arg1.indexOf("77050705") != -1) {
+                    cmd = "77050103";
+                    String mac = StringBuildUtils.sortMac(arg1.substring(36, 48));
+                    insertOrUpdateHost(channel, "", mac);
+                }
+            }
             if (host.equals(master)) {
                 to = "master";
             }
