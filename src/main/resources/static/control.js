@@ -19,7 +19,9 @@ $(function () {
     });
     //面板前置操作
     $(".am-text-sm").on('click', '.first-rename', function () {
-        $(this).next().toggle();
+        // $(this).next().toggle();
+        $(this).next('.rename-delete').toggle();
+        $(this).parent().parent().siblings('.panel-show-detail').children('td').find('.rename-delete.panel-ope').hide();
         panelId = $(this).parent().next().text();
         panelState = $(this).parent().next().next().next().text();
     });
@@ -139,6 +141,7 @@ $(function () {
 
     //查看面板
     $('.panel-show-msg').click(function (e) {
+        $(this).parent().parent().siblings('.panel-show-detail').hide();
         e.preventDefault();
         var status = $(this).attr('src');
         if (status.indexOf('open') != -1) {//开

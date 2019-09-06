@@ -163,10 +163,13 @@ fieldset {
     background-color: #f2f2f2;
     border-radius: 5px;
 }
+.modal-dialog label.am-form-label{
+    width: 70%;
+}
 .modal.in .modal-dialog{
-    width: 50%;
+    width: 45%;
     text-align: center;
-    top: 20%;
+    top: 10rem;
 }
 .modal-footer {
     padding: .8rem 1rem;
@@ -196,8 +199,15 @@ fieldset {
 }
 .modal-body {
     position: relative;
-    padding: 1rem 4rem;
+    padding: 2rem 4rem 2.5rem 4rem;
 }
+.modal-body .am-form-group {
+    margin-bottom: 0;
+}
+.am-table-bd thead{
+    background-color: #f2f2f2;
+}
+
 /* 判断ipad */
 @media only screen
 and (min-device-width: 768px)

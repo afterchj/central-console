@@ -89,7 +89,7 @@
                                                th:text="${group.gname}" style="z-index: 9999;" class="one-group">
 
                                             </a>
-                                            <i class="fa fa-caret-right p-a mesh-rename group-operation" aria-hidden="true"></i>
+                                            <i class="fa fa-caret-right p-a  group-rename group-operation" aria-hidden="true"></i>
                                             <div class="am-cf  rename-delete p-a">
                                                 <div class="am-fl am-center"
                                                     data-toggle="modal" data-target="#renameGroup-modal">
@@ -110,7 +110,7 @@
                                 <td class="p-r ">
                                     <span th:text="${controlMaster.mname}"></span>
                                     <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
-                                         class=" p-a  tool am-animation-fade first-rename mesh-ope" style="width: 1.7%;">
+                                         class=" p-a  tool am-animation-fade  mesh-rename mesh-ope" style="width: 1.7%;">
                                     <!--<i class="fa fa-ellipsis-v  p-a gary" aria-hidden="true"></i>-->
 
                                     <div class="am-cf  rename-delete p-a left">
@@ -199,11 +199,19 @@
             $(this).parent().siblings().find('.am-dropdown-content li').removeClass('active');
         });
         $('.mesh-rename').click(function (e) {
-//            e.preventDefault();
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).next('.rename-delete').toggle();
+            $(this).parent().parent().siblings().find('.rename-delete').hide();
+        });
+        $('.group-rename').click(function (e) {
+            e.preventDefault();
             e.stopPropagation();
             $(this).next('.rename-delete').toggle();
             $(this).parent().siblings().find('.rename-delete').hide();
         });
+
+
         $('.data-show-table table .am-dropdown a').click(function (e) {
             e.stopPropagation();
             e.preventDefault();
@@ -232,13 +240,6 @@
 //            $(this).parent().parent().siblings('.panel-show-detail').toggle();
 //        });
     });
-//    function createMeshyYes() {
-//        console.log('wo bei');
-//        var isTrue=true;
-//        if(isTrue){
-//            $('#creatMesh-modal').modal('hide');
-//        }
-//    }
 
 </script>
 </body>
