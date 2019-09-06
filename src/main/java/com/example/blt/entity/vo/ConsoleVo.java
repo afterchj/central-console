@@ -7,6 +7,7 @@ public class ConsoleVo {
 
     private String command;
     private String host;
+    private String type;
     private Boolean status;
     private Boolean is_master;
     private Boolean is_control;
@@ -25,6 +26,14 @@ public class ConsoleVo {
 
     public void setHost(String host) {
         this.host = host;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Boolean getStatus() {

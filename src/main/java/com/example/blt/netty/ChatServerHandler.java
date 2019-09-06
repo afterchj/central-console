@@ -52,7 +52,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             JSONObject jsonObject = JSON.parseObject(arg1);
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
-            type = jsonObject.getString("select");
+            type = jsonObject.getString("type");
         } catch (Exception e) {
             int len = arg1.length();
             if (arg1.indexOf("77050901") != -1) {
@@ -85,10 +85,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         if (to.equals("master")) {
-            hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
-            if (hosts.size() == 0) {
-                hosts = sqlSessionTemplate.selectList("console.getHosts", type);
-            }
+            logger.warn("type [{}]", type);
+            hosts = sqlSessionTemplate.selectList("console.getHosts", type);
+//            hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
+//            if (hosts.size() == 0) {
+//            }
         }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);

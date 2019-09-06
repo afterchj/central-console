@@ -97,21 +97,13 @@
                 return;
             }
         }
-        if (status == '开') {
-            $("#" + id).val("77010315373766");
-            $("#" + id).text("关")
-        } else if (status == '关') {
-            $("#" + id).val("77010315323266");
-            $("#" + id).text("开")
-        }
-        console.log("id", id, "flag", flag, "type", type);
         if (type) {
             $.get("/switch", {"command": cmd, "host": flag, "type": "select"}, function (result) {
-                console.log("result", result);
+                console.log("id", id, "flag", flag, "type", type, "result", result);
             })
         } else {
             $.get("/switch", {"command": cmd, "host": flag}, function (result) {
-                console.log("result", result);
+                console.log("id", id, "flag", flag, "type", type, "result", result);
             })
         }
     }
