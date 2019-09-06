@@ -125,23 +125,22 @@ $(function () {
             $.post('/control/getPanels',{'meshId':meshId},function (data) {
                 var controlHosts = data.controlHosts;
                 if (controlHosts.length>0){
-                    tr += '<tr class="am-text-xs panel-show-detail"><th rowspan="3" class="am-text-center"></th><th class="d-panel-msg am-text-center">面板名称</th> <th class="d-panel-msg am-text-center">面板MAC</th><th class="d-panel-msg am-text-center">版本型号</th><th class="d-panel-msg am-text-center">面板状态</th>';
+                    var rows = controlHosts.length + 1;
+                    tr += '<tr class="am-text-xs panel-show-detail"><th rowspan="'+rows+'" class="am-text-center"></th><th class="d-panel-msg am-text-center">面板名称</th> <th class="d-panel-msg am-text-center">面板MAC</th><th class="d-panel-msg am-text-center">版本型号</th><th class="d-panel-msg am-text-center">面板状态</th>';
+                    tr += '<th rowspan="'+rows+'"></th>';
                     $.each(controlHosts,function (key,value) {
                         tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span>'+value.pname+'</span><img src="/static/poeConsole/img/dot.png" alt="" class=" p-a  tool first-rename" style="width: 1.7%"><div class="am-cf  rename-delete p-a left"> <div class="am-fl am-center" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center"   data-toggle="modal" data-target="#deletePanel-modal">删除</div></div></td><td class="d-panel-msg ">'+value.mac+'</td><td class="d-panel-msg ">版本(型号1)</td><td class="d-panel-msg ">'+value.state+'</td></tr>';
                     });
                     $(thisMesh).parent().parent().after(tr);
                 }
+                $('.rename-delete').hide();
             });
-
-
         } else if (status.indexOf('close') != -1) {//关
             var reg = /close/g;
             status = status.replace(reg, 'open');
             $(".panel-show-detail").remove();
             $(this).attr('src', status);
         }
-
-
 //            $(this).parent().parent().siblings('.panel-show-detail').toggle();
     });
 })
