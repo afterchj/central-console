@@ -8,11 +8,12 @@ $(function () {
     var panelState;
     var match = /^[0-9A-Za-z\u4e00-\u9fa5]{2,8}$/;
     var text = "请输入2-8 位中文、字母、数字";
-    var hit = $('.am-form-label.am-text-danger.am-text-left');
-    // $(".am-form-field").bind(
-    //     "change",
-    //     {hint:hit,context:".am-form-field",text:text,match:match},
-    //     matchInput);
+    var hit = $('label.am-text-left');
+    $("#mesh-name").bind(
+        "input propertychange change",
+        {hint:hit,context:"#mesh-name",text:text,match:match},
+        matchInput);
+
     //组操作前置动作
     $(".group-operation").click(function () {
         groupId = $(this).prev().prev().val();
@@ -33,10 +34,11 @@ $(function () {
     //     }
     // })
     //网络前置操作
-    $('.first-rename.mesh-ope').click(function () {
+    $('.mesh-rename.mesh-ope').click(function () {
         // $('.rename-delete.mesh-ope').toggle();
         $(this).next('.rename-delete').toggle();
-        $(this).parent().parent().siblings().find('.rename-delete').hide();
+        console.log($(this))
+        // $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
     });
     //组操作
@@ -186,9 +188,8 @@ $(function () {
 function matchInput(event) {
     var context = $(event.data.context).val();
     if (!(event.data.match).test(context)) {
-        $(event.data.hint).text('');
-        $(event.data.hint).addClass('active').text(event.data.text);
+        $(event.data.hint).text(event.data.text);
     } else {
-        $(event.data.hint).removeClass('active').text('');
+        $(event.data.hint).text('');
     }
 }
