@@ -25,7 +25,6 @@ public class Producer {
     private RocketMQTemplate rocketMQTemplate;
 
     public void push(String... args) {
-        rocketMQTemplate.convertAndSend("blt_local_console_topic", args[0]);
-        rocketMQTemplate.convertAndSend("blt_remote_console_topic", args[0]);
+        rocketMQTemplate.convertAndSend(args[0], args[1]);
     }
 }

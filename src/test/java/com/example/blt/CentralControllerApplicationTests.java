@@ -3,6 +3,7 @@ package com.example.blt;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.rocketmq.Producer;
 import com.example.blt.service.CommandService;
 import com.example.blt.utils.ConsoleUtil;
 import org.junit.Test;
@@ -28,6 +29,9 @@ public class CentralControllerApplicationTests {
 
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
+
+    @Autowired
+    private Producer producer;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -134,5 +138,11 @@ public class CentralControllerApplicationTests {
 //        }
         Integer result = (Integer) redisTemplate.opsForValue().get(ConsoleKeys.LTIMES.getValue());
         logger.warn("result [{}]", result);
+    }
+    @Test
+    public void testRocket(){
+        for (int i=0;i<10;i++){
+            producer.push("test_topic","Hello RocketMQ"+i);
+        }
     }
 }

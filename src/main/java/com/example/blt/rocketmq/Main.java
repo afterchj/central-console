@@ -6,6 +6,8 @@ import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
 
+import java.util.UUID;
+
 public class Main {
 
 //    public static void main(String[] args) {
@@ -13,12 +15,12 @@ public class Main {
 //    }
 
     public static void consumerMsg() {
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("consumer_group");
-        consumer.setInstanceName("consumer_mq");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("test_consumer_group");
+        consumer.setInstanceName(UUID.randomUUID().toString());
         consumer.setVipChannelEnabled(false);
         consumer.setNamesrvAddr("119.3.49.192:9876");
         try {
-            consumer.subscribe("blt_console_topic", "");
+            consumer.subscribe("test_topic", "");
             consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {
                 for (MessageExt msg : msgs) {
                     System.out.println("body=" + new String(msg.getBody()));
