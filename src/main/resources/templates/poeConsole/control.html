@@ -70,14 +70,14 @@
                                 <th class="p-r am-dropdown am-text-center" data-am-dropdown>
                                     <span class="am-dropdown-toggle" data-am-dropdown-toggle >
                                         隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""
-                                                  class=" p-a create-mesh-list  tool"  style="width: 1.5rem;">
+                                                  class=" p-a create-mesh-list  tool"  style=" width: 1.8rem;">
                                     </span>
                                     <ul class="am-dropdown-content ">
                                         <li>
                                             <!--data-am-modal="{target: '#creatMesh-modal'}"-->
                                             <button type="button"  data-toggle="modal" data-target="#creatMesh-modal"
                                                     class="am-btn  am-btn-primary am-btn-xs btn-white">
-                                                <span>+</span>创建网组
+                                                <span style="margin: 0 .4rem;">+</span>创建网组
                                             </button>
                                         </li>
                                         <li class="am-dropdown-header am-text-sm">
@@ -110,7 +110,7 @@
                                 <td class="p-r ">
                                     <span th:text="${controlMaster.mname}"></span>
                                     <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
-                                         class=" p-a  tool am-animation-fade  mesh-rename mesh-ope" style="width: 1.7%;">
+                                         class=" p-a  tool am-animation-fade  mesh-rename mesh-ope" style=" width: .25rem;">
                                     <!--<i class="fa fa-ellipsis-v  p-a gary" aria-hidden="true"></i>-->
 
                                     <div class="am-cf  rename-delete p-a left">
@@ -125,7 +125,7 @@
                                     <span th:text="${controlMaster.pNum}"></span>
                                     <span class="am-text-xs" th:if="${controlMaster.pState!=null}"
                                           th:text="${controlMaster.pState}"></span>
-                                    <img th:src="@{/static/poeConsole/img/open.png}" alt="" class=" p-a  tool panel-show-msg">
+                                    <img th:src="@{/static/poeConsole/img/open.png}" alt=""   class=" p-a  tool panel-show-msg">
                                 </td>
                                 <!--<td class="p-r">-->
                                     <!---->
@@ -198,12 +198,12 @@
             $(this).parent().siblings().find('.rename-delete').hide();
             $(this).parent().siblings().find('.am-dropdown-content li').removeClass('active');
         });
-        $('.mesh-rename').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $(this).next('.rename-delete').toggle();
-            $(this).parent().parent().siblings().find('.rename-delete').hide();
-        });
+//        $('.mesh-rename').click(function () {
+////            e.preventDefault();
+////            e.stopPropagation();
+//            $(this).next('.rename-delete').toggle();
+//            $(this).parent().parent().siblings().find('.rename-delete').hide();
+//        });
         $('.group-rename').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -240,6 +240,9 @@
 //            $(this).parent().parent().siblings('.panel-show-detail').toggle();
 //        });
     });
+    function hideModel() {
+        $('#forbidDelete').modal('hide');
+    }
 
 </script>
 </body>

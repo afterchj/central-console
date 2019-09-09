@@ -25,24 +25,65 @@
         <!--</div>-->
     <!--</div>-->
 <!--</div>-->
-<div class="modal fade"   role="dialog"  tabindex="-4" id="forbidDelete" th:fragment="forbidDelete">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" >删除</h4>
-            </div>
-            <div class="modal-body">
-                <div class="am-modal-bd" style=" border-bottom: none;">
-                    <p class="am-text-default" style=" margin: 0;">不可删除！</p>
-                </div>
-            </div>
-            <!--<div class="modal-footer">-->
-                <!--<button type="button" class="btn btn-default reduce" data-dismiss="modal">取消</button>-->
-                <!--<button type="button" class="btn btn-primary yes" onclick="createMeshyYes()">确定</button>-->
-            <!--</div>-->
+<!--<div class="am-modal am-modal-alert" tabindex="-4" id="my-alert">-->
+    <!--<div class="am-modal-dialog">-->
+        <!--<div class="am-modal-hd">Amaze UI</div>-->
+        <!--<div class="am-modal-bd">-->
+            <!--Hello world！-->
+        <!--</div>-->
+        <!--<div class="am-modal-footer">-->
+            <!--<span class="am-modal-btn">确定</span>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="alert alert-info alert-dismissable">-->
+    <!--<button type="button" class="close" data-dismiss="alert"-->
+            <!--aria-hidden="true" onclick="hideModel()">-->
+        <!--&times;-->
+    <!--</button>-->
+    <!--不可删除！-->
+<!--</div>-->
+<!--<div class="alert alert-info alert-dismissable">-->
+    <!--<button type="button" class="close" data-dismiss="alert"-->
+            <!--aria-hidden="true" onclick="hideModel()">-->
+        <!--&times;-->
+    <!--</button>-->
+    <!--不可删除！-->
+<!--</div>-->
+<div class="modal fade"   role="dialog"  tabindex="-4" id="forbidDelete" th:fragment="forbidDelete" style="width: 30rem;
+    top: 20%;
+    left: 35%;">
+    <div class="alert alert-danger">
+        <a href="#" class="alert-link">错误！请进行一些更改。</a>
+    </div>
+
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd" style="text-align: center;">温馨提示</div>
+        <div class="am-modal-bd">
+            <p class="am-text-default" style=" margin: 0;">不可删除！</p>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn">确定</span>
         </div>
     </div>
+    <!--<div class="modal-dialog" role="document">-->
+        <!--<div class="modal-content" style="background-color: #fff;">-->
+            <!--<div class="modal-header" style="background-color: #fff;">-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                <!--&lt;!&ndash;<h4 class="modal-title" >删除</h4>&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<div class="am-modal-bd" style=" border-bottom: none;">-->
+                    <!--<p class="am-text-default" style=" margin: 0;">不可删除！</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div class="modal-footer">&ndash;&gt;-->
+                <!--&lt;!&ndash;<button type="button" class="btn btn-default reduce" data-dismiss="modal">取消</button>&ndash;&gt;-->
+                <!--&lt;!&ndash;<button type="button" class="btn btn-primary yes" onclick="createMeshyYes()">确定</button>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+    <!--</div>-->
+
     <!--<div class="am-modal-dialog">-->
         <!--<div class="am-modal-hd">温馨提示 <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a></div>-->
         <!--<div class="am-modal-bd">-->

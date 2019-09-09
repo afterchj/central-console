@@ -12,5 +12,12 @@ $(function () {
     });
     $('.leftNav2 .am-nav li').click(function () {
         $(this).addClass('active').siblings('li').removeClass('active');
-    })
+    });
+    // $('.modal-footer .btn+.btn, .modal-footer .btn').click(function () {
+    //     $('.data-show-table table .am-dropdown-content').stopPropagation();
+    // });
+    // $("body").on('click','[data-am-dropdown-toggle]',function (e) {
+    //     e.stopPropagation();
+    //     e.stopPropagation();
+    // });
 })
