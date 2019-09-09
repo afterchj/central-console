@@ -51,47 +51,58 @@ $(function () {
         var hiddenTitle = $(this).parent().prev().prev().find('input').val();
         var hint = $(this).parent().prev().find('label').text();
         var hintEmpty = isEmpty(hint);
-        if (title == '创建网组') {//创建组
-            $.post('/control/group', {'gname': val, 'type': 'create'}, function (data) {
-                var exitGroup = data.exitGroup;
-                if (exitGroup == 1) {//组名重复
-                    $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
+        if (hintEmpty){
+            if (title == '创建网组') {//创建组
+                $.post('/control/group', {'gname': val, 'type': 'create'}, function (data) {
+                    var exitGroup = data.exitGroup;
+                    if (exitGroup == 1) {//组名重复
+                        $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
 
-                } else {
-                    window.location.href = "/control/netWorkGroupConsole";
-                    $(buttonThis).parent().prev().find('label').text('请输入 2-8 位汉字、字母、数字');
-                    $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
-                }
-            });
-        } else if (hiddenTitle == '删除组') {
+                    } else {
+                        window.location.href = "/control/netWorkGroupConsole";
+                        $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
+                    }
+                });
+            } else if (hiddenTitle == '重命名组') {
+                $.post('/control/group', {'gname': val, 'id': groupId, 'type': 'rename'}, function (data) {
+                    var exitGroup = data.exitGroup;
+                    if (exitGroup == 1) {//组名重复
+                        $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
+
+                    } else {
+                        window.location.href = "/control/netWorkGroupConsole";
+                        $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
+                    }
+                    console.log($(buttonThis))
+                });
+            }else if (hiddenTitle == '重命名网络'){
+                $.post('/control/renameMesh',{"mname":val,"meshId":meshId},function (data) {
+                    var exitMname = data.exitMname;
+                    if (exitMname == 1) {//网络名重复
+                        $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
+                    } else {
+                        window.location.href = "/control/netWorkGroupConsole";
+                        $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
+                    }
+                });
+            }else if (hiddenTitle == '重命名面板'){
+                $.post('/control/panelOperations',{"pname":val,"mac":panelId,"type":"rename"},function (data) {
+                    var exitPname = data.exitPname;
+                    if (exitPname == 1){//面板名称重复
+                        $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
+                    }else {
+                        window.location.href = "/control/netWorkGroupConsole";
+                        $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
+                    }
+                });
+            }
+        }
+
+        if (hiddenTitle == '删除组') {
             $.post('/control/group', {'id': groupId, 'type': 'delete'}, function (data) {
                 var exitGroup = data.exitGroup;
                 if (exitGroup == 0) {
                     window.location.href = "/control/netWorkGroupConsole";
-                }
-            });
-        } else if (hiddenTitle == '重命名组') {
-            $.post('/control/group', {'gname': val, 'id': groupId, 'type': 'rename'}, function (data) {
-                var exitGroup = data.exitGroup;
-                if (exitGroup == 1) {//组名重复
-                    $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
-
-                } else {
-                    window.location.href = "/control/netWorkGroupConsole";
-                    $(buttonThis).parent().prev().find('label').text('请输入 2-8 位汉字、字母、数字');
-                    $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
-                }
-                console.log($(buttonThis))
-            });
-        }else if (hiddenTitle == '重命名网络'){
-            $.post('/control/renameMesh',{"mname":val,"meshId":meshId},function (data) {
-                var exitMname = data.exitMname;
-                if (exitMname == 1) {//网络名重复
-                    $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
-                } else {
-                    window.location.href = "/control/netWorkGroupConsole";
-                    $(buttonThis).parent().prev().find('label').text('请输入 2-8 位汉字、字母、数字');
-                    $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
                 }
             });
         }else if (hiddenTitle == '删除面板'){
@@ -101,18 +112,9 @@ $(function () {
                     window.location.href = "/control/netWorkGroupConsole";
                 }
             });
-        }else if (hiddenTitle == '重命名面板'){
-            $.post('/control/panelOperations',{"pname":val,"mac":panelId,"type":"rename"},function (data) {
-                var exitPname = data.exitPname;
-                if (exitPname == 1){//面板名称重复
-                    $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
-                }else {
-                    window.location.href = "/control/netWorkGroupConsole";
-                    $(buttonThis).parent().prev().find('label').text('请输入 2-8 位汉字、字母、数字');
-                    $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
-                }
-            });
         }
+
+
         // console.log("hiddenTitle", hiddenTitle);
         // console.log("val", val);
     });
