@@ -149,9 +149,10 @@
                                 <td>
                                     <div class="am-checkbox table-checkbox">
                                         <label class="blue-green">
-                                            <input type="hidden" th:value="${controlMaster.gname}">
                                             <input type="hidden" th:value="${controlMaster.meshId}">
-                                            <input type="checkbox" th:checked="${controlMaster.master}"> 主控
+                                            <input type="checkbox" th:checked="${controlMaster.master}"
+                                                   th:disabled="${controlMaster.gname == null}"
+                                                   th:alt="${controlMaster.gname == null}?'未选择组'"> 主控
                                         </label>
                                     </div>
                                 </td>
