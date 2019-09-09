@@ -53,9 +53,9 @@ body {
 .text-blue{
     color: #226697;
 }
-.leftNav2 .am-nav li:first-child.active {
-    background-color: transparent;
-}
+/*.leftNav2 .am-nav li:first-child.active {*/
+    /*background-color: transparent;*/
+/*}*/
 .blue-green{
     color: #86c0cc;
 }
@@ -234,6 +234,7 @@ fieldset {
 /*.data-show{*/
     /*display:none ;*/
 /*}*/
+
 .data-show{
     z-index: 999;
     background-color: #f5fafd;

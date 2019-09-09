@@ -42,7 +42,7 @@
             LEFT JOIN t_group g ON g.id = h.gid
         WHERE
             h.ip != '127.0.0.1'
-            AND h.mesh_id IS NOT NULL group by h.mesh_id
+            AND h.mesh_id IS NOT NULL  group by h.mesh_id
     </select>
 
     <select id="getControlGroupsByGname" resultType="com.example.blt.entity.control.ControlMaster">
@@ -51,7 +51,7 @@
         FROM
         t_host_info h
         LEFT JOIN t_group g ON g.id = h.gid
-        where g.gname=#{gname} AND h.ip!='127.0.0.1' and h.mesh_id is not null and h.mac is not null
+        where g.gname=#{gname} AND h.ip!='127.0.0.1' and h.mesh_id is not null
     </select>
 
     <select id="getControlGroupsByAllGroup" resultType="com.example.blt.entity.control.ControlMaster">
@@ -60,13 +60,13 @@
         FROM
         t_host_info h
         LEFT JOIN t_group g ON g.id = h.gid
-        where h.gid is not null AND h.ip!='127.0.0.1' and h.mesh_id is not null and h.mac is not null
+        where h.gid is not null AND h.ip!='127.0.0.1' and h.mesh_id is not null
     </select>
 
     <select id="getMasterStates" resultType="com.example.blt.entity.control.ControlMaster">
-        select h1.mesh_id as meshId,'网络离线' as mState,'（离线）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status=h2.status and h1.status=0 union
-        select h1.mesh_id as meshId,'网络在线' as mState,null as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status=h2.status and h1.status=1 union
-        select h1.mesh_id as meshId,'网络在线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) group by h1.mesh_id
+        select h1.mesh_id as meshId,'网络离线' as mState,'（离线）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status=h2.status and h1.status=0 and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' union
+        select h1.mesh_id as meshId,'网络在线' as mState,null as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status=h2.status and h1.status=1  and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' union
+        select h1.mesh_id as meshId,'网络在线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' group by h1.mesh_id
     </select>
 
 </mapper>
