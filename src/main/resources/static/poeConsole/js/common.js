@@ -15,10 +15,10 @@
 //     //     e.stopPropagation();
 //     //     $(this).parent('.updown-data ').toggleClass('active');
 //     // })
-//     $('.left-timing-title li').click(function () {
-//         $(this).addClass('active').siblings('li').removeClass('active');
-//         $('.right-timing-detail ').addClass('active');
-//     });
+    $('.left-timing-title li').click(function () {
+        $(this).addClass('active').siblings('li').removeClass('active');
+        $('.right-timing-detail ').addClass('active');
+    });
 //     $('.leftNav2 .am-nav li').click(function () {
 //         $(this).addClass('active').siblings('li').removeClass('active');
 //     });
