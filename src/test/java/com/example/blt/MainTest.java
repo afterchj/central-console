@@ -159,24 +159,26 @@ public class MainTest {
 
     @Test
     public void testHash() throws InterruptedException {
-        List list = sqlSessionTemplate.selectList("console.getLight", "192.168.10.12");
-        Set set = new HashSet(list);
+        List<String> hosts = sqlSessionTemplate.selectList("console.getHosts", "sfd");
+        System.out.println(hosts.size());
+//        List list = sqlSessionTemplate.selectList("console.getLight", "192.168.10.12");
+//        Set set = new HashSet(list);
 //        ConsoleUtil.saveLight("t_light", "l_vaddr", "192.168.10.12", set);
 //        Map rs = ConsoleUtil.getLight("l_info");
-        Map map = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
+//        Map map = ConsoleUtil.getLight(ConsoleKeys.LINFO.getValue());
 //        Integer osize = (Integer) ConsoleUtil.getValue(ConsoleKeys.LSIZE.getValue());
 //        Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
 //        Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
-        String host = (String) map.get("ip");
-        Set lmacSet = (Set) map.get(ConsoleKeys.lMAC.getValue());
-        Set vaddrSet = (Set) map.get(ConsoleKeys.VADDR.getValue());
+//        String host = (String) map.get("ip");
+//        Set lmacSet = (Set) map.get(ConsoleKeys.lMAC.getValue());
+//        Set vaddrSet = (Set) map.get(ConsoleKeys.VADDR.getValue());
         Map params = new HashMap();
         params.put("ip", "192.168.10.17");
-        params.put("list", vaddrSet);
-        Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
-        logger.warn("size [{}]", size);
+//        params.put("list", vaddrSet);
+//        Integer size = sqlSessionTemplate.selectOne("console.selectIn", params);
+//        logger.warn("size [{}]", size);
 //        Set lmac = (Set) rs.get("l_vaddr");
-        logger.warn("map [{}]", vaddrSet);
+//        logger.warn("map [{}]", vaddrSet);
 //        Thread.sleep(10000);
 //        Map rs1 = ConsoleUtil.getLight("t_light");
 //        logger.warn("ip [{}] \n lmac [{}]", rs1.get("ip"), rs1.get("lmac"));
