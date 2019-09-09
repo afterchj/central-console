@@ -9,7 +9,7 @@
 }
 
 .data-show-table .tool {
-    right: 5%;
+    right: 8%;
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.8rem;
@@ -68,23 +68,25 @@
     text-shadow: none;
     font-weight: bold;
     width: 100%;
-    font-size: 1.24rem;
+    font-size: 1.25rem;
     border-bottom: 1px solid #eee;
-    width: 80%;
-    margin-left: 10%;
+    /* margin-left: 10%; */
+}
+.data-show-table .am-dropdown-header a{
+    color: #474747;
+    font-size: 1.3rem;
 }
 .data-show-table .am-dropdown-header{
     display: block;
     padding: 2px 0;
-    font-size: 1.23rem;
     text-align: center;
-    color: #474747;
+
 }
 .data-show-table i.fa-caret-right{
-    right: .5rem;
+    right: .8rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #888;
 }
 .rename-delete{
@@ -104,7 +106,7 @@
     animation-duration: .15s;
 }
 .rename-delete.left{
-    right: 13%;
+    right: 16%;
     left: auto;
     top: 10%;
 }
@@ -124,10 +126,19 @@
     border-right: none;
 }
 .rename-delete.left>.am-fl{
-    padding: .3rem .6rem;
+    width: 5rem;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    text-align: center;
+    color: #3a3a3a;
 }
 .rename-delete>.am-fl{
-    padding: .4rem .6rem;
+    width: 5rem;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    text-align: center;
+    color: #3a3a3a;
+    font-size: 1.1rem !important;
 }
 .rename-delete>.am-fl:first-child{
     border-right: 1px solid #ccc;

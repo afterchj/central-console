@@ -95,8 +95,9 @@ public class ControlCenterService {
             controlCenterDao.updateMasterGidByMeshId(meshId,gname);
         }
         if (StringUtils.isNotBlank(gname) && StringUtils.isBlank(meshId)){
-            if ("全部".equals(gname)){//全选组
-                controlMeshs = controlCenterDao.getControlGroupsByAllGroup(gname);
+            if ("全部".equals(gname)){//全选 空组也选择
+//                controlMeshs = controlCenterDao.getControlGroupsByAllGroup(gname);
+                controlMeshs = controlCenterDao.getControlGroups();
             }else {//单选组
                 controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
             }
