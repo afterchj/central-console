@@ -38,7 +38,16 @@ ul.am-dropdown-content > li > a {
     color: #fff;
     opacity: .95;
 }
-
+/*.leftNav-background li, .leftNav-background li a:active,.leftNav-background li, .leftNav-background li a:hover{*/
+    /*background-color: #1C3C51 !important;*/
+/*}*/
+/*.leftNav-background lia:link {color: #FF0000}, !* 未访问时的状态 *!*/
+/*.leftNav-background lia:visited {color: #00FF00}, !* 已访问过的状态 *!*/
+/* 鼠标移动到链接上时的状态 */
+/* 鼠标按下去时的状态 */
+.leftNav-background li a:hover,.leftNav-background li a:active{
+    background-color: #1C3C51 !important;
+}
 .am-nav-divider {
     margin: 0 1em !important;
 }

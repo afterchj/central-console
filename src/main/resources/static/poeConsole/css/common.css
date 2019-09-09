@@ -2,6 +2,9 @@ body, html {
     height: 100%;
     color: #4A4A4A;
 }
+*{
+    list-style: none;
+}
 /** { touch-action: pan-y; }*/
 /** { touch-action: pan-y; }*/
 body {
@@ -71,6 +74,7 @@ body {
 .am-nav > li.p-a {
     position: absolute;
     width: 100%;
+    bottom: 2rem;
 }
 
 .line-clamp-1 {
@@ -227,6 +231,34 @@ fieldset {
 .am-table-bd thead{
     background-color: #f2f2f2;
 }
+/*.data-show{*/
+    /*display:none ;*/
+/*}*/
+.data-show{
+    z-index: 999;
+    background-color: #f5fafd;
+    width: 85%;
+    top: 30%;
+    padding: 0 0 .5rem 0;
+    -webkit-box-shadow: 0px 2px 3px rgba(9,3,4,.15);
+    box-shadow: 0px 2px 3px rgba(9,3,4,.15);
+    animation-duration: .5s;
+    right: 0;
+}
+.data-show .list{
+    text-align: left;
+    padding-left: 1rem;
+    line-height: 2.4;
+}
+.data-show .list a{
+    color: #474747;
+    font-weight: normal;
+
+}
+/*.data-show.active{*/
+    /*display: block;*/
+/*}*/
+
 
 /* 判断ipad */
 @media only screen

@@ -68,17 +68,19 @@
     text-shadow: none;
     font-weight: bold;
     width: 100%;
-    font-size: 1.24rem;
+    font-size: 1.25rem;
     border-bottom: 1px solid #eee;
-    width: 80%;
-    margin-left: 10%;
+    /* margin-left: 10%; */
+}
+.data-show-table .am-dropdown-header a{
+    color: #474747;
+    font-size: 1.3rem;
 }
 .data-show-table .am-dropdown-header{
     display: block;
     padding: 2px 0;
-    font-size: 1.23rem;
     text-align: center;
-    color: #474747;
+
 }
 .data-show-table i.fa-caret-right{
     right: .8rem;

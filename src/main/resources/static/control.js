@@ -174,7 +174,7 @@ $(function () {
                         }else {
                             deletePanel = '#deletePanel-modal';
                         }
-                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span>' + value.pname + '</span><img src="/static/poeConsole/img/dot.png" alt="" class=" p-a  tool first-rename" style="width: 1.7%"><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel" data-toggle="modal" data-target="'+deletePanel+'">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">版本(型号1)</td><td class="d-panel-msg ">' + value.state + '</td></tr>';
+                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span>' + value.pname + '</span><img src="/static/poeConsole/img/dot.png" alt="" class=" p-a  tool first-rename" style="width:.25rem;"><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel" data-toggle="modal" data-target="'+deletePanel+'">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">版本(型号1)</td><td class="d-panel-msg ">' + value.state + '</td></tr>';
                     });
                     $(thisMesh).parent().parent().after(tr);
                 }

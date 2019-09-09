@@ -68,12 +68,16 @@
                                 <th style="width: 20%;" class="am-text-center">网络ID</th>
                                 <th style="width: 15%;" class="am-text-center">网络状态</th>
                                 <th style="width: 15%;" class="am-text-center">面板数量</th>
-                                <th class="p-r am-dropdown am-text-center" data-am-dropdown>
-                                    <span class="am-dropdown-toggle" data-am-dropdown-toggle >
+                                <th class="p-r updown-data am-text-center" data-am-dropdown>
+                                    <!--<span class="am-dropdown-toggle" data-am-dropdown-toggle >-->
+                                        <!--隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""-->
+                                                  <!--class=" p-a create-mesh-list  tool"  style=" width: 1.8rem;">-->
+                                    <!--</span>-->
+                                      <span  >
                                         隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""
-                                                  class=" p-a create-mesh-list  tool"  style=" width: 1.8rem;">
+                                                  class=" p-a create-mesh-list  tool "  style=" width: 1.8rem;">
                                     </span>
-                                    <ul class="am-dropdown-content ">
+                                    <ul  class="p-a data-show">
                                         <li>
                                             <!--data-am-modal="{target: '#creatMesh-modal'}"-->
                                             <button type="button"  data-toggle="modal" data-target="#creatMesh-modal"
@@ -84,11 +88,10 @@
                                         <li class="am-dropdown-header am-text-sm">
                                             <a th:href="@{/control/netWorkGroupConsole(gname='全部')}" class="all-group">全部</a>
                                         </li>
-                                        <li class="am-text-xs p-r" th:each="group:${groupList}">
+                                        <li class="am-text-xs p-r list" th:each="group:${groupList}">
                                             <input type="hidden" th:value="${group.id}">
                                             <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname})}"
                                                th:text="${group.gname}" style="z-index: 9999;" class="one-group">
-
                                             </a>
                                             <i class="fa fa-caret-right p-a  group-rename group-operation" aria-hidden="true"></i>
                                             <div class="am-cf  rename-delete p-a">
@@ -139,7 +142,7 @@
                                              class=" p-a  tool">
                                     </a>
                                     <ul class="am-dropdown-content ">
-                                        <li class="am-dropdown-header am-text-sm"> - 空 -</li>
+                                        <!--<li class="am-dropdown-header am-text-sm"> - 空 -</li>-->
                                         <li class="am-text-xs p-r" th:each="group:${groupList}">
                                             <input type="hidden" th:value="${controlMaster.meshId}">
                                             <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname},meshId=${controlMaster.meshId})}"
@@ -193,15 +196,23 @@
     $(function () {
         $('.rename-delete').hide();
         $('.panel-show-detail').hide();
+        $('.data-show').hide();
         $('.data-show-table .am-dropdown-content li').click(function () {
 //            e.preventDefault();
             $(this).addClass('active').siblings('li').removeClass('active');
         });
-        $('.create-mesh-list').click(function () {
+//        $('.create-mesh-list').click(function () {
+////            e.preventDefault();
+//            $(this).parent().siblings().find('.rename-delete').hide();
+//            $(this).parent().siblings().find('.am-dropdown-content li').removeClass('active');
+//        });
+
+        $('.updown-data .create-mesh-list').click(function () {
 //            e.preventDefault();
-            $(this).parent().siblings().find('.rename-delete').hide();
-            $(this).parent().siblings().find('.am-dropdown-content li').removeClass('active');
-        });
+//            e.stopPropagation();
+            $('.rename-delete').hide();
+            $('.data-show').toggle();
+        })
 //        $('.mesh-rename').click(function () {
 ////            e.preventDefault();
 ////            e.stopPropagation();
