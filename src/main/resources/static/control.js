@@ -8,14 +8,14 @@ $(function () {
     var panelState;
     var match = /^[0-9A-Za-z\u4e00-\u9fa5]{2,8}$/;
     var text = "请输入2-8 位中文、字母、数字";
-    var hit = $('label.am-text-left');
-    $(".am-form-field").bind(
-        "input propertychange change",
-        {hint:hit,context:"#mesh-name",text:text,match:match},
-        matchInput);
 
     $(".am-form-field").on('input propertychange change', function () {
-        console.log('enter');
+        var context = $(this).val();
+        if (!(match).test(context)) {
+            $(this).parent().prev().text(text);
+        } else {
+            $(this).parent().prev().text('');
+        }
     });
     //组操作前置动作
     $(".group-operation").click(function () {
@@ -49,6 +49,8 @@ $(function () {
         var title = $(this).parent().prev().prev().find('h4').text();
         var buttonThis = $(this);
         var hiddenTitle = $(this).parent().prev().prev().find('input').val();
+        var hint = $(this).parent().prev().find('label').text();
+        var hintEmpty = isEmpty(hint);
         if (title == '创建网组') {//创建组
             $.post('/control/group', {'gname': val, 'type': 'create'}, function (data) {
                 var exitGroup = data.exitGroup;
@@ -163,7 +165,13 @@ $(function () {
                     $.each(controlHosts, function (key, value) {
                         var dataTarget;
                         if (value.state == '在线'){
-                            dataTarget='#forbidDelete';//不可删除
+                            // dataTarget='#forbidDelete';//不可删除
+                            //提示
+                            layer.open({
+                                content: '不可删除'
+                                ,skin: 'msg'
+                                ,time: 5 //2秒后自动关闭
+                            });
                         }else {
                             dataTarget='#deletePanel-modal';
                         }
@@ -185,15 +193,6 @@ $(function () {
 
 
 })
-
-function matchInput(event) {
-    var context = $(event.data.context).val();
-    if (!(event.data.match).test(context)) {
-        $(event.data.hint).text(event.data.text);
-    } else {
-        $(event.data.hint).text('');
-    }
-}
 
 function isEmpty(value) {
     if (value == null || value == "" || value == "undefined" || value == undefined) {
