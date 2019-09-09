@@ -35,6 +35,20 @@ $(function () {
         $(this).next('.rename-delete').toggle();
         // $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
+        var thisMesh = $(this);
+        var otherMeshOpe = $('.mesh-ope').not(thisMesh).length;
+        // var allMeshOpe = $('.mesh-ope').length;
+
+    });
+    //点击删除面板
+    $(".am-text-sm").on('click', 'div.delete-panel', function () {
+        if (panelState == '在线'){
+            layer.open({
+                content: '不可删除'
+                ,skin: 'msg'
+                ,time: 5 //2秒后自动关闭
+            });
+        }
     });
     //组操作
     $(".btn.btn-primary.yes").click(function () {
@@ -99,12 +113,12 @@ $(function () {
                 }
             });
         }else if (hiddenTitle == '删除面板'){
-            $.post('/control/panelOperations',{"mac":panelId,"type":"delete"},function (data) {
-                var exitPname = data.exitPname;
-                if (exitPname == 0){//面板名称重复
-                    window.location.href = "/control/netWorkGroupConsole";
-                }
-            });
+                $.post('/control/panelOperations',{"mac":panelId,"type":"delete"},function (data) {
+                    var exitPname = data.exitPname;
+                    if (exitPname == 0){//面板名称重复
+                        window.location.href = "/control/netWorkGroupConsole";
+                    }
+                });
         }
     });
     //勾选主控
@@ -154,20 +168,7 @@ $(function () {
                     tr += '<tr class="am-text-xs panel-show-detail"><th rowspan="' + rows + '" class="am-text-center"></th><th class="d-panel-msg am-text-center">面板名称</th> <th class="d-panel-msg am-text-center">面板MAC</th><th class="d-panel-msg am-text-center">版本型号</th><th class="d-panel-msg am-text-center">面板状态</th>';
                     tr += '<th rowspan="' + rows + '"></th>';
                     $.each(controlHosts, function (key, value) {
-                        var dataTarget;
-                        if (value.state == '在线'){
-                            // dataTarget='#forbidDelete';//不可删除
-                            //提示
-                            layer.open({
-                                content: '不可删除'
-                                ,skin: 'msg'
-                                ,time: 5 //2秒后自动关闭
-                            });
-                        }else {
-                            dataTarget='#deletePanel-modal';
-                        }
-                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span>' + value.pname + '</span><img src="/static/poeConsole/img/dot.png" alt="" class=" p-a  tool first-rename" style="width: 1.7%"><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel"   data-toggle="modal" data-target="'+dataTarget+'">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">版本(型号1)</td><td class="d-panel-msg ">' + value.state + '</td></tr>';
-
+                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span>' + value.pname + '</span><img src="/static/poeConsole/img/dot.png" alt="" class=" p-a  tool first-rename" style="width: 1.7%"><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel"   data-toggle="modal" data-target="#deletePanel-modal">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">版本(型号1)</td><td class="d-panel-msg ">' + value.state + '</td></tr>';
                     });
                     $(thisMesh).parent().parent().after(tr);
                 }
