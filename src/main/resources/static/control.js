@@ -169,7 +169,7 @@ $(function () {
                     tr += '<th rowspan="' + rows + '"></th>';
                     $.each(controlHosts, function (key, value) {
                         var deletePanel;
-                        if (panelState == '在线'){
+                        if (value.state == '在线'){
                             deletePanel = ' ';
                         }else {
                             deletePanel = '#deletePanel-modal';
