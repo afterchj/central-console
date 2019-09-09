@@ -8,7 +8,7 @@ $(function () {
     var panelState;
     var match = /^[0-9A-Za-z\u4e00-\u9fa5]{2,8}$/;
     var text = "请输入2-8 位中文、字母、数字";
-
+    //根据输入显示提示
     $(".am-form-field").on('input propertychange change', function () {
         var context = $(this).val();
         if (!(match).test(context)) {
@@ -29,13 +29,6 @@ $(function () {
         panelId = $(this).parent().next().text();
         panelState = $(this).parent().next().next().next().text();
     });
-    //点击删除面板
-    // $(".am-text-sm").on('click','.delete-panel',function () {
-    //     console.log($(this));
-    //     if (panelState == '在线'){
-    //         $(this).attr("data-target","#forbidDelete");
-    //     }
-    // })
     //网络前置操作
     $('.mesh-ope').click(function () {
         // $('.rename-delete.mesh-ope').toggle();
@@ -113,10 +106,6 @@ $(function () {
                 }
             });
         }
-
-
-        // console.log("hiddenTitle", hiddenTitle);
-        // console.log("val", val);
     });
     //勾选主控
     $(":checkbox").click(function () {
