@@ -72,7 +72,7 @@ public interface ControlCenterDao {
     void selectGroup(@Param("gname")String gname, @Param("meshId")String meshId);
 
     @Select("select if(status='1','在线','离线') AS state,ifnull( other, ip ) AS pname, ifnull(mac,ip) as mac from " +
-            "t_host_info where mesh_id=#{meshId} and mac is not null and ip!='127.0.0.1'")
+            "t_host_info where mesh_id=#{meshId} and ip!='127.0.0.1'")
     List<ControlHost> getPanels(@Param("meshId")String meshId);
 
     List<ControlMaster> getMasterStates();
