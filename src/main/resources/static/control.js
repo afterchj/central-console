@@ -34,10 +34,9 @@ $(function () {
     //     }
     // })
     //网络前置操作
-    $('.mesh-rename.mesh-ope').click(function () {
+    $('.mesh-ope').click(function () {
         // $('.rename-delete.mesh-ope').toggle();
         $(this).next('.rename-delete').toggle();
-        console.log($(this))
         // $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
     });
@@ -115,9 +114,8 @@ $(function () {
     //勾选主控
     $(":checkbox").click(function () {
         var type = $(this).prop('checked');
-        console.log("type", type);
-        if (type) {
-            type = 1
+        if (type) {//勾选
+            type = 1;
         } else {
             type = 0
         }
@@ -191,5 +189,18 @@ function matchInput(event) {
         $(event.data.hint).text(event.data.text);
     } else {
         $(event.data.hint).text('');
+    }
+}
+
+function isEmpty(value) {
+    if (value == null || value == "" || value == "undefined" || value == undefined) {
+        return true;
+    }
+    else {
+        value = value.replace(/\s/g, "");
+        if (value == "") {
+            return true;
+        }
+        return false;
     }
 }

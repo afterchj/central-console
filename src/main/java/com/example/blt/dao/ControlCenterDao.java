@@ -36,7 +36,7 @@ public interface ControlCenterDao {
     @Select("select id,gname from t_group")
     List<GroupList> getGroups();
 
-    @Select("select count(*) from t_host_info where mesh_name=#{mname}  where ip!='127.0.0.1'")
+    @Select("select count(*) from t_host_info where mesh_name=#{mname} and ip!='127.0.0.1'")
     Integer getMname(@Param("mname") String mname);
 
     @Update("update t_host_info set mesh_name=#{mname} where mesh_id=#{meshId}")
