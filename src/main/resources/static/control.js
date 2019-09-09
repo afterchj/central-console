@@ -48,7 +48,7 @@ $(function () {
             layer.open({
                 content: '不可删除'
                 ,skin: 'msg'
-                ,time: 5 //2秒后自动关闭
+                ,time: 3 //3秒后自动关闭
             });
         }
     });
@@ -163,7 +163,7 @@ $(function () {
         if (status.indexOf('open') != -1) {//开
             var reg = /open/g;
             status = status.replace(reg, 'close');
-            $(this).attr('src', status);
+            $(this).find('img').attr('src', status);
             var meshId = $(this).parent().prev().prev().text();
             var tr = '';
             var thisMesh = $(this);
@@ -190,7 +190,7 @@ $(function () {
             var reg = /close/g;
             status = status.replace(reg, 'open');
             $(".panel-show-detail").remove();
-            $(this).attr('src', status);
+            $(this).find('img').attr('src', status);
         }
 //            $(this).parent().parent().siblings('.panel-show-detail').toggle();
     });

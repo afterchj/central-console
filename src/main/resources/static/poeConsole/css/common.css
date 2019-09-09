@@ -265,6 +265,9 @@ fieldset {
     font-weight: normal;
 
 }
+.modal.in .modal-dialog.scroll{
+    top:0;
+}
 /*.data-show.active{*/
     /*display: block;*/
 /*}*/

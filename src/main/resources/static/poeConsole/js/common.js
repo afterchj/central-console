@@ -24,6 +24,12 @@ $(function () {
         $(this).addClass('active').siblings('li').removeClass('active');
         $('.right-timing-detail ').addClass('active');
     });
+    $("input").focus(function(){
+        $(" .modal.in .modal-dialog ").addClass('scroll');
+    });
+    $("input").blur(function(){
+        $(" .modal.in .modal-dialog ").removeClass('scroll');
+    });
 })
 
 //     $('.leftNav2 .am-nav li').click(function () {
