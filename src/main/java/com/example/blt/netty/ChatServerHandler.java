@@ -85,11 +85,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         if (to.equals("master")) {
-            logger.warn("type [{}]", type);
-            hosts = sqlSessionTemplate.selectList("console.getHosts", type);
-//            hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
-//            if (hosts.size() == 0) {
-//            }
+            hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
+            if (hosts.size() == 0) {
+                hosts = sqlSessionTemplate.selectList("console.getHosts", type);
+            }
         }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);
