@@ -73,11 +73,15 @@
                     <h3 class="am-panel-title"><span th:text="${mname}"></span><span>的定时详情</span></h3>
                 </header>
 
-                <div class="am-panel-bd no-margin no-padding">
+                <div class="am-panel-bd no-margin no-padding p-r">
                     <div class="am-g timing-show-list no-margin no-padding">
                         <div class="col-sm-6 col-lg-6 left-timing-title no-margin no-padding">
-                            <img th:if="${#lists.isEmpty(timeLines)}" th:src="@{/static/poeConsole/img/kong.png}"
-                                 style="text-align: center">
+                            <div  style="text-align: center;top: 8rem;left: 70%;    width: 20rem;" class="p-a">
+                                <img th:if="${#lists.isEmpty(timeLines)}" style="width: 8rem;"  th:src="@{/static/poeConsole/img/kong.png}"
+                                    >
+                                <p style="font-size: 1.5rem;line-height: 3;">抱歉，暂无数据</p>
+                            </div>
+
                             <ul class="am-list am-list-static am-list-border no-margin no-padding">
                                 <li th:each="timeLine,timeLineStat:${timeLines}"
                                     th:class="${timeLineStat.index==0 and timeLine!=null}?'active'" >
