@@ -192,6 +192,7 @@ $(function () {
             $(".panel-show-detail").remove();
             $(this).find('img').attr('src', status);
         }
+        $(this).parent().parent().siblings().find('.panel-show-msg').find('img').attr('src','/static/poeConsole/img/open.png');
 //            $(this).parent().parent().siblings('.panel-show-detail').toggle();
     });
 
