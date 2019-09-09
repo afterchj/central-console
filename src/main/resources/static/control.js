@@ -9,11 +9,14 @@ $(function () {
     var match = /^[0-9A-Za-z\u4e00-\u9fa5]{2,8}$/;
     var text = "请输入2-8 位中文、字母、数字";
     var hit = $('label.am-text-left');
-    $("#mesh-name").bind(
+    $(".am-form-field").bind(
         "input propertychange change",
         {hint:hit,context:"#mesh-name",text:text,match:match},
         matchInput);
 
+    $(".am-form-field").on('input propertychange change', function () {
+        console.log('enter');
+    });
     //组操作前置动作
     $(".group-operation").click(function () {
         groupId = $(this).prev().prev().val();
