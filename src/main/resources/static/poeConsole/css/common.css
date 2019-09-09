@@ -4,6 +4,7 @@ body, html {
 }
 *{
     list-style: none;
+    line-height: 1.6 !important;
 }
 /** { touch-action: pan-y; }*/
 /** { touch-action: pan-y; }*/
@@ -110,7 +111,7 @@ fieldset {
 
 .topNav .am-panel-default > .am-panel-hd {
     background-color: #fff;
-    padding: .9rem 1.25rem;
+    padding: 1rem 1.25rem;
     border-color: #dee4e8;
 }
 .col-sm-1.col-lg-1.no-padding.leftNav{
@@ -234,7 +235,15 @@ fieldset {
 /*.data-show{*/
     /*display:none ;*/
 /*}*/
-
+.area{
+    /*display: inline-block;*/
+    /*width: 30%;*/
+    /*text-align: right;*/
+    display: inline-block;
+    width: 40%;
+    text-align: right;
+    right: 1rem;
+}
 .data-show{
     z-index: 999;
     background-color: #f5fafd;
@@ -248,8 +257,8 @@ fieldset {
 }
 .data-show .list{
     text-align: left;
-    padding-left: 1rem;
-    line-height: 2.4;
+
+    padding: .5rem 1rem;
 }
 .data-show .list a{
     color: #474747;
@@ -276,6 +285,9 @@ and (orientation: landscape) {
     .topNav .am-panel-default {
         min-height: 768px !important;
     }
+    .leftNav2{
+        min-height: 768px !important;
+    }
 }
 
 /* ipad竖屏 */
@@ -284,6 +296,9 @@ and (min-device-width: 768px)
 and (max-device-width: 1024px)
 and (orientation: portrait) {
     .topNav .am-panel-default {
+        min-height: 1024px !important;
+    }
+    .leftNav2{
         min-height: 1024px !important;
     }
 }
@@ -305,6 +320,9 @@ and (-webkit-min-device-pixel-ratio: 1.5) {
     .topNav .am-panel-default {
         min-height: 1366px !important;
     }
+    .leftNav2{
+        min-height: 1366px !important;
+    }
 }
 
 /* Landscape ipadPro横屏 */
@@ -315,5 +333,8 @@ and (orientation: landscape)
 and (-webkit-min-device-pixel-ratio: 1.5) {
     .topNav .am-panel-default {
         min-height: 1024px !important;
+    }
+    .leftNav2{
+        min-height: 1366px !important;
     }
 }

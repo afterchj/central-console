@@ -32,8 +32,10 @@ $(function () {
     //网络前置操作
     $('.mesh-ope').click(function () {
         // $('.rename-delete.mesh-ope').toggle();
+        $('.panel-show-detail').hide();
+        $('.data-show').hide();
         $(this).next('.rename-delete').toggle();
-        // $(this).parent().parent().siblings().find('.rename-delete').hide();
+        $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
         var thisMesh = $(this);
         var otherMeshOpe = $('.mesh-ope').not(thisMesh).length;
@@ -151,9 +153,13 @@ $(function () {
 
     //查看面板
     $('.panel-show-msg').click(function (e) {
+        // e.stopPropagation();
+        $('.rename-delete').hide();
+        $('.data-show').hide();
         $(this).parent().parent().siblings('.panel-show-detail').hide();
-        e.preventDefault();
-        var status = $(this).attr('src');
+        // e.preventDefault();
+
+        var status = $(this).find('img').attr('src');
         if (status.indexOf('open') != -1) {//开
             var reg = /open/g;
             status = status.replace(reg, 'close');
@@ -165,7 +171,7 @@ $(function () {
                 var controlHosts = data.controlHosts;
                 if (controlHosts.length > 0) {
                     var rows = controlHosts.length + 1;
-                    tr += '<tr class="am-text-xs panel-show-detail"><th rowspan="' + rows + '" class="am-text-center"></th><th class="d-panel-msg am-text-center">面板名称</th> <th class="d-panel-msg am-text-center">面板MAC</th><th class="d-panel-msg am-text-center">版本型号</th><th class="d-panel-msg am-text-center">面板状态</th>';
+                    tr += '<tr class="am-text-xs panel-show-detail"><th rowspan="' + rows + '" ></th><th class="d-panel-msg ">面板名称</th> <th class="d-panel-msg ">面板MAC</th><th class="d-panel-msg ">版本型号</th><th class="d-panel-msg ">面板状态</th>';
                     tr += '<th rowspan="' + rows + '"></th>';
                     $.each(controlHosts, function (key, value) {
                         var deletePanel;
@@ -174,7 +180,7 @@ $(function () {
                         }else {
                             deletePanel = '#deletePanel-modal';
                         }
-                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span>' + value.pname + '</span><img src="/static/poeConsole/img/dot.png" alt="" class=" p-a  tool first-rename" style="width:.25rem;"><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel" data-toggle="modal" data-target="'+deletePanel+'">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">版本(型号1)</td><td class="d-panel-msg ">' + value.state + '</td></tr>';
+                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span>' + value.pname + '</span ><span class=" p-a  tool first-rename area"><img src="/static/poeConsole/img/dot.png" alt=""  style="width:.25rem;"></span><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel" data-toggle="modal" data-target="'+deletePanel+'">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">版本(型号1)</td><td class="d-panel-msg ">' + value.state + '</td></tr>';
                     });
                     $(thisMesh).parent().parent().after(tr);
                 }

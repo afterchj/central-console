@@ -128,12 +128,15 @@ ul.am-dropdown-content > li > a {
     background-color:#D8DDE1;
 }
 .leftNav2 .am-nav li{
-    padding: .4rem;
+    padding: .5rem;
+    margin: 0;
+    font-size: 1.6rem;
 }
-.leftNav2 a {
+.leftNav2 li a {
     color: #474747;
     font-size: 1.3rem;
     text-align: center;
+    padding: .6em 1em;
 }
 
 .leftNav2 a:hover {

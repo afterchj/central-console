@@ -15,10 +15,17 @@
 //     //     e.stopPropagation();
 //     //     $(this).parent('.updown-data ').toggleClass('active');
 //     // })
+$(function () {
+    var height = $('.topNav ').height();
+    console.log('height',height);
+    $('.leftNav2').css('height',height);
+    $('.left-timing-title li:first-child').addClass('active');
     $('.left-timing-title li').click(function () {
         $(this).addClass('active').siblings('li').removeClass('active');
         $('.right-timing-detail ').addClass('active');
     });
+})
+
 //     $('.leftNav2 .am-nav li').click(function () {
 //         $(this).addClass('active').siblings('li').removeClass('active');
 //     });

@@ -1,6 +1,6 @@
 .data-show-table {
     width: 94%;
-    margin: 2rem 3% 2rem 3%;
+    margin: 1rem 3% 2rem 3%;
 }
 
 .am-radio.table-checkbox, .am-checkbox.table-checkbox {
@@ -9,12 +9,13 @@
 }
 
 .data-show-table .tool {
-    right: 8%;
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.8rem;
     color: #226697;
-    width: 1rem;
+    /*width: 30%;*/
+    /*text-align: right;*/
 }
 
 .data-show-table table thead .am-dropdown {
@@ -83,9 +84,9 @@
 
 }
 .data-show-table i.fa-caret-right{
-    right: .8rem;
-    top: 50%;
-    transform: translateY(-50%);
+    /*right: .8rem;*/
+    /*top: 50%;*/
+    /*transform: translateY(-50%);*/
     font-size: 1.5rem;
     color: #888;
 }
@@ -127,15 +128,17 @@
 }
 .rename-delete.left>.am-fl{
     width: 5rem;
-    height: 2.4rem;
-    line-height: 2.4rem;
+    /* height: 2.4rem; */
+    /* line-height: 2.4rem; */
     text-align: center;
     color: #3a3a3a;
+    /*vertical-align: middle;*/
+    padding: .5rem .2rem;
 }
 .rename-delete>.am-fl{
     width: 5rem;
-    height: 2.4rem;
-    line-height: 2.4rem;
+    /* height: 2.4rem; */
+    padding: .5rem .2rem;
     text-align: center;
     color: #3a3a3a;
     font-size: 1.1rem !important;
