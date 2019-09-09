@@ -42,7 +42,7 @@
             LEFT JOIN t_group g ON g.id = h.gid
         WHERE
             h.ip != '127.0.0.1'
-            AND h.mesh_id IS NOT NULL group by h.mesh_id
+            AND h.mesh_id IS NOT NULL and h.mac is not null group by h.mesh_id
     </select>
 
     <select id="getControlGroupsByGname" resultType="com.example.blt.entity.control.ControlMaster">
