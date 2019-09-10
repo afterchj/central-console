@@ -32,8 +32,9 @@ $(function () {
     //网络前置操作
     $('.mesh-ope').click(function () {
         // $('.rename-delete.mesh-ope').toggle();
-        $('.panel-show-detail').hide();
+        // $('.panel-show-detail').hide();
         $('.data-show').hide();
+     /*   $('.group-data').hide();*/
         $(this).next('.rename-delete').toggle();
         $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
@@ -58,8 +59,8 @@ $(function () {
         var title = $(this).parent().prev().prev().find('h4').text();
         var buttonThis = $(this);
         var hiddenTitle = $(this).parent().prev().prev().find('input').val();
-        var hint = $(this).parent().prev().find('label').text();
         var hintEmpty = isEmpty(hint);
+        $(buttonThis).parent().prev().find('label').text('');
         if (hintEmpty){
             if (title == '创建网组') {//创建组
                 $.post('/control/group', {'gname': val, 'type': 'create'}, function (data) {
@@ -156,6 +157,7 @@ $(function () {
         // e.stopPropagation();
         $('.rename-delete').hide();
         $('.data-show').hide();
+        // $('.group-data').hide();
         $(this).parent().parent().siblings('.panel-show-detail').hide();
         // e.preventDefault();
 

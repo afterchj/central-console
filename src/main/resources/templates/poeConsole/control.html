@@ -73,9 +73,10 @@
                                     <!--隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""-->
                                     <!--class=" p-a create-mesh-list  tool"  style=" width: 1.8rem;">-->
                                     <!--</span>-->
-                                      <span>
-                                        隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""
-                                                  class=" p-a create-mesh-list  tool " style=" width: 1.8rem;">
+                                    隶属网组
+                                      <span class="area p-a create-mesh-list  tool">
+                                         <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""
+                                                  class=" " style=" width: 1.8rem;">
                                     </span>
                                     <ul class="p-a data-show">
                                         <li>
@@ -144,7 +145,7 @@
                                 <!---->
                                 <!--<img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool">-->
                                 <!--</td>-->
-                                <td class="p-r am-dropdown" data-am-dropdown>
+                                <td class="p-r am-dropdown group-data" data-am-dropdown>
                                     <a  href="javascript:;">
                                         <span th:text="${controlMaster.gname==null}?' - 空 - ':${controlMaster.gname}"></span>
                                     </a>
@@ -207,6 +208,7 @@
         $('.rename-delete').hide();
         $('.panel-show-detail').hide();
         $('.data-show').hide();
+//        $('.group-data').hide();
         $('.data-show-table .am-dropdown-content li').click(function () {
 //            e.preventDefault();
             $(this).addClass('active').siblings('li').removeClass('active');
@@ -220,16 +222,10 @@
         $('.updown-data .create-mesh-list').click(function () {
 //            e.preventDefault();
 //            e.stopPropagation();
-            $('.panel-show-detail').hide();
+//            $('.panel-show-detail').hide();
             $('.rename-delete').hide();
             $('.data-show').toggle();
-        })
-//        $('.mesh-rename').click(function () {
-////            e.preventDefault();
-////            e.stopPropagation();
-//            $(this).next('.rename-delete').toggle();
-//            $(this).parent().parent().siblings().find('.rename-delete').hide();
-//        });
+        });
         $('.group-rename').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -242,33 +238,7 @@
             e.stopPropagation();
             e.preventDefault();
         });
-//        $(".am-text-sm").on('click','.first-rename',function () {
-//            e.preventDefault();
-//            $(this).next('.rename-delete').toggle();
-//            $(this).parent().parent().siblings().find('.rename-delete').hide();
-//        })
-//        $('.first-rename').click(function (e) {
-//
-//        });
-//        $('.panel-show-msg').click(function (e) {
-//            e.preventDefault();
-//            var status = $(this).attr('src');
-//            if (status.indexOf('open') != -1) {//开
-//                var reg = /open/g;
-//                status = status.replace(reg, 'close');
-//
-//            } else if (status.indexOf('close') != -1) {//关
-//                var reg = /close/g;
-//                status = status.replace(reg, 'open');
-//            }
-//            $(this).attr('src', status);
-//
-//            $(this).parent().parent().siblings('.panel-show-detail').toggle();
-//        });
     });
-    function hideModel() {
-        $('#forbidDelete').modal('hide');
-    }
 
 </script>
 </body>
