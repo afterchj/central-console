@@ -38,10 +38,6 @@ $(function () {
         $(this).next('.rename-delete').toggle();
         $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
-        var thisMesh = $(this);
-        var otherMeshOpe = $('.mesh-ope').not(thisMesh).length;
-        // var allMeshOpe = $('.mesh-ope').length;
-
     });
     //点击删除面板
     $(".am-text-sm").on('click', 'div.delete-panel', function () {
@@ -53,14 +49,20 @@ $(function () {
             });
         }
     });
-    //组操作
+    //点击重命名
+    $(".am-text-sm").on('click','div.rename-mesh,div.rename-group,div.rename-panel,button.create-group',function () {
+        $('label.am-form-label.am-text-danger.am-text-left').text('');
+        $('input.am-form-field').val('');
+    })
+
     $(".btn.btn-primary.yes").click(function () {
         var val = $(this).parent().prev().find('input[id="mesh-name"]').val();
         var title = $(this).parent().prev().prev().find('h4').text();
         var buttonThis = $(this);
         var hiddenTitle = $(this).parent().prev().prev().find('input').val();
+        var hint = $(buttonThis).parent().prev().find('label').text();
         var hintEmpty = isEmpty(hint);
-        $(buttonThis).parent().prev().find('label').text('');
+        // $(buttonThis).parent().prev().find('label').text('');
         if (hintEmpty){
             if (title == '创建网组') {//创建组
                 $.post('/control/group', {'gname': val, 'type': 'create'}, function (data) {
