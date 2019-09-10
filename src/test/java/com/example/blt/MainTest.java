@@ -5,6 +5,7 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
+import com.example.blt.utils.StringBuildUtils;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -297,5 +298,18 @@ public class MainTest {
 //        object.put("host", "master");
 //        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
 //        ClientMain.sendCron(object.toJSONString());
+    }
+
+    @Test
+    public void testSaveType() {
+        String arg1 = "770505060b1a0109CCCC";
+        Map map = new HashMap();
+        String temp = StringBuildUtils.sortMac(arg1.substring(8, 12)).replace(":", "");
+        int product = Integer.parseInt(temp, 16);
+        String version = arg1.substring(12, 16);
+        map.put("hostId", "0726036a");
+        map.put("type", product);
+        map.put("version", version);
+        sqlSessionTemplate.insert("console.saveUpdateHosts", map);
     }
 }

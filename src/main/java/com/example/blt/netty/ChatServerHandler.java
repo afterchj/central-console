@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,6 +70,17 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
             if (arg1.indexOf("77050304") != -1) {
                 cmd = "77050103";
+            }
+            if (arg1.indexOf("77050506") != -1) {
+                cmd = "77050103";
+                Map map = new HashMap();
+                String temp = StringBuildUtils.sortMac(arg1.substring(8, 12)).replace(":", "");
+                int product = Integer.parseInt(temp, 16);
+                String version = arg1.substring(12, 16);
+                map.put("hostId", host);
+                map.put("type", product);
+                map.put("version", version);
+                saveHost(map, false);
             }
             if (arg1.indexOf("77050705") != -1) {
                 cmd = "77050103";

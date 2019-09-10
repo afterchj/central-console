@@ -32,6 +32,8 @@
         <parameter property="meshId" mode="IN"/>
         <parameter property="hostId" mode="IN"/>
         <parameter property="mac" mode="IN"/>
+        <parameter property="type" mode="IN"/>
+        <parameter property="version" mode="IN"/>
         <parameter property="status" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
@@ -118,7 +120,7 @@
     </insert>
 
     <select id="saveUpdateHosts" parameterMap="hostMapper" resultType="map" statementType="CALLABLE">
-        CALL saveUpdateHost(?,?,?,?,?,?)
+        CALL saveUpdateHost(?,?,?,?,?,?,?,?)
     </select>
 
     <select id="selectIn" parameterType="map" resultType="int">

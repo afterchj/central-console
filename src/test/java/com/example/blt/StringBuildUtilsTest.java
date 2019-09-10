@@ -43,6 +43,10 @@ public class StringBuildUtilsTest {
         String c71 = "77 04 0F 02 27 35 00 00 00 71 00 13 00 00 00 00 00 00 0E".replace(" ", "");
         String c52 = "77 04 10 02 21 69 00 00 00 52 77 65 65 D7 AC F0 00 01 00 85".replace(" ", "");//7704100221F505000052456365D7ACF0000200CCCC
         String c42 = "77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83".replace(" ", "");
+        String type = "770505060b1a0109CCCC";
+        String temp=type.substring(8,12);
+        StringBuildUtils.sortMac(temp).replace(":","");
+        System.out.println("type="+StringBuildUtils.sortMac(type.substring(8,12)).replace(":",""));
         String str = "77040E020103000000C000373700000000CC";
         String CS = "77011265FFFFFFFF20010000004200000000000004CCCC";
         String C0 = "77011265FFFFFFFF2A01000000C000373700000000CCCC";
