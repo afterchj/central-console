@@ -16,6 +16,7 @@ public class ControlHost {
     private String mac;
     private String pname;
     private String state;
+    private String productType;
 
     public String getState() {
         return state;
@@ -81,17 +82,11 @@ public class ControlHost {
         this.mac = mac;
     }
 
-    @Override
-    public String toString() {
-        return "ControlHost{" +
-                "id=" + id +
-                ", ip='" + ip + '\'' +
-                ", status=" + status +
-                ", isMaster=" + isMaster +
-                ", meshId='" + meshId + '\'' +
-                ", mac='" + mac + '\'' +
-                ", pname='" + pname + '\'' +
-                ", state='" + state + '\'' +
-                '}';
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 }
