@@ -83,7 +83,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 saveHost(map, false);
             }
             if (arg1.indexOf("77050705") != -1) {
-                cmd = "77050103";
+                cmd = "77050106CCCC";
                 if (len >= 48 && len <= 52) {
                     String mac = StringBuildUtils.sortMac(arg1.substring(36, 48));
                     insertOrUpdateHost(channel, "", mac);
