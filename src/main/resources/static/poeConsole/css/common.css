@@ -167,7 +167,7 @@ fieldset {
     width: 70%;
 }
 .modal.in .modal-dialog{
-    width: 45%;
+    width: 35rem;
     text-align: center;
     top: 10rem;
 }
