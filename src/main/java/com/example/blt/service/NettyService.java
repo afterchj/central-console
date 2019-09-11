@@ -112,7 +112,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.warn("nettyService starting...");
-        new ServerMain().run(8001);
+        new ServerMain().run(8003);
 //        ExecuteTask.pingStatus(true, 3);
     }
 }
