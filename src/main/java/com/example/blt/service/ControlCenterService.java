@@ -22,7 +22,6 @@ import java.util.StringJoiner;
  **/
 @Service
 public class ControlCenterService {
-
     @Resource
     private ControlCenterDao controlCenterDao;
 
@@ -127,19 +126,19 @@ public class ControlCenterService {
     }
 
     public Boolean groupOperation(String gname, String type,Integer id,String meshId) {
-        if (type.equals("delete")){
+        if (type.equals(Operation.delete.getValue())){
             controlCenterDao.updateMasterByGid(id);
             controlCenterDao.deleteGroup(id);
-        }else if (type.equals("select")){
+        }else if (type.equals(Operation.select.getValue())){
             controlCenterDao.selectGroup(gname,meshId);
         }else {
             Integer count = controlCenterDao.getGname(gname);
             if (count >0){//组名重复
                 return false;
             }
-            if (type.equals("create")){
+            if (type.equals(Operation.create.getValue())){
                 controlCenterDao.createGroup(gname);
-            }else if (type.equals("rename")){
+            }else if (type.equals(Operation.rename.getValue())){
                 controlCenterDao.renameGroup(gname,id);
             }
         }
@@ -159,13 +158,13 @@ public class ControlCenterService {
     }
 
     public Boolean panelOperations(String mac, String pname, String type) {
-        if (type.equals("rename")){
+        if (type.equals(Operation.rename.getValue())){
             Integer count = controlCenterDao.getPname(pname);
             if (count > 0){//名称重复
                 return false;
             }
             controlCenterDao.renamePname(pname,mac);
-        }else if (type.equals("delete")){
+        }else if (type.equals(Operation.delete.getValue())){
             controlCenterDao.deleteHost(mac);
         }
         return true;
