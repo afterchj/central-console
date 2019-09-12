@@ -234,7 +234,6 @@ public class MainController {
         String params = request.getParameter("params");
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
         String uid = String.valueOf(jsonObjectParams.get("uid"));
-        logger.warn("*****************"+uid);
         String time = String.valueOf(jsonObjectParams.get("time"));
         int projectId = (int) jsonObjectParams.get("projectId");
         String project_data = JSON.toJSONString(jsonObjectParams.get("project_data"));
@@ -253,6 +252,10 @@ public class MainController {
                         map3.put("meshId",map2.get("meshId"));
                         map3.put("tid",tid);
                         sqlSessionTemplate.delete("console.deleteTimerData", map3);
+                    }
+                    int count2 = monitor4Dao.findHostInfo(String.valueOf(map2.get("meshId")));
+                    if(count2==0){
+                        monitor4Dao.insertHostInfo(String.valueOf(map2.get("meshId")));
                     }
                         map2.put("ischoose", timerListList.get(j).getTimerLine().getIschoose());
                         map2.put("item_set", timerListList.get(j).getTimerLine().getItem_set());
@@ -293,7 +296,6 @@ public class MainController {
             map.put("result", "000");
         } catch (Exception e) {
             map.put("result", "200");
-            logger.warn("********************"+e);
         }
         return map;
     }
