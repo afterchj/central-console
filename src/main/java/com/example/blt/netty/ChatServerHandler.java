@@ -106,7 +106,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 if (address != null) {
                     String str = address.toString();
                     String ip = str.substring(1, str.indexOf(":"));
-                    if (!ip.equals("127.0.0.1")) {
+//                    if (!ip.equals("127.0.0.1")) {
                         String id = ch.id().toString();
                         if (to.equals("all")) {
                             ch.writeAndFlush(cmd);
@@ -119,7 +119,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         } else if (to.equals(id)) {
                             ch.writeAndFlush(cmd);
                         }
-                    }
+//                    }
                 }
             }
         }
@@ -149,8 +149,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
         insertOrUpdateHost(channel, "", "");
-        channel.writeAndFlush("77050101CCCC");
-        channel.writeAndFlush("77050105CCCC");
+//        channel.writeAndFlush("77050101CCCC");
+//        channel.writeAndFlush("77050105CCCC");
     }
 
     //退出链接
