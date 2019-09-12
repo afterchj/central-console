@@ -4,9 +4,10 @@
 $(function () {
     var groupId;
     var meshId;
-    var panelId;
-    var panelState;
-    var panelNameLabel;
+    var meshState;//网络状态
+    var panelId;//mac
+    var panelState;//面板状态
+    var panelNameLabel;//面板名称标签
     var match = /^[0-9A-Za-z\u4e00-\u9fa5]{2,8}$/;
     var text = "请输入2-8 位中文、字母、数字";
     //根据输入显示提示
@@ -41,6 +42,19 @@ $(function () {
         $(this).next('.rename-delete').toggle();
         $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
+        meshState = $(this).parent().next().next().text();
+        if (meshState == '网络在线'){
+            $(this).next().find(".delete-mesh").attr('data-target','#');
+        }
+    });
+    $(".delete-mesh").click(function () {
+        if (meshState == '网络在线'){
+            layer.open({
+                content: '不可删除'
+                ,skin: 'msg'
+                ,time: 3 //3秒后自动关闭
+            });
+        }
     });
     //点击删除面板
     $(".am-text-sm").on('click', 'div.delete-panel', function () {

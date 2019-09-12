@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @SpringBootApplication
@@ -16,6 +17,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @EnableCaching//开启缓存注解
 //@MapperScan("com.example.blt.dao")//mybatis路径映射
 //@ComponentScan(basePackages = "org.example.blt")
+@EnableTransactionManagement
 public class CentralConsoleApplication {
 
     private static Logger logger = LoggerFactory.getLogger(CentralConsoleApplication.class);
