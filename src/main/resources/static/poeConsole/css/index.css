@@ -111,6 +111,10 @@
     left: auto;
     top: 10%;
 }
+.hide-mesh-model{
+    display: inline-block;
+    width:60%;
+}
 .rename-delete.left:after{
     content: '';
     display: inline-block;
