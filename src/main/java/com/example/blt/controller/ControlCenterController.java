@@ -32,6 +32,7 @@ public class ControlCenterController {
 
     /**
      * 跳转到login.html
+     *
      * @return
      */
     @RequestMapping("/login")
@@ -41,20 +42,21 @@ public class ControlCenterController {
 
     /**
      * 点击登录
-     * @param request session
+     *
+     * @param request  session
      * @param username 用户名
      * @return
      */
     @RequestMapping("/toLogin")
     @ResponseBody
-    public String toLogin(HttpServletRequest request,String username){
+    public String toLogin(HttpServletRequest request, String username) {
         HttpSession session = request.getSession();
-        session.setAttribute("username",username);
+        session.setAttribute("username", username);
         return "success";
     }
 
     @RequestMapping("/loginOut")
-    public String loginOut(HttpServletRequest request){
+    public String loginOut(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("username");
         return "redirect:login";
@@ -62,6 +64,7 @@ public class ControlCenterController {
 
     /**
      * 跳转到index.html
+     *
      * @return
      */
     @RequestMapping("/index")
@@ -71,40 +74,41 @@ public class ControlCenterController {
 
     /**
      * 跳转到timing.html
+     *
      * @param model
      * @return
      */
     @RequestMapping("/timer")
-    public String timer(Model model,String meshId) {
+    public String timer(Model model, String meshId) {
         List<MeshList> meshs = controlCenterService.getMeshs();
-        if (StringUtils.isBlank(meshId) && meshs.size()>0){
+        if (StringUtils.isBlank(meshId) && meshs.size() > 0) {
             meshId = meshs.get(0).getMeshId();
         }
-        if (StringUtils.isNotBlank(meshId)){
+        if (StringUtils.isNotBlank(meshId)) {
             List<TimeLine> timeLines = controlCenterService.getTimeLinesByMeshId(meshId);
-            if (timeLines.size()>0){
+            if (timeLines.size() > 0) {
                 Integer tsid = timeLines.get(0).getId();
                 List<TimePoint> timePoints = controlCenterService.getTimePointByTsid(tsid);
-                model.addAttribute("timeLines",timeLines);
-                model.addAttribute("timePoints",timePoints);
+                model.addAttribute("timeLines", timeLines);
+                model.addAttribute("timePoints", timePoints);
             }
         }
 
-        for (MeshList mesh:meshs){
-            if (mesh.getMeshId().equals(meshId)){
-                model.addAttribute("mname",mesh.getMname());
+        for (MeshList mesh : meshs) {
+            if (mesh.getMeshId().equals(meshId)) {
+                model.addAttribute("mname", mesh.getMname());
             }
         }
-        model.addAttribute("meshs",meshs);
+        model.addAttribute("meshs", meshs);
         return "poeConsole/timing";
     }
 
     @RequestMapping("/timePointList")
     @ResponseBody
-    public Map timePointList(Integer tsid){
+    public Map timePointList(Integer tsid) {
         Map map = new HashMap();
         List<TimePoint> timePoints = controlCenterService.getTimePointByTsid(tsid);
-        map.put("timePoints",timePoints);
+        map.put("timePoints", timePoints);
         return map;
     }
 
@@ -115,36 +119,37 @@ public class ControlCenterController {
      * @return
      */
     @RequestMapping("/netWorkGroupConsole")
-    public String netWorkGroupConsole(Model model,String gname,String meshId) {
-        List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gname,meshId);
+    public String netWorkGroupConsole(Model model, String gname, String meshId) {
+        List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gname, meshId);
         List<GroupList> groupList = controlCenterService.getGroups();
-        model.addAttribute("groupList",groupList);//组列表
-        model.addAttribute("controlMasters",controlMasters);//网络列表
+        model.addAttribute("groupList", groupList);//组列表
+        model.addAttribute("controlMasters", controlMasters);//网络列表
         return "poeConsole/control";
     }
 
     @RequestMapping("/getPanels")
     @ResponseBody
-    public Map<String,Object> getPanels(String meshId){
-        Map<String,Object> panelMap = new HashMap<>();
+    public Map<String, Object> getPanels(String meshId) {
+        Map<String, Object> panelMap = new HashMap<>();
         List<ControlHost> controlHosts = controlCenterService.getPanels(meshId);
-        panelMap.put("controlHosts",controlHosts);
-        panelMap.put("meshId",meshId);
+        panelMap.put("controlHosts", controlHosts);
+        panelMap.put("meshId", meshId);
         return panelMap;
     }
 
     /**
      * 创建/重命名/删除组/选择组
+     *
      * @param gname 组名
-     * @param type 操作类型
-     * @param id 组id
-     * @return  exitGroup:1 名称重复
+     * @param type  操作类型
+     * @param id    组id
+     * @return exitGroup:1 名称重复
      */
     @RequestMapping("/group")
     @ResponseBody
-    public Map<String,Object> group(String gname,String type,Integer id,String meshId){
-        Map<String,Object> groupMap = new HashMap<>();
-        Boolean flag = controlCenterService.groupOperation(gname,type,id,meshId);
+    public Map<String, Object> group(String gname, String type, Integer id, String meshId) {
+        Map<String, Object> groupMap = new HashMap<>();
+        Boolean flag = controlCenterService.groupOperation(gname, type, id, meshId);
 //        if (!flag){//组名重复
 //            groupMap.put("exitGroup",1);
 //        }else {
@@ -152,63 +157,61 @@ public class ControlCenterController {
 //        }
         //组名重复 exitGroup:1
         int exitGroup = (!flag) ? 1 : 0;
-        groupMap.put("exitGroup",exitGroup);
+        groupMap.put("exitGroup", exitGroup);
         return groupMap;
     }
 
 
     /**
      * 重命名/删除网络名
-     * @param mname 网络名
+     *
+     * @param mname  网络名
      * @param meshId 网络id
      * @return exitMname:1 名称重复
      */
     @RequestMapping("/renameMesh")
     @ResponseBody
-    public Map<String,Object> renameMesh(String mname,String meshId){
-        Map<String,Object> meshMap = new HashMap<>();
-        Boolean flag = controlCenterService.meshOperations(mname,meshId);
-        int exitMname = (flag)? 0:1;
-        meshMap.put("exitMname",exitMname);
+    public Map<String, Object> renameMesh(String mname, String meshId) {
+        Map<String, Object> meshMap = new HashMap<>();
+        Boolean flag = controlCenterService.meshOperations(mname, meshId);
+        int exitMname = (flag) ? 0 : 1;
+        meshMap.put("exitMname", exitMname);
         return meshMap;
     }
 
     /**
      * 重命名/删除面板
-     * @param mac
+     *
+     * @param id
      * @param pname
      * @param type
      * @return
      */
     @RequestMapping("/panelOperations")
     @ResponseBody
-    public Map<String,Object> panelOperations(String mac,String pname,String type){
-        Map<String,Object> panelMap = new HashMap<>();
-        if (StringUtils.isBlank(mac)){
-            panelMap.put("exitPname",2);
-        }else {
-            Boolean flag = controlCenterService.panelOperations(mac,pname,type);
-            if (!flag){//名称重复
-                panelMap.put("exitPname",1);
-            }else {
-                panelMap.put("exitPname",0);
-            }
+    public Map<String, Object> panelOperations(int id, String pname, String type) {
+        Map<String, Object> panelMap = new HashMap<>();
+        Boolean flag = controlCenterService.panelOperations(id, pname, type);
+        if (!flag) {//名称重复
+            panelMap.put("exitPname", 1);
+        } else {
+            panelMap.put("exitPname", 0);
         }
-
         return panelMap;
     }
 
     /**
      * 设置主控关系
+     *
      * @param meshId 网络id
      * @return
      */
     @RequestMapping("/setMaster")
     @ResponseBody
-    public Map<String,Object> setMaster(String meshId,int type){
-        Map<String,Object> masterMap = new HashMap<>();
-        controlCenterService.updateMaster(meshId,type);
-        masterMap.put("success","success");
+    public Map<String, Object> setMaster(String meshId, int type) {
+        Map<String, Object> masterMap = new HashMap<>();
+        controlCenterService.updateMaster(meshId, type);
+        masterMap.put("success", "success");
         return masterMap;
     }
 

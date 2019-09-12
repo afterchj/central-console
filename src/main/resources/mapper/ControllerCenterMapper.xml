@@ -43,6 +43,7 @@
 
     <select id="getPanels" resultType="com.example.blt.entity.control.ControlHost">
         SELECT
+            id,
             CASE
               WHEN STATUS='1' AND mac IS NOT NULL THEN '在线'
               WHEN STATUS = '0' THEN '离线'

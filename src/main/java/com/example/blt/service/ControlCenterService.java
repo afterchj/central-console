@@ -159,15 +159,15 @@ public class ControlCenterService {
         controlCenterDao.renameMesh(mname,meshId);
     }
 
-    public Boolean panelOperations(String mac, String pname, String type) {
+    public Boolean panelOperations(int id, String pname, String type) {
         if (type.equals(Operation.rename.getValue())){
             Integer count = controlCenterDao.getPname(pname);
             if (count > 0){//名称重复
                 return false;
             }
-            controlCenterDao.renamePname(pname,mac);
+            controlCenterDao.renamePname(pname,id);
         }else if (type.equals(Operation.delete.getValue())){
-            controlCenterDao.deleteHost(mac);
+            controlCenterDao.deleteHost(id);
         }
         return true;
     }

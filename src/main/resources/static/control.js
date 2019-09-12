@@ -28,7 +28,7 @@ $(function () {
         // $(this).next().toggle();
         $(this).next('.rename-delete').toggle();
         $(this).parent().parent().siblings('.panel-show-detail').children('td').find('.rename-delete.panel-ope').hide();
-        panelId = $(this).parent().next().text();
+        panelId = $(this).prev().attr('alt');
         panelState = $(this).parent().next().next().next().text();
         meshId = $(this).parent();
         panelNameLabel = $(this).prev();
@@ -121,11 +121,9 @@ $(function () {
                     }
                 });
             }else if (hiddenTitle == '重命名面板'){
-                $.post('/control/panelOperations',{"pname":val,"mac":panelId,"type":"rename"},function (data) {
+                $.post('/control/panelOperations',{"pname":val,"id":panelId,"type":"rename"},function (data) {
                     var exitPname = data.exitPname;
-                    if  (exitPname == 2){
-                        $(buttonThis).parent().prev().find('label').text('面板异常');
-                    }else if (exitPname == 1){//面板名称重复
+                    if (exitPname == 1){//面板名称重复
                         $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
                     }else {
                         // window.location.href = "/control/netWorkGroupConsole";
@@ -146,7 +144,7 @@ $(function () {
                 }
             });
         }else if (hiddenTitle == '删除面板'){
-                $.post('/control/panelOperations',{"mac":panelId,"type":"delete"},function (data) {
+                $.post('/control/panelOperations',{"id":panelId,"type":"delete"},function (data) {
                     var exitPname = data.exitPname;
                     if (exitPname == 0){//面板名称重复
                         window.location.href = "/control/netWorkGroupConsole";
@@ -220,7 +218,7 @@ $(function () {
                         }else {
                             deletePanel = '#deletePanel-modal';
                         }
-                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span>' + value.pname + '</span ><span class=" p-a  tool first-rename area"><img src="/static/poeConsole/img/dot.png" alt=""  style="width:.25rem;"></span><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel" data-toggle="modal" data-target="'+deletePanel+'">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">'+value.productType+'</td><td' +
+                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span alt="'+value.id+'">' + value.pname + '</span ><span class=" p-a  tool first-rename area"><img src="/static/poeConsole/img/dot.png" alt=""  style="width:.25rem;"></span><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel" data-toggle="modal" data-target="'+deletePanel+'">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">'+value.productType+'</td><td' +
                         ' class="d-panel-msg ">' + value.state + '</td></tr>';
                     });
                     $(thisMesh).parent().parent().after(tr);

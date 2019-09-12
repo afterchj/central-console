@@ -45,11 +45,11 @@ public interface ControlCenterDao {
     @Select("select count(*) FROM t_host_info WHERE other=#{pname}")
     Integer getPname(@Param("pname") String pname);
 
-    @Update("update t_host_info set other=#{pname} where mac=#{mac}")
-    void renamePname(@Param("pname") String pname, @Param("mac") String mac);
+    @Update("update t_host_info set other=#{pname} where id=#{id}")
+    void renamePname(@Param("pname") String pname, @Param("id") int id);
 
-    @Delete("DELETE FROM t_host_info where mac=#{mac}")
-    void deleteHost(@Param("mac") String mac);
+    @Delete("DELETE FROM t_host_info where id=#{id}")
+    void deleteHost(@Param("id") int id);
 
     @Delete("DELETE FROM t_group where id=#{id}")
     void deleteGroup(@Param("id") Integer id);
