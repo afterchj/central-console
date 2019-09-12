@@ -74,6 +74,9 @@ public interface Monitor4Dao {
     @Select("select count(*) from t_host_info where mesh_id=#{meshId}")
     int findHostInfo(@Param("meshId") String meshId);
 
-    @Insert("insert into t_host_info (mesh_id,log_date) values (#{meshId},NOW())")
-    void insertHostInfo(@Param("meshId") String meshId);
+    @Insert("insert into t_host_info (mesh_id,mesh_name,log_date) values (#{meshId},#{mname},NOW())")
+    void insertHostInfo(@Param("meshId") String meshId,@Param("mname") String mname);
+
+    @Update("update t_host_info set mesh_name = #{mname},log_date = NOW() where mesh_id = #{meshId}")
+    void updateHostInfo(@Param("meshId")String meshId, @Param("mname")String mname);
 }

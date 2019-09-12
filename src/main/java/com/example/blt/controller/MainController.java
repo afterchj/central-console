@@ -230,6 +230,7 @@ public class MainController {
     public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         String params = request.getParameter("params");
+        logger.warn("params********************"+params);
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
         String uid = String.valueOf(jsonObjectParams.get("uid"));
         String time = String.valueOf(jsonObjectParams.get("time"));
@@ -243,7 +244,9 @@ public class MainController {
                 List<TimerList> timerListList = projectDataList.get(i).getTimerList();
                 int count2 = monitor4Dao.findHostInfo(String.valueOf(map2.get("meshId")));
                 if (count2 == 0) {
-                    monitor4Dao.insertHostInfo(String.valueOf(map2.get("meshId")));
+                    monitor4Dao.insertHostInfo(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
+                }else {
+                    monitor4Dao.updateHostInfo(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
                 }
                 for (int j = 0; j < timerListList.size(); j++) {
                     Integer tid = timerListList.get(j).getTimerLine().getTid();
@@ -295,6 +298,7 @@ public class MainController {
             map.put("result", "000");
         } catch (Exception e) {
             map.put("result", "200");
+            logger.warn("error********************"+e);
         }
         return map;
     }
