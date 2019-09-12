@@ -60,8 +60,7 @@ public interface ControlCenterDao {
     @Update("update t_host_info set is_master=#{type} where mesh_id=#{meshId}")
     void updateHostInfo(@Param("meshId")String meshId,@Param("type") int type);
 
-    @Select("select id,mesh_id as meshId,ifnull(mesh_name,mesh_id) as mname from t_host_info where ip!='127.0.0.1' " +
-            "and mesh_id is not null group by meshId")
+    @Select("select id,mesh_id as meshId,ifnull(mesh_name,mesh_id) as mname from t_host_info where (ip != '127.0.0.1' or ip is null) and mesh_id is not null group by meshId")
     List<MeshList> getMeshs();
 
     List<ControlMaster> getControlGroupsByGname(@Param("gname") String gname);
