@@ -110,7 +110,8 @@ public class ControlCenterService {
                 ControlMaster controlMesh = controlMeshIterator.next();
                 for (ControlMaster controlMaster:controlMasters){
                     if (controlMesh.getMeshId().equals(controlMaster.getMeshId())){
-                        controlMesh.setpNum(2);
+                        int count = controlCenterDao.getPanelNums(controlMaster.getMeshId());
+                        controlMesh.setpNum(count);
                         controlMesh.setmState(controlMaster.getmState());
 //                        if (StringUtils.isNotBlank(controlMaster.getpState())){
                             controlMesh.setpState(controlMaster.getpState());

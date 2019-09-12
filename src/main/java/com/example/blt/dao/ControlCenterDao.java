@@ -78,4 +78,7 @@ public interface ControlCenterDao {
 
     @Update("update t_host_info set gid=null where gid=#{gid}")
     void updateMasterByGid(@Param("gid") Integer id);
+
+    @Select("select count(*) from t_host_info where ip !='127.0.0.1' and host_id is not null and mesh_id=#{meshId}")
+    int getPanelNums(@Param("meshId") String meshId);
 }
