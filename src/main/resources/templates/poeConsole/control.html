@@ -116,7 +116,7 @@
                             <tbody class="am-text-sm">
                             <tr th:each="controlMaster:${controlMasters}">
                                 <td class="p-r ">
-                                    <span th:text="${controlMaster.mname}"></span>
+                                    <span class="hide-mesh-model" th:text="${controlMaster.mname}"></span>
                                     <span class="area p-a  tool am-animation-fade  mesh-rename mesh-ope">
                                          <img th:src="@{/static/poeConsole/img/dot.png}" alt=""
                                                            style=" width: .25rem;">
@@ -213,6 +213,9 @@
 //            e.preventDefault();
             $(this).addClass('active').siblings('li').removeClass('active');
         });
+        $('.hide-mesh-model').click(function () {
+            $('.rename-delete').hide();
+        })
 //        $('.create-mesh-list').click(function () {
 ////            e.preventDefault();
 //            $(this).parent().siblings().find('.rename-delete').hide();
