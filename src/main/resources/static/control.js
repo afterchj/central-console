@@ -6,6 +6,7 @@ $(function () {
     var meshId;
     var panelId;
     var panelState;
+    var panelNameLabel;
     var match = /^[0-9A-Za-z\u4e00-\u9fa5]{2,8}$/;
     var text = "请输入2-8 位中文、字母、数字";
     //根据输入显示提示
@@ -28,6 +29,8 @@ $(function () {
         $(this).parent().parent().siblings('.panel-show-detail').children('td').find('.rename-delete.panel-ope').hide();
         panelId = $(this).parent().next().text();
         panelState = $(this).parent().next().next().next().text();
+        meshId = $(this).parent();
+        panelNameLabel = $(this).prev();
     });
     //网络前置操作
     $('.mesh-ope').click(function () {
@@ -53,7 +56,13 @@ $(function () {
     $(".am-text-sm").on('click','div.rename-mesh,div.rename-group,div.rename-panel,button.create-group',function () {
         $('label.am-form-label.am-text-danger.am-text-left').text('');
         $('input.am-form-field').val('');
-    })
+    });
+    // $('body').click(function (e) {
+    //     if (!$(e.target).closest(".rename-delete,.mesh-ope,.first-rename").length) {
+    //         $(".rename-delete").hide();
+    //     }
+    //
+    // });
 
     $(".btn.btn-primary.yes").click(function () {
         var val = $(this).parent().prev().find('input[id="mesh-name"]').val();
@@ -100,11 +109,16 @@ $(function () {
             }else if (hiddenTitle == '重命名面板'){
                 $.post('/control/panelOperations',{"pname":val,"mac":panelId,"type":"rename"},function (data) {
                     var exitPname = data.exitPname;
-                    if (exitPname == 1){//面板名称重复
+                    if  (exitPname == 2){
+                        $(buttonThis).parent().prev().find('label').text('面板异常');
+                    }else if (exitPname == 1){//面板名称重复
                         $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
                     }else {
-                        window.location.href = "/control/netWorkGroupConsole";
+                        // window.location.href = "/control/netWorkGroupConsole";
                         $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
+                        $("#renamePanel-modal").modal('hide');
+                        $('.rename-delete').hide();//隐藏重命名/删除
+                        $(panelNameLabel).text(val);
                     }
                 });
             }
@@ -124,6 +138,13 @@ $(function () {
                         window.location.href = "/control/netWorkGroupConsole";
                     }
                 });
+        }else if (hiddenTitle == '删除网络'){
+            $.post('/control/renameMesh',{"meshId":meshId},function (data) {
+                var exitMname = data.exitMname;
+                if (exitMname == 0){
+                    window.location.href = "/control/netWorkGroupConsole";
+                }
+            });
         }
     });
     //勾选主控
@@ -178,6 +199,7 @@ $(function () {
                     tr += '<tr class="am-text-xs panel-show-detail"><th rowspan="' + rows + '" ></th><th class="d-panel-msg ">面板名称</th> <th class="d-panel-msg ">面板MAC</th><th class="d-panel-msg ">版本型号</th><th class="d-panel-msg ">面板状态</th>';
                     tr += '<th rowspan="' + rows + '"></th>';
                     $.each(controlHosts, function (key, value) {
+                        meshId = data.meshId;
                         var deletePanel;
                         if (value.state == '在线'){
                             deletePanel = ' ';

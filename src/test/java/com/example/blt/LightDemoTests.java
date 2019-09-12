@@ -55,18 +55,18 @@ public class LightDemoTests {
 
 
         List<Object> list = new ArrayList<>();
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         List<Object> list2 = new ArrayList<>();
-        Map<String,Object> map2 = new HashMap<>();
+        Map<String, Object> map2 = new HashMap<>();
         List<Object> list3 = new ArrayList<>();
-        Map<String,Object> map3 = new HashMap<>();
-        map3.put("group",1);
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("group", 1);
         list3.add(map3);
-        map2.put("place",list3);
-        map2.put("id",1);
+        map2.put("place", list3);
+        map2.put("id", 1);
         list2.add(map2);
-        map.put("mname",list2);
-        map.put("id",1);
+        map.put("mname", list2);
+        map.put("id", 1);
         list.add(map);
         System.out.println(list.toString());
     }
@@ -85,7 +85,7 @@ public class LightDemoTests {
     }
 
     @Test
-    public void test5(){
+    public void test5() {
 //        List<LightDemo> lightState = monitor4Dao.getIntelligenceLightInfo();
 //        List<CenterException> ms = webCmdDao.getMnames();
 //        Map<String,Object> indexFloorStatus = newMonitorService.getIndexFloorStatus(lightState);
@@ -95,36 +95,77 @@ public class LightDemoTests {
     }
 
     @Test
-    public void test6(){
+    public void test6() {
 //        List<LightDemo> floorLightStatus = newMonitorDao.getFloorLightStatus("1楼");
 //        System.out.println(floorLightStatus.toString());
 //        List<LightDemo> lightState = newMonitorService.getFloorLights("1楼");
 //        Map<String,Object> floorLights = newMonitorService.getFloorLightsStatus(lightState,"1楼");
 //        System.out.println(floorLights.toString());
     }
+
     static int getValue(int[] values, int length) {
         if (length <= 0)
             return 0;
         int tmpMax = -1;
         for (int i = 0; i < length; i++) {
-            int value = getValue(values,length-i-1);
+            int value = getValue(values, length - i - 1);
             tmpMax = Math.max(tmpMax, values[i] + value);
         }
         return tmpMax;
     }
 
     @Test
-   public void test7(){
+    public void test7() {
         int[] values = new int[]{3, 7, 1, 3, 9};
         int rodLength = values.length;
         System.out.println("Max rod value: " + getValue(values, rodLength));
-   }
-
-   @Test
-    public void getGroups(){
-       String gname=null;
-       List<ControlMaster> controlGroups = controlCenterService.getControlGroups(gname,null);
-       System.out.println(controlGroups.toString());
     }
 
+    @Test
+    public void getGroups() {
+        String gname = null;
+        List<ControlMaster> controlGroups = controlCenterService.getControlGroups(gname, null);
+        System.out.println(controlGroups.toString());
+    }
+
+    @Test
+    public void test8() {
+        char[] chars = "020C0C070103060F".toCharArray();
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < chars.length; i++) {
+            if (i % 2 != 0) {
+                buffer.append(chars[i]);
+            }
+        }
+        System.out.println(buffer.toString());
+    }
+
+    public static String toStringHex(String s) {
+        byte[] baKeyword = new byte[s.length() / 2];
+        for (int i = 0; i < baKeyword.length; i++) {
+            try {
+                baKeyword[i] = (byte) (0xff & Integer.parseInt(s.substring(i * 2, i * 2 + 2), 16));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            s = new String(baKeyword, "utf-8");//UTF-16le:Not
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return s;
+    }
+
+    @Test
+    public void test9() {
+        String s = "020C0C070103060F";
+        System.out.println(toStringHex(s));
+    }
+
+    @Test
+    public void test10(){
+        String s = "CA";
+        System.out.println(Integer.parseInt(s,16));
+    }
 }

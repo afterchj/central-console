@@ -81,4 +81,7 @@ public interface ControlCenterDao {
 
     @Select("select count(*) from t_host_info where ip !='127.0.0.1' and host_id is not null and mesh_id=#{meshId}")
     int getPanelNums(@Param("meshId") String meshId);
+
+    @Delete("DELETE FROM t_host_info where mesh_id=#{meshId}")
+    void deleteMesh(@Param("meshId")String meshId);
 }

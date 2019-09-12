@@ -43,11 +43,14 @@
 
     <select id="getPanels" resultType="com.example.blt.entity.control.ControlHost">
         SELECT
-            IF( STATUS = '1', '在线', '离线' ) AS state,
+            CASE
+              WHEN STATUS='1' AND mac IS NOT NULL THEN '在线'
+              WHEN STATUS = '0' THEN '离线'
+              WHEN mac IS NULL THEN '异常'
+            END AS state,
             ifnull( other, ifnull( mac, ip ) ) AS pname,
-            ifnull( mac, ip ) AS mac,
-            CONCAT( product_type, '(',  REPLACE ((substring(ota_version,-3)) , '0', '.' ) , ')')  AS productType
---             concat( product_type, '(', ( REPLACE ( RIGHT ( ota_version, 3 ), '0', '.' ) ), ')' ) AS productType
+            mac,
+            CONCAT( product_type, '(', REPLACE ( ( substring( ota_version,- 3 ) ), '0', '.' ), ')' ) AS productType
         FROM
             t_host_info
         WHERE

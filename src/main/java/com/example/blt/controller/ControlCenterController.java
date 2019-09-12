@@ -129,6 +129,7 @@ public class ControlCenterController {
         Map<String,Object> panelMap = new HashMap<>();
         List<ControlHost> controlHosts = controlCenterService.getPanels(meshId);
         panelMap.put("controlHosts",controlHosts);
+        panelMap.put("meshId",meshId);
         return panelMap;
     }
 
@@ -157,7 +158,7 @@ public class ControlCenterController {
 
 
     /**
-     * 重命名网络名
+     * 重命名/删除网络名
      * @param mname 网络名
      * @param meshId 网络id
      * @return exitMname:1 名称重复
@@ -166,13 +167,9 @@ public class ControlCenterController {
     @ResponseBody
     public Map<String,Object> renameMesh(String mname,String meshId){
         Map<String,Object> meshMap = new HashMap<>();
-        Integer count = controlCenterService.getMname(mname);
-        if (count > 0){
-            meshMap.put("exitMname",1);
-        }else {
-            meshMap.put("exitMname",0);
-            controlCenterService.renameMesh(mname,meshId);
-        }
+        Boolean flag = controlCenterService.meshOperations(mname,meshId);
+        int exitMname = (flag)? 0:1;
+        meshMap.put("exitMname",exitMname);
         return meshMap;
     }
 
@@ -187,12 +184,17 @@ public class ControlCenterController {
     @ResponseBody
     public Map<String,Object> panelOperations(String mac,String pname,String type){
         Map<String,Object> panelMap = new HashMap<>();
-        Boolean flag = controlCenterService.panelOperations(mac,pname,type);
-        if (!flag){//名称重复
-            panelMap.put("exitPname",1);
+        if (StringUtils.isBlank(mac)){
+            panelMap.put("exitPname",2);
         }else {
-            panelMap.put("exitPname",0);
+            Boolean flag = controlCenterService.panelOperations(mac,pname,type);
+            if (!flag){//名称重复
+                panelMap.put("exitPname",1);
+            }else {
+                panelMap.put("exitPname",0);
+            }
         }
+
         return panelMap;
     }
 

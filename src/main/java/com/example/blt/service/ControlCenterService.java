@@ -184,4 +184,20 @@ public class ControlCenterService {
     public List<ControlHost> getPanels(String meshId) {
         return controlCenterDao.getPanels(meshId);
     }
+
+    public Boolean meshOperations(String mname, String meshId) {
+        Boolean flag = true;
+        if (StringUtils.isBlank(mname)){
+            //删除网络
+            controlCenterDao.deleteMesh(meshId);
+        }else {//重命名网络
+            Integer count = controlCenterDao.getMname(mname);
+            if (count > 0){//名称重复
+                flag = false;
+            }else {
+                controlCenterDao.renameMesh(mname,meshId);
+            }
+        }
+        return flag;
+    }
 }
