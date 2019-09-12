@@ -157,7 +157,7 @@ $(function () {
     //查看面板
     $('.panel-show-msg').click(function (e) {
         // e.stopPropagation();
-        $('.rename-delete').hide();
+        // $('.rename-delete').hide();
         $('.data-show').hide();
         // $('.group-data').hide();
         $(this).parent().parent().siblings('.panel-show-detail').hide();
