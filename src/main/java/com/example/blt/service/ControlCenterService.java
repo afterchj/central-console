@@ -89,17 +89,18 @@ public class ControlCenterService {
     public List<ControlMaster> getControlGroups(String gname,String meshId) {
         List<ControlMaster> controlMeshs;
         List<ControlMaster> controlMasters = controlCenterDao.getMasterStates();
-//        System.out.println(controlMasters.toString());
         if (StringUtils.isNotBlank(meshId)){//选择组
             controlCenterDao.updateMasterGidByMeshId(meshId,gname);
         }
         if (StringUtils.isNotBlank(gname) && StringUtils.isBlank(meshId)){
-            if ("全部".equals(gname)){//全选 空组也选择
-//                controlMeshs = controlCenterDao.getControlGroupsByAllGroup(gname);
-                controlMeshs = controlCenterDao.getControlGroups();
-            }else {//单选组
-                controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
-            }
+//            if ("全部".equals(gname)){//全选 空组也选择
+//                controlMeshs = controlCenterDao.getControlGroups();
+//            }else {//单选组
+//                controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
+//            }
+            //全选 空组也选择 //否则单选组
+            controlMeshs = ("全部".equals(gname))?controlCenterDao.getControlGroups():controlCenterDao
+                    .getControlGroupsByGname(gname);
         }else {
             controlMeshs = controlCenterDao.getControlGroups();
         }

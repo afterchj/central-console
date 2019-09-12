@@ -66,8 +66,6 @@ public interface ControlCenterDao {
 
     List<ControlMaster> getControlGroupsByGname(@Param("gname") String gname);
 
-    List<ControlMaster> getControlGroupsByAllGroup(String gname);
-
     @Update("update t_host_info set gid=(select id from t_group where gname=#{gname}) where mesh_id=#{meshId}")
     void selectGroup(@Param("gname")String gname, @Param("meshId")String meshId);
 

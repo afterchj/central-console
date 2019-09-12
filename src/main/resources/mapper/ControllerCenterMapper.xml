@@ -2,27 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.blt.dao.ControlCenterDao" >
 
-	<!--<resultMap id="getGroups" type="com.example.blt.entity.control.ControlGroup">-->
-		<!--<id column="id" property="id"/>-->
-		<!--<result column="gname" property="gname"/>-->
-	<!--<resultMap id="getGroups" type="com.example.blt.entity.control.ControlMesh">-->
-		<!--&lt;!&ndash;<collection property="controlMeshes" ofType="com.example.blt.entity.control.ControlMesh">&ndash;&gt;-->
-			<!--<id column="id" property="id"/>-->
-			<!--<result column="meshId" property="meshId"/>-->
-			<!--<result column="mname" property="mname"/>-->
-			<!--<result column="gname" property="gname"/>-->
-			<!--<result column="masterId" property="masterId"/>-->
-			<!--<result column="gid" property="gid"/>-->
-			<!--<collection property="controlHosts" ofType="com.example.blt.entity.control.ControlHost">-->
-				<!--<result column="ip" property="ip"/>-->
-				<!--<result column="pname" property="pname"/>-->
-				<!--<result column="isMaster" property="isMaster"/>-->
-				<!--<result column="mac" property="mac"/>-->
-				<!--<result column="status" property="status"/>-->
-			<!--</collection>-->
-		<!--&lt;!&ndash;</collection>&ndash;&gt;-->
-	<!--</resultMap>-->
-	<!--</resultMap>-->
     <sql id="groupColumns">
         g.gname AS gname,
         h.status,
@@ -30,8 +9,8 @@
         h.gid,
         h.mesh_id as meshId,
         ifnull(h.mesh_name,h.mesh_id) as mname,
-        if(h.status='1','网络正常','网络离线') as mState,
-        1 as pNum,
+        if(h.status='1' and h.host_id is not null,'网络正常','网络离线') as mState,
+        if(h.host_id is null,'0','1') as pNum,
         if(h.status='0','（离线）',null) as pState
     </sql>
     <select id="getControlGroups" resultType="com.example.blt.entity.control.ControlMaster">
@@ -41,8 +20,7 @@
             t_host_info h
             LEFT JOIN t_group g ON g.id = h.gid
         WHERE
-            h.ip != '127.0.0.1'
-            AND h.mesh_id IS NOT NULL  group by h.mesh_id
+          (h.ip != '127.0.0.1' or h.ip is null) AND h.mesh_id IS NOT NULL  group by h.mesh_id
     </select>
 
     <select id="getControlGroupsByGname" resultType="com.example.blt.entity.control.ControlMaster">
@@ -51,35 +29,29 @@
         FROM
         t_host_info h
         LEFT JOIN t_group g ON g.id = h.gid
-        where g.gname=#{gname} AND h.ip!='127.0.0.1' and h.mesh_id is not null
-    </select>
-
-    <select id="getControlGroupsByAllGroup" resultType="com.example.blt.entity.control.ControlMaster">
-        SELECT
-            <include refid="groupColumns"/>
-        FROM
-        t_host_info h
-        LEFT JOIN t_group g ON g.id = h.gid
-        where h.gid is not null AND h.ip!='127.0.0.1' and h.mesh_id is not null
+        where
+            g.gname=#{gname} AND (h.ip != '127.0.0.1' or h.ip is null) and h.mesh_id is not null group by h.mesh_id
     </select>
 
     <select id="getMasterStates" resultType="com.example.blt.entity.control.ControlMaster">
-        select h1.mesh_id as meshId,'网络离线' as mState,'（离线）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status=h2.status and h1.status=0 and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' union
-        select h1.mesh_id as meshId,'网络在线' as mState,null as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status=h2.status and h1.status=1  and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' union
-        select h1.mesh_id as meshId,'网络在线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' group by h1.mesh_id
+        select mesh_id as meshId,'网络离线' as mState,'（离线）' as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =0 group by mesh_id having count(*)>1
+        union
+        select mesh_id as meshId,'网络在线' as mState,null as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =1 group by mesh_id having count(*)>1
+        union
+        select h1.mesh_id as meshId,'网络在线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' and h1.host_id is not null and h2.host_id is not null group by h1.mesh_id
     </select>
 
     <select id="getPanels" resultType="com.example.blt.entity.control.ControlHost">
         SELECT
-            IF
-            ( STATUS = '1', '在线', '离线' ) AS state,
+            IF( STATUS = '1', '在线', '离线' ) AS state,
             ifnull( other, ifnull( mac, ip ) ) AS pname,
             ifnull( mac, ip ) AS mac,
-            concat( product_type, '(', REPLACE ( ota_version, '0', '.' ), ')' ) AS productType
+            CONCAT( product_type, '(',  REPLACE ((substring(ota_version,-3)) , '0', '.' ) , ')')  AS productType
+--             concat( product_type, '(', ( REPLACE ( RIGHT ( ota_version, 3 ), '0', '.' ) ), ')' ) AS productType
         FROM
             t_host_info
         WHERE
-            mesh_id = #{meshId} and ip!='127.0.0.1'
+            mesh_id = #{meshId} and ip!='127.0.0.1' and host_id is not null
     </select>
 
 </mapper>

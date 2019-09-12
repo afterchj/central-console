@@ -144,11 +144,14 @@ public class ControlCenterController {
     public Map<String,Object> group(String gname,String type,Integer id,String meshId){
         Map<String,Object> groupMap = new HashMap<>();
         Boolean flag = controlCenterService.groupOperation(gname,type,id,meshId);
-        if (!flag){//组名重复
-            groupMap.put("exitGroup",1);
-        }else {
-            groupMap.put("exitGroup",0);
-        }
+//        if (!flag){//组名重复
+//            groupMap.put("exitGroup",1);
+//        }else {
+//            groupMap.put("exitGroup",0);
+//        }
+        //组名重复 exitGroup:1
+        int exitGroup = (!flag) ? 1 : 0;
+        groupMap.put("exitGroup",exitGroup);
         return groupMap;
     }
 
