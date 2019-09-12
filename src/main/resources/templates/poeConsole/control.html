@@ -124,6 +124,9 @@
                                              data-target="#renameMesh-modal">
                                             重命名
                                         </div>
+                                        <div class="am-fl am-center " data-toggle="modal"  data-target="#deleteMesh-modal">
+                                            删除
+                                        </div>
                                     </div>
                                 </td>
                                 <td th:text="${controlMaster.meshId}"></td>
@@ -182,6 +185,7 @@
 <div th:replace="poeModel/deleteGroup::deleteGroup"></div>
 <div th:replace="poeModel/renamePanel::renamePanel"></div>
 <div th:replace="poeModel/deletePanel::deletePanel"></div>
+<div th:replace="poeModel/deleteMesh::deleteMesh"></div>
 <div th:replace="poeModel/controlInformation::controlInformation"></div>
 <!--   Core JS Files   -->
 <script th:src="@{/static/jquery-3.1.1.min.js}" type="text/javascript"></script>

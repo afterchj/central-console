@@ -127,9 +127,9 @@
     /* right: -.8rem; */
     top: 30%;
 }
-.rename-delete.left>.am-fl:first-child{
-    border-right: none;
-}
+/*.rename-delete.left>.am-fl:first-child{*/
+    /*border-right: none;*/
+/*}*/
 .rename-delete.left>.am-fl{
     width: 5rem;
     /* height: 2.4rem; */
