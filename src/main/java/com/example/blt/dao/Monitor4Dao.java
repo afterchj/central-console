@@ -71,4 +71,9 @@ public interface Monitor4Dao {
     @Select("select count(*) from f_time_line where mesh_id=#{meshId} and tid=#{tid}")
     int findTimeLine(Map<String, Object> map);
 
+    @Select("select count(*) from t_host_info where mesh_id=#{meshId}")
+    int findHostInfo(@Param("meshId") String meshId);
+
+    @Insert("insert into t_host_info (mesh_id,log_date) values (#{meshId},NOW())")
+    void insertHostInfo(@Param("meshId") String meshId);
 }
