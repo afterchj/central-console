@@ -87,7 +87,15 @@
     });
 
     function sendCmd(id, flag, type) {
-        let cmd = $("#" + id).val();
+        var code = document.getElementById("switch").innerHTML;
+        let cmd;
+        if(code.indexOf("ON") == 0){
+            document.getElementById("switch").innerHTML="OFF";
+            cmd = "77010315373766";
+        }else if(code.indexOf("ON")==-1){
+            document.getElementById("switch").innerHTML="ON";
+            cmd = "77010315323266";
+        }
         let single = $('.host').is(':checked');
         // let mesh_id;
         let status = $("#" + id).text().trim();
@@ -133,8 +141,8 @@
 <div style="width: 30%;margin: 20px 20px">
     <p>
         <label>All control:</label>
-        <button id="all_on" value="77010315373766" onclick="sendCmd(this.id,'all')">ON</button>
-        <button id="all_off" value="77010315323266" onclick="sendCmd(this.id,'all')">OFF</button>
+        <button id="switch" onclick="sendCmd(this.id,'all')">ON</button>
+        <!--<button id="all_off" value="77010315323266" onclick="sendCmd(this.id,'all')">OFF</button>-->
     </p>
     <!--    <p>-->
     <!--        <label for="select">Select control：</label>-->
