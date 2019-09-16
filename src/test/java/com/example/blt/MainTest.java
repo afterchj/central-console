@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
+import com.example.blt.utils.PropertiesUtil;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
 import org.junit.Test;
@@ -311,5 +312,11 @@ public class MainTest {
         map.put("type", product);
         map.put("version", version);
         sqlSessionTemplate.insert("console.saveUpdateHosts", map);
+    }
+
+    @Test
+    public void testProperties(){
+        String mode = PropertiesUtil.getValue("rocketmq.model");
+        System.out.println("mode="+mode);
     }
 }
