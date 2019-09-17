@@ -169,3 +169,11 @@ input[type=range]::-moz-range-progress {
 .title-max{
     max-width: 100px;
 }
+#switch{
+    border-radius: 50%;
+    padding: 1rem;
+    background-color: #fff;
+    color: #3598db;
+    font-weight: bold;
+    border:.2rem solid #3598db;
+}
