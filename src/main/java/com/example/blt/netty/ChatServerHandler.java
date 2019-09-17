@@ -68,6 +68,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 }
                 insertOrUpdateHost(channel, buffer.toString(), "");
             }
+            if (arg1.indexOf("77010F65") != -1) {
+                cmd = "77050103";
+            }
             if (arg1.indexOf("77050304") != -1) {
                 cmd = "77050103";
             }

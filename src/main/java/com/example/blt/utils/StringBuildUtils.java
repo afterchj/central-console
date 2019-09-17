@@ -101,6 +101,7 @@ public class StringBuildUtils {
     }
 
     public static void tempFormat(String format, String ip) {
+        logger.warn("cmd {}", format);
         String mid = format.substring(16, 18);
         String str = format.substring(26);
         int len = str.length();
@@ -123,7 +124,7 @@ public class StringBuildUtils {
                 map.put("cid", cid);
                 break;
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
-                String cmd = str.substring(len - 4);
+                String cmd = str.substring(len - 4,len-2);
                 if ("01".equals(cmd)) {
                     status = 0;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
@@ -132,7 +133,7 @@ public class StringBuildUtils {
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
-                map.put("cid", mid);
+                map.put("cid", cmd);
                 map.put("status", status);
                 break;
             case "C0"://pad或手机，C0代表全控，37 37字段是x、y值
@@ -179,7 +180,7 @@ public class StringBuildUtils {
                 break;
         }
         if (!map.containsKey("ctype")) return;
-        saveConsole(Topics.CONSOLE_TOPIC.getTopic(),map, false);
+        saveConsole(Topics.CONSOLE_TOPIC.getTopic(), map, false);
     }
 
     public static void parseLocalCmd(String str, String ip) {
@@ -213,7 +214,7 @@ public class StringBuildUtils {
                 break;
         }
         if (!map.containsKey("ctype")) return;
-        saveConsole(Topics.LOCAL_TOPIC.getTopic(),map, false);
+        saveConsole(Topics.LOCAL_TOPIC.getTopic(), map, false);
     }
 
     public static void saveLight(Map map, boolean flag) {
