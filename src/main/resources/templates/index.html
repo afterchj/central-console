@@ -178,6 +178,7 @@
                 $("#master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
             });
         });
+
         if (typeof (WebSocket) == "undefined") {
             console.log("遗憾：您的浏览器不支持WebSocket");
         } else {
