@@ -146,16 +146,18 @@ input[type=range]::-moz-range-progress {
 .show-hint{
     display: inline-block;
     position: absolute;
-    background-color: rgba(0,0,0,.65);
-    padding: .4rem .8rem;
+    background-color: rgba(0,0,0,.45);
+    padding: .2rem .5rem;
     color: #fff;
     bottom: 100%;
     font-size: 1rem;
     text-align: center;
+    box-shadow: 0 2px 2px 0 #dfdfdf, 0 3px 1px -2px #eee, 0 1px 5px 0 #ccc;
 }
 .main{
     padding: .5rem 1rem;
     width: 100%;
+    max-width: 1000px;
 }
 .am-form select, .am-form textarea, .am-form input[type=text], .am-form input[type=password], .am-form input[type=datetime], .am-form input[type=datetime-local], .am-form input[type=date], .am-form input[type=month], .am-form input[type=time], .am-form input[type=week], .am-form input[type=number], .am-form input[type=email], .am-form input[type=url], .am-form input[type=search], .am-form input[type=tel], .am-form input[type=color], .am-form-field{
     font-size: 1.4rem;
@@ -174,18 +176,40 @@ input[type=range]::-moz-range-progress {
     margin: 5rem 0;
 }
 .title-max{
-    max-width: 100px;
+    /*max-width: 100px;*/
 }
-#switch{
-    border-radius: 50%;
-    width: 3.5rem;
-    height: 3.4rem;
-    background-color: #fff;
-    color: #3598db;
-    font-weight: bold;
-    border: .2rem solid #3598db;
-    padding: 0;
-}
+/*#switch{*/
+    /*border-radius: 50%;*/
+    /*width: 3.5rem;*/
+    /*height: 3.4rem;*/
+    /*background-color: #fff;*/
+    /*color: #3598db;*/
+    /*font-weight: bold;*/
+    /*border: .2rem solid #3598db;*/
+    /*padding: 0;*/
+/*}*/
 .am-topbar-inverse{
-    background: linear-gradient(#37bbff, #4e6fd6);
+    background: linear-gradient(#37bbff, #1B9AF7);
+    border-color: #1B9AF7;
+}
+.am-btn-group .total-control{
+    font-weight: bold;
+}
+.am-btn-group .total-control, .am-btn-group  .scene-select{
+    background-color: #fff;
+    color: #1B9AF7;
+    border-color:  #1B9AF7;
+    /*font-weight: bold;*/
+}
+.am-btn-group .total-control.active,.am-btn-group  .scene-select.active{
+    background-color: #1B9AF7;
+    color: #fff;
+    border-color:  #1B9AF7;
+}
+/*.am-btn-group .total-control:active,.am-btn-group  .scene-select:hover{*/
+    /*background-color: rgba(27,154,247,.8);*/
+    /*color: #fff;*/
+/*}*/
+.am-btn-group{
+    box-shadow: 0 2px 2px 0 rgba(138, 136, 199, 0.14), 0 3px 1px -2px rgba(121, 158, 207, 0.2), 0 1px 5px 0 rgba(98, 132, 170, 0.12);
 }
