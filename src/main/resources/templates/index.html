@@ -38,7 +38,6 @@
     <script th:src="@{/static/AmazeUI/js/app.js}" type="text/javascript"></script>
     <script th:src="@{/static/AmazeUI/js/amazeui.min.js}" type="text/javascript"></script>
     <script th:src="@{/static/range/range.js}" type="text/javascript"></script>
-
 </head>
 <style type="text/css">
     /*#C2000 .am-g {*/
@@ -194,77 +193,6 @@
         </ul>
     </div>
 </header>
-<!--<div class="am-container" >-->
-<!--<header data-am-widget="header" class="am-header am-header-default">-->
-<!--<h1 class="am-header-title">-->
-<!--<a href="#title-link">C2000演示DEMO</a>-->
-<!--</h1>-->
-<!---->
-
-<!--</header>-->
-<!--<header class="am-topbar am-topbar-inverse am-topbar-fixed-top">-->
-<!--<div class="am-container" id="C2000">-->
-<!--<h1 class="am-header-title">-->
-<!--<a href="#" class="am-text-ir">C2000演示DEMO</a>-->
-<!--</h1>-->
-<!--<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"-->
-<!--data-am-collapse="{target: '#doc-topbar-collapse-4'}"><span class="am-sr-only">导航切换</span> <span-->
-<!--class="am-icon-bars"></span></button>-->
-<!--&lt;!&ndash;<div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-4">&ndash;&gt;-->
-<!--&lt;!&ndash;<ul class="am-nav am-nav-pills am-topbar-nav">&ndash;&gt;-->
-<!--&lt;!&ndash;<li class="am-active"><a href="#">首页</a></li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li><a href="#">项目</a></li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li class="am-dropdown" data-am-dropdown>&ndash;&gt;-->
-<!--&lt;!&ndash;<a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">&ndash;&gt;-->
-<!--&lt;!&ndash;下拉 <span class="am-icon-caret-down"></span>&ndash;&gt;-->
-<!--&lt;!&ndash;</a>&ndash;&gt;-->
-<!--&lt;!&ndash;<ul class="am-dropdown-content">&ndash;&gt;-->
-<!--&lt;!&ndash;<li><a href="#">带我去月球</a></li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li><a href="#">还是回地球</a></li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li class="am-disabled"><a href="#">臣妾做不到</a></li>&ndash;&gt;-->
-<!--&lt;!&ndash;</ul>&ndash;&gt;-->
-<!--&lt;!&ndash;</li>&ndash;&gt;-->
-<!--&lt;!&ndash;</ul>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--</div>-->
-<!--</header>-->
-<!--<header class="am-topbar am-topbar-inverse">-->
-<!--<h1 class="am-topbar-brand">-->
-<!--<a href="#" class="am-text-ir">C2000演示DEMO</a>-->
-<!--</h1>-->
-<!--</header>-->
-<!--<div id="doc-oc-demo1" class="am-offcanvas">-->
-<!--<div class="am-offcanvas-bar">-->
-<!--<div class="am-offcanvas-content">-->
-<!--<ul class="am-nav">-->
-
-<!--<li class="am-nav-header">开始使用</li>-->
-<!--<li><a href="#">场景一</a></li>-->
-<!--<li><a href="#">场景二</a></li>-->
-<!--<li><a href="#">场景三</a></li>-->
-<!--<li><a href="#">场景四</a></li>-->
-<!--</ul>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="am-tabs" id="doc-my-tabs" data-am-tabs>-->
-<!--<ul class="am-nav am-tabs-nav  am-nav-pills am-nav-justify">-->
-<!--<li class="am-active"><a href="">场景一</a></li>-->
-<!--<li><a href="">场景二</a></li>-->
-<!--<li><a href="">场景三</a></li>-->
-<!--<li><a href="">场景四</a></li>-->
-<!--</ul>-->
-<!--<div class="am-tabs-bd">-->
-<!--<div class="am-tab-panel am-active" id="scene1">-->
-<!--<div class="am-g">-->
-<!--<div class="col-sm-12 col-lg-12">-->
-<!--<label>All control:</label>-->
-<!--<button id="switch" type="button" class="am-btn am-btn-primary  am-btn-xs"-->
-<!--onclick="sendCmd(this.id,'all')">ON-->
-<!--</button>-->
-<!--</div>-->
-<!--</div>-->
-
 <div class="main " id="#scene1">
     <div class="am-g">
         <div class="col-sm-12 col-lg-12">
@@ -274,7 +202,7 @@
         </div>
     </div>
     <div class="am-g color-temperature am-margin-top-20">
-        <div class="col-sm-2 col-lg-2 ">
+        <div class="col-sm-2 col-lg-2  title-max">
             <label>色温:</label>
         </div>
         <div class="col-sm-10 col-lg-4 col-end">
@@ -285,36 +213,24 @@
         </div>
     </div>
     <div class="am-g lightness am-margin-top-20">
-        <div class="col-sm-2 col-lg-2 ">
+        <div class="col-sm-2 col-lg-2 title-max">
             <label>亮度:</label>
         </div>
         <div class="col-sm-10 col-lg-4 col-end">
             <div class="range p-r">
                 <span class="show-hint">0%</span>
-                <input type="range" value="0" >
+                <input type="range" value="0" onchange="change(this.value)">
             </div>
-           <!-- <input type="range" value="0" onchange="change(this.value)">-->
         </div>
     </div>
 </div>
 
-
-<!--</div>-->
-<!--<div class="am-tab-panel">2</div>-->
-<!--<div class="am-tab-panel">3</div>-->
-<!--<div class="am-tab-panel">4</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
 <script>
     function change(val) {
         console.log(val);
-//          $('#my-popover').popover({
-//              content: val
-//          })
     }
-    $('#scene1 .color-temperature input').RangeSlider({ min: 0,   max: 100,  step: 1,  callback: change});//#snrPollInterval为input的id名
-//    $('#scene1 .color-temperature input').RangeSlider({min: 0, max: 100, step: 5, callback: change});
+    $(' .color-temperature input').RangeSlider({ min: 0,   max: 100,  step: 5,  callback: change});//#snrPollInterval为input的id名
+    $(' .lightness input').RangeSlider({ min: 0,   max: 100,  step: 5,  callback: change});
 </script>
 </body>
 </html>
