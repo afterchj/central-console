@@ -30,7 +30,7 @@ public class SocketUtil {
         Socket client = null;
         PrintWriter pw = null;
         try {
-            client = new Socket("127.0.0.1", 8003);
+            client = new Socket("127.0.0.1", 8001);
             pw = new PrintWriter(client.getOutputStream(), true);
             pw.write(cmd);
         } catch (IOException e) {
@@ -53,7 +53,7 @@ public class SocketUtil {
         try {
 //            client = new Socket(host, 8001);
             client = new Socket();
-            SocketAddress socketAddress = new InetSocketAddress(8003);
+            SocketAddress socketAddress = new InetSocketAddress(8001);
             client.connect(socketAddress);
 //            pw = new PrintWriter(client.getOutputStream(), true);
 //            pw.write(cmd);
@@ -92,7 +92,7 @@ public class SocketUtil {
         String code;
         try {
             channel.id();
-            channel = bootstrap.connect(host, 8003).sync().channel();
+            channel = bootstrap.connect(host, 8001).sync().channel();
             //向服务端发送内容
             channel.writeAndFlush(cmd);
             code = "0";
