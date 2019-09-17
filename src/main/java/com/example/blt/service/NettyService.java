@@ -114,8 +114,10 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         logger.warn("nettyService starting...");
         new ServerMain().run(8001);
         JSONObject object = new JSONObject();
-        object.put("host", "all");
-        object.put("command", "77050106CCCC");
-        ClientMain.sendCron(object.toJSONString());
+        new Thread(() -> {
+            object.put("host", "all");
+            object.put("command", "77050106CCCC");
+            ClientMain.sendCron(object.toJSONString());
+        }).start();
     }
 }

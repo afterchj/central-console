@@ -21,7 +21,7 @@ public class ClientMain {
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
 
     private final static String HOST = "127.0.0.1";
-    private final static int PORT = 8003;
+    private final static int PORT = 8001;
 
     //        private static String host = "192.168.56.1";
 //        private static String host = "192.168.16.60";
