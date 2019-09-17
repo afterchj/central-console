@@ -203,11 +203,11 @@
                 var cid = data.cid;
                 switch (ctype){
                     case "C0":
-                        if (x == '32'&&y == '32'){
+                        if (x == '32'&&y == '32'){//全关
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch2").addClass("active");
-                        }else if (x == '37'&&y == '37'){
+                        }else if (x == '37'&&y == '37'){//全开
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
@@ -236,6 +236,46 @@
 
                         }
                         break;
+                    case "52"://遥控器
+                        var colorValue = $("#color").val();
+                        var luminanceValue = $("#luminance").val();
+                        if (cid == 01){//全开
+                            $("#switch2").removeClass("active");
+                            $("#switch").removeClass("active");
+                            $("#switch").addClass("active");
+                        }else if (cid == 02){//全关
+                            $("#switch2").removeClass("active");
+                            $("#switch").removeClass("active");
+                            $("#switch").addClass("active");
+                        }else if (cid == 03){//色值+
+                            if (colorValue>0){
+                                colorValue = colorValue -5
+                                $("#color").val(colorValue);
+                                $("#color").prev().text(colorValue+"%")
+                                $("#color").prev().css("left",colorValue+"%");
+                            }
+                        }else if (cid == 04){//色值-
+                            if (colorValue<100){
+                                colorValue = colorValue + 5;
+                                $("#color").val(colorValue);
+                                $("#color").prev().text(colorValue+"%")
+                                $("#color").prev().css("left",colorValue+"%");
+                            }
+                        }else if (cid == 05 ){//冷
+                            if (luminanceValue<100){
+                                luminanceValue = luminanceValue +5;
+                                $("#luminance").val(luminanceValue);
+                                $("#luminance").prev().text(luminanceValue+"%")
+                                $("#luminance").prev().css("left",luminanceValue+"%");
+                            }
+                        }else if (cid == 06){//暖
+                            if (luminanceValue>0){
+                                luminanceValue = luminanceValue - 5;
+                                $("#luminance").val(luminanceValue);
+                                $("#luminance").prev().text(luminanceValue+"%")
+                                $("#luminance").prev().css("left",luminanceValue+"%");
+                            }
+                        }
                 }
             }
         }
