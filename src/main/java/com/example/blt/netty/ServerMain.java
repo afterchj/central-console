@@ -17,10 +17,6 @@ public class ServerMain {
 
     private static Logger logger = LoggerFactory.getLogger(ServerMain.class);
 
-    public static void main(String[] args) {
-        new ServerMain().run(8001);
-    }
-
     public void run(int port) {
         EventLoopGroup acceptor = new NioEventLoopGroup();
         EventLoopGroup worker = new NioEventLoopGroup();
@@ -38,7 +34,7 @@ public class ServerMain {
             // 监听服务器关闭监听
             //channel.closeFuture().sync();
         } catch (InterruptedException e) {
-            logger.error("ServerMain Error[{}]",e.getMessage());
+            logger.error("ServerMain Error[{}]", e.getMessage());
         } finally {
 //             退出
 //            acceptor.shutdownGracefully();

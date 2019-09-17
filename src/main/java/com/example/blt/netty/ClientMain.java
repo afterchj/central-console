@@ -21,7 +21,7 @@ public class ClientMain {
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
 
     private final static String HOST = "127.0.0.1";
-    private final static int PORT = 8001;
+    private final static int PORT = 8003;
 
     //        private static String host = "192.168.56.1";
 //        private static String host = "192.168.16.60";
@@ -29,12 +29,12 @@ public class ClientMain {
 //        private static String host = "119.3.49.192";
 
     public static void main(String[] args) throws IOException {
-        run(AddrUtil.getIp(false), 8001);
+        run(AddrUtil.getIp(false));
 //        run("iotsztp.cn", 8001);
     }
 
-    public static void run(String host, int port) throws IOException {
-        Channel channel = getChannel(host, port);
+    public static void run(String host) throws IOException {
+        Channel channel = getChannel(host);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         logger.warn("请输入指令：");
         while (true) {
@@ -49,7 +49,7 @@ public class ClientMain {
     }
 
     public static void sendCron(String str) {
-        Channel channel = getChannel(HOST, PORT);
+        Channel channel = getChannel(HOST);
         //向服务端发送内容
         channel.writeAndFlush(str);
         try {
@@ -60,7 +60,7 @@ public class ClientMain {
     }
 
     public static void sendCron(String... str) {
-        Channel channel = getChannel(str[0], PORT);
+        Channel channel = getChannel(str[0]);
         //向服务端发送内容
         channel.writeAndFlush(str[1]);
         try {
@@ -71,7 +71,7 @@ public class ClientMain {
     }
 
 
-    private static Channel getChannel(String host, int port) {
+    private static Channel getChannel(String host) {
         Channel channel = null;
         //设置一个worker线程，使用
         EventLoopGroup worker = new NioEventLoopGroup();
@@ -82,7 +82,7 @@ public class ClientMain {
         bootstrap.handler(new ClientInitialHandler());
         try {
             //使用指定的 端口设置套 接字地址
-            channel = bootstrap.connect(host, port).sync().channel();
+            channel = bootstrap.connect(host, PORT).sync().channel();
         } catch (Exception e) {
             logger.error("InterruptedException=" + e.getMessage());
             try {
