@@ -54,7 +54,7 @@ public class NRadioController {
     @RequestMapping("/send")
     @ResponseBody
     public String send(String host,String cmd){
-        host = blTservice.getHostId(host);
+//        host = blTservice.getHostId(host);
         Map<String, String> map = new HashMap<>();
         map.put("command", cmd);
         map.put("host", host);
@@ -67,14 +67,14 @@ public class NRadioController {
     @RequestMapping("/change")
     @ResponseBody
     public String change(Integer color, Integer luminance ){
-        String host = blTservice.getHostId("192.168.10.22");
+//        String host = blTservice.getHostId("192.168.10.22");
         Map<String, String> map = new HashMap<>();
         String cmd = "77010315"+colors.get(color)+luminances.get(luminance)+"66";
         map.put("command", cmd);
-        map.put("host", host);
+        map.put("host", "all");
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
-        System.out.println("host: "+host+" cmd: "+cmd);
+        System.out.println("host: "+"all"+" cmd: "+cmd);
         return "success";
     }
 }
