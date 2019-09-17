@@ -152,13 +152,13 @@
     var cmd;
     $("#switch").click(function () {
         cmd = "77010315373766";
-        $.post("/nradio//send", {"host": host, "cmd": cmd}, function (data) {
+        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);
         });
     });
     $("#switch2").click(function () {
         cmd = "77010315323266";
-        $.post("/nradio//send", {"host": host, "cmd": cmd}, function (data) {
+        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);
         });
     });
@@ -194,7 +194,7 @@
                 cmd = "7701021904";
                 break;
         }
-        $.post("/nradio//send", {"host": host, "cmd": cmd}, function (data) {
+        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);
         });
     });
@@ -227,8 +227,6 @@
             }
         }
     });
-
-
 </script>
 </body>
 </html>
