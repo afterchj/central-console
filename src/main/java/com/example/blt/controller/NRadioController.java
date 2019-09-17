@@ -29,18 +29,24 @@ public class NRadioController {
         int colorsCount = 20;
         int luminancesCount = 19;
         for (int i = 0; i <= 100; i = i + 5) {
-            String str = String.valueOf(colorsCount);
-            if (colorsCount<10){
+            String str = Integer.toHexString(colorsCount).toUpperCase();
+            if (str.length()==1){
                 str = "0"+str;
             }
+//            if (colorsCount<10){
+//                str = "0"+str;
+//            }
             colors.put(i,str);
             colorsCount = colorsCount - 1;
         }
         for (int i = 0; i <= 100; i = i + 5) {
-            String str = String.valueOf(luminancesCount);
-            if (luminancesCount<10){
+            String str = Integer.toHexString(luminancesCount).toUpperCase();
+            if (str.length()==1){
                 str = "0"+str;
             }
+//            if (luminancesCount<10){
+//                str = "0"+str;
+//            }
             if (i == 100){
                 str = "00";
             }
