@@ -1,27 +1,64 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html >
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta content="text/html;charset=UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/static/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
-    <script th:src="@{/static/jquery.js}" type="text/javascript"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>群控</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="icon" type="image/png" th:href="@{/static/AmazeUI/i/favicon.png}">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="apple-touch-icon-precomposed" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" th:content="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/amazeui.min.css}">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/app.css}">
+    <link rel="stylesheet" th:href="@{/static/range/range.css}"/>
+    <!--<link th:href="@{/static/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>-->
+    <!--<script th:src="@{/static/jquery.js}" type="text/javascript"></script>-->
+    <script th:src="@{/static/AmazeUI/js/zepto.min.js}" type="text/javascript"></script>
+    <script th:src="@{/static/AmazeUI/js/app.js}" type="text/javascript"></script>
+    <script th:src="@{/static/AmazeUI/js/amazeui.min.js}" type="text/javascript"></script>
+    <script th:src="@{/static/range/range.js}" type="text/javascript"></script>
+
 </head>
 <style type="text/css">
-    .host, .master, .bind {
-        height: 20px;
-        width: 20px
+    /*#C2000 .am-g {*/
+        /*margin: 2rem 0;*/
+    /*}*/
+
+    /*.am-container {*/
+    /*width: auto;*/
+    /*margin: 20px;*/
+    /*}*/
+
+
+    h3 {
+        font-weight: bold;
     }
 
-    #host td {
-        height: 50px;
-        border: #CCCCCC 1px solid;
+    .title {
+        text-align: center;
     }
 
-    #demo td {
-        height: 20px;
-        border: #CCCCCC 1px solid;
-    }
 </style>
 <script type="text/javascript">
     let socket;
@@ -77,6 +114,8 @@
                 console.log("mesh_id", mesh_id, "flag", flag, "result", result);
             });
         })
+
+
         // $("#master").click(function () {
         //     let mesh_id = $.trim($(this).val());
         //     console.log("mesh_id", mesh_id);
@@ -89,11 +128,11 @@
     function sendCmd(id, flag, type) {
         var code = document.getElementById("switch").innerHTML;
         let cmd;
-        if(code.indexOf("ON") == 0){
-            document.getElementById("switch").innerHTML="OFF";
+        if (code.indexOf("ON") == 0) {
+            document.getElementById("switch").innerHTML = "OFF";
             cmd = "77010315373766";
-        }else if(code.indexOf("ON")==-1){
-            document.getElementById("switch").innerHTML="ON";
+        } else if (code.indexOf("ON") == -1) {
+            document.getElementById("switch").innerHTML = "ON";
             cmd = "77010315323266";
         }
         let single = $('.host').is(':checked');
@@ -137,69 +176,145 @@
     }
 </script>
 <body>
+<header class="am-topbar am-topbar-inverse">
+    <h1 class="am-topbar-brand">
+        <a href="#">C2000演示DEMO</a>
+    </h1>
 
-<div style="width: 30%;margin: 20px 20px">
-    <p>
-        <label>All control:</label>
-        <button id="switch" onclick="sendCmd(this.id,'all')">ON</button>
-        <!--<button id="all_off" value="77010315323266" onclick="sendCmd(this.id,'all')">OFF</button>-->
-    </p>
-    <!--    <p>-->
-    <!--        <label for="select">Select control：</label>-->
-    <!--        <button id="select" value="77010315373766" onclick="sendCmd(this.id,'master','select')">开</button>-->
-    <!--    </p>-->
-    <table id="host" style="text-align: center;border-collapse: collapse;width: 60%;height: 100px">
-        <th>
-            <tr>
-                <!--                <td>id</td>-->
-                <td>meshId</td>
-                <td>select</td>
-                <!--                <td>isMaster</td>-->
-                <!--                <td>是否被控</td>-->
-            </tr>
-        </th>
-        <tbody>
-        <tr th:each="host:${hosts}">
-            <!--            <td th:text="${host.mname}"></td>-->
-            <td th:text="${host.mesh_id}"></td>
-            <td th:switch="${host.is_control}">
-                <input th:case="true" class="host" type="checkbox" checked th:value="${host.mesh_id}">
-                <input th:case="*" class="host" type="checkbox" th:value="${host.mesh_id}">
-            </td>
-            <!--            <td th:switch="${host.is_master}">-->
-            <!--                <input th:case="true" class="master" type="checkbox" checked th:value="${host.mesh_id}">-->
-            <!--                <input th:case="*" class="master" type="checkbox" th:value="${host.mesh_id}">-->
-            <!--            </td>-->
-        </tr>
-        </tbody>
-    </table>
-    <br>
-    <p>
-        <label>control:</label>
-        <button id="sel_on" value="77010315373766" onclick="sendCmd(this.id,'master','select')">ON</button>
-        <button id="sel_off" value="77010315323266" onclick="sendCmd(this.id,'master','select')">OFF</button>
-    </p>
-    <br>
-    <p>
-        <label>Remote Control:</label>
-    </p>
-    <table id="demo" style="text-align: center;border-collapse: collapse;width: 60%;height: 50px">
-        <tr>
-            <td>Bind</td>
-            <td>
-                <input class="bind" type="checkbox">
-            </td>
-        </tr>
-    </table>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+            data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
+            class="am-icon-bars"></span></button>
 
+    <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+        <ul class="am-nav am-nav-pills am-topbar-nav">
+            <li class="am-active"><a href="#">场景一</a></li>
+            <li><a href="#">场景二</a></li>
+            <li><a href="#">场景三</a></li>
+            <li><a href="#">场景四</a></li>
+        </ul>
+    </div>
+</header>
+<!--<div class="am-container" >-->
+<!--<header data-am-widget="header" class="am-header am-header-default">-->
+<!--<h1 class="am-header-title">-->
+<!--<a href="#title-link">C2000演示DEMO</a>-->
+<!--</h1>-->
+<!---->
+
+<!--</header>-->
+<!--<header class="am-topbar am-topbar-inverse am-topbar-fixed-top">-->
+<!--<div class="am-container" id="C2000">-->
+<!--<h1 class="am-header-title">-->
+<!--<a href="#" class="am-text-ir">C2000演示DEMO</a>-->
+<!--</h1>-->
+<!--<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"-->
+<!--data-am-collapse="{target: '#doc-topbar-collapse-4'}"><span class="am-sr-only">导航切换</span> <span-->
+<!--class="am-icon-bars"></span></button>-->
+<!--&lt;!&ndash;<div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-4">&ndash;&gt;-->
+<!--&lt;!&ndash;<ul class="am-nav am-nav-pills am-topbar-nav">&ndash;&gt;-->
+<!--&lt;!&ndash;<li class="am-active"><a href="#">首页</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;<li><a href="#">项目</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;<li class="am-dropdown" data-am-dropdown>&ndash;&gt;-->
+<!--&lt;!&ndash;<a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">&ndash;&gt;-->
+<!--&lt;!&ndash;下拉 <span class="am-icon-caret-down"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;</a>&ndash;&gt;-->
+<!--&lt;!&ndash;<ul class="am-dropdown-content">&ndash;&gt;-->
+<!--&lt;!&ndash;<li><a href="#">带我去月球</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;<li><a href="#">还是回地球</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;<li class="am-disabled"><a href="#">臣妾做不到</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;</ul>&ndash;&gt;-->
+<!--&lt;!&ndash;</li>&ndash;&gt;-->
+<!--&lt;!&ndash;</ul>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</div>-->
+<!--</header>-->
+<!--<header class="am-topbar am-topbar-inverse">-->
+<!--<h1 class="am-topbar-brand">-->
+<!--<a href="#" class="am-text-ir">C2000演示DEMO</a>-->
+<!--</h1>-->
+<!--</header>-->
+<!--<div id="doc-oc-demo1" class="am-offcanvas">-->
+<!--<div class="am-offcanvas-bar">-->
+<!--<div class="am-offcanvas-content">-->
+<!--<ul class="am-nav">-->
+
+<!--<li class="am-nav-header">开始使用</li>-->
+<!--<li><a href="#">场景一</a></li>-->
+<!--<li><a href="#">场景二</a></li>-->
+<!--<li><a href="#">场景三</a></li>-->
+<!--<li><a href="#">场景四</a></li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="am-tabs" id="doc-my-tabs" data-am-tabs>-->
+<!--<ul class="am-nav am-tabs-nav  am-nav-pills am-nav-justify">-->
+<!--<li class="am-active"><a href="">场景一</a></li>-->
+<!--<li><a href="">场景二</a></li>-->
+<!--<li><a href="">场景三</a></li>-->
+<!--<li><a href="">场景四</a></li>-->
+<!--</ul>-->
+<!--<div class="am-tabs-bd">-->
+<!--<div class="am-tab-panel am-active" id="scene1">-->
+<!--<div class="am-g">-->
+<!--<div class="col-sm-12 col-lg-12">-->
+<!--<label>All control:</label>-->
+<!--<button id="switch" type="button" class="am-btn am-btn-primary  am-btn-xs"-->
+<!--onclick="sendCmd(this.id,'all')">ON-->
+<!--</button>-->
+<!--</div>-->
+<!--</div>-->
+
+<div class="main " id="#scene1">
+    <div class="am-g">
+        <div class="col-sm-12 col-lg-12">
+            <label>All control:</label>
+            <button id="switch" type="button" class="am-btn am-btn-primary  am-btn-xs"onclick="sendCmd(this.id,'all')">ON
+            </button>
+        </div>
+    </div>
+    <div class="am-g color-temperature am-margin-top-20">
+        <div class="col-sm-2 col-lg-2 ">
+            <label>色温:</label>
+        </div>
+        <div class="col-sm-10 col-lg-4 col-end">
+            <div class="range p-r">
+                <span class="show-hint">0%</span>
+                <input type="range" value="0" onchange="change(this.value)">
+            </div>
+        </div>
+    </div>
+    <div class="am-g lightness am-margin-top-20">
+        <div class="col-sm-2 col-lg-2 ">
+            <label>亮度:</label>
+        </div>
+        <div class="col-sm-10 col-lg-4 col-end">
+            <div class="range p-r">
+                <span class="show-hint">0%</span>
+                <input type="range" value="0" >
+            </div>
+           <!-- <input type="range" value="0" onchange="change(this.value)">-->
+        </div>
+    </div>
 </div>
-<!--<p>-->
-<!--    <label for="test">获取灯信息：</label>-->
-<!--    <input style="width: 200px" type="text" id="txt" placeholder="默认ping指令7701011B66" value="7701011B66"/>-->
-<!--    <select id="hosts" name="host" style="height: 30px">-->
-<!--        <option value="all" selected>all</option>-->
-<!--    </select>-->
-<!--    <input type="button" id="test" value="测试"/>-->
-<!--</p>-->
+
+
+<!--</div>-->
+<!--<div class="am-tab-panel">2</div>-->
+<!--<div class="am-tab-panel">3</div>-->
+<!--<div class="am-tab-panel">4</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<script>
+    function change(val) {
+        console.log(val);
+//          $('#my-popover').popover({
+//              content: val
+//          })
+    }
+    $('#scene1 .color-temperature input').RangeSlider({ min: 0,   max: 100,  step: 1,  callback: change});//#snrPollInterval为input的id名
+//    $('#scene1 .color-temperature input').RangeSlider({min: 0, max: 100, step: 5, callback: change});
+</script>
 </body>
 </html>
