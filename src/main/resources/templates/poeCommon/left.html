@@ -9,7 +9,7 @@
 <ul class="am-nav  leftNav-list leftNav-background p-r" th:fragment="left(list)">
     <li class="am-nav-header">
         <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/console.png}" alt="">
-        <p class="">POE控制台</p>
+        <p class="">群控中心</p>
     </li>
     <li th:if="${list}=='control'" class="active">
         <a th:href="@{/control/netWorkGroupConsole}">
@@ -35,12 +35,12 @@
             <p class="">定时</p>
         </a>
     </li>
-    <li class="to-bottom-2 p-a">
-        <a  href="javacript:void(0);">
-            <img  th:src="@{/static/poeConsole/img/project.png}" alt="">
-            <p class="">XX项目</p>
-        </a>
-    </li>
+    <!--<li class="to-bottom-2 p-a">-->
+        <!--<a  href="javacript:void(0);">-->
+            <!--<img  th:src="@{/static/poeConsole/img/project.png}" alt="">-->
+            <!--<p class="">XX项目</p>-->
+        <!--</a>-->
+    <!--</li>-->
     <li class="to-bottom-1 p-a am-dropdown am-dropdown-up down-right"  data-am-dropdown>
         <!--<a th:href="@{/control/loginOut}">-->
             <!--<img th:src="@{/static/poeConsole/img/set.png}" alt="">-->
@@ -50,7 +50,7 @@
         <!--<ul class="am-list am-list-static am-list-border">-->
             <!--<li>...</li>-->
         <!--</ul>-->
-        <ul class="am-dropdown-content" style="left:95%;bottom:-20px; min-width: 8rem;">
+        <ul class="am-dropdown-content" style="left:95%;bottom:-20px; min-width: 8rem;background-color: #F5FAFD;">
             <li style="border-bottom: 1px solid #eee;" data-toggle="modal" data-target="#controlInformation-modal"><a href="javacript:void(0);" >中控信息</a></li>
             <li><a th:href="@{/control/loginOut}">退出登录</a></li>
         </ul>

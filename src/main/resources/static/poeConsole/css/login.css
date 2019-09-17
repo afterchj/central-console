@@ -1,6 +1,7 @@
 .login{
-    width: 60%;
-    margin: 10% auto;
+    width: 42rem;
+    margin: 4rem auto;
+
 }
 .login-title{
     width: 45%;
@@ -12,10 +13,10 @@
     margin: 0;
 }
 .login  .am-form-group:first-child{
-    margin-top:2.5rem;
+    /*margin-top:2.5rem;*/
 }
 .login .am-panel-bd{
-    padding: 0;
+    padding: 3rem 0;
     /* background-color: #226697; */
     background: linear-gradient(#1299da, #226097);
     margin-bottom: -.1rem;
@@ -25,7 +26,7 @@
     box-shadow: 0 2px 3px rgba(0, 0, 0, .2);
 }
 .login .form-login{
-background-color: #fff;
+/*background-color: #fff;*/
 }
 .login form input[type=text], .am-form input[type=password]{
     border: 1px solid transparent;
@@ -41,11 +42,11 @@ background-color: #fff;
     border: 1px solid transparent;
     /*border-bottom-color: #ccc;*/
     font-size: 1.5rem;
-    color: #999;
+    color: #EEF0F2;
     padding: .6rem 1rem;
 }
 .login .am-form-group{
-    border-bottom:1px solid  #ccc;
+    border-bottom:1px solid  #EEF0F2;
 }
 .login .am-form-group:last-child{
     border-bottom-width: 0;
@@ -53,12 +54,18 @@ background-color: #fff;
 .logo{
     color: #fff;
     font-size: 1.4rem;
-    margin-top: 30%;
-    margin-left: 25%;
+    /* margin-top: 5%; */
+    /* margin-left: 34%; */
+    margin: 5% 30%;
     left: 50%;
     top: 50%;
 }
 .logo p{
-    margin: 1.4rem 1rem 1.4rem 1rem;
+    margin: 1rem;
     opacity: .9;
+    font-size: 1.6rem;
+}
+form{
+    width: 80%;
+    margin: 0 10%;
 }

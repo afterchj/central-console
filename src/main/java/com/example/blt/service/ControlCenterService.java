@@ -22,7 +22,6 @@ import java.util.StringJoiner;
  **/
 @Service
 public class ControlCenterService {
-
     @Resource
     private ControlCenterDao controlCenterDao;
 
@@ -90,16 +89,18 @@ public class ControlCenterService {
     public List<ControlMaster> getControlGroups(String gname,String meshId) {
         List<ControlMaster> controlMeshs;
         List<ControlMaster> controlMasters = controlCenterDao.getMasterStates();
-//        System.out.println(controlMasters.toString());
         if (StringUtils.isNotBlank(meshId)){//选择组
             controlCenterDao.updateMasterGidByMeshId(meshId,gname);
         }
         if (StringUtils.isNotBlank(gname) && StringUtils.isBlank(meshId)){
-            if ("全部".equals(gname)){//全选组
-                controlMeshs = controlCenterDao.getControlGroupsByAllGroup(gname);
-            }else {//单选组
-                controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
-            }
+//            if ("全部".equals(gname)){//全选 空组也选择
+//                controlMeshs = controlCenterDao.getControlGroups();
+//            }else {//单选组
+//                controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
+//            }
+            //全选 空组也选择 //否则单选组
+            controlMeshs = ("全部".equals(gname))?controlCenterDao.getControlGroups():controlCenterDao
+                    .getControlGroupsByGname(gname);
         }else {
             controlMeshs = controlCenterDao.getControlGroups();
         }
@@ -109,7 +110,8 @@ public class ControlCenterService {
                 ControlMaster controlMesh = controlMeshIterator.next();
                 for (ControlMaster controlMaster:controlMasters){
                     if (controlMesh.getMeshId().equals(controlMaster.getMeshId())){
-                        controlMesh.setpNum(2);
+                        int count = controlCenterDao.getPanelNums(controlMaster.getMeshId());
+                        controlMesh.setpNum(count);
                         controlMesh.setmState(controlMaster.getmState());
 //                        if (StringUtils.isNotBlank(controlMaster.getpState())){
                             controlMesh.setpState(controlMaster.getpState());
@@ -126,19 +128,19 @@ public class ControlCenterService {
     }
 
     public Boolean groupOperation(String gname, String type,Integer id,String meshId) {
-        if (type.equals("delete")){
+        if (type.equals(Operation.delete.getValue())){
             controlCenterDao.updateMasterByGid(id);
             controlCenterDao.deleteGroup(id);
-        }else if (type.equals("select")){
+        }else if (type.equals(Operation.select.getValue())){
             controlCenterDao.selectGroup(gname,meshId);
         }else {
             Integer count = controlCenterDao.getGname(gname);
             if (count >0){//组名重复
                 return false;
             }
-            if (type.equals("create")){
+            if (type.equals(Operation.create.getValue())){
                 controlCenterDao.createGroup(gname);
-            }else if (type.equals("rename")){
+            }else if (type.equals(Operation.rename.getValue())){
                 controlCenterDao.renameGroup(gname,id);
             }
         }
@@ -157,15 +159,15 @@ public class ControlCenterService {
         controlCenterDao.renameMesh(mname,meshId);
     }
 
-    public Boolean panelOperations(String mac, String pname, String type) {
-        if (type.equals("rename")){
+    public Boolean panelOperations(int id, String pname, String type) {
+        if (type.equals(Operation.rename.getValue())){
             Integer count = controlCenterDao.getPname(pname);
             if (count > 0){//名称重复
                 return false;
             }
-            controlCenterDao.renamePname(pname,mac);
-        }else if (type.equals("delete")){
-            controlCenterDao.deleteHost(mac);
+            controlCenterDao.renamePname(pname,id);
+        }else if (type.equals(Operation.delete.getValue())){
+            controlCenterDao.deleteHost(id);
         }
         return true;
     }
@@ -181,5 +183,21 @@ public class ControlCenterService {
 
     public List<ControlHost> getPanels(String meshId) {
         return controlCenterDao.getPanels(meshId);
+    }
+
+    public Boolean meshOperations(String mname, String meshId) {
+        Boolean flag = true;
+        if (StringUtils.isBlank(mname)){
+            //删除网络
+            controlCenterDao.deleteMesh(meshId);
+        }else {//重命名网络
+            Integer count = controlCenterDao.getMname(mname);
+            if (count > 0){//名称重复
+                flag = false;
+            }else {
+                controlCenterDao.renameMesh(mname,meshId);
+            }
+        }
+        return flag;
     }
 }

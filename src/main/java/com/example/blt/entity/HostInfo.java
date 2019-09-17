@@ -32,6 +32,10 @@ public class HostInfo implements Serializable {
     private Boolean isControl;
     @Column(unique = true, length = 32)
     private String mac;
+    @Column(length = 32)
+    private String productType;
+    @Column(length = 32)
+    private String otaVersion;
     private String other;
     private Date log_date = new Date();
 

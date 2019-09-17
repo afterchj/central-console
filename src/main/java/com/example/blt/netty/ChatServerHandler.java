@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -67,11 +68,25 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 }
                 insertOrUpdateHost(channel, buffer.toString(), "");
             }
+            if (arg1.indexOf("77010F65") != -1) {
+                cmd = "77050103";
+            }
             if (arg1.indexOf("77050304") != -1) {
                 cmd = "77050103";
             }
-            if (arg1.indexOf("77050705") != -1) {
+            if (arg1.indexOf("77050506") != -1) {
                 cmd = "77050103";
+                Map map = new HashMap();
+                String temp = StringBuildUtils.sortMac(arg1.substring(8, 12)).replace(":", "");
+                int product = Integer.parseInt(temp, 16);
+                String version = arg1.substring(12, 16);
+                map.put("hostId", host);
+                map.put("type", product);
+                map.put("version", version);
+                saveHost(map, false);
+            }
+            if (arg1.indexOf("77050705") != -1) {
+                cmd = "77050106CCCC";
                 if (len >= 48 && len <= 52) {
                     String mac = StringBuildUtils.sortMac(arg1.substring(36, 48));
                     insertOrUpdateHost(channel, "", mac);
@@ -85,11 +100,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         if (to.equals("master")) {
-            logger.warn("type [{}]", type);
-            hosts = sqlSessionTemplate.selectList("console.getHosts", type);
-//            hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
-//            if (hosts.size() == 0) {
-//            }
+            hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
+            if (hosts.size() == 0) {
+                hosts = sqlSessionTemplate.selectList("console.getHosts", type);
+            }
         }
 //        if (arg1.indexOf("182716324621") != -1) {
 //            logger.error("ip [{}] cmd [{}]", to, cmd);
