@@ -56,6 +56,10 @@
 //         }
 //     });
 // };
+// document.querySelector('body').addEventListener('touchstart', function (ev) {
+//     event.preventDefault();
+// });
+
 $.fn.RangeSlider = function(cfg){
     this.sliderCfg = {
         min: cfg && !isNaN(parseFloat(cfg.min)) ? Number(cfg.min) : null,
