@@ -114,9 +114,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (cmd.indexOf("77050103") == -1) {
                 logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             }
-            if (cmd.indexOf("77050103") == 0) {
-                logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
-            }
             StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
