@@ -1,7 +1,9 @@
 /*!*进度条已填充的部分*!*//*!*进度条未填充的部分*!*/
 body {
-    background: url(../img/bg.png) no-repeat;
-    background-size: 100% 100%;
+    /*background: url(../img/bg.png) no-repeat;*/
+    /*background-size: 100% 100%;*/
+    background: linear-gradient(#253E54,#5B6873);
+    /*background-color: #253E54;*/
     color: #eee
 }
 
@@ -136,9 +138,12 @@ input[type=range]::-moz-range-progress {
 }
 
 label {
-    color: #dedede
+    color: #dedede;
+    margin-bottom: 8px;
 }
-
+.title-max{
+    max-width: 90px;
+}
 
 .am-topbar-inverse {
     background: 0 0;
