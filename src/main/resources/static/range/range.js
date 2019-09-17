@@ -75,7 +75,9 @@ $.fn.RangeSlider = function(cfg){
     $input.bind("input", function(e){
         $input.attr('value', this.value);
         $input.css( 'background-size', this.value + '% 100%' );
-
+        $input.prev('.show-hint').css('left',this.value + '%');
+        $input.prev('.show-hint').text(this.value + '%');
+        console.log($input.siblings('.show-hint').text())
         if ($.isFunction(callback)) {
             callback(this);
         }

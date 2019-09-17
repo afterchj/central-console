@@ -65,14 +65,14 @@
 
 input[type=range] {
     -webkit-appearance: none;
-    width: 300px;
+    width: 100%;
     border-radius: 10px;
     background: -webkit-linear-gradient(#059CFA, #059CFA) no-repeat;
     background-size: 0% 100%;
 }
-input[type=range]:focus {
-    outline: none;
-}
+/*input[type=range]:focus {*/
+    /*outline: none;*/
+/*}*/
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
 }
@@ -165,4 +165,7 @@ input[type=range]::-moz-range-progress {
 }
 .am-margin-top-20{
     margin: 5rem 0;
+}
+.title-max{
+    max-width: 100px;
 }
