@@ -122,6 +122,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     String ip = str.substring(1, str.indexOf(":"));
 //                    if (!ip.equals("127.0.0.1")) {
                         String id = ch.id().toString();
+                        logger.warn("id", id);
                         if (to.equals("all")) {
                             ch.writeAndFlush(cmd);
                         } else if (to.equals("master")) {
