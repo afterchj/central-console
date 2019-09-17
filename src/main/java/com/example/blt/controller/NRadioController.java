@@ -26,7 +26,7 @@ public class NRadioController {
     static {
         colors = new HashMap<>();
         luminances = new HashMap<>();
-        int colorsCount = 20;
+        int colorsCount = 0;
         int luminancesCount = 19;
         for (int i = 0; i <= 100; i = i + 5) {
             String str = Integer.toHexString(colorsCount).toUpperCase();
@@ -37,7 +37,7 @@ public class NRadioController {
 //                str = "0"+str;
 //            }
             colors.put(i,str);
-            colorsCount = colorsCount - 1;
+            colorsCount = colorsCount + 1;
         }
         for (int i = 0; i <= 100; i = i + 5) {
             String str = Integer.toHexString(luminancesCount).toUpperCase();

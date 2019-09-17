@@ -172,16 +172,29 @@ public class LightDemoTests {
     @Test
     public void test11() {
         Map<Integer, String> colors = new HashMap<>();
-        int colorsCount = 20;
+        Map<Integer, String> luminances = new HashMap<>();
+        int colorsCount = 0;
+        int luminancesCount = 19;
         for (int i = 0; i <= 100; i = i + 5) {
             String str = Integer.toHexString(colorsCount).toUpperCase();
             if (str.length()==1){
                 str = "0"+str;
             }
-            System.out.println(colorsCount+" : "+str);
             colors.put(i,str);
-            colorsCount = colorsCount - 1;
+            colorsCount = colorsCount + 1;
         }
-//        System.out.println(colors);
+        for (int i = 0; i <= 100; i = i + 5) {
+            String str = Integer.toHexString(luminancesCount).toUpperCase();
+            if (str.length()==1){
+                str = "0"+str;
+            }
+            if (i == 100){
+                str = "00";
+            }
+            luminances.put(i,str);
+            luminancesCount = luminancesCount - 1;
+        }
+        System.out.println(colors);
+        System.out.println(luminances);
     }
 }

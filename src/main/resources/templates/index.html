@@ -189,7 +189,37 @@
             };
             //收到消息事件
             socket.onmessage = function (result) {
-                console.log("type", typeof result, "receive", result.data);
+                console.log("type", typeof result.data, "receive", result.data);
+                var data = JSON.parse(result.data);
+                var ctype = data.ctype;
+                var x = data.x;
+                var y = data.y;
+                var xMap =
+                {"00":0,"01":5,"02":10,"03":15,"04":20,"05":25,"06":30,"07":35,"08":40,"09":45,"0A":50,"0B":55,"0C":60,"0D":65,"0E":70,"0F":75,"10":80,"11":85,"12":90,"13":95,"14":100};
+                var yMap = {
+                    "13":0,"12":5,"11":10,"10":15,"0F":20,"0E":25,"0D":30,"0C":35,"0B":40,"0A":45,"09":50,"08":55,"07":60,"06":65,"05":70,"04":75,"03":80,"02":85,"01":90,"00":95,"00":100
+                }
+                switch (ctype){
+                    case "C0":
+                        if (x == '32'&&y == '32'){
+                            $("#switch2").removeClass("active");
+                            $("#switch").removeClass("active");
+                            $("#switch2").addClass("active");
+                        }else if (x == '37'&&y == '37'){
+                            $("#switch2").removeClass("active");
+                            $("#switch").removeClass("active");
+                            $("#switch").addClass("active");
+                        }else {
+//                            console.log(x,y);
+//                            console.log(xMap[x],yMap[y])
+                            $("#color").val(xMap[x]);
+                            $("#color").prev().text(xMap[x]+"%")
+                            $("#color").prev().style("left",xMap[x]+"%");
+                            $("#luminance").val(yMap[y]);
+                            $("#luminance").prev().text(yMap[y]+"%")
+                            $("#luminance").prev().style("left",yMap[y]+"%");
+                        }
+                }
             }
         }
     });
