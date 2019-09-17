@@ -41,14 +41,13 @@
 </head>
 <style type="text/css">
     /*#C2000 .am-g {*/
-        /*margin: 2rem 0;*/
+    /*margin: 2rem 0;*/
     /*}*/
 
     /*.am-container {*/
     /*width: auto;*/
     /*margin: 20px;*/
     /*}*/
-
 
     h3 {
         font-weight: bold;
@@ -180,57 +179,122 @@
         <a href="#">C2000演示DEMO</a>
     </h1>
 
-    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
-            data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
-            class="am-icon-bars"></span></button>
+    <!--<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"-->
+    <!--data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span-->
+    <!--class="am-icon-bars"></span></button>-->
 
-    <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
-        <ul class="am-nav am-nav-pills am-topbar-nav">
-            <li class="am-active"><a href="#">场景一</a></li>
-            <li><a href="#">场景二</a></li>
-            <li><a href="#">场景三</a></li>
-            <li><a href="#">场景四</a></li>
-        </ul>
-    </div>
+    <!--<div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">-->
+    <!--<ul class="am-nav am-nav-pills am-topbar-nav">-->
+    <!--<li class="am-active"><a href="#">场景一</a></li>-->
+    <!--<li><a href="#">场景二</a></li>-->
+    <!--<li><a href="#">场景三</a></li>-->
+    <!--<li><a href="#">场景四</a></li>-->
+    <!--</ul>-->
+    <!--</div>-->
 </header>
-<div class="main " id="#scene1">
-    <div class="am-g">
-        <div class="col-sm-12 col-lg-12">
-            <label>All control:</label>
-            <button id="switch" type="button" class="am-btn am-btn-primary  am-btn-xs"onclick="sendCmd(this.id,'all')">ON
-            </button>
-        </div>
-    </div>
-    <div class="am-g color-temperature am-margin-top-20">
-        <div class="col-sm-2 col-lg-2  title-max">
-            <label>色温:</label>
-        </div>
-        <div class="col-sm-10 col-lg-4 col-end">
-            <div class="range p-r">
-                <span class="show-hint">0%</span>
-                <input type="range" value="0" onchange="change(this.value)">
+<div class="main am-text-sm" id="#scene1">
+    <form class="am-form">
+        <div class="am-g">
+            <div class="col-sm-12 col-lg-12">
+                <div class="am-form-group ">
+                    <label class="">All control:</label>
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button id="switch" type="button" class="am-btn  total-control  am-btn-sm">ON
+                        </button>
+                        <button id="switch2" type="button" class="am-btn  total-control active am-btn-sm">OFF
+                        </button>
+                    </div>
+                    <!--<div class="am-btn-toolbar col-sm-8 col-lg-8">-->
+                    <!---->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-12 col-end">
+                <div class="am-form-group">
+                    <label>选择场景：</label>
+                    <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-sm am-btn-group-justify">
+                            <button type="button" class="am-btn scene-select active">场景一</button>
+                            <button type="button" class="am-btn scene-select">场景二</button>
+                            <button type="button" class="am-btn scene-select">场景三</button>
+                            <button type="button" class="am-btn scene-select">场景四</button>
+                        </div>
+                        <!--<div class="am-btn-group am-btn-group-sm"></div>-->
+                        <!--<div class="am-btn-group am-btn-group-sm"><button type="button" class="am-btn am-btn-default">场景三</button></div>-->
+                        <!--<div class="am-btn-group am-btn-group-sm"><button type="button" class="am-btn am-btn-default">场景四</button></div>-->
+                    </div>
+
+                    <!--<select id="doc-select-1">-->
+                    <!--<option value="option1">场景一</option>-->
+                    <!--<option value="option2">场景二</option>-->
+                    <!--<option value="option3">场景三</option>-->
+                    <!--<option value="option3">场景四</option>-->
+                    <!--</select>-->
+                    <!--<span class="am-form-caret"></span>-->
+                </div>
             </div>
         </div>
-    </div>
-    <div class="am-g lightness am-margin-top-20">
-        <div class="col-sm-2 col-lg-2 title-max">
-            <label>亮度:</label>
-        </div>
-        <div class="col-sm-10 col-lg-4 col-end">
-            <div class="range p-r">
-                <span class="show-hint">0%</span>
-                <input type="range" value="0" onchange="change(this.value)">
+        <div class="am-g color-temperature am-margin-top-20">
+            <div class="col-sm-2 col-lg-2  title-max">
+                <label>色温:</label>
+            </div>
+            <div class="col-sm-10 col-lg-10 col-end">
+                <div class="range p-r">
+                    <span class="show-hint">0%</span>
+                    <input type="range" value="0" onchange="change(this)" id="color">
+                </div>
             </div>
         </div>
-    </div>
+        <div class="am-g lightness am-margin-top-20">
+            <div class="col-sm-2 col-lg-2 title-max">
+                <label>亮度:</label>
+            </div>
+            <div class="col-sm-10 col-lg-10 col-end">
+                <div class="range p-r">
+                    <span class="show-hint">0%</span>
+                    <input type="range" value="0" onchange="change(this.value)" id="luminance">
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script>
+    $('.am-btn-group .total-control,.am-btn-group  .scene-select').click(function () {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+    var host = "192.168.10.22";
+    var cmd;
+    $("#switch").click(function () {
+        cmd = "77010315373766";
+        $.post("/nradio//send", {"host": host, "cmd": cmd}, function (data) {
+            console.log(data);
+        });
+    });
+    $("#switch2").click(function () {
+        cmd = "77010315323266";
+        $.post("/nradio//send", {"host": host, "cmd": cmd}, function (data) {
+            console.log(data);
+        });
+    });
     function change(val) {
-        console.log(val);
+        var id = $(val).attr("id");
+        var color, luminance;
+        if (id == 'color') {
+            color = $(val).val();
+            luminance = $("#luminance").val();
+        } else {
+            luminance = $(val).val();
+            color = $("#color").val();
+        }
+        console.log(color, luminance);
+
     }
-    $(' .color-temperature input').RangeSlider({ min: 0,   max: 100,  step: 5,  callback: change});//#snrPollInterval为input的id名
-    $(' .lightness input').RangeSlider({ min: 0,   max: 100,  step: 5,  callback: change});
+    ;
+
+
+    $(' .color-temperature input').RangeSlider({min: 0, max: 100, step: 5, callback: change});//#snrPollInterval为input的id名
+    $(' .lightness input').RangeSlider({min: 0, max: 100, step: 5, callback: change});
 </script>
 </body>
 </html>
