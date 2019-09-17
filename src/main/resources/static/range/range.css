@@ -67,8 +67,17 @@ input[type=range] {
     -webkit-appearance: none;
     width: 100%;
     border-radius: 10px;
-    background: -webkit-linear-gradient(#059CFA, #059CFA) no-repeat;
-    background-size: 0% 100%;
+    /*background: -webkit-linear-gradient(#059CFA, #059CFA) no-repeat;*/
+    /*background:url('../img/temperature.png')  0 0  no-repeat;*/
+
+}
+.color-temperature input[type=range]{
+    background:url('../img/temperature.png')  0 0  no-repeat;
+    background-size:cover;
+}
+.lightness input[type=range]{
+    background:url('../img/brightness.png')  0 0  no-repeat;
+    background-size:cover;
 }
 /*input[type=range]:focus {*/
     /*outline: none;*/
@@ -79,7 +88,8 @@ input[type=range]::-webkit-slider-thumb {
 input[type=range]::-webkit-slider-runnable-track {
     height: 15px;
     border-radius: 10px; /*将轨道设为圆角的*/
-    box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112; /*轨道内置阴影效果*/
+    box-shadow: 0 2px 2px 0 #dfdfdf, 0 3px 1px -2px #eee, 0 1px 5px 0 #ccc;
+    /*box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112; !*轨道内置阴影效果*!*/
 }
 input[type=range]::-ms-thumb {
     border: solid 0.125em rgba(205, 224, 230, 0.5);
@@ -202,9 +212,11 @@ input[type=range]::-moz-range-progress {
     /*font-weight: bold;*/
 }
 .am-btn-group .total-control.active,.am-btn-group  .scene-select.active{
-    background-color: #1B9AF7;
+    /*background-color: #1B9AF7;*/
     color: #fff;
-    border-color:  #1B9AF7;
+    /*border-color: #1B9AF7;*/
+    background: linear-gradient(#37bbff, #1B9AF7);
+    border-color: #1B9AF7;
 }
 /*.am-btn-group .total-control:active,.am-btn-group  .scene-select:hover{*/
     /*background-color: rgba(27,154,247,.8);*/
