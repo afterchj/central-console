@@ -211,14 +211,12 @@
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
                         }else {
-//                            console.log(x,y);
-//                            console.log(xMap[x],yMap[y])
                             $("#color").val(xMap[x]);
                             $("#color").prev().text(xMap[x]+"%")
-                            $("#color").prev().style("left",xMap[x]+"%");
+                            $("#color").prev().css("left",xMap[x]+"%");
                             $("#luminance").val(yMap[y]);
                             $("#luminance").prev().text(yMap[y]+"%")
-                            $("#luminance").prev().style("left",yMap[y]+"%");
+                            $("#luminance").prev().css("left",yMap[y]+"%");
                         }
                 }
             }
