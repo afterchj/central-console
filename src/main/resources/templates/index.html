@@ -1,0 +1,220 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/static/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+    <script th:src="@{/static/jquery.js}" type="text/javascript"></script>
+</head>
+<style type="text/css">
+    body{
+        line-height: 1.6;
+    }
+    .container{
+        padding: 20px;
+    }
+    .host, .master, .bind {
+        height: 20px;
+        width: 20px
+    }
+    table th,table td{
+        padding: 10px;
+        text-align: center;
+    }
+    button{
+        width:50px;
+    }
+    table td{
+        color: #454545;
+        font-size: 1.4rem;
+    }
+    #host td {
+
+        border: #CCCCCC 1px solid;
+    }
+    #demo td {
+        border: #CCCCCC 1px solid;
+    }
+    table th:first-child, table td:first-child{
+        width:70%;
+    }
+</style>
+<script type="text/javascript">
+    let socket;
+    $(function () {
+        let url = location.host;
+        console.log(location.href, url);
+        $.getJSON("/getHost", function (data) {
+            $.each(data, function (i, val) {
+                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+                $("#master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+            });
+        });
+        if (typeof (WebSocket) == "undefined") {
+            console.log("遗憾：您的浏览器不支持WebSocket");
+        } else {
+            socket = new WebSocket("ws://" + url + "/ws/webSocket");
+            //连接打开事件
+            socket.onopen = function () {
+                console.log("Socket 已打开！");
+            };
+            //收到消息事件
+            socket.onmessage = function (result) {
+                console.log("type", typeof result, "receive", result.data);
+            }
+        }
+        $("#test").click(function () {
+            let cmd = $("#txt").val();
+            let host = $("#hosts").val();
+            $.get("/test", {"command": cmd, "host": host}, function (result) {
+                console.log("cmd", cmd, "host", host, "result", result);
+            });
+            socket.send(cmd);
+        });
+
+        $(".host").click(function () {
+            let mesh_id = $.trim($(this).val());
+            let flag = $(this).is(':checked');
+            $.get("/save", {"host": mesh_id, "is_control": flag}, function (result) {
+                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+            });
+        })
+        $(".master").click(function () {
+            let mesh_id = $.trim($(this).val());
+            let flag = $(this).is(':checked');
+            $.get("/save", {"host": mesh_id, "is_master": flag}, function (result) {
+                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+            });
+        })
+        $(".bind").click(function () {
+            let mesh_id = $.trim($(this).val());
+            let flag = $(this).is(':checked');
+            $.get("/save", {"is_master": flag}, function (result) {
+                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+            });
+        })
+        // $("#master").click(function () {
+        //     let mesh_id = $.trim($(this).val());
+        //     console.log("mesh_id", mesh_id);
+        // })
+        // $("#select").click(function () {
+        //
+        // })
+    });
+
+    function sendCmd(id, flag, type) {
+        let cmd = $("#" + id).val();
+        let single = $('.host').is(':checked');
+        // let mesh_id;
+        let status = $("#" + id).text().trim();
+        console.log("flag", flag, "status", status, "single", single);
+        if (flag == 'master') {
+            if (single == false) {
+                return;
+            }
+        }
+        if (type) {
+            $.get("/switch", {"command": cmd, "host": flag, "type": "select"}, function (result) {
+                console.log("id", id, "flag", flag, "type", type, "result", result);
+            })
+        } else {
+            $.get("/switch", {"command": cmd, "host": flag}, function (result) {
+                console.log("id", id, "flag", flag, "type", type, "result", result);
+            })
+        }
+    }
+
+    function sendCmd2(id) {
+        // let mesh_id;
+        let status = $("#" + id).text().trim();
+        console.log("status", status, "single");
+        // flag=$('#'+id).parent('td').prev('td').text();
+        let flag = $('#' + id).attr('alt');
+        let checked = $('#' + id).parent('td').next('td').children('input').is(':checked');
+        console.log("checked", checked);
+        if (status == '开') {
+            $("#" + id).val("77010315373766");
+            $("#" + id).text("关")
+        } else if (status == '关') {
+            $("#" + id).val("77010315323266");
+            $("#" + id).text("开")
+        }
+        $.get("/switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
+            console.log("result", result);
+        })
+    }
+</script>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12" style="margin-bottom: 10px;">
+            <label>All control:</label>
+            <button id="all_on" value="77010315373766" class="btn btn-info btn-sm" onclick="sendCmd(this.id,'all')">ON</button>
+            <button id="all_off" value="77010315323266" class="btn btn-info btn-sm" onclick="sendCmd(this.id,'all')">OFF</button>
+        </div>
+        <!--    <p>-->
+        <!--        <label for="select">Select control：</label>-->
+        <!--        <button id="select" value="77010315373766" onclick="sendCmd(this.id,'master','select')">开</button>-->
+        <!--    </p>-->
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <table id="host"  class="table table-bordered" >
+                <thead>
+
+                    <tr class="active">
+                        <!--                <td>id</td>-->
+                        <th>meshId</th>
+                        <th>select</th>
+                        <!--                <td>isMaster</td>-->
+                        <!--                <td>是否被控</td>-->
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                <tr th:each="host:${hosts}">
+                    <!--            <td th:text="${host.mname}"></td>-->
+                    <td th:text="${host.mesh_id}"></td>
+                    <td th:switch="${host.is_control}">
+                        <input th:case="true" class="host" type="checkbox" checked th:value="${host.mesh_id}">
+                        <input th:case="*" class="host" type="checkbox" th:value="${host.mesh_id}">
+                    </td>
+                    <!--            <td th:switch="${host.is_master}">-->
+                    <!--                <input th:case="true" class="master" type="checkbox" checked th:value="${host.mesh_id}">-->
+                    <!--                <input th:case="*" class="master" type="checkbox" th:value="${host.mesh_id}">-->
+                    <!--            </td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 20px;">
+            <label>control:</label>
+            <button id="sel_on" value="77010315373766" class="btn btn-info btn-sm" onclick="sendCmd(this.id,'master','select')">ON</button>
+            <button id="sel_off" value="77010315323266" class="btn btn-info btn-sm" onclick="sendCmd(this.id,'master','select')">OFF</button>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 20px;">
+            <label>Remote Control:</label>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <table id="demo" style="width: 100%;">
+                <tr>
+                    <td>Bind</td>
+                    <td>
+                        <input class="bind" type="checkbox">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!--<p>-->
+<!--    <label for="test">获取灯信息：</label>-->
+<!--    <input style="width: 200px" type="text" id="txt" placeholder="默认ping指令7701011B66" value="7701011B66"/>-->
+<!--    <select id="hosts" name="host" style="height: 30px">-->
+<!--        <option value="all" selected>all</option>-->
+<!--    </select>-->
+<!--    <input type="button" id="test" value="测试"/>-->
+<!--</p>-->
+</body>
+</html>
