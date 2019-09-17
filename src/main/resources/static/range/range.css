@@ -153,6 +153,13 @@ input[type=range]::-moz-range-progress {
     font-size: 1rem;
     text-align: center;
 }
+.main{
+    padding: .5rem 1rem;
+    width: 100%;
+}
+.am-form select, .am-form textarea, .am-form input[type=text], .am-form input[type=password], .am-form input[type=datetime], .am-form input[type=datetime-local], .am-form input[type=date], .am-form input[type=month], .am-form input[type=time], .am-form input[type=week], .am-form input[type=number], .am-form input[type=email], .am-form input[type=url], .am-form input[type=search], .am-form input[type=tel], .am-form input[type=color], .am-form-field{
+    font-size: 1.4rem;
+}
 .show-hint:after{
     /*width: 1rem;*/
     /*height: .5rem;*/
@@ -171,9 +178,14 @@ input[type=range]::-moz-range-progress {
 }
 #switch{
     border-radius: 50%;
-    padding: 1rem;
+    width: 3.5rem;
+    height: 3.4rem;
     background-color: #fff;
     color: #3598db;
     font-weight: bold;
-    border:.2rem solid #3598db;
+    border: .2rem solid #3598db;
+    padding: 0;
+}
+.am-topbar-inverse{
+    background: linear-gradient(#37bbff, #4e6fd6);
 }
