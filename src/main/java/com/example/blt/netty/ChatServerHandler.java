@@ -164,8 +164,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
         insertOrUpdateHost(channel, "", "");
-//        channel.writeAndFlush("77050101CCCC");
-//        channel.writeAndFlush("77050105CCCC");
+        channel.writeAndFlush("77050101CCCC");
+        channel.writeAndFlush("77050105CCCC");
     }
 
     //退出链接
