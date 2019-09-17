@@ -82,96 +82,9 @@
                 console.log("type", typeof result, "receive", result.data);
             }
         }
-        $("#test").click(function () {
-            let cmd = $("#txt").val();
-            let host = $("#hosts").val();
-            $.get("/test", {"command": cmd, "host": host}, function (result) {
-                console.log("cmd", cmd, "host", host, "result", result);
-            });
-            socket.send(cmd);
-        });
-
-        $(".host").click(function () {
-            let mesh_id = $.trim($(this).val());
-            let flag = $(this).is(':checked');
-            $.get("/save", {"host": mesh_id, "is_control": flag}, function (result) {
-                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
-            });
-        })
-        $(".master").click(function () {
-            let mesh_id = $.trim($(this).val());
-            let flag = $(this).is(':checked');
-            $.get("/save", {"host": mesh_id, "is_master": flag}, function (result) {
-                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
-            });
-        })
-        $(".bind").click(function () {
-            let mesh_id = $.trim($(this).val());
-            let flag = $(this).is(':checked');
-            $.get("/save", {"is_master": flag}, function (result) {
-                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
-            });
-        })
-
-
-        // $("#master").click(function () {
-        //     let mesh_id = $.trim($(this).val());
-        //     console.log("mesh_id", mesh_id);
-        // })
-        // $("#select").click(function () {
-        //
-        // })
     });
 
-    function sendCmd(id, flag, type) {
-        var code = document.getElementById("switch").innerHTML;
-        let cmd;
-        if (code.indexOf("ON") == 0) {
-            document.getElementById("switch").innerHTML = "OFF";
-            cmd = "77010315373766";
-        } else if (code.indexOf("ON") == -1) {
-            document.getElementById("switch").innerHTML = "ON";
-            cmd = "77010315323266";
-        }
-        let single = $('.host').is(':checked');
-        // let mesh_id;
-        let status = $("#" + id).text().trim();
-        console.log("flag", flag, "status", status, "single", single);
-        if (flag == 'master') {
-            if (single == false) {
-                return;
-            }
-        }
-        if (type) {
-            $.get("/switch", {"command": cmd, "host": flag, "type": "select"}, function (result) {
-                console.log("id", id, "flag", flag, "type", type, "result", result);
-            })
-        } else {
-            $.get("/switch", {"command": cmd, "host": flag}, function (result) {
-                console.log("id", id, "flag", flag, "type", type, "result", result);
-            })
-        }
-    }
 
-    function sendCmd2(id) {
-        // let mesh_id;
-        let status = $("#" + id).text().trim();
-        console.log("status", status, "single");
-        // flag=$('#'+id).parent('td').prev('td').text();
-        let flag = $('#' + id).attr('alt');
-        let checked = $('#' + id).parent('td').next('td').children('input').is(':checked');
-        console.log("checked", checked);
-        if (status == '开') {
-            $("#" + id).val("77010315373766");
-            $("#" + id).text("关")
-        } else if (status == '关') {
-            $("#" + id).val("77010315323266");
-            $("#" + id).text("开")
-        }
-        $.get("/switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
-            console.log("result", result);
-        })
-    }
 </script>
 <body>
 <header class="am-topbar am-topbar-inverse">
@@ -288,8 +201,31 @@
             color = $("#color").val();
         }
         console.log(color, luminance);
-
+        $.post("/nradio/change",{"color":color,"luminance":luminance},function (data) {
+            console.log(data);
+        })
     };
+
+    $(".scene-select").click(function () {
+        var text = $(this).text();
+        switch (text){
+            case "场景一":
+                cmd = "7701021901";
+                break;
+            case "场景二":
+                cmd = "7701021902";
+                break;
+            case "场景三":
+                cmd = "7701021903";
+                break;
+            case "场景四":
+                cmd = "7701021904";
+                break;
+        }
+        $.post("/nradio//send", {"host": host, "cmd": cmd}, function (data) {
+            console.log(data);
+        });
+    });
 
     $(' .color-temperature input').RangeSlider({min: 0, max: 100, step: 5, callback: change});//#snrPollInterval为input的id名
     $(' .lightness input').RangeSlider({min: 0, max: 100, step: 5, callback: change});

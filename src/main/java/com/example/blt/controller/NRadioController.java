@@ -21,10 +21,13 @@ import java.util.Map;
 @Controller
 @RequestMapping("/nradio")
 public class NRadioController {
-
+    static Map<Integer, String> colors;
+    static Map<Integer, String> luminances;
     static {
-        Map<Integer, String> colors = new HashMap<>();
+        colors = new HashMap<>();
+        luminances = new HashMap<>();
         int colorsCount = 20;
+        int luminancesCount = 19;
         for (int i = 0; i <= 100; i = i + 5) {
             String str = String.valueOf(colorsCount);
             if (colorsCount<10){
@@ -33,8 +36,6 @@ public class NRadioController {
             colors.put(i,str);
             colorsCount = colorsCount - 1;
         }
-        Map<Integer, String> luminances = new HashMap<>();
-        int luminancesCount = 19;
         for (int i = 0; i <= 100; i = i + 5) {
             String str = String.valueOf(luminancesCount);
             if (luminancesCount<10){
@@ -63,5 +64,17 @@ public class NRadioController {
         return "success";
     }
 
-
+    @RequestMapping("/change")
+    @ResponseBody
+    public String change(Integer color, Integer luminance ){
+        String host = blTservice.getHostId("192.168.10.22");
+        Map<String, String> map = new HashMap<>();
+        String cmd = "77010315"+colors.get(color)+luminances.get(luminance)+"66";
+        map.put("command", cmd);
+        map.put("host", host);
+        ControlTask task = new ControlTask(JSON.toJSONString(map));
+        ExecuteTask.sendCmd(task);
+        System.out.println("host: "+host+" cmd: "+cmd);
+        return "success";
+    }
 }
