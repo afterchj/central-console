@@ -2,22 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>删除面板</title>
+    <title>删除组</title>
 </head>
 <body>
-<div  class="modal fade"   role="dialog" tabindex="-3" id="deletePanel-modal" th:fragment="deletePanel">
+<div class="modal fade"   role="dialog"  tabindex="-10" id="dataReset-modal" th:fragment="dataReset">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" >删除</h4>
-                <input type="hidden" value="删除面板">
+                <h4 class="modal-title" >恢复出厂设置</h4>
+                <input type="hidden" value="恢复出厂设置">
             </div>
             <div class="modal-body">
                 <form action="" class="am-form">
                     <div class="am-form-group">
-                        <p class="am-text-sm am-text-left" style="margin: 0;">您确定要删除该面板吗？</p>
-                        <p class="am-text-left am-text-sm am-text-danger" style="margin: 0;font-size: 1.2rem">(删除后，若现场还存在该面板，将会在中控同步后再次恢复！)</p>
+                        <p class="am-text-sm am-text-left" style="margin: 0;">您确定要恢复出厂设置吗？</p>
+                        <p class="am-text-left am-text-sm am-text-danger" style="margin: 0;font-size: 1.2rem">(恢复后，会自动获取现场POE面板内部数据，但当前项目所有数据需从客户端重新上传，请慎重！)</p>
                     </div>
                 </form>
             </div>
@@ -34,8 +34,8 @@
         <!--<div class="am-modal-bd">-->
             <!--<form action="" class="am-form">-->
                 <!--<div class="am-form-group">-->
-                    <!--<p class="am-text-default am-text-left" style="margin: 0;">您确定要删除该面板吗？</p>-->
-                    <!--<p class="am-text-left am-text-sm am-text-danger" style="margin: 0;">删除后，若现场还存在该面板，将会在中控同步后再次恢复！</p>-->
+                    <!--<p class="am-text-default am-text-left" style="margin: 0;">您确定要删除该组吗？</p>-->
+                    <!--<p class="am-text-left am-text-sm am-text-danger" style="margin: 0;">删除后，组内中网络的主从设定将无法恢复，请慎重！</p>-->
                 <!--</div>-->
             <!--</form>-->
         <!--</div>-->
