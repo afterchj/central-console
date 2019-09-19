@@ -109,13 +109,13 @@ public class ControlCenterService {
             while (controlMeshIterator.hasNext()) {
                 ControlMaster controlMesh = controlMeshIterator.next();
                 for (ControlMaster controlMaster : controlMasters) {
-                    if (controlMesh.getMeshId().equals(controlMaster.getMeshId())) {
+                    if (controlMesh.getMeshId().equals(controlMaster.getMeshId()) ) {
                         int count = controlCenterDao.getPanelNums(controlMaster.getMeshId());
                         controlMesh.setpNum(count);
-                        controlMesh.setmState(controlMaster.getmState());
-//                        if (StringUtils.isNotBlank(controlMaster.getpState())){
+                        if (controlMesh.getmState().equals("网络在线")){
+                            controlMesh.setmState(controlMaster.getmState());
+                        }
                         controlMesh.setpState(controlMaster.getpState());
-//                        }
                     }
                 }
             }
