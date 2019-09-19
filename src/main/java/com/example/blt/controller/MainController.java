@@ -245,8 +245,6 @@ public class MainController {
                 int count2 = monitor4Dao.findHostInfo(String.valueOf(map2.get("meshId")));
                 if (count2 == 0) {
                     monitor4Dao.insertHostInfo(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
-                }else {
-                    monitor4Dao.updateHostInfo(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
                 }
                 for (int j = 0; j < timerListList.size(); j++) {
                     Integer tid = timerListList.get(j).getTimerLine().getTid();
