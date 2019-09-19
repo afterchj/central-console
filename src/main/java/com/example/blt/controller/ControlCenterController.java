@@ -225,10 +225,10 @@ public class ControlCenterController {
     @ResponseBody
     public String reSet(String type){
         String msg = "success";
+        Boolean flag;
         if (type.equals("reSet")){
             controlCenterService.reSet();
         }else {
-            Boolean flag;
             flag = sendReSetCmd("77050101CCCC");
             if (flag){
                 flag = sendReSetCmd("77050105CCCC");
@@ -240,7 +240,7 @@ public class ControlCenterController {
         return msg;
     }
 
-    public boolean sendReSetCmd(String command){
+    private boolean sendReSetCmd(String command){
         Boolean flag = true;
         Map<String, String> map = new HashMap<>();
         String host = "all";

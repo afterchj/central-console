@@ -9,7 +9,11 @@
         h.gid,
         h.mesh_id as meshId,
         ifnull(h.mesh_name,h.mesh_id) as mname,
-        if(h.status='1' and h.host_id is not null,'网络在线','网络离线') as mState,
+        CASE
+          WHEN h.status='1' and h.host_id is not null and h.flag='03' THEN '网络在线'
+          WHEN h.status='0' or h.host_id is null or h.flag is null or h.flag!='03' THEN '网络离线'
+        END AS mState,
+--         if(h.status='1' and h.host_id is not null and h.flag='03','网络在线','网络离线') as mState,
         if(h.host_id is null,'0','1') as pNum,
         if(h.status='0','（离线）',null) as pState
     </sql>
