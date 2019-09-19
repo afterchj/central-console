@@ -84,4 +84,16 @@ public interface ControlCenterDao {
 
     @Delete("DELETE FROM t_host_info where mesh_id=#{meshId}")
     void deleteMesh(@Param("meshId")String meshId);
+
+    @Delete("TRUNCATE TABLE f_time_line")
+    void reSetTimeLine();
+
+    @Delete("TRUNCATE TABLE f_time_point")
+    void reSetTimePoint();
+
+    @Delete("TRUNCATE TABLE t_group")
+    void reSetGroup();
+
+    @Delete("TRUNCATE TABLE t_host_info")
+    void reSetHostInfo();
 }

@@ -215,4 +215,14 @@ public class ControlCenterController {
         return masterMap;
     }
 
+    @RequestMapping("/reSet")
+    @ResponseBody
+    public String reSet(){
+        Boolean flag = controlCenterService.reSet();
+        String msg = "success";
+        if (!flag){
+            return "error";
+        }
+        return msg;
+    }
 }
