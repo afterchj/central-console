@@ -40,9 +40,13 @@
     <select id="getMasterStates" resultType="com.example.blt.entity.control.ControlMaster">
         select mesh_id as meshId,'网络离线' as mState,'（离线）' as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =0 group by mesh_id having count(*)>1
         union
-        select mesh_id as meshId,'网络在线' as mState,null as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =1 group by mesh_id having count(*)>1
+        select mesh_id as meshId,'网络在线' as mState,null as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =1  group by mesh_id having count(*)>1
         union
-        select h1.mesh_id as meshId,'网络在线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' and h1.host_id is not null and h2.host_id is not null group by h1.mesh_id
+        select mesh_id as meshId,'网络离线' as mState,null as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =1 and (flag is null or flag!='03') group by mesh_id having count(*)>1
+        union
+        select h1.mesh_id as meshId,'网络在线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) and h1.flag='03' and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' and h1.host_id is not null and h2.host_id is not null group by h1.mesh_id
+        union
+        select h1.mesh_id as meshId,'网络离线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) and (h1.flag is null or h1.flag!='03') and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' and h1.host_id is not null and h2.host_id is not null group by h1.mesh_id
     </select>
 
     <select id="getPanels" resultType="com.example.blt.entity.control.ControlHost">
