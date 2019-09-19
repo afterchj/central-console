@@ -123,6 +123,16 @@
         CALL saveUpdateHost(?,?,?,?,?,?,?,?)
     </select>
 
+    <update id="updateHosts" parameterType="map">
+        UPDATE t_host_info
+        <set>
+            <if test="flag != flag">
+                flag=#{flag},
+            </if>
+            log_date=now()
+        </set>
+        WHERE host_id=#{host}
+    </update>
     <select id="selectIn" parameterType="map" resultType="int">
         SELECT COUNT(0) lumn FROM t_light_info WHERE host=#{ip} AND vaddr IN
         <foreach collection="list" index="index" item="info" separator="," open="(" close=")">

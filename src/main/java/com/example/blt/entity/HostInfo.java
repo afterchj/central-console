@@ -36,6 +36,8 @@ public class HostInfo implements Serializable {
     private String productType;
     @Column(length = 32)
     private String otaVersion;
+    @Column(length = 32)
+    private String flag;
     private String other;
     private Date log_date = new Date();
 

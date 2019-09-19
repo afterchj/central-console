@@ -12,7 +12,8 @@ public enum Topics {
     CMD_LOCAL("blt_cmd_local_topic"),
     LIGHT_TOPIC("blt_light_topic"),
     UPDATE_TOPIC("blt_update_light_topic"),
-    HOST_TOPIC("blt_host_topic");
+    HOST_TOPIC("blt_host_topic"),
+    HOST_UPDATE_TOPIC("blt_update_host_topic");
     private String topic;
 
 

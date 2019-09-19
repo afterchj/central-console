@@ -68,6 +68,15 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 }
                 insertOrUpdateHost(channel, buffer.toString(), "");
             }
+            if (arg1.indexOf("77050208") != -1) {
+                logger.warn("hostId [{}] str [{}]", host, arg1);
+                cmd = "77050103";
+                Map map = new HashMap();
+                String flag = arg1.substring(8, 10);
+                map.put("hostId", host);
+                map.put("flag", flag);
+                updateHost(map, false);
+            }
             if (arg1.indexOf("77010F65") != -1) {
                 cmd = "77050103";
             }
@@ -79,6 +88,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 Map map = new HashMap();
                 String temp = StringBuildUtils.sortMac(arg1.substring(8, 12)).replace(":", "");
                 int product = Integer.parseInt(temp, 16);
+                if (arg1.length() <= 16) return;
                 String version = arg1.substring(12, 16);
                 map.put("hostId", host);
                 map.put("type", product);
@@ -86,7 +96,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 saveHost(map, false);
             }
             if (arg1.indexOf("77050705") != -1) {
-                cmd = "77050106CCCC";
+                cmd = "77050106CCCC";//获取固件信息
                 if (len >= 48 && len <= 52) {
                     String mac = StringBuildUtils.sortMac(arg1.substring(36, 48));
                     insertOrUpdateHost(channel, "", mac);
@@ -122,7 +132,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     String ip = str.substring(1, str.indexOf(":"));
                     if (!ip.equals("127.0.0.1")) {
                         String id = ch.id().toString();
-                    logger.warn("id[{}] ip [{}]", id, ip);
+                        logger.warn("id[{}] ip [{}]", id, ip);
                         if (to.equals("all")) {
                             ch.writeAndFlush(cmd);
                         } else if (to.equals("master")) {
@@ -205,5 +215,15 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
         sqlSessionTemplate.insert("console.saveUpdateHosts", map);
+    }
+
+    public void updateHost(Map map, boolean flag) {
+        if (flag) {
+            try {
+                ProducerService.pushMsg(Topics.HOST_UPDATE_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (Exception e) {
+            }
+        }
+        sqlSessionTemplate.insert("console.updateHosts", map);
     }
 }
