@@ -31,27 +31,6 @@ $(function () {
         $(" .modal.in .modal-dialog ").removeClass('scroll');
     });
 })
-
-//     $('.leftNav2 .am-nav li').click(function () {
-//         $(this).addClass('active').siblings('li').removeClass('active');
-//     });
-//     $('.leftNav2 .am-nav li').each(function () {
-//         var text=$(this).attr('alt');
-//         console.log(text);
-//         if(meshId==text){
-//             $(this).parent('li').addClass('active');
-//         }else{
-//             $(this).parent('li').removeClass('active');
-//         }
-//     })
-//     // $('.modal-footer .btn+.btn, .modal-footer .btn').click(function () {
-//     //     $('.data-show-table table .am-dropdown-content').stopPropagation();
-//     // });
-//     // $("body").on('click','[data-am-dropdown-toggle]',function (e) {
-//     //     e.stopPropagation();
-//     //     e.stopPropagation();
-//     // });
-// })
 /**
  * 获取指定的URL参数值
  * URL:http://www.quwan.com/index?name=tyler
@@ -67,21 +46,30 @@ $(function () {
 //     }
 //     return paramValue == "" && (paramValue = null), paramValue
 // }
-
+$('#spinner').hide();
 $("button.btn.btn-primary.yes").click(function () {
     var hiddenTitle = $(this).parent().prev().prev().find('input').val();
     if (hiddenTitle == '恢复出厂设置'){
         //恢复出厂设置
-        $.post('/control/reSet',{"type":"reSet"},function (data) {
-            if (data == 'success'){
-                //同步数据
-                $.post('/control/reSet',{"type":"synchrodata"},function (data) {
-                    if (data == 'success'){
-                        window.location.href = "/control/index";
-                    }
-                });
-            }
-        });
-
+        $('#dataReset-modal .modal-dialog').hide();
+        $('#spinner').show();
+        $('#spinner .spinner-text').text('正在恢复出厂设置');
+        setTimeout(function () {
+            $.post('/control/reSet',{"type":"reSet"},function (data) {
+                if (data == 'success'){
+                    $('#dataReset-modal .modal-dialog').hide();
+                    $('#spinner').show();
+                    $('#spinner .spinner-text').text('正在同步数据');
+                    setTimeout(function () {
+                        //同步数据
+                        $.post('/control/reSet',{"type":"synchrodata"},function (data) {
+                            if (data == 'success'){
+                                window.location.href = "/control/index";
+                            }
+                        });
+                    },3000);
+                }
+            });
+        },3000);
     }
 });
