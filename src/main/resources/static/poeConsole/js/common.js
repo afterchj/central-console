@@ -71,10 +71,17 @@ $(function () {
 $("button.btn.btn-primary.yes").click(function () {
     var hiddenTitle = $(this).parent().prev().prev().find('input').val();
     if (hiddenTitle == '恢复出厂设置'){
-        $.post('/control/reSet',function (data) {
+        //恢复出厂设置
+        $.post('/control/reSet',{"type":"reSet"},function (data) {
             if (data == 'success'){
-                window.location.href = "/control/index";
+                //同步数据
+                $.post('/control/reSet',{"type":"synchrodata"},function (data) {
+                    if (data == 'success'){
+                        window.location.href = "/control/index";
+                    }
+                });
             }
         });
+
     }
 });

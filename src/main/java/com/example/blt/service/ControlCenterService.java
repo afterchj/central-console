@@ -1,19 +1,18 @@
 package com.example.blt.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.ControlCenterDao;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.*;
 import com.example.blt.entity.dd.Week;
-import com.example.blt.task.ControlTask;
-import com.example.blt.task.ExecuteTask;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * @program: central-console
@@ -202,31 +201,10 @@ public class ControlCenterService {
         return flag;
     }
 
-    public Boolean reSet() {
+    public void reSet() {
         controlCenterDao.reSetTimeLine();
         controlCenterDao.reSetTimePoint();
         controlCenterDao.reSetGroup();
         controlCenterDao.reSetHostInfo();
-        Boolean flag = true;
-        flag = sendReSetCmd("77050101CCCC");
-        if (flag){
-            flag = sendReSetCmd("77050105CCCC");
-        }
-        return flag;
-    }
-
-
-    public boolean sendReSetCmd(String command){
-        Boolean flag = true;
-        Map<String, String> map = new HashMap<>();
-        String host = "all";
-        map.put("command",command);
-        map.put("host", host);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
-        String code = ExecuteTask.sendCmd(task);
-        if ("fail".equals(code)) {
-            flag = false;
-        }
-        return flag;
     }
 }

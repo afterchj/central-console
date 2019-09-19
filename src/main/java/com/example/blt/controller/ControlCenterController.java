@@ -1,9 +1,15 @@
 package com.example.blt.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
-import com.example.blt.entity.control.*;
+import com.example.blt.entity.control.ControlHost;
+import com.example.blt.entity.control.ControlMaster;
+import com.example.blt.entity.control.GroupList;
+import com.example.blt.entity.control.MeshList;
 import com.example.blt.service.ControlCenterService;
+import com.example.blt.task.ControlTask;
+import com.example.blt.task.ExecuteTask;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -217,12 +223,34 @@ public class ControlCenterController {
 
     @RequestMapping("/reSet")
     @ResponseBody
-    public String reSet(){
-        Boolean flag = controlCenterService.reSet();
+    public String reSet(String type){
         String msg = "success";
-        if (!flag){
-            return "error";
+        if (type.equals("reSet")){
+            controlCenterService.reSet();
+        }else {
+            Boolean flag;
+            flag = sendReSetCmd("77050101CCCC");
+            if (flag){
+                flag = sendReSetCmd("77050105CCCC");
+            }
+            if (!flag){
+                msg =  "error";
+            }
         }
         return msg;
+    }
+
+    public boolean sendReSetCmd(String command){
+        Boolean flag = true;
+        Map<String, String> map = new HashMap<>();
+        String host = "all";
+        map.put("command",command);
+        map.put("host", host);
+        ControlTask task = new ControlTask(JSON.toJSONString(map));
+        String code = ExecuteTask.sendCmd(task);
+        if ("fail".equals(code)) {
+            flag = false;
+        }
+        return flag;
     }
 }
