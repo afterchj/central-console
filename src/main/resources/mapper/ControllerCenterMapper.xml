@@ -11,7 +11,7 @@
         ifnull(h.mesh_name,h.mesh_id) as mname,
         CASE
           WHEN h.status='1' and h.host_id is not null and h.flag='03' THEN '网络在线'
-          WHEN h.status='0' or h.host_id is null or h.flag is null or h.flag!='03' THEN '网络离线'
+          WHEN h.status='0' or h.host_id is null or h.flag!='03' THEN '网络离线'
         END AS mState,
 --         if(h.status='1' and h.host_id is not null and h.flag='03','网络在线','网络离线') as mState,
         if(h.host_id is null,'0','1') as pNum,
@@ -24,7 +24,7 @@
             t_host_info h
             LEFT JOIN t_group g ON g.id = h.gid
         WHERE
-          (h.ip != '127.0.0.1' or h.ip is null) AND h.mesh_id IS NOT NULL  group by h.mesh_id
+          (h.ip != '127.0.0.1' or h.ip is null) AND h.mesh_id IS NOT NULL group by h.mesh_id
     </select>
 
     <select id="getControlGroupsByGname" resultType="com.example.blt.entity.control.ControlMaster">
@@ -35,18 +35,6 @@
         LEFT JOIN t_group g ON g.id = h.gid
         where
             g.gname=#{gname} AND (h.ip != '127.0.0.1' or h.ip is null) and h.mesh_id is not null group by h.mesh_id
-    </select>
-
-    <select id="getMasterStates" resultType="com.example.blt.entity.control.ControlMaster">
-        select mesh_id as meshId,'网络离线' as mState,'（离线）' as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =0 group by mesh_id having count(*)>1
-        union
-        select mesh_id as meshId,'网络在线' as mState,null as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =1  group by mesh_id having count(*)>1
-        union
-        select mesh_id as meshId,'网络离线' as mState,null as pState from t_host_info where ip !='127.0.0.1' and host_id is not null and status =1 and (flag is null or flag!='03') group by mesh_id having count(*)>1
-        union
-        select h1.mesh_id as meshId,'网络在线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) and h1.flag='03' and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' and h1.host_id is not null and h2.host_id is not null group by h1.mesh_id
-        union
-        select h1.mesh_id as meshId,'网络离线' as mState,'（存在异常）' as pState from t_host_info h1,t_host_info h2 where h1.mesh_id=h2.mesh_id and h1.id!=h2.id and h1.status!=h2.status and (h1.status=0 or h2.status=0) and (h1.flag is null or h1.flag!='03') and h1.ip !='127.0.0.1'  and h2.ip!='127.0.0.1' and h1.host_id is not null and h2.host_id is not null group by h1.mesh_id
     </select>
 
     <select id="getPanels" resultType="com.example.blt.entity.control.ControlHost">
@@ -63,7 +51,7 @@
         FROM
             t_host_info
         WHERE
-            mesh_id = #{meshId} and ip!='127.0.0.1' and host_id is not null
+            mesh_id = #{meshId} and  host_id is not null
     </select>
 
 </mapper>

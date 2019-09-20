@@ -53,7 +53,6 @@ public class ControlMaster {
         if (StringUtils.isNotBlank(pState)){
             this.pState = pState;
         }
-
     }
 
     public String getmState() {

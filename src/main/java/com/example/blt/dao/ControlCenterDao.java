@@ -6,6 +6,7 @@ import com.example.blt.entity.control.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: central-console
@@ -71,8 +72,6 @@ public interface ControlCenterDao {
 //    @Select("select if(status='1','在线','离线') AS state,ifnull( other, ifnull(mac,ip) ) AS pname, ifnull(mac,ip) as mac,product_type as productType from t_host_info where mesh_id=#{meshId} and ip!='127.0.0.1'")
     List<ControlHost> getPanels(@Param("meshId") String meshId);
 
-    List<ControlMaster> getMasterStates();
-
     @Update("update t_host_info set gid=(select id from t_group WHERE gname=#{gname}) , is_master=0 where mesh_id=#{meshId}")
     void updateMasterGidByMeshId(@Param("meshId") String meshId, @Param("gname") String gname);
 
@@ -96,4 +95,7 @@ public interface ControlCenterDao {
 
     @Delete("TRUNCATE TABLE t_host_info")
     void reSetHostInfo();
+
+    @Select("select status,flag from t_host_info where mesh_id=(select mesh_id from t_host_info where mesh_id=#{meshId} and host_id is not null having count(*)>1)")
+    List<Map<String,Object>> getMeshState(@Param("meshId")String meshId);
 }

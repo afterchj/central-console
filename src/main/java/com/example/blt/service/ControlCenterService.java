@@ -10,8 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringJoiner;
 
 /**
@@ -88,33 +88,42 @@ public class ControlCenterService {
 
     public List<ControlMaster> getControlGroups(String gname, String meshId) {
         List<ControlMaster> controlMeshs;
-        List<ControlMaster> controlMasters = controlCenterDao.getMasterStates();
         if (StringUtils.isNotBlank(meshId)) {//选择组
             controlCenterDao.updateMasterGidByMeshId(meshId, gname);
         }
         if (StringUtils.isNotBlank(gname) && StringUtils.isBlank(meshId)) {
-//            if ("全部".equals(gname)){//全选 空组也选择
-//                controlMeshs = controlCenterDao.getControlGroups();
-//            }else {//单选组
-//                controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
-//            }
-            //全选 空组也选择 //否则单选组
             controlMeshs = ("全部".equals(gname)) ? controlCenterDao.getControlGroups() : controlCenterDao
                     .getControlGroupsByGname(gname);
         } else {
             controlMeshs = controlCenterDao.getControlGroups();
         }
         if (controlMeshs.size() > 0) {
-            Iterator<ControlMaster> controlMeshIterator = controlMeshs.iterator();
-            while (controlMeshIterator.hasNext()) {
-                ControlMaster controlMesh = controlMeshIterator.next();
-                for (ControlMaster controlMaster : controlMasters) {
-                    if (controlMesh.getMeshId().equals(controlMaster.getMeshId())) {
-                        int count = controlCenterDao.getPanelNums(controlMaster.getMeshId());
-                        controlMesh.setpNum(count);
-                        controlMesh.setmState(controlMaster.getmState());
-                        controlMesh.setpState(controlMaster.getpState());
+            for (ControlMaster controlMesh : controlMeshs) {
+                meshId = controlMesh.getMeshId();
+                List<Map<String, Object>> meshStates = controlCenterDao.getMeshState(meshId);
+                if (meshStates.size() > 0) {
+                    String mState = "网络在线";
+                    String pState = null;
+                    int pOffCount = 0;//单个网路下poe离线个数
+                    int meshStatesSize = meshStates.size();
+                    for (Map<String, Object> meshState : meshStates) {
+                        boolean states = (boolean) meshState.get("status");
+                        String flag = (String) meshState.get("flag");
+                        if (StringUtils.isNotBlank(flag) && flag != "03") {
+                            mState = "网络离线";
+                        }
+                        if (!states) {
+                            pOffCount++;
+                        }
                     }
+                    if (pOffCount == meshStatesSize) {//网路下所有poe离线
+                        mState = "网络离线";
+                        pState = "（离线）";
+                    } else if (pOffCount < meshStatesSize) {//网络下部分poe离线
+                        pState = "（存在异常）";
+                    }
+                    controlMesh.setmState(mState);
+                    controlMesh.setpState(pState);
                 }
             }
         }
