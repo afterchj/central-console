@@ -109,7 +109,7 @@ public class ControlCenterService {
                     for (Map<String, Object> meshState : meshStates) {
                         boolean states = (boolean) meshState.get("status");
                         String flag = (String) meshState.get("flag");
-                        if (StringUtils.isNotBlank(flag) && flag != "03") {
+                        if (StringUtils.isNotBlank(flag) && !flag.equals("03") ) {
                             mState = "网络离线";
                         }
                         if (!states) {
@@ -124,6 +124,7 @@ public class ControlCenterService {
                     }
                     controlMesh.setmState(mState);
                     controlMesh.setpState(pState);
+                    controlMesh.setpNum(meshStatesSize);
                 }
             }
         }
