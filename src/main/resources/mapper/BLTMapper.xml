@@ -30,7 +30,7 @@
     <parameterMap id="hostMapper" type="map">
         <parameter property="ip" mode="IN"/>
         <parameter property="meshId" mode="IN"/>
-        <parameter property="hostId" mode="IN"/>
+        <parameter property="host" mode="IN"/>
         <parameter property="mac" mode="IN"/>
         <parameter property="type" mode="IN"/>
         <parameter property="version" mode="IN"/>

@@ -163,7 +163,7 @@ public class StringBuildUtilsTest {
     @Test
     public void testA() {
 //        System.out.println(Integer.parseInt("0a", 16));
-        System.out.println("77010F65FFFFFFFF20000000001105960C03CCCC".indexOf("77010F65"));
+        System.out.println("770505060B1A0109".length());
         String on = "77020315323266";
 //        System.out.println(on.replace("02", "01"));
         String strs = "77011366FFFFFFFFEC436DD7ACF00100000008200102";

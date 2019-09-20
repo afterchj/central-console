@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
  * 服务器主要的业务逻辑
  *
  * @author hongjian.chen
@@ -54,28 +53,17 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             to = jsonObject.getString("host");
             type = jsonObject.getString("type");
         } catch (Exception e) {
+//            if (arg1.indexOf("182716324621") != -1) {
+//                logger.error("ip [{}] cmd [{}]", to, cmd);
+//            }
             if (arg1.indexOf("77050901") != -1) {
                 cmd = "77050103";
-//                String meshId = arg1.substring(8, 24);
-//                char[] chars = meshId.toCharArray();
-//                StringBuffer buffer = new StringBuffer();
-//                for (int i = 0; i < chars.length; i++) {
-//                    if (i % 2 != 0) {
-//                        buffer.append(chars[i]);
-//                    }
-//                }
-//                insertOrUpdateHost(channel, buffer.toString(), "");
             }
             if (arg1.indexOf("77050107") != -1) {
                 logger.warn("hostId [{}] str [{}]", host, arg1);
             }
             if (arg1.indexOf("77050208") != -1) {
                 cmd = "77050103";
-//                Map map = new HashMap();
-//                String flag = arg1.substring(8, 10);
-//                map.put("host", host);
-//                map.put("flag", flag);
-//                updateHost(map, false);
             }
             if (arg1.indexOf("77010F65") != -1) {
                 cmd = "77050103";
@@ -85,25 +73,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
             if (arg1.indexOf("77050506") != -1) {
                 cmd = "77050103";
-//                Map map = new HashMap();
-//                String temp = StringBuildUtils.sortMac(arg1.substring(8, 12)).replace(":", "");
-//                int product = Integer.parseInt(temp, 16);
-//                if (arg1.length() <= 16) return;
-//                String version = arg1.substring(12, 16);
-//                map.put("hostId", host);
-//                map.put("type", product);
-//                map.put("version", version);
-//                saveHost(map, false);
             }
             if (arg1.indexOf("77050705") != -1) {
                 cmd = "77050103";
-//                if (len >= 48 && len <= 52) {
-//                    String mac = StringBuildUtils.sortMac(arg1.substring(36, 48));
-//                    insertOrUpdateHost(channel, "", mac);
-//                } else {
-//                    String mac = StringBuildUtils.sortMac(arg1.substring(8, 20));
-//                    insertOrUpdateHost(channel, "", mac);
-//                }
             }
             if (host.equals(master)) {
                 to = "master";
@@ -115,9 +87,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 hosts = sqlSessionTemplate.selectList("console.getHosts", type);
             }
         }
-//        if (arg1.indexOf("182716324621") != -1) {
-//            logger.error("ip [{}] cmd [{}]", to, cmd);
-//        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len <= 50) {

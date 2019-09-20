@@ -5,7 +5,6 @@ import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
-import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +29,14 @@ public class StringBuildUtils {
     public static void buildLightInfo(String ip, String host, String msg) {
         String[] array = msg.split("CCCC");
         if (array.length == 1) {
-            String format=array[0];
-           if (format.length()>42){
-               tempFormat(format, host);
-           }
+            String format = array[0];
+            if (format.length() >= 42) {
+                tempFormat(format, host);
+            }
         }
         for (String str : array) {
             Map map = new HashMap();
+            map.put("ip", ip);
             map.put("host", host);
             map.put("status", 1);
             if (str.indexOf("77011365") != -1) {
@@ -71,7 +71,6 @@ public class StringBuildUtils {
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 saveLight(map, false);
             } else if (str.indexOf("77050901") != -1) {
-                logger.warn("hostId [{}] mesh {}", host, str);
                 if (str.length() >= 24) {
                     String meshId = str.substring(8, 24);
                     char[] chars = meshId.toCharArray();
@@ -81,29 +80,26 @@ public class StringBuildUtils {
                             buffer.append(chars[i]);
                         }
                     }
-                    insertOrUpdateHost(ip,host, buffer.toString(), "");
+                    map.put("meshId", buffer.toString());
+                    insertOrUpdateHost(map);
                 }
             } else if (str.indexOf("77050208") != -1) {
-                logger.warn("hostId [{}] flag {}", host, str);
                 String flag = str.substring(8, 10);
-                map.put("host", host);
                 map.put("flag", flag);
                 updateHost(map, false);
             } else if (str.indexOf("77050506") != -1) {
-                logger.warn("hostId [{}] ota {}", host, str);
-                if (str.length() <= 16) return;
+                if (str.length() < 16) return;
                 String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
                 int product = Integer.parseInt(temp, 16);
                 String version = str.substring(12, 16);
-                map.put("hostId", host);
                 map.put("type", product);
                 map.put("version", version);
-                saveHost(map, false);
+                insertOrUpdateHost(map);
             } else if (str.indexOf("77050705") != -1) {
-                logger.warn("hostId [{}] mac {}", host, str);
                 if (str.length() >= 20) {
                     String mac = StringBuildUtils.sortMac(str.substring(8, 20));
-                    insertOrUpdateHost(ip,host, "", mac);
+                    map.put("mac", mac);
+                    insertOrUpdateHost(map);
                 }
             }
         }
@@ -277,17 +273,8 @@ public class StringBuildUtils {
         WebSocket.sendMessage(map);
     }
 
-    public static void insertOrUpdateHost(String ip,String host, String meshId, String mac) {
-        Map map = new ConcurrentHashMap();
-        map.put("ip", ip);
-        map.put("hostId", host);
-        map.put("status", true);
-        if (StringUtils.isNotBlank(meshId)) {
-            map.put("meshId", meshId);
-        }
-        if (StringUtils.isNotBlank(mac)) {
-            map.put("mac", mac);
-        }
+    public static void insertOrUpdateHost(Map map) {
+        logger.warn("map {}", map);
         saveHost(map, false);
     }
 
