@@ -104,7 +104,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         String id = ch.id().toString();
                         if (to.equals("all")) {
                             ch.writeAndFlush(cmd);
-                        } else if (to.equals("master")) {
+                        } else if (to.equals("master") && cmd.indexOf("77050103") == -1) {
                             for (String guest : hosts) {
                                 if (!guest.equals(host)) {
                                     if (id.equals(guest)) {
