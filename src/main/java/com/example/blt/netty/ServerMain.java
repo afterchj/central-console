@@ -22,7 +22,7 @@ public class ServerMain {
         EventLoopGroup worker = new NioEventLoopGroup();
         final ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.option(ChannelOption.SO_BACKLOG, 1024); //设置TCP相关信息
-        bootstrap.childOption(ChannelOption.ALLOW_HALF_CLOSURE, true);
+        bootstrap.childOption(ChannelOption.ALLOW_HALF_CLOSURE, false);
         bootstrap.group(acceptor, worker);//设置循环线程组，前者用于处理客户端连接事件，后者用于处理网络IO
         bootstrap.channel(NioServerSocketChannel.class);//用于构造socketchannel工厂
 //        bootstrap.handler(new ChatServerHandler());

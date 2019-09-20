@@ -60,7 +60,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 cmd = "77050103";
             }
             if (arg1.indexOf("77050107") != -1) {
-                logger.warn("hostId [{}] str [{}]", host, arg1);
+                sendPoeInfo(channel);
             }
             if (arg1.indexOf("77050208") != -1) {
                 cmd = "77050103";
@@ -92,7 +92,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (len > 9 && len <= 50) {
             logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             if (cmd.indexOf("77050103") != -1) {
-                redisTemplate.opsForValue().set(host, arg1, 30, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
             }
             StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
@@ -143,9 +143,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        channel.writeAndFlush("77050101CCCC");//获取mesh信息
-        channel.writeAndFlush("77050105CCCC");//获取mac信息
-        channel.writeAndFlush("77050106CCCC");//获取ota信息
+        sendPoeInfo(channel);
     }
 
     //退出链接
@@ -158,5 +156,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws InterruptedException {
         logger.error("socketInactive error [{}]", cause.getMessage());
         ctx.close().sync();
+    }
+
+    public void sendPoeInfo(Channel channel) {
+        channel.writeAndFlush("77050101CCCC");//获取mesh信息
+        channel.writeAndFlush("77050105CCCC");//获取mac信息
+        channel.writeAndFlush("77050106CCCC");//获取ota信息
     }
 }
