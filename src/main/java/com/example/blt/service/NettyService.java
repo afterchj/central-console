@@ -18,9 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,8 +36,24 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Scheduled(cron = "0/20 * * * * ?")
     public void checkSize() throws InterruptedException {
-        Thread.sleep(10000);
         ValueOperations valueOperations = getOpsForValue();
+        List<String> hosts = sqlSessionTemplate.selectList("console.getAll");
+        List list = new ArrayList();
+        try {
+            for (String host : hosts) {
+                Object object = valueOperations.get(host);
+                if (object != null) {
+                    list.add(host);
+                }
+            }
+            logger.warn("hosts {}", list);
+            if (list.size() != hosts.size() && list.size() > 0) {
+                sqlSessionTemplate.update("console.updateHostsStatus", list);
+            }
+        } catch (Exception e) {
+            logger.error("updateHostStatus error {}", e.getMessage());
+        }
+        Thread.sleep(10000);
         Set lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
         Set vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
         if (null != lmacSet) {

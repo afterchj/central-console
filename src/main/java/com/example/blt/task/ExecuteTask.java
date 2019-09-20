@@ -28,7 +28,7 @@ public class ExecuteTask {
 //    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
     public static void pingInfo(String ip, String msg) {
-        executorService.submit(new PingTask(ip, msg));
+        executorService.execute(new PingTask(ip,ip, msg));
     }
 
     public static void ping(boolean flag, int times, String... host) {

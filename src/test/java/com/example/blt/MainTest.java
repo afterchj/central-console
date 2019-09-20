@@ -12,6 +12,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.*;
 
@@ -97,10 +98,27 @@ public class MainTest {
 
     @Test
     public void testSqlSession() {
+//        String arg1="7705020803CCCC";
+//        Map map = new HashMap();
+//        map.put("host", "e1753bd4");
+//        String flag = arg1.substring(8, 10);
+//        map.put("flag", flag);
+//        sqlSessionTemplate.update("console.updateHostsFlag", map);
         String temp = sqlSessionTemplate.selectOne("console.getHost");
         List hosts = sqlSessionTemplate.selectList("console.getHosts");
+//        hosts.remove("e1753bd4");
+        List<String> list = sqlSessionTemplate.selectList("console.getAll");
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        for (String id : list) {
+            String tem = valueOperations.get(id, 0, -1);
+            System.out.println(id + "\t" + tem);
+        }
+        list.remove("e1753bd4");
+        System.out.println(list + "\t" + temp);
+//        if (hosts.size() > 0) {
+//            sqlSessionTemplate.update("console.updateHostsStatus", hosts);
+//        }
 //        Set set = new HashSet(hosts);
-        Map map = new HashMap();
 //        map.put("ip", "127.0.0.1");
 //        map.put("status", true);
 //        sqlSessionTemplate.insert("console.insertHost", map);
@@ -109,7 +127,6 @@ public class MainTest {
 //        String str = "77040F0227E9010000713232000000000000CC";
 //        StringBuildUtils.buildLightInfo(str,"127.0.0.1");
 //        ExecuteTask.pingInfo("127.0.0.1", str);
-        System.out.println(hosts + "\t" + temp);
     }
 
     @Test
@@ -151,12 +168,14 @@ public class MainTest {
 
     @Test
     public void testRedis() {
-        ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), 10);
+//        ConsoleUtil.saveInfo(ConsoleKeys.LSIZE.getValue(), 10);
 
-        Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
-        Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
-        logger.warn("lmacSet=" + lmacSet);
-        logger.warn("vaddrSet=" + vaddrSet);
+        redisTemplate.opsForValue().set("host_id", "55555555");
+        System.out.println(redisTemplate.opsForValue().get("host_id", 0, -1));
+//        Set<Map> lmacSet = ConsoleUtil.getInfo(ConsoleKeys.lMAC.getValue());
+//        Set<Map> vaddrSet = ConsoleUtil.getInfo(ConsoleKeys.VADDR.getValue());
+//        logger.warn("lmacSet=" + lmacSet);
+//        logger.warn("vaddrSet=" + vaddrSet);
     }
 
     @Test
@@ -315,8 +334,8 @@ public class MainTest {
     }
 
     @Test
-    public void testProperties(){
+    public void testProperties() {
         String mode = PropertiesUtil.getValue("rocketmq.model");
-        System.out.println("mode="+mode);
+        System.out.println("mode=" + mode);
     }
 }

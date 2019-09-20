@@ -5,6 +5,7 @@ import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
 import com.example.blt.service.ProducerService;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +27,17 @@ public class StringBuildUtils {
     private static Set<String> vaddrSet = new CopyOnWriteArraySet<>();
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
-    public static void buildLightInfo(String ip, String msg) {
+    public static void buildLightInfo(String ip, String host, String msg) {
         String[] array = msg.split("CCCC");
         if (array.length == 1) {
-            tempFormat(array[0], ip);
+            String format=array[0];
+           if (format.length()>42){
+               tempFormat(format, host);
+           }
         }
         for (String str : array) {
             Map map = new HashMap();
-            map.put("host", ip);
+            map.put("host", host);
             map.put("status", 1);
             if (str.indexOf("77011365") != -1) {
                 ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
@@ -54,7 +58,7 @@ public class StringBuildUtils {
                 saveLight(map, false);
             } else if (str.indexOf("77011366") != -1) {
                 ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
-                ipSet.add(ip);
+                ipSet.add(host);
                 String lmac = str.substring(16, 28);
                 String vaddr = str.substring(28, 36);
                 String productId = str.substring(36, 44);
@@ -66,6 +70,41 @@ public class StringBuildUtils {
                 ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
                 ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                 saveLight(map, false);
+            } else if (str.indexOf("77050901") != -1) {
+                logger.warn("hostId [{}] mesh {}", host, str);
+                if (str.length() >= 24) {
+                    String meshId = str.substring(8, 24);
+                    char[] chars = meshId.toCharArray();
+                    StringBuffer buffer = new StringBuffer();
+                    for (int i = 0; i < chars.length; i++) {
+                        if (i % 2 != 0) {
+                            buffer.append(chars[i]);
+                        }
+                    }
+                    insertOrUpdateHost(ip,host, buffer.toString(), "");
+                }
+            } else if (str.indexOf("77050208") != -1) {
+                logger.warn("hostId [{}] flag {}", host, str);
+                String flag = str.substring(8, 10);
+                map.put("host", host);
+                map.put("flag", flag);
+                updateHost(map, false);
+            } else if (str.indexOf("77050506") != -1) {
+                logger.warn("hostId [{}] ota {}", host, str);
+                if (str.length() <= 16) return;
+                String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
+                int product = Integer.parseInt(temp, 16);
+                String version = str.substring(12, 16);
+                map.put("hostId", host);
+                map.put("type", product);
+                map.put("version", version);
+                saveHost(map, false);
+            } else if (str.indexOf("77050705") != -1) {
+                logger.warn("hostId [{}] mac {}", host, str);
+                if (str.length() >= 20) {
+                    String mac = StringBuildUtils.sortMac(str.substring(8, 20));
+                    insertOrUpdateHost(ip,host, "", mac);
+                }
             }
         }
     }
@@ -101,7 +140,6 @@ public class StringBuildUtils {
     }
 
     public static void tempFormat(String format, String ip) {
-        logger.warn("cmd {}", format);
         String mid = format.substring(16, 18);
         String str = format.substring(26);
         int len = str.length();
@@ -124,7 +162,7 @@ public class StringBuildUtils {
                 map.put("cid", cid);
                 break;
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
-                String cmd = str.substring(len - 4,len-2);
+                String cmd = str.substring(len - 4, len - 2);
                 if ("01".equals(cmd)) {
                     status = 0;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOn());
@@ -237,5 +275,39 @@ public class StringBuildUtils {
         }
         sqlSessionTemplate.selectOne("console.saveConsole", map);
         WebSocket.sendMessage(map);
+    }
+
+    public static void insertOrUpdateHost(String ip,String host, String meshId, String mac) {
+        Map map = new ConcurrentHashMap();
+        map.put("ip", ip);
+        map.put("hostId", host);
+        map.put("status", true);
+        if (StringUtils.isNotBlank(meshId)) {
+            map.put("meshId", meshId);
+        }
+        if (StringUtils.isNotBlank(mac)) {
+            map.put("mac", mac);
+        }
+        saveHost(map, false);
+    }
+
+    public static void saveHost(Map map, boolean flag) {
+        if (flag) {
+            try {
+                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (Exception e) {
+            }
+        }
+        sqlSessionTemplate.insert("console.saveUpdateHosts", map);
+    }
+
+    public static void updateHost(Map map, boolean flag) {
+        if (flag) {
+            try {
+                ProducerService.pushMsg(Topics.HOST_UPDATE_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (Exception e) {
+            }
+        }
+        sqlSessionTemplate.update("console.updateHostsFlag", map);
     }
 }

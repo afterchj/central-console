@@ -8,15 +8,17 @@ import com.example.blt.utils.StringBuildUtils;
 public class PingTask implements Runnable {
 
     private String ip;
+    private String host;
     private String msg;
 
-    public PingTask(String ip, String msg) {
+    public PingTask(String ip, String host, String msg) {
         this.msg = msg;
+        this.host = host;
         this.ip = ip;
     }
 
     @Override
     public void run() {
-        StringBuildUtils.buildLightInfo(ip, msg);
+        StringBuildUtils.buildLightInfo(ip, host, msg);
     }
 }

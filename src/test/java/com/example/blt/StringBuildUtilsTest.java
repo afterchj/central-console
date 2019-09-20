@@ -25,12 +25,12 @@ public class StringBuildUtilsTest {
 
     @Test
     public void test() {
-        String[] array ="77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC".split("CCCC");
-        System.out.println("array="+array[0]+"\t"+"770509010908040207070801CCCC77050705791000D7ACF0CCCC".length());
+        String[] array = "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC".split("CCCC");
+        System.out.println("array=" + array[0] + "\t" + "770509010908040207070801CCCC77050705791000D7ACF0CCCC".length());
         String key = String.format("task_%s_%s", "88888888", 1);
         System.out.println(key);
         String mac = StringBuildUtils.sortMac("7705070504456DD7ACF0CCCC".substring(8, 20));
-        System.out.println(mac+"\t"+"770509010908040207070801CCCC77050705791000D7ACF0CCCC".indexOf("77050705"));
+        System.out.println(mac + "\t" + "770509010908040207070801CCCC77050705791000D7ACF0CCCC".indexOf("77050705"));
         String space = "77 01 12 65 FF FF FF FF 2A 05 00 00 00 C0 00 37 37 00 00 00 00 CC CC ".replace(" ", "");
         String mobile = "77 01 13 65 FF FF FF FF 21 0D 00 00 00 52 1F EA 62 D7 AC F0 01 01 CC CC ".replace(" ", "");
         String ping = "77 01 0A 65 FF FF FF FF FE 00 00 00 00 CC CC".replace(" ", "");
@@ -44,16 +44,16 @@ public class StringBuildUtilsTest {
         String c52 = "77 04 10 02 21 69 00 00 00 52 77 65 65 D7 AC F0 00 01 00 85".replace(" ", "");//7704100221F505000052456365D7ACF0000200CCCC
         String c42 = "77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83".replace(" ", "");
         String type = "770505060b1a0109CCCC";
-        String temp=type.substring(8,12);
-        StringBuildUtils.sortMac(temp).replace(":","");
-        System.out.println("type="+StringBuildUtils.sortMac(type.substring(8,12)).replace(":",""));
+        String temp = type.substring(8, 12);
+        StringBuildUtils.sortMac(temp).replace(":", "");
+        System.out.println("type=" + StringBuildUtils.sortMac(type.substring(8, 12)).replace(":", ""));
         String str = "77040E020103000000C000373700000000CC";
         String CS = "77011265FFFFFFFF20010000004200000000000004CCCC";
         String C0 = "77011265FFFFFFFF2A01000000C000373700000000CCCC";
         String pinStrA = "77011366FFFFFFFF04456DD7ACF09D01000008200102CCCC";
         String pinStrB = "77011365FFFFFFFF2755010000711413000000000000CCCC";
         int len = CS.length();
-        System.out.println(CS.substring(len-6,len-4)+"\t"+"77011265FFFFFFFF".length() + "\t" + "77011265FFFFFFFF2001000000".length());
+        System.out.println(CS.substring(len - 6, len - 4) + "\t" + "77011265FFFFFFFF".length() + "\t" + "77011265FFFFFFFF2001000000".length());
 //        StringBuildUtils.buildLightInfo("127.0.0.1",CS);
 //        StringBuildUtils.buildLightInfo("127.0.0.1",C0);
 //        StringBuildUtils.tempFormat(str,"127.0.0.1");
@@ -162,26 +162,30 @@ public class StringBuildUtilsTest {
 
     @Test
     public void testA() {
-        System.out.println(Integer.parseInt("0a", 16));
+//        System.out.println(Integer.parseInt("0a", 16));
+        System.out.println("77010F65FFFFFFFF20000000001105960C03CCCC".indexOf("77010F65"));
         String on = "77020315323266";
-        System.out.println(on.replace("02", "01"));
-        String strs = "77041002216501000052456365D7ACF0000200CCCC";
-        System.out.println(strs.indexOf("CC") + "\t" + strs.substring(0, strs.indexOf("CC")));
-        System.out.println(strs.length() + "\t" + strs.indexOf("770101"));
-        System.out.println("77040F0227FD020000713232000000000000CC".length());
-        System.out.println("77040F0152406DD7ACF06900000008200102CCCC".length() + "\t" + "77040F0227A9000000710013000000000000CCCC".length());
+//        System.out.println(on.replace("02", "01"));
+        String strs = "77011366FFFFFFFFEC436DD7ACF00100000008200102";
+        System.out.println(strs.length());
+//        System.out.println(strs.length() + "\t" + strs.indexOf("770101"));
+//        System.out.println("77040F0227FD020000713232000000000000CC".length());
+//        System.out.println("77040F0152406DD7ACF06900000008200102CCCC".length() + "\t" + "77040F0227A9000000710013000000000000CCCC".length());
         String strA = "77040F0152406DD7ACF06900000008200102CCCC77040F011D406DD7ACF06902000008200102CCCC77040F015E3F6DD7ACF06901000008200102CCCC77040F019B446DD7ACF02900000008200102CCCC77040F01BF406DD7ACF00900000008200102CCCC77040F010D3F6DD7ACF0A900000008200102CCCC77040F01103F6DD7ACF0E900000008200102CCCC";
         String strB = "77040F0227A9000000710013000000000000CCCC77040F022719000000710013000000000000CCCC77040F0227A9010000710013000000000000CCCC77040F0227E9000000710013000000000000CCCC77040F0227D9000000710013000000000000CCCC77040F022739000000710013000000000000CCCC77040F022759000000710013000000000000CCCC77040F0227A9020000710013000000000000CCCC77040F022799000000710013000000000000CCCC77040F0227F9000000710013000000000000CCCC77040F0227A9030000710013000000000000CCCC";
-        String[] array = strB.split("CCCC");
-        logger.warn("strArray.length [{}]", array.length);
-        System.out.println("len=" + strA.length());
-        System.out.println("len=" + strB.length());
-        String[] arrA = strA.split("CCCC");
-        String[] arrB = strB.split("CCCC");
-        String[] arr = strs.split("CCCC");
-        System.out.println(arr[0].length() + "\t" + arr[0]);
-        System.out.println(arrA.length + "\t" + arrA[0]);
-        System.out.println(arrB.length + "\t" + arrB[0]);
+        String demo = "0108020701060302040602560109CCCC77050107CCCC7705020803CCCC770503040200CCCC77011366FFFFFFFFEC436DD7ACF00100000008200102CCCC77011366FFFFFFFFCC436DD7ACF00900000008200102CCCC";
+        String[] array = demo.split("CCCC");
+        for (String str : array) {
+            System.out.println("str=" + str);
+        }
+//        System.out.println("len=" + strA.length());
+//        System.out.println("len=" + strB.length());
+//        String[] arrA = strA.split("CCCC");
+//        String[] arrB = strB.split("CCCC");
+//        String[] arr = strs.split("CCCC");
+//        System.out.println(arr[0].length() + "\t" + arr[0]);
+//        System.out.println(arrA.length + "\t" + arrA[0]);
+//        System.out.println(arrB.length + "\t" + arrB[0]);
     }
 
     @Test
