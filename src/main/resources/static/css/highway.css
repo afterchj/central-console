@@ -1,6 +1,6 @@
 body, html {
     height: 100%;
-    background-color: #fafafa;
+    background-color: #dcdcdc;
     filter: contrast(110%)
 }
 
@@ -151,8 +151,9 @@ strong {
 }
 
 .nav-background {
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #11645b), color-stop(1, #178579));
-    color: #fafafa
+    /*background: -webkit-gradient(linear, left bottom, left top, color-stop(0,  rgba(9,142,127,1)), color-stop(.8, #098E7F));*/
+    background-color:#098E7F ;
+    color: #dcdcdc
 }
 
 .shuli {
@@ -204,7 +205,7 @@ strong {
 .center-tree > .am-g {
     margin: 5px 0;
     border-color: #666;
-    background-color: #fafafa
+    background-color: #dcdcdc
 }
 
 .roadBackground .am-list > li.center-tree-sibings.two {
@@ -213,7 +214,7 @@ strong {
 
 .hint-car {
     display: inline-block;
-    color: #fafafaF00;
+    color: #dcdcdcF00;
     letter-spacing: 8px;
     font-size: 25px
 }
@@ -225,13 +226,13 @@ strong {
 .part-8 {
     width: 12.5%;
     height: 1rem;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #bbb;
     color: #696969;
     font-size: 1.2rem
 }
 
 .part-8.am-cf {
-    border-left: 1px solid #ccc
+    border-left: 1px solid #bbb;
 }
 
 .light .part-8 {
@@ -295,14 +296,15 @@ strong {
 }
 
 .new-road .hint {
-    color: #888;
+    color: #777;
     font-size: 1.3rem;
     filter: contrast(200%);
+    line-height: 1.8;
 }
 
 .road {
     height: 6.5rem;
-    background-color: #50575e
+    background-color: #545c64;
 }
 
 .road .part-8 span {
@@ -310,7 +312,7 @@ strong {
 }
 
 .road-bg1, .road-bg2 .part-8 span {
-    border-bottom: .5rem solid #fafafa
+    border-bottom: .5rem solid #dcdcdc
 }
 
 .road-bg2 .part-8 span {
@@ -353,7 +355,7 @@ strong {
 
 .road-bg3 .part-8 span {
     height: 4rem;
-    border-bottom: .5rem solid #fafafa
+    border-bottom: .5rem solid #dcdcdc
 }
 
 .road-bg3 .part-8 span.am-fl {
@@ -379,7 +381,7 @@ strong {
 }
 
 .road-tree {
-    background-color: #fafafa
+    background-color: #dcdcdc
 }
 
 .road-tree .control-bg {
@@ -399,7 +401,7 @@ hr {
     margin: 0 0 0 13%;
     height: .5rem;
     border: 0;
-    background-color: #fafafa
+    background-color: #dcdcdc
 }
 
 .tree .part-8, .tree .part-8.am-cf {
@@ -414,7 +416,7 @@ hr {
 
 .control-bg {
     height: 6.5rem;
-    background-color: #fafafa !important
+    background-color: #dcdcdc !important
 }
 
 .col-end {
@@ -439,6 +441,7 @@ hr {
     box-shadow: rgba(0, 0, 0, .44) 0 2px 6px, rgba(0, 0, 0, .66) 0 1px 2px;
     white-space: nowrap;
     cursor: pointer;
+    background-color: #fff;
 }
 
 .control .am-fl, .control .am-fr {
@@ -478,5 +481,19 @@ hr {
 }
 
 .road-middle {
-    border-bottom: .5rem solid #fafafa
+    border-bottom: .5rem solid #dcdcdc
+}
+/*.road-middle2{*/
+    /*height:0;*/
+/*}*/
+.road-middle2{
+    height: .5rem;
+}
+.road-middle2  .col-end{
+    height: .5rem;
+    background-color: #dcdcdc;
+    width: 87%;
+}
+.road-middle2 .control-bg{
+    height: .5rem;
 }
