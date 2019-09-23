@@ -19,6 +19,15 @@ public class ControlMaster {
     private String mState;//网络状态
     private String pState;//网络下面板总状态
     private Integer pNum;//面板个数
+    private String flag;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     public Integer getpNum() {
         return pNum;
@@ -44,7 +53,6 @@ public class ControlMaster {
         if (StringUtils.isNotBlank(pState)){
             this.pState = pState;
         }
-
     }
 
     public String getmState() {
@@ -107,6 +115,7 @@ public class ControlMaster {
                 ", mState='" + mState + '\'' +
                 ", pState='" + pState + '\'' +
                 ", pNum=" + pNum +
+                ", flag='" + flag + '\'' +
                 '}';
     }
 }

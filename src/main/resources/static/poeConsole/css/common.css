@@ -12,6 +12,7 @@ body {
     background-color: #fff;
     font-size: 1.2rem;
     color: #474747;
+    position: relative;
 }
 .am-container {
     background-color: #fff;
@@ -271,7 +272,20 @@ fieldset {
 /*.data-show.active{*/
     /*display: block;*/
 /*}*/
-
+#spinner{
+    top: 30%;
+    left: 47%;
+    z-index: 999999;
+    color: #eee;
+    text-align: center;
+}
+#spinner i{
+   font-size: 6rem;
+}
+#spinner .spinner-text{
+    font-size: 1.5rem;
+    margin: 0;
+}
 
 /* 判断ipad */
 @media only screen

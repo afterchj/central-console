@@ -6,6 +6,7 @@ import com.example.blt.entity.control.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: central-console
@@ -31,7 +32,7 @@ public interface ControlCenterDao {
     Integer getGname(String gname);
 
     @Update("update t_group set gname=#{gname} where id=#{id}")
-    void renameGroup(@Param("gname") String gname,@Param("id") Integer id);
+    void renameGroup(@Param("gname") String gname, @Param("id") Integer id);
 
     @Select("select id,gname from t_group")
     List<GroupList> getGroups();
@@ -40,7 +41,7 @@ public interface ControlCenterDao {
     Integer getMname(@Param("mname") String mname);
 
     @Update("update t_host_info set mesh_name=#{mname} where mesh_id=#{meshId}")
-    void renameMesh(@Param("mname")String mname, @Param("meshId")String meshId);
+    void renameMesh(@Param("mname") String mname, @Param("meshId") String meshId);
 
     @Select("select count(*) FROM t_host_info WHERE other=#{pname}")
     Integer getPname(@Param("pname") String pname);
@@ -58,7 +59,7 @@ public interface ControlCenterDao {
     void updatetMaster(@Param("meshId") String meshId);
 
     @Update("update t_host_info set is_master=#{type} where mesh_id=#{meshId}")
-    void updateHostInfo(@Param("meshId")String meshId,@Param("type") int type);
+    void updateHostInfo(@Param("meshId") String meshId, @Param("type") int type);
 
     @Select("select id,mesh_id as meshId,ifnull(mesh_name,mesh_id) as mname from t_host_info where (ip != '127.0.0.1' or ip is null) and mesh_id is not null group by meshId")
     List<MeshList> getMeshs();
@@ -66,15 +67,12 @@ public interface ControlCenterDao {
     List<ControlMaster> getControlGroupsByGname(@Param("gname") String gname);
 
     @Update("update t_host_info set gid=(select id from t_group where gname=#{gname}) where mesh_id=#{meshId}")
-    void selectGroup(@Param("gname")String gname, @Param("meshId")String meshId);
+    void selectGroup(@Param("gname") String gname, @Param("meshId") String meshId);
 
-//    @Select("select if(status='1','在线','离线') AS state,ifnull( other, ifnull(mac,ip) ) AS pname, ifnull(mac,ip) as mac,product_type as productType from t_host_info where mesh_id=#{meshId} and ip!='127.0.0.1'")
-    List<ControlHost> getPanels(@Param("meshId")String meshId);
-
-    List<ControlMaster> getMasterStates();
+    List<ControlHost> getPanels(@Param("meshId") String meshId);
 
     @Update("update t_host_info set gid=(select id from t_group WHERE gname=#{gname}) , is_master=0 where mesh_id=#{meshId}")
-    void updateMasterGidByMeshId(@Param("meshId")String meshId, @Param("gname")String gname);
+    void updateMasterGidByMeshId(@Param("meshId") String meshId, @Param("gname") String gname);
 
     @Update("update t_host_info set gid=null where gid=#{gid}")
     void updateMasterByGid(@Param("gid") Integer id);
@@ -83,7 +81,7 @@ public interface ControlCenterDao {
     int getPanelNums(@Param("meshId") String meshId);
 
     @Delete("DELETE FROM t_host_info where mesh_id=#{meshId}")
-    void deleteMesh(@Param("meshId")String meshId);
+    void deleteMesh(@Param("meshId") String meshId);
 
     @Delete("TRUNCATE TABLE f_time_line")
     void reSetTimeLine();
@@ -96,4 +94,7 @@ public interface ControlCenterDao {
 
     @Delete("TRUNCATE TABLE t_host_info")
     void reSetHostInfo();
+
+    @Select("select status,flag from t_host_info where mesh_id=(select mesh_id from t_host_info where mesh_id=#{meshId} and host_id is not null having count(*)>1)")
+    List<Map<String,Object>> getMeshState(@Param("meshId")String meshId);
 }

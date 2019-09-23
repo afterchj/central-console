@@ -1,19 +1,18 @@
 package com.example.blt.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.ControlCenterDao;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.*;
 import com.example.blt.entity.dd.Week;
-import com.example.blt.task.ControlTask;
-import com.example.blt.task.ExecuteTask;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * @program: central-console
@@ -89,35 +88,43 @@ public class ControlCenterService {
 
     public List<ControlMaster> getControlGroups(String gname, String meshId) {
         List<ControlMaster> controlMeshs;
-        List<ControlMaster> controlMasters = controlCenterDao.getMasterStates();
         if (StringUtils.isNotBlank(meshId)) {//选择组
             controlCenterDao.updateMasterGidByMeshId(meshId, gname);
         }
         if (StringUtils.isNotBlank(gname) && StringUtils.isBlank(meshId)) {
-//            if ("全部".equals(gname)){//全选 空组也选择
-//                controlMeshs = controlCenterDao.getControlGroups();
-//            }else {//单选组
-//                controlMeshs = controlCenterDao.getControlGroupsByGname(gname);
-//            }
-            //全选 空组也选择 //否则单选组
             controlMeshs = ("全部".equals(gname)) ? controlCenterDao.getControlGroups() : controlCenterDao
                     .getControlGroupsByGname(gname);
         } else {
             controlMeshs = controlCenterDao.getControlGroups();
         }
         if (controlMeshs.size() > 0) {
-            Iterator<ControlMaster> controlMeshIterator = controlMeshs.iterator();
-            while (controlMeshIterator.hasNext()) {
-                ControlMaster controlMesh = controlMeshIterator.next();
-                for (ControlMaster controlMaster : controlMasters) {
-                    if (controlMesh.getMeshId().equals(controlMaster.getMeshId())) {
-                        int count = controlCenterDao.getPanelNums(controlMaster.getMeshId());
-                        controlMesh.setpNum(count);
-                        controlMesh.setmState(controlMaster.getmState());
-//                        if (StringUtils.isNotBlank(controlMaster.getpState())){
-                        controlMesh.setpState(controlMaster.getpState());
-//                        }
+            for (ControlMaster controlMesh : controlMeshs) {
+                meshId = controlMesh.getMeshId();
+                List<Map<String, Object>> meshStates = controlCenterDao.getMeshState(meshId);
+                if (meshStates.size() > 0) {
+                    String mState = "网络在线";
+                    String pState = null;
+                    int pOffCount = 0;//单个网路下poe离线个数
+                    int meshStatesSize = meshStates.size();
+                    for (Map<String, Object> meshState : meshStates) {
+                        boolean states = (boolean) meshState.get("status");
+                        String flag = (String) meshState.get("flag");
+                        if (StringUtils.isNotBlank(flag) && !flag.equals("03") ) {
+                            mState = "网络离线";
+                        }
+                        if (!states) {
+                            pOffCount++;
+                        }
                     }
+                    if (pOffCount == meshStatesSize) {//网路下所有poe离线
+                        mState = "网络离线";
+                        pState = "（离线）";
+                    } else if (pOffCount < meshStatesSize) {//网络下部分poe离线
+                        pState = "（存在异常）";
+                    }
+                    controlMesh.setmState(mState);
+                    controlMesh.setpState(pState);
+                    controlMesh.setpNum(meshStatesSize);
                 }
             }
         }
@@ -202,31 +209,10 @@ public class ControlCenterService {
         return flag;
     }
 
-    public Boolean reSet() {
+    public void reSet() {
         controlCenterDao.reSetTimeLine();
         controlCenterDao.reSetTimePoint();
         controlCenterDao.reSetGroup();
         controlCenterDao.reSetHostInfo();
-        Boolean flag = true;
-        flag = sendReSetCmd("77050101CCCC");
-        if (flag){
-            flag = sendReSetCmd("77050105CCCC");
-        }
-        return flag;
-    }
-
-
-    public boolean sendReSetCmd(String command){
-        Boolean flag = true;
-        Map<String, String> map = new HashMap<>();
-        String host = "all";
-        map.put("command",command);
-        map.put("host", host);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
-        String code = ExecuteTask.sendCmd(task);
-        if ("fail".equals(code)) {
-            flag = false;
-        }
-        return flag;
     }
 }

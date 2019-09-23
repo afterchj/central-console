@@ -143,7 +143,7 @@ public class MainController {
         return map;
     }
 
-    @RequestMapping(value = "/sendSocket6", method = RequestMethod.POST)
+    @RequestMapping(value = "/data", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendSocket6(String host, String command) {
         host = blTservice.getHostId(host);
