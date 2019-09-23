@@ -1,6 +1,7 @@
 body, html {
     background-color: #F7F7F7;
-    font-family: PingFangSC-Semibold, sans-serif;
+    /*font-family: PingFangSC-Semibold, sans-serif;*/
+    color: #323232;
 }
 
 strong {
@@ -330,7 +331,7 @@ strong {
 }
 
 .road-hint-right {
-    top: -5rem;
+    top: -4rem;
     right: 15%;
     transform: rotate(-90deg);
 }
@@ -342,7 +343,7 @@ strong {
 }
 
 .road-hint-left {
-    bottom: -17.5rem;
+    bottom: -260%;
     left: 25%;
     transform: rotate(90deg);
 }
@@ -390,7 +391,7 @@ strong {
     /*height: 4rem;*/
 }
 .road-tree {
-    background-color: #CBD6B6;
+    /*background-color: #CBD6B6;*/
 }
 
 .road-tree .control-bg {
