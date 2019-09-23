@@ -303,7 +303,7 @@ strong {
 
 .road {
     height: 6.5rem;
-    background-color: #4B4B4B;
+    background-color: #7a7b7d;
 }
 .road .light img{
     width: 5rem;
@@ -421,6 +421,7 @@ strong {
 .control-bg {
     height: 6.5rem;
     background-color: #f7f7f7 !important;
+    box-shadow: 1px 7px 6px 1px rgba(3,3,3,.15);
 }
 
 .col-end {
@@ -474,7 +475,8 @@ strong {
 
 .region.active {
     border-color: #eaa228 !important;
-    opacity: .85
+    /* opacity: .85; */
+    /*bottom: .4rem;*/
 }
 
 .size {
@@ -498,7 +500,7 @@ strong {
     z-index: 999;
 }
 .tree>div.part-4:nth-child(odd) img:last-child{
-    left: 5rem;
+    left: 6rem;
     width: 3rem;
 }
 .tree>div.part-4:nth-child(even) img:first-child{
@@ -510,7 +512,7 @@ strong {
     z-index: 999;
 }
 .tree>div.part-4:nth-child(even) img:last-child{
-    left: 18rem;
+    left: 19rem;
     width: 3rem;
 }
 .road-middle {
