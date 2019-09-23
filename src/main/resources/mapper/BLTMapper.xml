@@ -97,6 +97,10 @@
         SELECT host_id FROM t_host_info
     </select>
 
+    <select id="getCron" resultType="CronVo">
+        SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,repetition,cron FROM t_cron
+    </select>
+
     <select id="getHostId" resultType="string">
         SELECT host_id FROM t_host_info WHERE ip=#{host} OR mesh_id=#{host}
     </select>
@@ -114,6 +118,10 @@
     <select id="getTotal" resultType="int">
         SELECT COUNT(0) lmacn FROM f_light_demo
     </select>
+
+    <insert id="insertCron" parameterType="CronVo">
+        REPLACE INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,create_date,update_date) VALUE (#{cronName},#{meshId},#{sceneId},#{itemSet},#{repetition},#{cron},now(),now())
+    </insert>
 
     <insert id="insertLog" parameterType="string">
         INSERT INTO f_light_console(ip,msg,log_date) VALUE (#{ip},#{msg},now())

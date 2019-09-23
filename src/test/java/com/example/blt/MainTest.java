@@ -1,7 +1,9 @@
 package com.example.blt;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
+import com.example.blt.entity.vo.CronVo;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.PropertiesUtil;
@@ -310,10 +312,12 @@ public class MainTest {
 
     @Test
     public void testSend() {
-        List<String> hosts = sqlSessionTemplate.selectList("console.getHostsByGid", "45642");
-        String host = sqlSessionTemplate.selectOne("console.getHost", "bc10b37");
-        System.out.println("flag=" + "master".equals(host));
-        System.out.println(hosts.size() + "\t" + host);
+        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+        System.out.println(JSON.toJSONString(cronVos) + "\t" + cronVos.size());
+//        List<String> hosts = sqlSessionTemplate.selectList("console.getHostsByGid", "45642");
+//        String host = sqlSessionTemplate.selectOne("console.getHost", "bc10b37");
+//        System.out.println("flag=" + "master".equals(host));
+//        System.out.println(hosts.size() + "\t" + host);
 //        JSONObject object = new JSONObject();
 //        object.put("host", "master");
 //        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");

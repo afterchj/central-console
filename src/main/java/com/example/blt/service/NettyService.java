@@ -1,12 +1,11 @@
 package com.example.blt.service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.netty.ClientMain;
+import com.example.blt.entity.vo.CronVo;
 import com.example.blt.netty.ServerMain;
-import com.example.blt.utils.ConsoleUtil;
+import com.example.blt.task.DynamicScheduledTask;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +17,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hongjian.chen on 2019/5/17.
@@ -28,7 +28,8 @@ import java.util.concurrent.TimeUnit;
 public class NettyService implements ApplicationListener<ContextRefreshedEvent> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    @Resource
+    private DynamicScheduledTask dynamicScheduledTask;
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
     @Resource
@@ -41,12 +42,13 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         List list = new ArrayList();
         try {
             for (String host : hosts) {
-                Object object = valueOperations.get(host);
-                if (object != null) {
-                    list.add(host);
+                if (StringUtils.isNotBlank(host)) {
+                    Object object = valueOperations.get(host);
+                    if (object != null) {
+                        list.add(host);
+                    }
                 }
             }
-            logger.warn("hosts {}", list);
             if (list.size() != hosts.size() && list.size() > 0) {
                 sqlSessionTemplate.update("console.updateHostsStatus", list);
             }
@@ -131,5 +133,9 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.warn("nettyService starting...");
         new ServerMain().run(8001);
+        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+        for (CronVo cronVo : cronVos) {
+            dynamicScheduledTask.configureTasks(cronVo);
+        }
     }
 }
