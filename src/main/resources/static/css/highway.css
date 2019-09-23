@@ -215,7 +215,7 @@ strong {
 
 .hint-car {
     display: inline-block;
-    color: #dcdcdcF00;
+    color: #fff;
     letter-spacing: 8px;
     font-size: 25px
 }
@@ -317,7 +317,7 @@ strong {
 }
 
 .road-bg1, .road-bg2 .part-8 span {
-    border-bottom: .5rem solid #dcdcdc
+    border-bottom: .4rem solid #fff;
 }
 
 .road-bg2 .part-8 span {
@@ -330,21 +330,21 @@ strong {
 }
 
 .road-hint-right {
-    top: -3rem;
-    right: 10%;
-    transform: rotate(-90deg)
+    top: -5rem;
+    right: 15%;
+    transform: rotate(-90deg);
 }
 
 .road-hint-left, .road-hint-right {
     width: 1rem;
-    color: #cdcd27;
-    font-size: 2.8rem
+    color: #F1C51C;
+    font-size: 3rem;
 }
 
 .road-hint-left {
-    top: -12rem;
-    left: 13%;
-    transform: rotate(90deg)
+    bottom: -17.5rem;
+    left: 25%;
+    transform: rotate(90deg);
 }
 
 .road-bg2 .part-8 span.am-fl.center {
@@ -360,7 +360,7 @@ strong {
 
 .road-bg3 .part-8 span {
     height: 4rem;
-    border-bottom: .5rem solid #dcdcdc
+    border-bottom: .4rem solid #fff;
 }
 
 .road-bg3 .part-8 span.am-fl {
@@ -398,25 +398,19 @@ strong {
 }
 
 .road-tree .col-end {
-    border-top: .5rem solid #F2E0D4;
-    border-bottom: .5rem solid #F2E0D4;
+    border-top: .4rem solid #F2E0D4;
+    border-bottom: .4rem solid #F2E0D4;
 }
 
 .col-lg-10, .col-sm-10, hr {
     width: 87%
 }
 
-hr {
-    margin: 0 0 0 13%;
-    height: .5rem;
-    border: 0;
-    background-color: #dcdcdc
-}
 
 .tree .part-8, .tree .part-8.am-cf {
-    height: 3rem;
+    height: 4rem;
     border-color: transparent;
-    line-height: 3rem
+    line-height: 4rem;
 }
 
 .top-msg .col-end {
@@ -443,13 +437,14 @@ hr {
 }
 
 .control img {
-    width: 2.5rem;
-    max-width: 2.5rem;
-    min-width: 2.5rem;
+    width: 3.5rem;
+    max-width: 3.5rem;
+    min-width: 3.5rem;
     /*border-radius: 50%;*/
     /*box-shadow: rgba(9, 9, 9, .14) 0 2px 6px, rgba(9, 9, 9, .36) 0 1px 2px;*/
     white-space: nowrap;
     cursor: pointer;
+    background-color: transparent;
     /*background-color: #fff;*/
 }
 
@@ -471,8 +466,8 @@ hr {
 }
 
 .region {
-    height: .5rem !important;
-    border-top: .5rem solid transparent !important;
+    height: .4rem !important;
+    border-top: .4rem solid transparent !important;
     border-right-color: transparent !important
 }
 
@@ -524,13 +519,13 @@ hr {
     /*height:0;*/
 /*}*/
 .road-middle2{
-    height: .5rem;
+    height: .4rem;
 }
 .road-middle2  .col-end{
-    height: .5rem;
+    height: .4rem;
     background-color: #dcdcdc;
     width: 87%;
 }
 .road-middle2 .control-bg{
-    height: .5rem;
+    height: .4rem;
 }
