@@ -18,7 +18,8 @@ $(".on-off").click(function () {
     }
     var command1;
     var command2;
-    var host = '192.168.10.251';
+    var host = '21007032';
+    // var host = 'all';
     var src = $(this).attr('src');
     var onOffThis = $(this);
     var topOneCheckboxState = $(".top-one-checkbox").prop('checked');
@@ -29,9 +30,9 @@ $(".on-off").click(function () {
         command1 = '770104160' + groupOne + '3737' + '66';
         command2 = '770104160' + groupTwo + '3737' + '66';
         if ((!topOneCheckboxState && !topTwoCheckboxState)||(topOneCheckboxState && topTwoCheckboxState)){//都故障或都有故障
-            $.post("/sendSocket6", {"command": command1, "host": host},function (data) {
+            $.post("/sendByMeshId", {"command": command1, "host": host},function (data) {
                 if (data.success == 'success'){
-                    $.post("/sendSocket6", {"command": command2, "host": host},function (data) {
+                    $.post("/sendByMeshId", {"command": command2, "host": host},function (data) {
                         if (data.success == 'success'){
                             $(onOffThis).parent().parent().parent().next().find('img').attr('src','/static/img/red2.png');
                             if (topOneCheckboxState && topTwoCheckboxState){//都有故障
@@ -43,7 +44,7 @@ $(".on-off").click(function () {
                 }
             });
         }else if (topOneCheckboxState && !topTwoCheckboxState){//第一段故障
-            $.post("/sendSocket6", {"command": command1, "host": host},function (data) {
+            $.post("/sendByMeshId", {"command": command1, "host": host},function (data) {
                 if (data.success == 'success'){
                     $(onOffThis).parent().parent().parent().next().find('.one-100 img').attr('src','/static/img/red2.png');//故障侧灯亮
                     $('.first-line,.second-line').removeClass('active');
@@ -51,7 +52,7 @@ $(".on-off").click(function () {
                 }
             })
         }else if (!topOneCheckboxState && topTwoCheckboxState){//第二段故障
-            $.post("/sendSocket6", {"command": command2, "host": host},function (data) {
+            $.post("/sendByMeshId", {"command": command2, "host": host},function (data) {
                 if (data.success == 'success'){
                     $(onOffThis).parent().parent().parent().next().find('.two-100 img').attr('src','/static/img/red2.png');//故障侧灯亮
                     $('.first-line,.second-line').removeClass('active');
@@ -62,9 +63,9 @@ $(".on-off").click(function () {
     }else {//关
         command1 = '770104160' + groupOne + '3232' + '66';
         command2 = '770104160' + groupTwo + '3232' + '66';
-        $.post("/sendSocket6", {"command": command1, "host": host},function (data) {
+        $.post("/sendByMeshId", {"command": command1, "host": host},function (data) {
             if (data.success == 'success'){
-                $.post("/sendSocket6", {"command": command2, "host": host},function (data) {
+                $.post("/sendByMeshId", {"command": command2, "host": host},function (data) {
                     if (data.success == 'success'){
                         $(onOffThis).parent().parent().parent().next().find('img').attr('src','/static/img/gray.png');//关灯
                         $(onOffThis).attr('src','/static/img/switch-off.png');//开关按钮变关

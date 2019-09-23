@@ -1,6 +1,7 @@
 body, html {
     background-color: #F7F7F7;
-    font-family: PingFangSC-Semibold, sans-serif;
+    /*font-family: PingFangSC-Semibold, sans-serif;*/
+    color: #323232;
 }
 
 strong {
@@ -215,7 +216,7 @@ strong {
 
 .hint-car {
     display: inline-block;
-    color: #dcdcdcF00;
+    color: #fff;
     letter-spacing: 8px;
     font-size: 25px
 }
@@ -302,7 +303,7 @@ strong {
 
 .road {
     height: 6.5rem;
-    background-color: #4B4B4B;
+    background-color: #7a7b7d;
 }
 .road .light img{
     width: 5rem;
@@ -317,7 +318,7 @@ strong {
 }
 
 .road-bg1, .road-bg2 .part-8 span {
-    border-bottom: .5rem solid #dcdcdc
+    border-bottom: .4rem solid #fff;
 }
 
 .road-bg2 .part-8 span {
@@ -330,21 +331,21 @@ strong {
 }
 
 .road-hint-right {
-    top: -3rem;
-    right: 10%;
-    transform: rotate(-90deg)
+    top: -4rem;
+    right: 15%;
+    transform: rotate(-90deg);
 }
 
 .road-hint-left, .road-hint-right {
     width: 1rem;
-    color: #cdcd27;
-    font-size: 2.8rem
+    color: #F1C51C;
+    font-size: 3rem;
 }
 
 .road-hint-left {
-    top: -12rem;
-    left: 13%;
-    transform: rotate(90deg)
+    bottom: -260%;
+    left: 25%;
+    transform: rotate(90deg);
 }
 
 .road-bg2 .part-8 span.am-fl.center {
@@ -360,7 +361,7 @@ strong {
 
 .road-bg3 .part-8 span {
     height: 4rem;
-    border-bottom: .5rem solid #dcdcdc
+    border-bottom: .4rem solid #fff;
 }
 
 .road-bg3 .part-8 span.am-fl {
@@ -390,7 +391,7 @@ strong {
     /*height: 4rem;*/
 }
 .road-tree {
-    background-color: #CBD6B6;
+    /*background-color: #CBD6B6;*/
 }
 
 .road-tree .control-bg {
@@ -398,25 +399,19 @@ strong {
 }
 
 .road-tree .col-end {
-    border-top: .5rem solid #F2E0D4;
-    border-bottom: .5rem solid #F2E0D4;
+    border-top: .4rem solid #F2E0D4;
+    border-bottom: .4rem solid #F2E0D4;
 }
 
 .col-lg-10, .col-sm-10, hr {
     width: 87%
 }
 
-hr {
-    margin: 0 0 0 13%;
-    height: .5rem;
-    border: 0;
-    background-color: #dcdcdc
-}
 
 .tree .part-8, .tree .part-8.am-cf {
-    height: 3rem;
+    height: 4rem;
     border-color: transparent;
-    line-height: 3rem
+    line-height: 4rem;
 }
 
 .top-msg .col-end {
@@ -426,6 +421,7 @@ hr {
 .control-bg {
     height: 6.5rem;
     background-color: #f7f7f7 !important;
+    box-shadow: 1px 7px 6px 1px rgba(3,3,3,.15);
 }
 
 .col-end {
@@ -443,13 +439,14 @@ hr {
 }
 
 .control img {
-    width: 2.5rem;
-    max-width: 2.5rem;
-    min-width: 2.5rem;
+    width: 3.5rem;
+    max-width: 3.5rem;
+    min-width: 3.5rem;
     /*border-radius: 50%;*/
     /*box-shadow: rgba(9, 9, 9, .14) 0 2px 6px, rgba(9, 9, 9, .36) 0 1px 2px;*/
     white-space: nowrap;
     cursor: pointer;
+    background-color: transparent;
     /*background-color: #fff;*/
 }
 
@@ -471,14 +468,15 @@ hr {
 }
 
 .region {
-    height: .5rem !important;
-    border-top: .5rem solid transparent !important;
+    height: .4rem !important;
+    border-top: .4rem solid transparent !important;
     border-right-color: transparent !important
 }
 
 .region.active {
     border-color: #eaa228 !important;
-    opacity: .85
+    /* opacity: .85; */
+    /*bottom: .4rem;*/
 }
 
 .size {
@@ -502,7 +500,7 @@ hr {
     z-index: 999;
 }
 .tree>div.part-4:nth-child(odd) img:last-child{
-    left: 5rem;
+    left: 6rem;
     width: 3rem;
 }
 .tree>div.part-4:nth-child(even) img:first-child{
@@ -514,7 +512,7 @@ hr {
     z-index: 999;
 }
 .tree>div.part-4:nth-child(even) img:last-child{
-    left: 18rem;
+    left: 19rem;
     width: 3rem;
 }
 .road-middle {
@@ -524,13 +522,13 @@ hr {
     /*height:0;*/
 /*}*/
 .road-middle2{
-    height: .5rem;
+    height: .4rem;
 }
 .road-middle2  .col-end{
-    height: .5rem;
+    height: .4rem;
     background-color: #dcdcdc;
     width: 87%;
 }
 .road-middle2 .control-bg{
-    height: .5rem;
+    height: .4rem;
 }

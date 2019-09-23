@@ -30,13 +30,13 @@
 </header>
 <div class="am-container">
     <div class="am-g top-msg">
-        <div class="col-sm-2 col-lg-2" style="    height: 12.5rem;">
+        <div class="col-sm-2 col-lg-2" style="    height: 12.5rem;box-shadow: 1px 2px 6px 1px rgba(3,3,3,.15);">
             <div class="new-road">
                 <div class="max-road-title"><span>当前路段：</span><span>  第99路段</span></div>
                 <div class="hint">注意：通过勾选路段，可控制车道与路段矩阵内所有地灯</div>
             </div>
         </div>
-        <div class="col-sm-9 col-lg-9 col-end" style="height: 12.5rem;border-bottom: .5rem solid #F2E0D4;">
+        <div class="col-sm-9 col-lg-9 col-end" style="height: 12.5rem;">
             <div class="size am-cf am-text-right">
                 <div class="part-8 am-fl am-cf p-r">
                     <span class="am-fl p-a">0</span>
@@ -98,36 +98,6 @@
                     <img th:src="@{/static/img/tree.png}" alt="">
                     <img th:src="@{/static/img/mountain.png}" alt="">
                 </div>
-
-                <!--<div class="part-6 am-fl p-r">-->
-                    <!--<img th:src="@{/static/img/tree.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/mountain.png}" alt="">-->
-                <!--</div>-->
-
-                <!--<div class="part-6 am-fl p-r">-->
-                    <!--<img th:src="@{/static/img/mountains.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/tree.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/mountain.png}" alt="">-->
-                <!--</div>-->
-
-                <!--<div class="part-8 am-fl p-r">-->
-                    <!--<img th:src="@{/static/img/tree.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/mountain.png}" alt="">-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r">-->
-                    <!--<img th:src="@{/static/img/mountains.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/tree.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/mountain.png}" alt="">-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r">-->
-                    <!--<img th:src="@{/static/img/tree.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/mountain.png}" alt="">-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r">-->
-                    <!--<img th:src="@{/static/img/mountains.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/tree.png}" alt="">-->
-                    <!--<img th:src="@{/static/img/mountain.png}" alt="">-->
-                <!--</div>-->
             </div>
         </div>
     </div>
@@ -141,7 +111,8 @@
             </div>
         </div>
         <div class="col-sm-9 col-lg-9 col-end p-r">
-            <div class=" light am-cf am-text-right ">
+            <div class=" light am-cf am-text-right p-r">
+                <span class="road-hint-right p-a"> 应 急 车 道 </span>
                 <div class="part-8 am-fl am-cf p-r one-100 region first-line">
                     <span class="am-fl p-a">
                         <img th:src="@{/static/img/gray.png}" alt="">
@@ -186,7 +157,6 @@
                     </span>
                 </div>
             </div>
-            <span class="road-hint-right p-a"> 应 急 车 道 </span>
         </div>
     </div>
     <div class="am-g road-bg2 road">
@@ -228,7 +198,7 @@
                     </span>
                     <span class="am-fr p-a"></span>
                 </div>
-                <div class="part-8 am-fl am-cf p-r two-100  ">
+                <div class="part-8 am-fl am-cf p-r one-100  ">
                     <span class="am-fl p-a"></span>
                     <span class="am-fl p-a center">
                         <img th:src="@{/static/img/gray.png}" alt="">
@@ -290,7 +260,7 @@
                     <span class="am-fl p-a center"></span>
                     <span class="am-fr p-a"></span>
                 </div>
-                <div class="part-8 am-fl am-cf p-r two-100  ">
+                <div class="part-8 am-fl am-cf p-r one-100  ">
                     <span class="am-fl p-a"><img th:src="@{/static/img/gray.png}" alt=""></span>
                     <span class="am-fl p-a center"></span>
                     <span class="am-fr p-a"></span>
@@ -414,56 +384,6 @@
             </div>
         </div>
     </div>
-    <div class="am-g road-middle2 road">
-        <div class="col-sm-2 col-lg-2 control-bg p-r">
-        </div>
-        <div class="col-sm-9 col-lg-9 col-end">
-            <div class=" light am-cf am-text-right">
-                <!--<div class="part-8 am-fl am-cf p-r one-100 region ">-->
-                <!--&lt;!&ndash;<span class="am-fl p-a">&ndash;&gt;-->
-                <!--&lt;!&ndash;&ndash;&gt;-->
-                <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span class="am-fr p-a">&ndash;&gt;-->
-
-                <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r one-100 region">-->
-                <!--<span class="p-a">-->
-                <!--</span>-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r one-100 region ">-->
-                <!--<span class="p-a">-->
-                <!--<img th:src="@{/static/img/gray.png}" alt="">-->
-                <!--</span>-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r one-100 region ">-->
-                <!--<span class="p-a">-->
-                <!--<img th:src="@{/static/img/gray.png}" alt="">-->
-                <!--</span>-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r one-100 region ">-->
-                <!--<span class="p-a">-->
-                <!--<img th:src="@{/static/img/gray.png}" alt="">-->
-                <!--</span>-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r two-100 region">-->
-                <!--<span class="p-a">-->
-                <!--<img th:src="@{/static/img/gray.png}" alt="">-->
-                <!--</span>-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r two-100 region">-->
-                <!--<span class="p-a">-->
-                <!--<img th:src="@{/static/img/gray.png}" alt="">-->
-                <!--</span>-->
-                <!--</div>-->
-                <!--<div class="part-8 am-fl p-r two-100 region">-->
-                <!--<span class="p-a">-->
-                <!--<img th:src="@{/static/img/gray.png}" alt="">-->
-                <!--</span>-->
-                <!--</div>-->
-            </div>
-        </div>
-    </div>
     <div class="am-g road-bg3 road">
         <div class="col-sm-2 col-lg-2 control-bg p-r">
             <div class="control am-cf p-a">
@@ -495,7 +415,7 @@
                     <span class="am-fl p-a center"></span>
                     <span class="am-fr p-a"></span>
                 </div>
-                <div class="part-8 am-fl am-cf p-r two-100  ">
+                <div class="part-8 am-fl am-cf p-r one-100  ">
                     <span class="am-fl p-a"><img th:src="@{/static/img/gray.png}" alt=""></span>
                     <span class="am-fl p-a center"></span>
                     <span class="am-fr p-a"></span>
@@ -557,7 +477,7 @@
                     </span>
                     <span class="am-fr p-a"></span>
                 </div>
-                <div class="part-8 am-fl am-cf p-r two-100  ">
+                <div class="part-8 am-fl am-cf p-r one-100  ">
                     <span class="am-fl p-a"></span>
                     <span class="am-fl p-a center">
                         <img th:src="@{/static/img/gray.png}" alt="">
@@ -646,22 +566,22 @@
         </div>
     </div>
     <div class="am-g road-middle road last">
-        <div class="col-sm-2 col-lg-2 control-bg p-r">
+        <div class="col-sm-2 col-lg-2 control-bg ">
         </div>
-        <div class="col-sm-9 col-lg-9 col-end p-r">
-            <div class=" light am-cf am-text-right">
+        <div class="col-sm-9 col-lg-9 col-end " style=" height: 6.5rem;">
+            <div class=" light am-cf am-text-right p-r" style=" height: 6.5rem;">
             </div>
-            <span class="road-hint-left p-a"> 救 援 车 道  &nbsp;&nbsp;&nbsp; 严 禁 占 用 </span>
         </div>
     </div>
     <div class="am-g road-tree last">
-        <div class="col-sm-2 col-lg-2 control-bg p-r" style="    height: 3rem;">
+        <div class="col-sm-2 col-lg-2 control-bg p-r" style="height: 4rem;">
             <div class="control am-cf p-a">
 
             </div>
         </div>
         <div class="col-sm-10 col-lg-10 col-end">
-            <div class="tree am-cf ">
+            <div class="tree am-cf p-r" style="height: 4rem">
+                <span class="road-hint-left p-a"> 救 援 车 道  &nbsp;&nbsp;&nbsp; 严 禁 占 用 </span>
                 <div class="part-8 am-fl am-cf p-r">
                     <img th:src="@{/static/img/tree.png}" alt="">
                     <img th:src="@{/static/img/tree.png}" alt="">

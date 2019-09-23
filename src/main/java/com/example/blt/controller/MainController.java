@@ -155,10 +155,70 @@ public class MainController {
         map.put("host", host);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
-//        if ("fail".equals(code)) {
-////            失败
-//            success = "error";
-//        }
+        if ("fail".equals(code)) {
+//            失败
+            success = "error";
+        }
+        map.put("success", success);
+        return map;
+    }
+
+    @RequestMapping(value = "/sendByMeshId", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> sendByMeshId(String host, String command) {
+        host = monitor4Dao.getHostId(host);
+        Map<String, String> map = new HashMap<>();
+        String success = "success";
+        map.put("command", command);
+        map.put("host", host);
+        ControlTask task = new ControlTask(JSON.toJSONString(map));
+        String code = ExecuteTask.sendCmd(task);
+        if ("fail".equals(code)) {
+//            失败
+            success = "error";
+        }
+        map.put("success", success);
+        return map;
+    }
+
+    @RequestMapping(value = "/sendScenseByMeshId", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> sendScenseByMeshId(String host, String command) {
+        host = monitor4Dao.getHostId(host);
+        Map<String, String> map = new HashMap<>();
+        String success = "success";
+        if (command.equals("场景一")) {
+            command = "7701021901";
+        } else if (command.equals("场景二")) {
+            command = "7701021902";
+        } else if (command.equals("场景三")) {
+            command = "7701021903";
+        } else if (command.equals("场景四")) {
+            command = "7701021904";
+        } else if (command.equals("场景五")) {
+            command = "7701021905";
+        } else if (command.equals("场景六")) {
+            command = "7701021906";
+        } else if (command.equals("场景七")) {
+            command = "7701021907";
+        } else if (command.equals("场景八")) {
+            command = "7701021908";
+        } else if (command.equals("场景1")) {
+            command = "7701021901";
+        } else if (command.equals("场景2")) {
+            command = "7701021902";
+        } else if (command.equals("场景3")) {
+            command = "7701021903";
+        } else if (command.equals("场景4")) {
+            command = "7701021904";
+        } else if (command.equals("场景5")) {
+            command = "7701021905";
+        }
+        String cmd = host + ":" + command;
+        map.put("command", command);
+        map.put("host", host);
+        ControlTask task = new ControlTask(JSON.toJSONString(map));
+        ExecuteTask.sendCmd(task);
         map.put("success", success);
         return map;
     }
