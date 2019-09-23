@@ -133,7 +133,7 @@
             </div>
         </div>
         <div class="col-sm-9 col-lg-9 col-end p-r">
-            <div class=" light am-cf am-text-right">
+            <div class=" light am-cf am-text-right first-line">
                 <div class="part-8 am-fl am-cf p-r one-100 region">
                     <span class="am-fl p-a">
                         <img th:src="@{/static/img/gray.png}" alt="">
@@ -1123,64 +1123,64 @@
 <script th:src="@{/static/highway.js}"></script>
 <script>
     //    $(function () {
-    $("input[type=checkbox]").click(function () {
-        var checkBoxId = $(this).attr('id');
-        var start = checkBoxId.lastIndexOf("-");
-        var num = checkBoxId.substring(start + 1);
-        var inputChecked = $(this).is(':checked');
-        var host = '192.168.10.251';
-        var command
-        if (num > 1) {
-            //组开关,不是全开全关
-            num = num - 1;
-            if (inputChecked) {
-                //关
-                $("." + num).attr('src', '/static/img/gray.png');
-                command = '770104160' + num + '3232' + '66';
-            } else {
-                //开
-                $("." + num).attr('src', '/static/img/light-on.png');
-                command = '770104160' + num + '3737' + '66';
-            }
-            var checkedArr = [];
-            $("input[type=checkbox]").not('#ckbx-style-13-1').each(function () {
-                checkedArr.push($(this).is(':checked'));
-            });
-            checkedArr = unique(checkedArr);//数组去重
-            console.log(checkedArr)
-            if (checkedArr.length == 1) {
-                //所有组状态一致
-                if (checkedArr[0]) {
-                    $("#ckbx-style-13-1").prop('checked', true);//总控状态设为关
-                } else {
-                    $("#ckbx-style-13-1").prop('checked', false);
-                }
-            }
-        } else {
-            //全开全关
-            if (inputChecked) {
-                //全关
-                $("img[class^='am-img-circle']").attr('src', '/static/img/gray.png');
-                $("input[type=checkbox]").not('#ckbx-style-13-1').each(function () {//灯全关
-                    $(this).prop('checked', true);
-                });
-                command = '77010315323266';
-            } else {
-                //全开
-                $("img[class^='am-img-circle']").attr('src', '/static/img/light-on.png');
-                $("input[type=checkbox]").not('#ckbx-style-13-1').each(function () {//灯全开
-                    $(this).prop('checked', false);
-                });
-                command = '77010315373766';
-            }
-        }
-//            console.log(command);
-        $.post("/sendSocket6", {
-            "command": command,
-            "host": host,
-        }, function () {
-        })
-    });
+//    $("input[type=checkbox]").click(function () {
+//        var checkBoxId = $(this).attr('id');
+//        var start = checkBoxId.lastIndexOf("-");
+//        var num = checkBoxId.substring(start + 1);
+//        var inputChecked = $(this).is(':checked');
+//        var host = '192.168.10.251';
+//        var command
+//        if (num > 1) {
+//            //组开关,不是全开全关
+//            num = num - 1;
+//            if (inputChecked) {
+//                //关
+//                $("." + num).attr('src', '/static/img/gray.png');
+//                command = '770104160' + num + '3232' + '66';
+//            } else {
+//                //开
+//                $("." + num).attr('src', '/static/img/light-on.png');
+//                command = '770104160' + num + '3737' + '66';
+//            }
+//            var checkedArr = [];
+//            $("input[type=checkbox]").not('#ckbx-style-13-1').each(function () {
+//                checkedArr.push($(this).is(':checked'));
+//            });
+//            checkedArr = unique(checkedArr);//数组去重
+//            console.log(checkedArr)
+//            if (checkedArr.length == 1) {
+//                //所有组状态一致
+//                if (checkedArr[0]) {
+//                    $("#ckbx-style-13-1").prop('checked', true);//总控状态设为关
+//                } else {
+//                    $("#ckbx-style-13-1").prop('checked', false);
+//                }
+//            }
+//        } else {
+//            //全开全关
+//            if (inputChecked) {
+//                //全关
+//                $("img[class^='am-img-circle']").attr('src', '/static/img/gray.png');
+//                $("input[type=checkbox]").not('#ckbx-style-13-1').each(function () {//灯全关
+//                    $(this).prop('checked', true);
+//                });
+//                command = '77010315323266';
+//            } else {
+//                //全开
+//                $("img[class^='am-img-circle']").attr('src', '/static/img/light-on.png');
+//                $("input[type=checkbox]").not('#ckbx-style-13-1').each(function () {//灯全开
+//                    $(this).prop('checked', false);
+//                });
+//                command = '77010315373766';
+//            }
+//        }
+////            console.log(command);
+//        $.post("/sendSocket6", {
+//            "command": command,
+//            "host": host,
+//        }, function () {
+//        })
+//    });
     //    })
     function unique(arr) {
         return Array.from(new Set(arr))
