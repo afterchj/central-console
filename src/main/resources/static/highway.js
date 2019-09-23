@@ -23,7 +23,7 @@ $(".on-off").click(function () {
     var onOffThis = $(this);
     var topOneCheckboxState = $(".top-one-checkbox").prop('checked');
     var topTwoCheckboxState = $(".top-two-checkbox").prop('checked');
-    console.log('topOneCheckboxState:',topOneCheckboxState,' topTwoCheckboxState:',topTwoCheckboxState,' group:',group,' groupOne:',groupOne,' groupTwo:',groupTwo);
+    // console.log('topOneCheckboxState:',topOneCheckboxState,' topTwoCheckboxState:',topTwoCheckboxState,' group:',group,' groupOne:',groupOne,' groupTwo:',groupTwo);
     if (src == '/static/img/switch-off.png'){//开
         $(this).attr('src','/static/img/switch-on.png');
         command1 = '770104160' + groupOne + '3737' + '66';
