@@ -88,19 +88,23 @@ public class StringBuildUtils {
                 map.put("flag", flag);
                 updateHost(map, false);
             } else if (str.indexOf("77050506") != -1) {
-                if (str.length() < 16) return;
+                if (str.length() > 16) {
+                    str = str.substring(str.length() - 16);
+                }
                 String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
                 int product = Integer.parseInt(temp, 16);
-                String version = str.substring(12, 16);
+                String version = str.substring(12);
                 map.put("type", product);
                 map.put("version", version);
                 insertOrUpdateHost(map);
             } else if (str.indexOf("77050705") != -1) {
-                if (str.length() >= 20) {
-                    String mac = StringBuildUtils.sortMac(str.substring(8, 20));
-                    map.put("mac", mac);
-                    insertOrUpdateHost(map);
+                for (; ; ) {
+                    str += "C";
+                    if (str.length() == 20) break;
                 }
+                String mac = StringBuildUtils.sortMac(str.substring(8));
+                map.put("mac", mac);
+                insertOrUpdateHost(map);
             }
         }
     }

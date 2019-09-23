@@ -5,6 +5,7 @@ import com.example.blt.entity.dd.Groups;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -25,35 +26,48 @@ public class StringBuildUtilsTest {
 
     @Test
     public void test() {
-        String[] array = "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC".split("CCCC");
-        System.out.println("array=" + array[0] + "\t" + "770509010908040207070801CCCC77050705791000D7ACF0CCCC".length());
-        String key = String.format("task_%s_%s", "88888888", 1);
-        System.out.println(key);
-        String mac = StringBuildUtils.sortMac("7705070504456DD7ACF0CCCC".substring(8, 20));
-        System.out.println(mac + "\t" + "770509010908040207070801CCCC77050705791000D7ACF0CCCC".indexOf("77050705"));
-        String space = "77 01 12 65 FF FF FF FF 2A 05 00 00 00 C0 00 37 37 00 00 00 00 CC CC ".replace(" ", "");
-        String mobile = "77 01 13 65 FF FF FF FF 21 0D 00 00 00 52 1F EA 62 D7 AC F0 01 01 CC CC ".replace(" ", "");
-        String ping = "77 01 0A 65 FF FF FF FF FE 00 00 00 00 CC CC".replace(" ", "");
-        logger.warn("ping=" + ping + ",len=" + ping.length());
-        logger.warn("mobile=" + mobile + ",len=" + mobile.length());
-        //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
-        String c1 = "77 04 10 02 20 9D 01 00 00 C1 32 32 00 00 00 00 00 00 02 1E".replace(" ", "");
-        String c0 = "77 04 0E 02 2A 9D 01 00 00 C0 00 37 37 00 00 00 00 09".replace(" ", "");
-        String c4 = "77 04 10 02 20 95 00 00 00 C4 5F 02 00 00 00 00 00 00 02 4F".replace(" ", "");
-        String c71 = "77 04 0F 02 27 35 00 00 00 71 00 13 00 00 00 00 00 00 0E".replace(" ", "");
-        String c52 = "77 04 10 02 21 69 00 00 00 52 77 65 65 D7 AC F0 00 01 00 85".replace(" ", "");//7704100221F505000052456365D7ACF0000200CCCC
-        String c42 = "77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83".replace(" ", "");
-        String type = "770505060b1a0109CCCC";
-        String temp = type.substring(8, 12);
-        StringBuildUtils.sortMac(temp).replace(":", "");
-        System.out.println("type=" + StringBuildUtils.sortMac(type.substring(8, 12)).replace(":", ""));
-        String str = "77040E020103000000C000373700000000CC";
-        String CS = "77011265FFFFFFFF20010000004200000000000004CCCC";
-        String C0 = "77011265FFFFFFFF2A01000000C000373700000000CCCC";
-        String pinStrA = "77011366FFFFFFFF04456DD7ACF09D01000008200102CCCC";
-        String pinStrB = "77011365FFFFFFFF2755010000711413000000000000CCCC";
-        int len = CS.length();
-        System.out.println(CS.substring(len - 6, len - 4) + "\t" + "77011265FFFFFFFF".length() + "\t" + "77011265FFFFFFFF2001000000".length());
+//        System.out.println("77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","").length());
+        String str="C770505060B1A0109";
+        if (str.length() > 16) {
+            str = str.substring(str.length() - 16);
+        }
+        String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
+        int product = Integer.parseInt(temp, 16);
+        String version = str.substring(12);
+        System.out.println(product+"\t"+version);
+        String msg="77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","");
+//        StringBuildUtils.buildLightInfo("127.0.0.1","8e4461ca",msg);
+        String[] array = msg.split("CCCC");
+        System.out.println(JSON.toJSONString(array));
+//        String[] array = "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC".split("CCCC");
+//        System.out.println("array=" + array[0] + "\t" + "770509010908040207070801CCCC77050705791000D7ACF0CCCC".length());
+//        String key = String.format("task_%s_%s", "88888888", 1);
+//        System.out.println(key);
+//        String mac = StringBuildUtils.sortMac("7705070504456DD7ACF0CCCC".substring(8, 20));
+//        System.out.println(mac + "\t" + "770509010908040207070801CCCC77050705791000D7ACF0CCCC".indexOf("77050705"));
+//        String space = "77 01 12 65 FF FF FF FF 2A 05 00 00 00 C0 00 37 37 00 00 00 00 CC CC ".replace(" ", "");
+//        String mobile = "77 01 13 65 FF FF FF FF 21 0D 00 00 00 52 1F EA 62 D7 AC F0 01 01 CC CC ".replace(" ", "");
+//        String ping = "77 01 0A 65 FF FF FF FF FE 00 00 00 00 CC CC".replace(" ", "");
+//        logger.warn("ping=" + ping + ",len=" + ping.length());
+//        logger.warn("mobile=" + mobile + ",len=" + mobile.length());
+//        //        String str = "77 04 0F 01 A9 10 64 D7 AC F0 7D 00 00 00 44 4F 03 0A CC CC ".replace(" ","");
+//        String c1 = "77 04 10 02 20 9D 01 00 00 C1 32 32 00 00 00 00 00 00 02 1E".replace(" ", "");
+//        String c0 = "77 04 0E 02 2A 9D 01 00 00 C0 00 37 37 00 00 00 00 09".replace(" ", "");
+//        String c4 = "77 04 10 02 20 95 00 00 00 C4 5F 02 00 00 00 00 00 00 02 4F".replace(" ", "");
+//        String c71 = "77 04 0F 02 27 35 00 00 00 71 00 13 00 00 00 00 00 00 0E".replace(" ", "");
+//        String c52 = "77 04 10 02 21 69 00 00 00 52 77 65 65 D7 AC F0 00 01 00 85".replace(" ", "");//7704100221F505000052456365D7ACF0000200CCCC
+//        String c42 = "77 04 0E 02 20 9D 01 00 00 42 00 00 00 00 00 00 02 83".replace(" ", "");
+//        String type = "770505060b1a0109CCCC";
+//        String temp = type.substring(8, 12);
+//        StringBuildUtils.sortMac(temp).replace(":", "");
+//        System.out.println("type=" + StringBuildUtils.sortMac(type.substring(8, 12)).replace(":", ""));
+//        String str = "77040E020103000000C000373700000000CC";
+//        String CS = "77011265FFFFFFFF20010000004200000000000004CCCC";
+//        String C0 = "77011265FFFFFFFF2A01000000C000373700000000CCCC";
+//        String pinStrA = "77011366FFFFFFFF04456DD7ACF09D01000008200102CCCC";
+//        String pinStrB = "77011365FFFFFFFF2755010000711413000000000000CCCC";
+//        int len = CS.length();
+//        System.out.println(CS.substring(len - 6, len - 4) + "\t" + "77011265FFFFFFFF".length() + "\t" + "77011265FFFFFFFF2001000000".length());
 //        StringBuildUtils.buildLightInfo("127.0.0.1",CS);
 //        StringBuildUtils.buildLightInfo("127.0.0.1",C0);
 //        StringBuildUtils.tempFormat(str,"127.0.0.1");
