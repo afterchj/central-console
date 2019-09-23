@@ -19,6 +19,7 @@ $(".on-off").click(function () {
     var command1;
     var command2;
     var host = '21007032';
+    // var host = 'all';
     var src = $(this).attr('src');
     var onOffThis = $(this);
     var topOneCheckboxState = $(".top-one-checkbox").prop('checked');

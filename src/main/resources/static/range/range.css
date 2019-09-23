@@ -138,13 +138,18 @@ input[type=range]::-moz-range-progress {
 }
 
 label {
-    color: #dedede;
+    color: #fafafa;
     margin-bottom: 8px;
+    width: 7rem;
+    text-align-last: justify;
+    font-weight: 600;
 }
 .title-max{
     max-width: 90px;
 }
-
+.am-btn-group button.dan:active{
+   background-color: #0b6fa2;
+}
 .am-topbar-inverse {
     background: 0 0;
     border-color: #277ed7
