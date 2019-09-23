@@ -46,6 +46,13 @@ public class HomeController {
         return "index";
     }
 
+    @RequestMapping("/old")
+    public String oldIndex(ModelMap modelMap) {
+        List hosts = blTservice.getHostInfo();
+        modelMap.put("hosts", hosts);
+        return "oldIndex";
+    }
+
     @RequestMapping("/nradioIndex")
     public String nradioIndex(ModelMap modelMap) {
         return "nradioIndex";
