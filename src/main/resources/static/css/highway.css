@@ -1,12 +1,12 @@
 body, html {
-    height: 100%;
-    background-color: #dcdcdc;
-    filter: contrast(110%)
+    background-color: #F7F7F7;
+    font-family: PingFangSC-Semibold, sans-serif;
 }
 
 strong {
-    text-shadow: 0 -1px 1px #000;
-    font-size: 2.2rem
+    font-size: 2.8rem;
+    font-weight: normal;
+
 }
 
 .am-container {
@@ -151,9 +151,9 @@ strong {
 }
 
 .nav-background {
-    /*background: -webkit-gradient(linear, left bottom, left top, color-stop(0,  rgba(9,142,127,1)), color-stop(.8, #098E7F));*/
-    background-color:#098E7F ;
-    color: #dcdcdc
+    background-color: #54AD8F;
+    color: #fff;
+    padding: .5rem;
 }
 
 .shuli {
@@ -284,28 +284,25 @@ strong {
 }
 
 .max-road-title span:first-child {
-    color: #333;
-    font-weight: 700;
-    font-size: 1.65rem;
-    filter: contrast(200%)
+    color: #323232;
+    font-size: 1.8rem;
 }
 
 .max-road-title span:last-child {
-    color: #333;
-    font-size: 1.45rem;
-    filter: contrast(200%);
+    color: #323232;
+    font-size: 1.8rem;
+
 }
 
 .new-road .hint {
-    color: #777;
-    font-size: 1.3rem;
-    filter: contrast(200%);
+    color: #999;
+    font-size: 1.5rem;
     line-height: 1.8;
 }
 
 .road {
     height: 6.5rem;
-    background-color: #545c64;
+    background-color: #4B4B4B;
 }
 .road .light img{
     width: 5rem;
@@ -393,16 +390,16 @@ strong {
     /*height: 4rem;*/
 }
 .road-tree {
-    background-color: #dcdcdc
+    background-color: #CBD6B6;
 }
 
 .road-tree .control-bg {
-    height: 4rem
+    height: 5rem;
 }
 
 .road-tree .col-end {
-    border-top: .5rem solid #666;
-    border-bottom: .5rem solid #666
+    border-top: .5rem solid #F2E0D4;
+    border-bottom: .5rem solid #F2E0D4;
 }
 
 .col-lg-10, .col-sm-10, hr {
@@ -428,7 +425,7 @@ hr {
 
 .control-bg {
     height: 6.5rem;
-    background-color: #dcdcdc !important
+    background-color: #f7f7f7 !important;
 }
 
 .col-end {
@@ -441,7 +438,7 @@ hr {
     z-index: 99999;
     width: 80%;
     text-align: right;
-    font-weight: 700;
+    /*font-weight: 700;*/
     font-size: 1.5rem
 }
 
@@ -449,21 +446,23 @@ hr {
     width: 2.5rem;
     max-width: 2.5rem;
     min-width: 2.5rem;
-    border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, .44) 0 2px 6px, rgba(0, 0, 0, .66) 0 1px 2px;
+    /*border-radius: 50%;*/
+    /*box-shadow: rgba(9, 9, 9, .14) 0 2px 6px, rgba(9, 9, 9, .36) 0 1px 2px;*/
     white-space: nowrap;
     cursor: pointer;
-    background-color: #fff;
+    /*background-color: #fff;*/
 }
 
 .control .am-fl, .control .am-fr {
     height: 2.5rem;
-    line-height: 2.5rem
+    line-height: 2.5rem;
+    color: #474747;
+    font-size: 1.6rem;
 }
 
 .control .am-fl {
     text-align: left;
-    filter: contrast(200%);
+    /*filter: contrast(200%);*/
 }
 
 .road .center img {
@@ -485,15 +484,41 @@ hr {
 .size {
     height: 6rem
 }
-
-.tree img {
-    width: 2rem;
-    max-width: 2rem;
-    min-width: 2rem
+.part-4{
+    width:calc(100%/4);
+    height: 100%;
+}
+.tree{
+    height: 6rem;
 }
 
+.tree img {
+    bottom: 0;
+    /* top: 4rem; */
+    position: absolute;
+}
+.tree>div.part-4:nth-child(odd) img:first-child{
+    left:0;
+    z-index: 999;
+}
+.tree>div.part-4:nth-child(odd) img:last-child{
+    left: 5rem;
+    width: 3rem;
+}
+.tree>div.part-4:nth-child(even) img:first-child{
+    left:0;
+
+}
+.tree>div.part-4:nth-child(even) img:nth-child(2){
+    left:13rem;
+    z-index: 999;
+}
+.tree>div.part-4:nth-child(even) img:last-child{
+    left: 18rem;
+    width: 3rem;
+}
 .road-middle {
-    border-bottom: .5rem solid #dcdcdc
+    /*border-bottom: .5rem solid #dcdcdc*/
 }
 /*.road-middle2{*/
     /*height:0;*/
