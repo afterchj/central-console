@@ -3,6 +3,7 @@ package com.example.blt.service;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.task.DynamicScheduledTask;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class RedisService {
     private RedisTemplate redisTemplate;
     @Resource
     private DynamicScheduledTask dynamicScheduledTask;
+
+    @Resource
+    private SqlSessionTemplate sqlSessionTemplate;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public void pushMsg(JSONObject msg) {
@@ -36,16 +40,20 @@ public class RedisService {
             int sceneId = object.getInteger("sceneId");
             int item_set = object.getInteger("item_set");
             int repetition = object.getInteger("repetition");
+            String minute = object.getString("minute");
+            String hour = object.getString("hour");
+            String week = getWeek(object.getString("week"));
             CronVo cronVo = new CronVo();
-            cronVo.setMinute(object.getString("minute"));
-            cronVo.setHour(object.getString("hour"));
-            cronVo.setWeek(getWeek(object.getString("week")));
-            cronVo.setSceneId(sceneId);
             cronVo.setMeshId(meshId);
-            cronVo.setItem_set(item_set);
-            String key = String.format("task_%s_%s", meshId, sceneId);
+            cronVo.setSceneId(sceneId);
+            cronVo.setItemSet(item_set);
+            cronVo.setRepetition(repetition);
+            cronVo.setCron(minute, hour, week);
+            cronVo.setCronName(meshId, sceneId);
+            sqlSessionTemplate.insert("console.insertCron", cronVo);
+//            String key = String.format("task_%s_%s", meshId, sceneId);
             if (item_set == 0 || repetition == 0) {
-                ScheduledFuture future = dynamicScheduledTask.futures.get(key);
+                ScheduledFuture future = dynamicScheduledTask.futures.get(cronVo.getCronName());
                 if (future != null) {
                     future.cancel(true);
                     logger.warn("isCancel [{}]" + future.isCancelled());

@@ -27,9 +27,12 @@ public class DynamicScheduledTask {
     private ScheduledFuture future;
 
     public void configureTasks(CronVo cronVo) {
-        logger.warn("执行时间[{}]", cronVo.getCron());
-        String key = String.format("task_%s_%s", cronVo.getMeshId(), cronVo.getSceneId());
-        future = threadPoolTaskScheduler.schedule(new DetailTask(cronVo), new CronTrigger(cronVo.getCron()));
-        futures.put(key, future);
+        logger.warn("执行时间 [{}]", cronVo.getCron());
+//        String key = String.format("task_%s_%s", cronVo.getMeshId(), cronVo.getSceneId());
+        int itemSet = cronVo.getItemSet();
+        if (itemSet == 1) {
+            future = threadPoolTaskScheduler.schedule(new DetailTask(cronVo), new CronTrigger(cronVo.getCron()));
+            futures.put(cronVo.getCronName(), future);
+        }
     }
 }

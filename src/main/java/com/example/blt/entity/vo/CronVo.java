@@ -5,14 +5,50 @@ package com.example.blt.entity.vo;
  * @date 2019/9/2 17:54
  */
 public class CronVo {
-    private String second = "0";
-    private String minute;
-    private String hour;
-    private String week;
+    private String cronName;
     private int repetition;
-    private int item_set;
+    private int itemSet;
+    private String cron;
     private String meshId;
     private int sceneId;
+
+
+    public int getRepetition() {
+        return repetition;
+    }
+
+    public void setRepetition(int repetition) {
+        this.repetition = repetition;
+    }
+
+    public int getItemSet() {
+        return itemSet;
+    }
+
+    public void setItemSet(int itemSet) {
+        this.itemSet = itemSet;
+    }
+
+    public String getCronName() {
+        return cronName;
+    }
+
+    public void setCronName(String meshId, int sceneId) {
+        this.cronName = String.format("task_%s_%s", meshId, sceneId);
+    }
+
+    public String getCron() {
+        return cron;
+    }
+
+    public void setCron(String minute, String hour, String week) {
+        StringBuilder stringBuilder = new StringBuilder("0");
+        stringBuilder.append(" " + minute);
+        stringBuilder.append(" " + hour);
+        stringBuilder.append(" " + "? *");
+        stringBuilder.append(" " + week);
+        this.cron = stringBuilder.toString();
+    }
 
     public String getMeshId() {
         return meshId;
@@ -29,63 +65,4 @@ public class CronVo {
     public void setSceneId(int sceneId) {
         this.sceneId = sceneId;
     }
-
-    public String getSecond() {
-        return second;
-    }
-
-    public void setSecond(String second) {
-        this.second = second;
-    }
-
-    public String getMinute() {
-        return minute;
-    }
-
-    public void setMinute(String minute) {
-        this.minute = minute;
-    }
-
-    public String getHour() {
-        return hour;
-    }
-
-    public void setHour(String hour) {
-        this.hour = hour;
-    }
-
-    public String getWeek() {
-        return week;
-    }
-
-    public void setWeek(String week) {
-        this.week = week;
-    }
-
-    public int getRepetition() {
-        return repetition;
-    }
-
-    public void setRepetition(int repetition) {
-        this.repetition = repetition;
-    }
-
-    public int getItem_set() {
-        return item_set;
-    }
-
-    public void setItem_set(int item_set) {
-        this.item_set = item_set;
-    }
-
-    public String getCron() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(second);
-        stringBuilder.append(" " + minute);
-        stringBuilder.append(" " + hour);
-        stringBuilder.append(" " + "? *");
-        stringBuilder.append(" " + week);
-        return stringBuilder.toString();
-    }
-
 }
