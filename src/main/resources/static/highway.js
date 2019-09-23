@@ -3,35 +3,41 @@ $(function () {
 })
 // var way = {1:1,2:3,3:5,4:7,5:9,6:11};
 $(".on-off").click(function () {
-    var groupOne;
-    var groupTwo;
+    var group = $(this).attr('alt');
+    group = parseInt(group);
+    var groupOne = group;
+    var groupTwo = group + 1;
+    groupOne = groupOne.toString();
+    groupTwo = groupTwo.toString();
+    if (group == 9){
+        groupOne = 'A';
+        groupTwo = 'B';
+    }else if (group == 11){
+        groupOne = 'C';
+        groupTwo = 'D';
+    }
     var command1;
     var command2;
     var host = '192.168.10.251';
-    var group = $(this).attr('alt');
     var src = $(this).attr('src');
+    var onOffThis = $(this);
     var topOneCheckboxState = $(".top-one-checkbox").prop('checked');
     var topTwoCheckboxState = $(".top-two-checkbox").prop('checked');
-    console.log('topOneCheckboxState:',topOneCheckboxState,' topTwoCheckboxState:',topTwoCheckboxState,'group:',group,'src:',src);
-    if (src == '/static/img/switch-off.png'){//关
+    // console.log('topOneCheckboxState:',topOneCheckboxState,' topTwoCheckboxState:',topTwoCheckboxState,' group:',group,' groupOne:',groupOne,' groupTwo:',groupTwo);
+    if (src == '/static/img/switch-off.png'){//开
         $(this).attr('src','/static/img/switch-on.png');
-        groupOne = group;
-        groupTwo = group + 1;
-        if (group == 9){
-            groupOne = 'A';
-            groupTwo = 'B';
-        }else if (group == 11){
-            groupOne = 'C';
-            groupTwo = 'D';
-        }
-        command1 = '770104160' + groupOne + '3232' + '66';
-        command2 = '770104160' + groupTwo + '3232' + '66';
-        if (!topOneCheckboxState && !topTwoCheckboxState){//没有故障
+        command1 = '770104160' + groupOne + '3737' + '66';
+        command2 = '770104160' + groupTwo + '3737' + '66';
+        if ((!topOneCheckboxState && !topTwoCheckboxState)||(topOneCheckboxState && topTwoCheckboxState)){//都故障或都有故障
             $.post("/sendSocket6", {"command": command1, "host": host},function (data) {
                 if (data.success == 'success'){
                     $.post("/sendSocket6", {"command": command2, "host": host},function (data) {
                         if (data.success == 'success'){
-                            $(this).parent().parent().parent().next().find('img').attr('src','/static/img/red2.png');
+                            $(onOffThis).parent().parent().parent().next().find('img').attr('src','/static/img/red2.png');
+                            if (topOneCheckboxState && topTwoCheckboxState){//都有故障
+                                $('.first-line,.second-line').removeClass('active');
+                                $('.first-line,.second-line').addClass('active');//整条路段故障
+                            }
                         }
                     });
                 }
@@ -39,13 +45,39 @@ $(".on-off").click(function () {
         }else if (topOneCheckboxState && !topTwoCheckboxState){//第一段故障
             $.post("/sendSocket6", {"command": command1, "host": host},function (data) {
                 if (data.success == 'success'){
-                    $(this).parent().parent().parent().next().find('.one-100 img').attr('src','/static/img/red2.png');
-                    $(".first-line").find('.one-100').addClass('active');
+                    $(onOffThis).parent().parent().parent().next().find('.one-100 img').attr('src','/static/img/red2.png');//故障侧灯亮
+                    $('.first-line,.second-line').removeClass('active');
+                    $(".first-line").addClass('active');//显示故障一侧
+                }
+            })
+        }else if (!topOneCheckboxState && topTwoCheckboxState){//第二段故障
+            $.post("/sendSocket6", {"command": command2, "host": host},function (data) {
+                if (data.success == 'success'){
+                    $(onOffThis).parent().parent().parent().next().find('.two-100 img').attr('src','/static/img/red2.png');//故障侧灯亮
+                    $('.first-line,.second-line').removeClass('active');
+                    $(".second-line").addClass('active');//显示故障一侧
                 }
             })
         }
-    }else {
-        $(this).attr('src','/static/img/switch-off.png');
+    }else {//关
+        command1 = '770104160' + groupOne + '3232' + '66';
+        command2 = '770104160' + groupTwo + '3232' + '66';
+        $.post("/sendSocket6", {"command": command1, "host": host},function (data) {
+            if (data.success == 'success'){
+                $.post("/sendSocket6", {"command": command2, "host": host},function (data) {
+                    if (data.success == 'success'){
+                        $(onOffThis).parent().parent().parent().next().find('img').attr('src','/static/img/gray.png');//关灯
+                        $(onOffThis).attr('src','/static/img/switch-off.png');//开关按钮变关
+                        var isOnState = $(".on-off").is('img[src="/static/img/switch-on.png"]');//其它车道是否有开灯的车道
+                        // console.log('isOnState',isOnState);
+                        if (!isOnState){//所有车道灯关闭
+                            $('.first-line,.second-line').removeClass('active');
+                        }
+                    }
+                });
+            }
+        });
     }
 
 });
+

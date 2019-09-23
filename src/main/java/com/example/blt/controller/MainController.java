@@ -143,7 +143,7 @@ public class MainController {
         return map;
     }
 
-    @RequestMapping(value = "/data", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendSocket6", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendSocket6(String host, String command) {
         host = blTservice.getHostId(host);
@@ -155,10 +155,10 @@ public class MainController {
         map.put("host", host);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
-        if ("fail".equals(code)) {
-//            失败
-            success = "error";
-        }
+//        if ("fail".equals(code)) {
+////            失败
+//            success = "error";
+//        }
         map.put("success", success);
         return map;
     }
