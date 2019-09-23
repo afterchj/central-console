@@ -160,6 +160,20 @@
             console.log(data);
         });
     });
+    $("#accept").click(function () {
+        cmd = "7701010466";
+        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
+            console.log(data);
+        });
+    });
+    $("#OTA").click(function () {
+        cmd = "7701010566";
+        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
+            console.log(data);
+        });
+    });
+
+
     function change(val) {
         var id = $(val).attr("id");
         var color, luminance;
