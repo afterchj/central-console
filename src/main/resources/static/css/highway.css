@@ -306,7 +306,14 @@ strong {
     height: 6.5rem;
     background-color: #545c64;
 }
-
+.road .light img{
+    width: 5rem;
+    height: 4rem;
+    min-width: 5rem;
+}
+.road-bg1.road .part-8 span {
+    top: 2.9rem !important;
+}
 .road .part-8 span {
     top: 2.5rem !important
 }
