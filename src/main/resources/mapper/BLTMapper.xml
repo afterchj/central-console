@@ -94,7 +94,7 @@
     </select>
 
     <select id="getAll" resultType="string">
-        SELECT host_id FROM t_host_info
+        SELECT host_id FROM t_host_info WHERE host_id IS NOT NULL
     </select>
 
     <select id="getCron" resultType="CronVo">

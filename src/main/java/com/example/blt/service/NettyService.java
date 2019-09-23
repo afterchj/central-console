@@ -5,7 +5,6 @@ import com.example.blt.entity.dd.Topics;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.netty.ServerMain;
 import com.example.blt.task.DynamicScheduledTask;
-import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +41,9 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         List list = new ArrayList();
         try {
             for (String host : hosts) {
-                if (StringUtils.isNotBlank(host)) {
-                    Object object = valueOperations.get(host);
-                    if (object != null) {
-                        list.add(host);
-                    }
+                Object object = valueOperations.get(host);
+                if (object != null) {
+                    list.add(host);
                 }
             }
             if (list.size() != hosts.size() && list.size() > 0) {
