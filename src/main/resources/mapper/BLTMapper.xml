@@ -98,7 +98,7 @@
     </select>
 
     <select id="getCron" resultType="CronVo">
-        SELECT cron_name,mesh_id,scene_id,item_set,repetition,cron FROM t_cron
+        SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,repetition,cron FROM t_cron
     </select>
 
     <select id="getHostId" resultType="string">
