@@ -79,4 +79,7 @@ public interface Monitor4Dao {
 
     @Update("update t_host_info set mesh_name = #{mname},log_date = NOW() where mesh_id = #{meshId}")
     void updateHostInfo(@Param("meshId")String meshId, @Param("mname")String mname);
+
+    @Select("select host_id from t_host_info where mesh_id=#{meshId}")
+    String getHostId(@Param("meshId") String host);
 }

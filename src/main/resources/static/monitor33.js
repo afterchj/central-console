@@ -420,8 +420,8 @@ $('.on-off>div').click(function () {
     } else if ($(this).attr("alt") == "total-off") {
         var command = '77010315323266';
     }
-    var host = '192.168.10.11';
-    $.post("/sendSocket6", {
+    var host = '49456666';
+    $.post("/sendByMeshId", {
         "command": command,
         "host": host
     }, function () {
@@ -429,8 +429,8 @@ $('.on-off>div').click(function () {
 })
 $("select").change(function () {
     var command = $.trim($(this).val());
-    var host = '192.168.10.11';
-    $.post("/sendSocket5", {
+    var host = '49456666';
+    $.post("/sendScenseByMeshId", {
         "command": command,
         "host": host
     }, function () {
