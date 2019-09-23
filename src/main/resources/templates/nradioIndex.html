@@ -69,6 +69,35 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-12 col-lg-12">
+                <div class="am-form-group ">
+                    <label class="">接收ID： </label>
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button id="accept" type="button" class="am-btn  total-control dan am-btn-sm" style="width: 5rem;">
+                            接收ID
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-12">
+                <label class="">OTA： </label>
+                <div class="am-btn-group am-btn-group-xs">
+                    <button id="OTA" type="button" class="am-btn  total-control dan  am-btn-sm" style="width: 5rem;">OTA
+                    </button>
+                </div>
+            </div>
+            <!--<div class="col-sm-12 col-lg-12">-->
+            <!--<div class="am-form-group ">-->
+            <!--<label class="">OTA： </label>-->
+            <!--<div class="am-btn-group am-btn-group-xs">-->
+            <!--<button id="OTA" type="button" class="am-btn  total-control  am-btn-sm">OTA-->
+            <!--</button>-->
+            <!--&lt;!&ndash;<button id="OTA2" type="button" class="am-btn  total-control active am-btn-sm">OFF&ndash;&gt;-->
+            <!--&lt;!&ndash;</button>&ndash;&gt;-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
             <div class="col-sm-12 col-lg-12 col-end">
                 <div class="am-form-group">
                     <label>选择场景：</label>
@@ -138,14 +167,15 @@
             color = $("#color").val();
         }
         console.log(color, luminance);
-        $.post("/nradio/change",{"color":color,"luminance":luminance},function (data) {
+        $.post("/nradio/change", {"color": color, "luminance": luminance}, function (data) {
             console.log(data);
         })
-    };
+    }
+    ;
 
     $(".scene-select").click(function () {
         var text = $(this).text();
-        switch (text){
+        switch (text) {
             case "场景一":
                 cmd = "7701021901";
                 break;
@@ -196,42 +226,84 @@
                 var x = data.x;
                 var y = data.y;
                 var xMap =
-                {"00":0,"01":5,"02":10,"03":15,"04":20,"05":25,"06":30,"07":35,"08":40,"09":45,"0A":50,"0B":55,"0C":60,"0D":65,"0E":70,"0F":75,"10":80,"11":85,"12":90,"13":95,"14":100};
+                {
+                    "00": 0,
+                    "01": 5,
+                    "02": 10,
+                    "03": 15,
+                    "04": 20,
+                    "05": 25,
+                    "06": 30,
+                    "07": 35,
+                    "08": 40,
+                    "09": 45,
+                    "0A": 50,
+                    "0B": 55,
+                    "0C": 60,
+                    "0D": 65,
+                    "0E": 70,
+                    "0F": 75,
+                    "10": 80,
+                    "11": 85,
+                    "12": 90,
+                    "13": 95,
+                    "14": 100
+                };
                 var yMap = {
-                    "13":0,"12":5,"11":10,"10":15,"0F":20,"0E":25,"0D":30,"0C":35,"0B":40,"0A":45,"09":50,"08":55,"07":60,"06":65,"05":70,"04":75,"03":80,"02":85,"01":90,"00":95,"00":100
+                    "13": 0,
+                    "12": 5,
+                    "11": 10,
+                    "10": 15,
+                    "0F": 20,
+                    "0E": 25,
+                    "0D": 30,
+                    "0C": 35,
+                    "0B": 40,
+                    "0A": 45,
+                    "09": 50,
+                    "08": 55,
+                    "07": 60,
+                    "06": 65,
+                    "05": 70,
+                    "04": 75,
+                    "03": 80,
+                    "02": 85,
+                    "01": 90,
+                    "00": 95,
+                    "00": 100
                 };
                 var cid = data.cid;
-                switch (ctype){
+                switch (ctype) {
                     case "C0":
-                        if (x == '32'&&y == '32'){//全关
+                        if (x == '32' && y == '32') {//全关
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch2").addClass("active");
-                        }else if (x == '37'&&y == '37'){//全开
+                        } else if (x == '37' && y == '37') {//全开
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
-                        }else {
+                        } else {
                             $("#color").val(xMap[x]);
-                            $("#color").prev().text(xMap[x]+"%")
-                            $("#color").prev().css("left",xMap[x]+"%");
+                            $("#color").prev().text(xMap[x] + "%")
+                            $("#color").prev().css("left", xMap[x] + "%");
                             $("#luminance").val(yMap[y]);
-                            $("#luminance").prev().text(yMap[y]+"%")
-                            $("#luminance").prev().css("left",yMap[y]+"%");
+                            $("#luminance").prev().text(yMap[y] + "%")
+                            $("#luminance").prev().css("left", yMap[y] + "%");
                         }
                         break;
                     case "42":
                         $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").children().removeClass("active");
-                        if (cid == 1){
+                        if (cid == 1) {
                             $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").find('button:first').addClass("active");
 
-                        }else if (cid == 2){
+                        } else if (cid == 2) {
                             $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").find(":eq(1)").addClass("active");
 
-                        }else if (cid == 3){
+                        } else if (cid == 3) {
                             $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").find(":eq(2)").addClass("active");
 
-                        }else if (cid == 4){
+                        } else if (cid == 4) {
                             $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").find('button:last').addClass("active");
 
                         }
@@ -239,41 +311,41 @@
                     case "52"://遥控器
                         var colorValue = $("#color").val();
                         var luminanceValue = $("#luminance").val();
-                        if (cid == 01){//全开
+                        if (cid == 01) {//全开
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
-                        }else if (cid == 02){//全关
+                        } else if (cid == 02) {//全关
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
-                        }else if (cid == 03){//色值+
-                            if (colorValue>0){
-                                colorValue = colorValue -5
+                        } else if (cid == 03) {//色值+
+                            if (colorValue > 0) {
+                                colorValue = colorValue - 5
                                 $("#color").val(colorValue);
-                                $("#color").prev().text(colorValue+"%")
-                                $("#color").prev().css("left",colorValue+"%");
+                                $("#color").prev().text(colorValue + "%")
+                                $("#color").prev().css("left", colorValue + "%");
                             }
-                        }else if (cid == 04){//色值-
-                            if (colorValue<100){
+                        } else if (cid == 04) {//色值-
+                            if (colorValue < 100) {
                                 colorValue = colorValue + 5;
                                 $("#color").val(colorValue);
-                                $("#color").prev().text(colorValue+"%")
-                                $("#color").prev().css("left",colorValue+"%");
+                                $("#color").prev().text(colorValue + "%")
+                                $("#color").prev().css("left", colorValue + "%");
                             }
-                        }else if (cid == 05 ){//冷
-                            if (luminanceValue<100){
-                                luminanceValue = luminanceValue +5;
+                        } else if (cid == 05) {//冷
+                            if (luminanceValue < 100) {
+                                luminanceValue = luminanceValue + 5;
                                 $("#luminance").val(luminanceValue);
-                                $("#luminance").prev().text(luminanceValue+"%")
-                                $("#luminance").prev().css("left",luminanceValue+"%");
+                                $("#luminance").prev().text(luminanceValue + "%")
+                                $("#luminance").prev().css("left", luminanceValue + "%");
                             }
-                        }else if (cid == 06){//暖
-                            if (luminanceValue>0){
+                        } else if (cid == 06) {//暖
+                            if (luminanceValue > 0) {
                                 luminanceValue = luminanceValue - 5;
                                 $("#luminance").val(luminanceValue);
-                                $("#luminance").prev().text(luminanceValue+"%")
-                                $("#luminance").prev().css("left",luminanceValue+"%");
+                                $("#luminance").prev().text(luminanceValue + "%")
+                                $("#luminance").prev().css("left", luminanceValue + "%");
                             }
                         }
                 }
