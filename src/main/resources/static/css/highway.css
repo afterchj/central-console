@@ -35,6 +35,9 @@ strong {
         width: 85%
     }
 }
+@media screen and (-webkit-min-device-pixel-ratio:0) and (min-width:1500px) {
+    body{height:845px;}
+}
 
 .road img {
     width: 5rem;
@@ -342,11 +345,27 @@ strong {
     font-size: 3rem;
 }
 
-.road-hint-left {
-    bottom: -260%;
-    left: 25%;
-    transform: rotate(90deg);
+
+/*Chrome*/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .road-hint-left {
+        bottom: -260%;
+        left: 25%;
+        transform: rotate(90deg);
+    }
 }
+/*Firefox*/
+@-moz-document url-prefix() {
+    .road-hint-left {
+        bottom: -330%;
+        left: 25%;
+        transform: rotate(90deg);
+    }
+    .road-hint-right{
+        top: -5rem;
+    }
+}
+
 
 .road-bg2 .part-8 span.am-fl.center {
     top: 3.2rem !important;
