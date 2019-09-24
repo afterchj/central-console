@@ -121,11 +121,16 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     }
 
     public void saveHostStatus(List list, boolean flag) {
-        if (list.size() == 0) return;
+        logger.warn("hosts {}", list);
+        if (list.size() == 0) {
+            sqlSessionTemplate.update("console.saveHostsStatus");
+            return;
+        } else {
+            sqlSessionTemplate.update("console.flushHostsStatus", list);
+        }
         if (flag) {
             sqlSessionTemplate.update("console.updateHostsStatus", list);
         }
-        sqlSessionTemplate.update("console.flushHostsStatus", list);
     }
 
     public ValueOperations getOpsForValue() {
