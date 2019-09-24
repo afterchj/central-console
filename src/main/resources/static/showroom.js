@@ -451,7 +451,7 @@ function light() {
         }
     })
 }
-var host = '21007032';
+var host = 'showroom';
 $('.on-off>div').click(function () {
     $(this).addClass('active').siblings().removeClass('active');
     var groupOrder = parseInt($(this).parent().parent().siblings('.groupOrder').find('.groupName').text());
