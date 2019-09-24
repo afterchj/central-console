@@ -146,14 +146,6 @@
 
 
 <script>
-    function touchStart(val) {
-        console.log(val);
-        $(val).addClass('active');
-    }
-    function touchEnd(val) {
-        console.log(val);
-        $(val).removeClass('active');
-    }
     /*
      * 1.touchstart    手指刚刚触发到屏幕的时候
      * 2.touchmove     手指在屏幕上滑动的时候
@@ -197,10 +189,10 @@
         console.log(e);
         $('#OTA').removeClass('active');
     });
-    $("#accept.button.dan").mousedown(function () {
+    $("#accept,#OTA").mousedown(function () {
         $(this).addClass('active');
     });
-    $("#accept.button.dan").mouseup(function () {
+    $("#accept,#OTA").mouseup(function () {
         $(this).removeClass('active');
     });
 
