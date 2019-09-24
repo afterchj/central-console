@@ -136,11 +136,27 @@ input[type=range]::-moz-range-progress {
 .am-margin-top-20 {
     margin: 5rem 0
 }
+#accept,#OTA{
+    background-color: transparent;
+    /* color: #eee; */
+    border:1px solid  #3099e8;
+    color: #3099e8;
+    white-space: nowrap;
+    /*padding: .625em 1em;*/
+    width: 7.5rem;
+    height: 3.8rem;
+    border-radius: 2px;
+}
+#accept.active,#OTA.active{
+    color: #fff;
+    background: linear-gradient(#3099e8, #277ed7);
+    border-color: #3099e8;
+}
 
 label {
     color: #fafafa;
     margin-bottom: 8px;
-    width: 7rem;
+    width: 9rem;
     text-align-last: justify;
     font-weight: 600;
 }

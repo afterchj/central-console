@@ -69,27 +69,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-lg-12">
-                <div class="am-form-group ">
-                    <label class="">接收ID： </label>
-                    <div class="am-btn-group am-btn-group-xs">
-                        <button id="accept" type="button" class="am-btn  total-control dan am-btn-sm" style="width: 5rem;">
-                            接收ID
-                        </button>
-                    </div>
 
-                </div>
-            </div>
-            <div class="col-sm-12 col-lg-12">
-                <div class="am-form-group ">
-                    <label class="">OTA： </label>
-                    <div class="am-btn-group am-btn-group-xs">
-                        <button id="OTA" type="button" class="am-btn  total-control dan  am-btn-sm"
-                                style="width: 5rem;">OTA
-                        </button>
-                    </div>
-                </div>
-            </div>
             <!--<div class="col-sm-12 col-lg-12">-->
             <!--<div class="am-form-group ">-->
             <!--<label class="">OTA： </label>-->
@@ -137,11 +117,85 @@
                 </div>
             </div>
         </div>
+        <div class="am-g">
+            <div class="col-sm-12 col-lg-12">
+                <div class="am-form-group ">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button id="accept" type="button" style="" class="  dan am-btn-sm">
+                            接收ID
+                        </button>
+                        <button id="OTA" type="button"  style=" " class=" dan  am-btn-sm"
+                        >  OTA
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <!--<div class="col-sm-6 col-lg-6">-->
+                <!--<div class="am-form-group ">-->
+                    <!--<div class="am-btn-group am-btn-group-xs">-->
+                        <!--<button id="OTA" type="button" class="     dan  am-btn-sm"-->
+                               <!--&gt;OTA-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
     </form>
 </div>
 
 
 <script>
+    /*
+     * 1.touchstart    手指刚刚触发到屏幕的时候
+     * 2.touchmove     手指在屏幕上滑动的时候
+     * 3.touchend      手指离开屏幕的时候
+     * 4.touchcancel   ** 被迫终止滑动离开  （系统终止）
+     * */
+
+    /*怎么样去绑定这些事件*/
+    var box1 = document.querySelector('#accept');
+    var box2 = document.querySelector('#OTA');
+    /*绑定touchstart*/
+    box1.addEventListener('touchstart', function (e) {
+        console.log('touchstart');
+        console.log(e);
+        $('#accept').addClass('active');
+    });
+    box2.addEventListener('touchstart', function (e) {
+        console.log('touchstart');
+        console.log(e);
+        $('#OTA').addClass('active');
+    });
+    /*绑定touchmove*/
+    box1.addEventListener('touchmove', function (e) {
+        console.log('touchmove');
+//        console.log(e);
+        $('#accept').addClass('active');
+    });
+    box2.addEventListener('touchmove', function (e) {
+        console.log('touchmove');
+        $('#OTA').addClass('active');
+//        console.log(e);
+    });
+    /*绑定touchend*/
+    box1.addEventListener('touchend', function (e) {
+        console.log('touchend');
+        console.log(e);
+        $('#accept').removeClass('active');
+    });
+    box2.addEventListener('touchend', function (e) {
+        console.log('touchend');
+        console.log(e);
+        $('#OTA').removeClass('active');
+    });
+    $("#accept,#OTA").mousedown(function () {
+        $(this).addClass('active');
+    });
+    $("#accept,#OTA").mouseup(function () {
+        $(this).removeClass('active');
+    });
+
     $('.am-btn-group .total-control,.am-btn-group  .scene-select').click(function () {
         $(this).addClass('active').siblings().removeClass('active');
     });
@@ -219,12 +273,12 @@
     $(function () {
         let url = location.host;
         console.log(location.href, url);
-//        $.getJSON("/getHost", function (data) {
-//            $.each(data, function (i, val) {
-//                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
-//                $("#master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
-//            });
-//        });
+        $.getJSON("/getHost", function (data) {
+            $.each(data, function (i, val) {
+                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+                $("#master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+            });
+        });
 
         if (typeof (WebSocket) == "undefined") {
             console.log("遗憾：您的浏览器不支持WebSocket");
@@ -328,36 +382,36 @@
                     case "52"://遥控器
                         var colorValue = $("#color").val();
                         var luminanceValue = $("#luminance").val();
-                        if (cid == 1) {//全开
+                        if (cid == 01) {//全开
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
-                        } else if (cid == 2) {//全关
+                        } else if (cid == 02) {//全关
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
-                        } else if (cid == 3) {//色值+
+                        } else if (cid == 03) {//色值+
                             if (colorValue > 0) {
                                 colorValue = colorValue - 5
                                 $("#color").val(colorValue);
                                 $("#color").prev().text(colorValue + "%")
                                 $("#color").prev().css("left", colorValue + "%");
                             }
-                        } else if (cid == 4) {//色值-
+                        } else if (cid == 04) {//色值-
                             if (colorValue < 100) {
                                 colorValue = colorValue + 5;
                                 $("#color").val(colorValue);
                                 $("#color").prev().text(colorValue + "%")
                                 $("#color").prev().css("left", colorValue + "%");
                             }
-                        } else if (cid == 5) {//冷
+                        } else if (cid == 05) {//冷
                             if (luminanceValue < 100) {
                                 luminanceValue = luminanceValue + 5;
                                 $("#luminance").val(luminanceValue);
                                 $("#luminance").prev().text(luminanceValue + "%")
                                 $("#luminance").prev().css("left", luminanceValue + "%");
                             }
-                        } else if (cid == 6) {//暖
+                        } else if (cid == 06) {//暖
                             if (luminanceValue > 0) {
                                 luminanceValue = luminanceValue - 5;
                                 $("#luminance").val(luminanceValue);
