@@ -142,8 +142,10 @@ input[type=range]::-moz-range-progress {
     border:1px solid  #3099e8;
     color: #3099e8;
     white-space: nowrap;
-    padding: .625em 1em;
-    width: 6rem;
+    /*padding: .625em 1em;*/
+    width: 7.5rem;
+    height: 3.8rem;
+    border-radius: 2px;
 }
 #accept.active,#OTA.active{
     color: #fff;
