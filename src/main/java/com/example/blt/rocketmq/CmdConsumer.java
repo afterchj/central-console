@@ -1,7 +1,6 @@
 package com.example.blt.rocketmq;
 
 import com.example.blt.netty.ClientMain;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
  * @date 2019/6/25 16:26
  */
 
-@Slf4j
 @Service
 @RocketMQMessageListener(topic = "blt_cmd_console_topic", consumerGroup = "blt_dev_consumer_cmd_group")
 public class CmdConsumer implements RocketMQListener<String> {

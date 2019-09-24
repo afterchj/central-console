@@ -20,7 +20,6 @@ import java.util.Map;
  * @date 2019/6/25 16:26
  */
 
-@Slf4j
 @Service
 @RocketMQMessageListener(topic = "blt_console_local_topic", consumerGroup = "blt_cloud_local_console_group")
 public class LocalConsumer implements RocketMQListener<String> {

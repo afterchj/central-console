@@ -24,6 +24,7 @@ public class ProducerService {
         DefaultMQProducer producer = new DefaultMQProducer("blt_local_main_group");
         producer.setInstanceName(UUID.randomUUID().toString());
         producer.setNamesrvAddr(addr);
+        producer.setSendMsgTimeout(30000);
         producer.setVipChannelEnabled(false);
         try {
             producer.start();

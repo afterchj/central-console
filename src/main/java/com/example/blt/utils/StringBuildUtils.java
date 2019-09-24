@@ -98,9 +98,8 @@ public class StringBuildUtils {
                 map.put("version", version);
                 insertOrUpdateHost(map);
             } else if (str.indexOf("77050705") != -1) {
-                for (; ; ) {
+                while (str.length() < 20) {
                     str += "C";
-                    if (str.length() == 20) break;
                 }
                 String mac = StringBuildUtils.sortMac(str.substring(8));
                 map.put("mac", mac);

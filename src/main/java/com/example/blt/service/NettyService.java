@@ -46,7 +46,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     list.add(host);
                 }
             }
-            saveHostStatus(list, list.size() != hosts.size() && list.size() > 0);
+            saveHostStatus(list, list.size() != hosts.size());
         } catch (Exception e) {
             logger.error("updateHostStatus error {}", e.getMessage());
         }
@@ -121,6 +121,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     }
 
     public void saveHostStatus(List list, boolean flag) {
+        if (list.size() == 0) return;
         if (flag) {
             sqlSessionTemplate.update("console.updateHostsStatus", list);
         }

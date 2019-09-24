@@ -2,7 +2,6 @@ package com.example.blt.rocketmq;
 
 import com.alibaba.fastjson.JSON;
 import com.example.blt.config.WebSocket;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -20,7 +19,6 @@ import java.util.Map;
  * @date 2019/6/25 16:26
  */
 
-@Slf4j
 @Service
 @RocketMQMessageListener(topic = "blt_console_topic", consumerGroup = "blt_cloud_consumer_console_group")
 public class ConsoleConsumer implements RocketMQListener<String> {

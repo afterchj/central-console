@@ -36,8 +36,15 @@ public class StringBuildUtilsTest {
         String version = str.substring(12);
         System.out.println(product+"\t"+version);
         String msg="77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","");
+        while (str.length() < 20) {
+            str += "C";
+        }
 //        StringBuildUtils.buildLightInfo("127.0.0.1","8e4461ca",msg);
         String[] array = msg.split("CCCC");
+        while (array[0].length() < 20) {
+            array[0] += "C";
+        }
+        System.out.println(array[0]);
         System.out.println(JSON.toJSONString(array));
 //        String[] array = "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC".split("CCCC");
 //        System.out.println("array=" + array[0] + "\t" + "770509010908040207070801CCCC77050705791000D7ACF0CCCC".length());
