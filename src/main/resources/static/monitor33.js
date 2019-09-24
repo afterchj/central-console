@@ -2,18 +2,67 @@
  * Created by yuanjie.fang on 2019/6/28.
  */
 $(function () {
-    light2();
-    setInterval(function () {
-        light();
-        // light2();
-        // console.log('light')
-    }, 500)
-
-    setInterval(function () {
-        // light();
-        light2();
-        console.log('light2')
-    }, 100000)
+    // light2();
+    // setInterval(function () {
+    //     light();
+    //     // light2();
+    //     // console.log('light')
+    // }, 500)
+    //
+    // setInterval(function () {
+    //     // light();
+    //     light2();
+    //     console.log('light2')
+    // }, 100000)
+    let socket;
+    $(function () {
+        let url = location.host;
+        if (typeof (WebSocket) == "undefined") {
+            console.log("遗憾：您的浏览器不支持WebSocket");
+        } else {
+            socket = new WebSocket("ws://" + url + "/ws/webSocket");
+            //连接打开事件
+            socket.onopen = function () {
+                console.log("Socket 已打开！");
+            };
+            //收到消息事件
+            socket.onmessage = function (result) {
+                console.log("type", typeof result.data, "receive", result.data);
+                var data = JSON.parse(result.data);
+                var ctype = data.ctype;
+                var x = data.x;
+                var y = data.y;
+                var cid = data.cid;
+                var scences = {1:"场景一",2:"场景二",3:"场景三",4:"场景四"};
+                var xMap = {'32':'off','37':'on'};
+                var onOffOrder = {'32':1,'37':0};
+                switch (ctype) {
+                    case "C0":
+                        $('.box-part .lamp').not('.hide').removeClass('off on');
+                        $(".clearfix.on-off.p-a").children().removeClass('active');
+                        $('.box-part .lamp').not('.hide').addClass(''+xMap[x]+'');
+                        $(".clearfix.on-off.p-a").find('div:eq('+onOffOrder[x]+')').addClass('active');
+                        break;
+                    case "42":
+                        $("select").val(scences[cid]);
+                        break;
+                    case "CW":
+                        $("div.box.clearfix [alt="+cid+"]").find('.box-part .lamp').not('.hide').removeClass('off on');
+                        $("div.box.clearfix [alt="+cid+"]").find('.box-part .lamp').not('.hide').addClass(''+xMap[x]+'');
+                        var onState = $(".clearfix.on-off.p-a").find(':first').not('[alt="total-on"]').is('.active');
+                        var offState = $(".clearfix.on-off.p-a").find(':last').not('[alt="total-off"]').is('.active');
+                        if (!onState){
+                            $("div.f-l[alt='total-on']").removeClass('active')
+                            $("div.f-l[alt='total-off']").removeClass('active').addClass('active');
+                        }else if (!offState){
+                            $("div.f-l[alt='total-off']").removeClass('active')
+                            $("div.f-l[alt='total-on']").removeClass('active').addClass('active');
+                        }
+                        console.log(onState,offState)
+                }
+            }
+        }
+    });
 })
 
 function light2() {
@@ -402,6 +451,7 @@ function light() {
         }
     })
 }
+var host = '21007032';
 $('.on-off>div').click(function () {
     $(this).addClass('active').siblings().removeClass('active');
     var groupOrder = parseInt($(this).parent().parent().siblings('.groupOrder').find('.groupName').text());
@@ -420,16 +470,12 @@ $('.on-off>div').click(function () {
     } else if ($(this).attr("alt") == "total-off") {
         var command = '77010315323266';
     }
-    var host = '49456666';
-    $.post("/sendByMeshId", {
-        "command": command,
-        "host": host
-    }, function () {
+    console.log('host:',host,'command:',command);
+    $.post("/sendByMeshId", {"command": command, "host": host}, function () {
     })
 })
 $("select").change(function () {
     var command = $.trim($(this).val());
-    var host = '49456666';
     $.post("/sendScenseByMeshId", {
         "command": command,
         "host": host

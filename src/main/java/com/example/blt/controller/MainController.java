@@ -214,7 +214,6 @@ public class MainController {
         } else if (command.equals("场景5")) {
             command = "7701021905";
         }
-        String cmd = host + ":" + command;
         map.put("command", command);
         map.put("host", host);
         ControlTask task = new ControlTask(JSON.toJSONString(map));

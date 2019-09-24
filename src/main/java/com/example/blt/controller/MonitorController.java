@@ -62,15 +62,15 @@ public class MonitorController {
         return "monitor2";
     }
 
-    @RequestMapping("/monitor3")
-    public String monitor3(Model model) {
+    @RequestMapping("/showroom")
+    public String showroom(Model model) {
         List<Map<String, Object>> centerLNumList = lightListDao.getExhibitionCenterLNum();
         List<LightDemo> placeLNumList = lightListDao.getExhibitionPlaceLNum();
         List<LightDemo> lightState = lightListDao.getExhibitionLightInfo();
         model.addAttribute("centerLNumList", centerLNumList);//每个楼层灯总个数
         model.addAttribute("placeLNumList", placeLNumList);//每个区域的灯个数
         model.addAttribute("lightState", lightState);//所有灯的状态
-        return "monitor3";
+        return "showroom";
     }
 
     @RequestMapping(value = "/getMonitor2", method = RequestMethod.POST)

@@ -219,12 +219,12 @@
     $(function () {
         let url = location.host;
         console.log(location.href, url);
-        $.getJSON("/getHost", function (data) {
-            $.each(data, function (i, val) {
-                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
-                $("#master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
-            });
-        });
+//        $.getJSON("/getHost", function (data) {
+//            $.each(data, function (i, val) {
+//                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+//                $("#master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+//            });
+//        });
 
         if (typeof (WebSocket) == "undefined") {
             console.log("遗憾：您的浏览器不支持WebSocket");
@@ -328,36 +328,36 @@
                     case "52"://遥控器
                         var colorValue = $("#color").val();
                         var luminanceValue = $("#luminance").val();
-                        if (cid == 01) {//全开
+                        if (cid == 1) {//全开
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
-                        } else if (cid == 02) {//全关
+                        } else if (cid == 2) {//全关
                             $("#switch2").removeClass("active");
                             $("#switch").removeClass("active");
                             $("#switch").addClass("active");
-                        } else if (cid == 03) {//色值+
+                        } else if (cid == 3) {//色值+
                             if (colorValue > 0) {
                                 colorValue = colorValue - 5
                                 $("#color").val(colorValue);
                                 $("#color").prev().text(colorValue + "%")
                                 $("#color").prev().css("left", colorValue + "%");
                             }
-                        } else if (cid == 04) {//色值-
+                        } else if (cid == 4) {//色值-
                             if (colorValue < 100) {
                                 colorValue = colorValue + 5;
                                 $("#color").val(colorValue);
                                 $("#color").prev().text(colorValue + "%")
                                 $("#color").prev().css("left", colorValue + "%");
                             }
-                        } else if (cid == 05) {//冷
+                        } else if (cid == 5) {//冷
                             if (luminanceValue < 100) {
                                 luminanceValue = luminanceValue + 5;
                                 $("#luminance").val(luminanceValue);
                                 $("#luminance").prev().text(luminanceValue + "%")
                                 $("#luminance").prev().css("left", luminanceValue + "%");
                             }
-                        } else if (cid == 06) {//暖
+                        } else if (cid == 6) {//暖
                             if (luminanceValue > 0) {
                                 luminanceValue = luminanceValue - 5;
                                 $("#luminance").val(luminanceValue);
