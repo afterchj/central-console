@@ -1,13 +1,10 @@
 package com.example.blt.task;
 
-import com.example.blt.netty.ClientMain;
-
-import java.util.concurrent.Callable;
 
 /**
  * Created by after on 2019/5/31.
  */
-public class ControlTask implements Callable<String> {
+public class ControlTask {
 
     private String val;
 
@@ -15,19 +12,11 @@ public class ControlTask implements Callable<String> {
         this.val = val;
     }
 
-    @Override
-    public String call() {
-        String result;
-        try {
-          ClientMain.sendCron(val);
-            result = "ok";
-        } catch (Exception e) {
-            result = "fail";
-        }
-        return result;
+    public String getVal() {
+        return val;
     }
 
-//    public String executeTask() {
-//
-//    }
+    public void setVal(String val) {
+        this.val = val;
+    }
 }

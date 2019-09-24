@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 /**
  * Created by hongjian.chen on 2019/6/17.
@@ -28,7 +27,7 @@ public class ExecuteTask {
 //    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
     public static void pingInfo(String ip, String msg) {
-        executorService.execute(new PingTask(ip,ip, msg));
+        executorService.execute(new PingTask(ip, ip, msg));
     }
 
     public static void ping(boolean flag, int times, String... host) {
@@ -52,18 +51,10 @@ public class ExecuteTask {
             logger.error(e.getMessage());
         }
     }
+
     public static String sendCmd(ControlTask task) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        FutureTask<String> futureTask = new FutureTask(task);
-        executor.submit(futureTask);
-        executor.shutdown();
-        String result;
-        try {
-            result = futureTask.get();
-        } catch (Exception e) {
-            result = "fail";
-        }
-        return result;
+        ClientMain.sendCron(task.getVal());
+        return "ok";
     }
 
     public static void pingStatus(boolean delay, int times) {
