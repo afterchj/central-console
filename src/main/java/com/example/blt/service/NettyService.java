@@ -46,9 +46,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     list.add(host);
                 }
             }
-            if (list.size() != hosts.size() && list.size() > 0) {
-                sqlSessionTemplate.update("console.updateHostsStatus", list);
-            }
+            saveHostStatus(list, list.size() != hosts.size() && list.size() > 0);
         } catch (Exception e) {
             logger.error("updateHostStatus error {}", e.getMessage());
         }
@@ -120,6 +118,13 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
             }
         }
         sqlSessionTemplate.update("console.saveUpdate", params);
+    }
+
+    public void saveHostStatus(List list, boolean flag) {
+        if (flag) {
+            sqlSessionTemplate.update("console.updateHostsStatus", list);
+        }
+        sqlSessionTemplate.update("console.flushHostsStatus", list);
     }
 
     public ValueOperations getOpsForValue() {
