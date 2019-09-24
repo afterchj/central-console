@@ -120,32 +120,90 @@
         <div class="am-g">
             <div class="col-sm-12 col-lg-12">
                 <div class="am-form-group ">
-                    <label class="">接收ID： </label>
                     <div class="am-btn-group am-btn-group-xs">
-                        <button id="accept" type="button" class="am-btn  total-control dan am-btn-sm"
-                                style="width: 5rem;">
+                        <button id="accept" type="button" class="  dan am-btn-sm">
                             接收ID
+                        </button>
+                        <button id="OTA" type="button" class=" dan  am-btn-sm"
+                        >  OTA
                         </button>
                     </div>
 
                 </div>
             </div>
-            <div class="col-sm-12 col-lg-12">
-                <div class="am-form-group ">
-                    <label class="">OTA： </label>
-                    <div class="am-btn-group am-btn-group-xs">
-                        <button id="OTA" type="button" class="am-btn  total-control dan  am-btn-sm"
-                                style="width: 5rem;">OTA
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="col-sm-6 col-lg-6">-->
+                <!--<div class="am-form-group ">-->
+                    <!--<div class="am-btn-group am-btn-group-xs">-->
+                        <!--<button id="OTA" type="button" class="     dan  am-btn-sm"-->
+                               <!--&gt;OTA-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </form>
 </div>
 
 
 <script>
+    function touchStart(val) {
+        console.log(val);
+        $(val).addClass('active');
+    }
+    function touchEnd(val) {
+        console.log(val);
+        $(val).removeClass('active');
+    }
+    /*
+     * 1.touchstart    手指刚刚触发到屏幕的时候
+     * 2.touchmove     手指在屏幕上滑动的时候
+     * 3.touchend      手指离开屏幕的时候
+     * 4.touchcancel   ** 被迫终止滑动离开  （系统终止）
+     * */
+
+    /*怎么样去绑定这些事件*/
+    var box1 = document.querySelector('#accept');
+    var box2 = document.querySelector('#OTA');
+    /*绑定touchstart*/
+    box1.addEventListener('touchstart', function (e) {
+        console.log('touchstart');
+        console.log(e);
+        $('#accept').addClass('active');
+    });
+    box2.addEventListener('touchstart', function (e) {
+        console.log('touchstart');
+        console.log(e);
+        $('#OTA').addClass('active');
+    });
+    /*绑定touchmove*/
+    box1.addEventListener('touchmove', function (e) {
+        console.log('touchmove');
+//        console.log(e);
+        $('#accept').addClass('active');
+    });
+    box2.addEventListener('touchmove', function (e) {
+        console.log('touchmove');
+        $('#OTA').addClass('active');
+//        console.log(e);
+    });
+    /*绑定touchend*/
+    box1.addEventListener('touchend', function (e) {
+        console.log('touchend');
+        console.log(e);
+        $('#accept').removeClass('active');
+    });
+    box2.addEventListener('touchend', function (e) {
+        console.log('touchend');
+        console.log(e);
+        $('#OTA').removeClass('active');
+    });
+    $("#accept.button.dan").mousedown(function () {
+        $(this).addClass('active');
+    });
+    $("#accept.button.dan").mouseup(function () {
+        $(this).removeClass('active');
+    });
+
     $('.am-btn-group .total-control,.am-btn-group  .scene-select').click(function () {
         $(this).addClass('active').siblings().removeClass('active');
     });

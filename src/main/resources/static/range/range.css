@@ -136,6 +136,20 @@ input[type=range]::-moz-range-progress {
 .am-margin-top-20 {
     margin: 5rem 0
 }
+#accept,#OTA{
+    background-color: transparent;
+    /* color: #eee; */
+    border:1px solid  #3099e8;
+    color: #3099e8;
+    white-space: nowrap;
+    padding: .625em 1em;
+    width: 6rem;
+}
+#accept.active,#OTA.active{
+    color: #fff;
+    background: linear-gradient(#3099e8, #277ed7);
+    border-color: #3099e8;
+}
 
 label {
     color: #fafafa;
