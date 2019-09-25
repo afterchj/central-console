@@ -234,6 +234,9 @@ public class ControlCenterController {
             if (flag){
                 flag = sendReSetCmd("77050105CCCC");
             }
+            if (flag){
+                flag = sendReSetCmd("77050106CCCC");
+            }
             if (!flag){
                 msg =  "error";
             }
