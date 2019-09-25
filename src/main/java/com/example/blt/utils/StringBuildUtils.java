@@ -101,7 +101,6 @@ public class StringBuildUtils {
                     str += "C";
                 }
                 String mac = StringBuildUtils.sortMac(str.substring(8));
-                map.put("ip", ip);
                 map.put("mac", mac);
                 saveUpdateHostMesh(map, false);
             }
