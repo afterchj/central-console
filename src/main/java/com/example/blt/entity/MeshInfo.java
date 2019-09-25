@@ -15,6 +15,7 @@ public class MeshInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true, length = 32)
     private String meshId;
     @Column(length = 32)
     private String meshName;
