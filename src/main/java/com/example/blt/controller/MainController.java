@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.Monitor4Dao;
+import com.example.blt.entity.HostInfo;
 import com.example.blt.entity.ProjectData;
 import com.example.blt.entity.TimePointParams;
 import com.example.blt.entity.TimerList;
@@ -301,9 +302,11 @@ public class MainController {
                 Map<String, Object> map2 = new ConcurrentHashMap<>();
                 map2.put("meshId", projectDataList.get(i).getMeshId());
                 List<TimerList> timerListList = projectDataList.get(i).getTimerList();
-                int count2 = monitor4Dao.findHostInfo(String.valueOf(map2.get("meshId")));
-                if (count2 == 0) {
+                HostInfo hostInfo = monitor4Dao.findHostInfo(String.valueOf(map2.get("meshId")));
+                if (hostInfo == null) {
                     monitor4Dao.insertHostInfo(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
+                }else if(hostInfo.getMeshName()==null){
+                    monitor4Dao.updateHostInfo(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
                 }
                 for (int j = 0; j < timerListList.size(); j++) {
                     Integer tid = timerListList.get(j).getTimerLine().getTid();

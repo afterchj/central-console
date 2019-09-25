@@ -1,6 +1,7 @@
 package com.example.blt.dao;
 
 import com.example.blt.entity.CommandLight;
+import com.example.blt.entity.HostInfo;
 import com.example.blt.entity.LightDemo;
 import org.apache.ibatis.annotations.*;
 
@@ -71,8 +72,8 @@ public interface Monitor4Dao {
     @Select("select count(*) from f_time_line where mesh_id=#{meshId} and tid=#{tid}")
     int findTimeLine(Map<String, Object> map);
 
-    @Select("select count(*) from t_host_info where mesh_id=#{meshId}")
-    int findHostInfo(@Param("meshId") String meshId);
+    @Select("select mesh_name AS meshName,mesh_id AS meshId from t_host_info where mesh_id=#{meshId}")
+    HostInfo findHostInfo(@Param("meshId") String meshId);
 
     @Insert("insert into t_host_info (mesh_id,mesh_name,log_date) values (#{meshId},#{mname},NOW())")
     void insertHostInfo(@Param("meshId") String meshId,@Param("mname") String mname);
