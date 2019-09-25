@@ -83,11 +83,13 @@ $(function () {
         var title = $(this).parent().prev().prev().find('h4').text();
         var buttonThis = $(this);
         var hiddenTitle = $(this).parent().prev().prev().find('input').val();
+        var valEmpty = isEmpty(val);
+        if (valEmpty && hiddenTitle.indexOf("删除")==-1){//输入框不为空&&不是删除操作
+            $(buttonThis).parent().prev().find('label').text(text);
+        }
         var hint = $(buttonThis).parent().prev().find('label').text();
         var hintEmpty = isEmpty(hint);
-        var valEmpty = isEmpty(val);
-        // $(buttonThis).parent().prev().find('label').text('');
-        if (hintEmpty && !valEmpty){//没有提示&&输入框不为空
+        if (hintEmpty ){//没有提示
             if (title == '创建网组') {//创建组
                 $.post('/control/group', {'gname': val, 'type': 'create'}, function (data) {
                     var exitGroup = data.exitGroup;
@@ -135,8 +137,6 @@ $(function () {
                     }
                 });
             }
-        }else {
-            return false;
         }
 
         if (hiddenTitle == '删除组') {
