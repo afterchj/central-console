@@ -34,6 +34,7 @@
         <parameter property="mac" mode="IN"/>
         <parameter property="type" mode="IN"/>
         <parameter property="version" mode="IN"/>
+        <parameter property="flag" mode="IN"/>
         <parameter property="status" mode="IN"/>
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
@@ -128,11 +129,11 @@
     </insert>
 
     <insert id="insertHost" parameterType="map">
-        INSERT IGNORE INTO t_host_info(ip,log_date) VALUE (#{ip},now())
+        REPLACE INTO t_host_info(ip,host_id,log_date) VALUE (#{ip},#{hostId},now())
     </insert>
 
     <select id="saveUpdateHosts" parameterMap="hostMapper" resultType="map" statementType="CALLABLE">
-        CALL saveUpdateHost(?,?,?,?,?,?,?,?)
+        CALL saveUpdateHost(?,?,?,?,?,?,?,?,?)
     </select>
 
     <update id="updateHostsFlag" parameterType="map">
