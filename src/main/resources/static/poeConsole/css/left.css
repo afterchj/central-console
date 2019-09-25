@@ -142,3 +142,52 @@ ul.am-dropdown-content > li > a {
 .leftNav2 a:hover {
     background-color: #EDF2FF;
 }
+
+@media screen and (max-width: 2000px) {
+    .title-max{
+        width:15%;
+    }
+    .title-max label{
+        width: 100%;
+        text-align-last: justify;
+    }
+    .title-right{
+        width:85%;
+    }
+}
+.am-panel-default{
+    border: none;
+    box-shadow: none;
+}
+
+@media screen and (max-width: 1200px) {
+    .panel-show-msg img{
+        width:1.4rem;
+    }
+}
+
+
+@media screen and (max-width: 813px) {
+    .rename-delete.left>.am-fl:first-child{
+        border-bottom: 1px solid #ccc;
+        border-right:none;
+        width:100%;
+    }
+    .rename-delete.left>.am-fl:last-child{
+        /*border-bottom: 1px solid #ccc;*/
+        width:100%;
+    }
+    .panel-show-msg img{
+        width:1rem;
+    }
+    .data-show-table {
+        width: 98%  !important;
+        margin: 1rem 1% 2rem 1% !important;
+    }
+    /*.title-max{*/
+        /*width:20%;*/
+    /*}*/
+    /*.title-right{*/
+        /*width:80%;*/
+    /*}*/
+}

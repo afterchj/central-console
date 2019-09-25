@@ -16,9 +16,12 @@
 //     //     $(this).parent('.updown-data ').toggleClass('active');
 //     // })
 $(function () {
-    var height = $('.topNav ').height();
-    console.log('height',height);
+    // var height = $('.topNav ').height();
+    var height=document.body.scrollHeight;
+
+    // console.log('height',height);
     $('.leftNav2').css('height',height);
+    $('.topNav section.am-panel-default').css('height',height);
     $('.left-timing-title li:first-child').addClass('active');
     $('.left-timing-title li').click(function () {
         $(this).addClass('active').siblings('li').removeClass('active');
