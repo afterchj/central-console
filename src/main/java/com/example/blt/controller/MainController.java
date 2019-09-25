@@ -306,7 +306,7 @@ public class MainController {
                 HostInfo hostInfo = monitor4Dao.findHostInfo(String.valueOf(map2.get("meshId")));
                 if (hostInfo == null) {
                     monitor4Dao.insertHostInfo(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
-                }else if(hostInfo.getMeshName()==null){
+                }else if(hostInfo.getMeshName()==null || "".equals(hostInfo.getMeshName())){
                     monitor4Dao.updateHostInfo(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
                 }
                 for (int j = 0; j < timerListList.size(); j++) {

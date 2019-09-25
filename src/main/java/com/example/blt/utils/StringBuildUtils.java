@@ -36,7 +36,6 @@ public class StringBuildUtils {
         }
         for (String str : array) {
             Map map = new HashMap();
-            map.put("ip", ip);
             map.put("host", host);
             map.put("status", 1);
             if (str.indexOf("77011365") != -1) {
@@ -81,12 +80,12 @@ public class StringBuildUtils {
                         }
                     }
                     map.put("meshId", buffer.toString());
-                    insertOrUpdateHost(map);
+                    saveUpdateHostMesh(map, false);
                 }
             } else if (str.indexOf("77050208") != -1) {
                 String flag = str.substring(8, 10);
                 map.put("flag", flag);
-                updateHost(map, false);
+                saveUpdateHostMesh(map, false);
             } else if (str.indexOf("77050506") != -1) {
                 if (str.length() > 16) {
                     str = str.substring(str.length() - 16);
@@ -96,14 +95,14 @@ public class StringBuildUtils {
                 String version = str.substring(12);
                 map.put("type", product);
                 map.put("version", version);
-                insertOrUpdateHost(map);
+                saveUpdateHostMesh(map, false);
             } else if (str.indexOf("77050705") != -1) {
                 while (str.length() < 20) {
                     str += "C";
                 }
                 String mac = StringBuildUtils.sortMac(str.substring(8));
                 map.put("mac", mac);
-                insertOrUpdateHost(map);
+                saveUpdateHostMesh(map, false);
             }
         }
     }
@@ -276,12 +275,8 @@ public class StringBuildUtils {
         WebSocket.sendMessage(map);
     }
 
-    public static void insertOrUpdateHost(Map map) {
+    public static void saveUpdateHostMesh(Map map, boolean flag) {
         logger.warn("map {}", map);
-        saveHost(map, false);
-    }
-
-    public static void saveHost(Map map, boolean flag) {
         if (flag) {
             try {
                 ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));

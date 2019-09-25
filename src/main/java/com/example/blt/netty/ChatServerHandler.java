@@ -2,6 +2,9 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.entity.dd.Topics;
+import com.example.blt.exception.NoTopicException;
+import com.example.blt.service.ProducerService;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
 import io.netty.channel.Channel;
@@ -18,6 +21,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.net.SocketAddress;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -92,7 +97,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (len > 9 && len <= 50) {
             logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             if (cmd.indexOf("77050103") != -1) {
-                redisTemplate.opsForValue().set(host, arg1, 30, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
             }
             StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
@@ -143,6 +148,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
+        redisTemplate.opsForValue().set(channel.id().toString(), channel.toString(), 50, TimeUnit.SECONDS);
+        insertOrUpdateHost(channel, false);
         sendPoeInfo(channel);
     }
 
@@ -162,5 +169,20 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         channel.writeAndFlush("77050101CCCC");//获取mesh信息
         channel.writeAndFlush("77050105CCCC");//获取mac信息
         channel.writeAndFlush("77050106CCCC");//获取ota信息
+    }
+
+    public static void insertOrUpdateHost(Channel channel, boolean flag) {
+        Map map = new ConcurrentHashMap();
+        String addr = channel.remoteAddress().toString();
+        map.put("ip", addr.substring(1, addr.indexOf(":")));
+        map.put("host", channel.id().toString());
+        map.put("status", channel.isActive());
+        if (flag) {
+            try {
+                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
+            } catch (Exception e) {
+            }
+        }
+        sqlSessionTemplate.insert("console.saveUpdateHosts", map);
     }
 }
