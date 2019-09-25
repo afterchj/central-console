@@ -4,6 +4,7 @@ import com.example.blt.dao.*;
 import com.example.blt.entity.CenterException;
 import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ import java.util.*;
 @Controller
 public class MonitorController {
 
-    @Resource
+    @Autowired
     private LightListDao lightListDao;
 
     @Resource

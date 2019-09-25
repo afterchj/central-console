@@ -85,8 +85,9 @@ $(function () {
         var hiddenTitle = $(this).parent().prev().prev().find('input').val();
         var hint = $(buttonThis).parent().prev().find('label').text();
         var hintEmpty = isEmpty(hint);
+        var valEmpty = isEmpty(val);
         // $(buttonThis).parent().prev().find('label').text('');
-        if (hintEmpty){
+        if (hintEmpty && !valEmpty){//没有提示&&输入框不为空
             if (title == '创建网组') {//创建组
                 $.post('/control/group', {'gname': val, 'type': 'create'}, function (data) {
                     var exitGroup = data.exitGroup;
@@ -134,6 +135,8 @@ $(function () {
                     }
                 });
             }
+        }else {
+            return false;
         }
 
         if (hiddenTitle == '删除组') {
