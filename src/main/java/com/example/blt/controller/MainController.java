@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.Monitor4Dao;
-import com.example.blt.entity.HostInfo;
 import com.example.blt.entity.ProjectData;
 import com.example.blt.entity.TimePointParams;
 import com.example.blt.entity.TimerList;
