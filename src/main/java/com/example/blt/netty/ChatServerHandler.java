@@ -92,7 +92,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (len > 9 && len <= 50) {
             logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             if (cmd.indexOf("77050103") != -1) {
-                redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(host, arg1, 30, TimeUnit.SECONDS);
             }
             StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
