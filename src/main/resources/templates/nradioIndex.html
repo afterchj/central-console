@@ -118,28 +118,21 @@
             </div>
         </div>
         <div class="am-g">
-            <div class="col-sm-12 col-lg-12">
+            <div class="col-sm-12 col-lg-12 am-text-right">
+                <img th:src="@{/static/img/fewer.png}" id="show" alt="" >
+            </div>
+            <div class="col-sm-12 col-lg-12" id="show-list">
                 <div class="am-form-group ">
                     <div class="am-btn-group am-btn-group-xs">
-                        <button id="accept" type="button" style="" class="  dan am-btn-sm">
+                        <button id="accept" type="button" style="" class="dan am-btn-sm">
                             接收ID
                         </button>
                         <button id="OTA" type="button"  style=" " class=" dan  am-btn-sm"
                         >  OTA
                         </button>
                     </div>
-
                 </div>
             </div>
-            <!--<div class="col-sm-6 col-lg-6">-->
-                <!--<div class="am-form-group ">-->
-                    <!--<div class="am-btn-group am-btn-group-xs">-->
-                        <!--<button id="OTA" type="button" class="     dan  am-btn-sm"-->
-                               <!--&gt;OTA-->
-                        <!--</button>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
     </form>
 </div>
@@ -226,6 +219,10 @@
         });
     });
 
+    $('#show').click(function () {
+        $(this).toggleClass('over');
+        $('#show-list').toggle();
+    })
 
     function change(val) {
         var id = $(val).attr("id");

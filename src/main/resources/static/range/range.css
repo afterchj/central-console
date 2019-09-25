@@ -152,7 +152,15 @@ input[type=range]::-moz-range-progress {
     background: linear-gradient(#3099e8, #277ed7);
     border-color: #3099e8;
 }
-
+#show{
+    width: 3rem;margin-bottom: 1rem;
+}
+#show.over{
+    transform: rotate(180deg);
+}
+#show-list{
+    display: none;
+}
 label {
     color: #fafafa;
     margin-bottom: 8px;
