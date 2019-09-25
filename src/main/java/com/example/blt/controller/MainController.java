@@ -179,6 +179,7 @@ public class MainController {
             success = "error";
         }
         map.put("success", success);
+        logger.info("sendByMeshId result: {},host: {},command: {}",success,host,command);
         return map;
     }
 

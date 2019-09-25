@@ -13,6 +13,7 @@ import com.example.blt.task.ExecuteTask;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -55,7 +56,7 @@ public class ControlCenterController {
      */
     @RequestMapping("/toLogin")
     @ResponseBody
-    public String toLogin(HttpServletRequest request, String username) {
+    public String toLogin(HttpServletRequest request, @RequestBody String username) {
         HttpSession session = request.getSession();
         session.setAttribute("username", username);
         return "success";
