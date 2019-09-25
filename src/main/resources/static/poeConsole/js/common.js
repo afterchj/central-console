@@ -46,7 +46,7 @@ $(function () {
 //     }
 //     return paramValue == "" && (paramValue = null), paramValue
 // }
-$('#spinner').hide();
+// $('#spinner').hide();
 $("#dataReset-modal button.yes").click(function () {
     var hiddenTitle = $(this).parent().prev().prev().find('input').val();
     if (hiddenTitle == '恢复出厂设置'){
