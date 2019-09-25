@@ -60,7 +60,7 @@
         <div class="am-g">
             <div class="col-sm-12 col-lg-12">
                 <div class="am-form-group ">
-                    <label class="">All control： </label>
+                    <label class="control-label">All control： </label>
                     <div class="am-btn-group am-btn-group-xs">
                         <button id="switch" type="button" class="am-btn  total-control  am-btn-sm">ON
                         </button>
@@ -83,7 +83,7 @@
             <!--</div>-->
             <div class="col-sm-12 col-lg-12 col-end">
                 <div class="am-form-group">
-                    <label>选择场景：</label>
+                    <label class="control-label">选择场景：</label>
                     <div class="am-btn-toolbar">
                         <div class="am-btn-group am-btn-group-sm am-btn-group-justify">
                             <button type="button" class="am-btn scene-select active">场景一</button>
@@ -97,9 +97,9 @@
         </div>
         <div class="am-g color-temperature am-margin-top-20">
             <div class="col-sm-3 col-lg-3  title-max">
-                <label>色 温：</label>
+                <label>色温：</label>
             </div>
-            <div class="col-sm-9 col-lg-9 col-end">
+            <div class="col-sm-9 col-lg-9 col-end title-right">
                 <div class="range p-r">
                     <span class="show-hint">0%</span>
                     <input type="range" value="0" touchmove="change(this)" id="color">
@@ -108,9 +108,9 @@
         </div>
         <div class="am-g lightness am-margin-top-20">
             <div class="col-sm-3 col-lg-3 title-max">
-                <label>亮 度：</label>
+                <label>亮度：</label>
             </div>
-            <div class="col-sm-9 col-lg-9 col-end">
+            <div class="col-sm-9 col-lg-9 col-end title-right">
                 <div class="range p-r">
                     <span class="show-hint">0%</span>
                     <input type="range" value="0" touchmove="change(this)" id="luminance">
@@ -119,17 +119,21 @@
         </div>
         <div class="am-g">
             <div class="col-sm-12 col-lg-12 am-text-right">
-                <img th:src="@{/static/img/fewer.png}" id="show" alt="" >
+                <img th:src="@{/static/img/fewer.png}" id="show" alt="">
             </div>
-            <div class="col-sm-12 col-lg-12" id="show-list">
+            <div class="col-sm-12 col-lg-12 am-text-right" id="show-list">
                 <div class="am-form-group ">
-                    <div class="am-btn-group am-btn-group-xs">
-                        <button id="accept" type="button" style="" class="dan am-btn-sm">
-                            接收ID
-                        </button>
-                        <button id="OTA" type="button"  style=" " class=" dan  am-btn-sm"
-                        >  OTA
-                        </button>
+                    <div class="am-btn-group-xs">
+                        <div class="col-sm-6 col-lg-6 am-text-right">
+                            <button id="accept" type="button" style="" class="dan am-btn-sm">
+                                接收ID
+                            </button>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 am-text-left">
+                            <button id="OTA" type="button" style=" " class=" dan  am-btn-sm"
+                            > OTA
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
