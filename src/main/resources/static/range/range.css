@@ -221,7 +221,18 @@ label {
 }
 
 
-
+@media screen and (max-width: 2000px) {
+    .title-max{
+        width:15%;
+    }
+    .title-max label{
+        width: 100%;
+        text-align-last: justify;
+    }
+    .title-right{
+        width:85%;
+    }
+}
 
 
 @media screen and (max-width: 1200px) {
@@ -237,30 +248,6 @@ label {
     }
 }
 
-/*@media screen and (max-width: 992px) {*/
-    /*.title-max{*/
-        /*width:15%;*/
-    /*}*/
-    /*.title-max label{*/
-        /*width: 100%;*/
-        /*text-align-last: justify;*/
-    /*}*/
-    /*.title-right{*/
-        /*width:85%;*/
-    /*}*/
-/*}*/
-
-/*@media screen and (max-width: 768px) {*/
-    /*!*label {*!*/
-        /*!*width:12rem;*!*/
-    /*!*}*!*/
-    /*.title-max{*/
-        /*width:15%;*/
-    /*}*/
-    /*.title-right{*/
-        /*width:85%;*/
-    /*}*/
-/*}*/
 
 @media screen and (max-width: 800px) {
     .title-max label{
