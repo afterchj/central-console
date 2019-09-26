@@ -36,6 +36,7 @@ public class StringBuildUtils {
         }
         for (String str : array) {
             Map map = new HashMap();
+            map.put("ip", ip);
             map.put("host", host);
             map.put("status", 1);
             if (str.indexOf("77011365") != -1) {

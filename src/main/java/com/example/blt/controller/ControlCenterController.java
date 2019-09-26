@@ -230,13 +230,16 @@ public class ControlCenterController {
         if (type.equals("reSet")){
             controlCenterService.reSet();
         }else {
-            flag = sendReSetCmd("77050101CCCC");
-            if (flag){
-                flag = sendReSetCmd("77050105CCCC");
-            }
-            if (!flag){
-                msg =  "error";
-            }
+            sendReSetCmd("77050101CCCC");
+//            if (flag){
+             sendReSetCmd("77050105CCCC");
+//            }
+//            if (flag){
+             sendReSetCmd("77050106CCCC");
+//            }
+//            if (!flag){
+//                msg =  "error";
+//            }
         }
         return msg;
     }
