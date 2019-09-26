@@ -224,31 +224,35 @@ public class ControlCenterController {
 
     @RequestMapping("/reSet")
     @ResponseBody
-    public String reSet(String type){
+    public String reSet(String type) {
         String msg = "success";
         Boolean flag;
-        if (type.equals("reSet")){
+        if (type.equals("reSet")) {
             controlCenterService.reSet();
-        }else {
-            sendReSetCmd("77050101CCCC");
-//            if (flag){
-             sendReSetCmd("77050105CCCC");
-//            }
-//            if (flag){
-             sendReSetCmd("77050106CCCC");
-//            }
-//            if (!flag){
-//                msg =  "error";
-//            }
+        } else {
+            flag = sendReSetCmd("77050101CCCC");
+            if (flag) {
+                flag = sendReSetCmd("77050105CCCC");
+                if (flag) {
+                    flag = sendReSetCmd("77050106CCCC");
+                    if (!flag){
+                        msg =  "error";
+                    }
+                }else {
+                    msg =  "error";
+                }
+            }else {
+                msg =  "error";
+            }
         }
         return msg;
     }
 
-    private boolean sendReSetCmd(String command){
+    private boolean sendReSetCmd(String command) {
         Boolean flag = true;
         Map<String, String> map = new HashMap<>();
         String host = "all";
-        map.put("command",command);
+        map.put("command", command);
         map.put("host", host);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
