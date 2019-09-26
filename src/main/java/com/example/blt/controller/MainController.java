@@ -290,7 +290,7 @@ public class MainController {
     public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         String params = request.getParameter("params");
-        logger.warn("params********************"+params);
+//        logger.warn("params********************"+params);
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
         String uid = String.valueOf(jsonObjectParams.get("uid"));
         String time = String.valueOf(jsonObjectParams.get("time"));
