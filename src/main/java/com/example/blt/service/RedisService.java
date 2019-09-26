@@ -56,13 +56,12 @@ public class RedisService {
                 ScheduledFuture future = dynamicScheduledTask.futures.get(cronVo.getCronName());
                 if (future != null) {
                     future.cancel(true);
-                    logger.warn("isCancel [{}]" + future.isCancelled());
                 }
             } else {
                 dynamicScheduledTask.configureTasks(cronVo);
             }
         } catch (Exception e) {
-            logger.error("cron error [{}] ", e);
+            logger.error("cron error [{}] ", e.getMessage());
         }
     }
 

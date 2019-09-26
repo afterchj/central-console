@@ -99,12 +99,6 @@
         INNER JOIN t_group g ON g.id=r.gid
         WHERE h.host_id=#{host}
         )
---         SELECT
---             h.host_id
---         FROM
---             t_host_info h
---         LEFT JOIN t_group g ON h.gid = g.id
---         WHERE h.is_control=1 AND h.status=1 AND h.gid = (SELECT gid FROM t_host_info WHERE host_id = #{host})
     </select>
 
     <select id="getHost" resultType="string">
@@ -119,13 +113,13 @@
         SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,repetition,cron FROM t_cron
     </select>
 
-    <select id="getHostId" resultType="string">
+    <select id="getHostId" resultType="string" parameterType="string">
         SELECT host_id FROM t_host_info h
         INNER JOIN t_host_mesh s ON h.id=s.hid
         INNER JOIN t_mesh m ON m.id = s.mid
         WHERE m.mesh_id=#{host} OR h.ip=#{host}
---         SELECT host_id FROM t_host_info WHERE ip=#{host} OR mesh_id=#{host}
     </select>
+
     <select id="getVaddr" resultType="string">
         SELECT vaddr FROM t_light_info
     </select>

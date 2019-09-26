@@ -107,16 +107,18 @@ public class MainTest {
 //        map.put("flag", flag);
 //        sqlSessionTemplate.update("console.updateHostsFlag", map);
         String temp = sqlSessionTemplate.selectOne("console.getHost");
+        String hostId = sqlSessionTemplate.selectOne("console.getHostId","81444189");
+        System.out.println(hostId);
         List hosts = sqlSessionTemplate.selectList("console.getHosts");
 //        hosts.remove("e1753bd4");
-        List<String> list = sqlSessionTemplate.selectList("console.getAll");
-        ValueOperations valueOperations = redisTemplate.opsForValue();
-        for (String id : list) {
-            String tem = valueOperations.get(id, 0, -1);
-            System.out.println(id + "\t" + tem);
-        }
-        list.remove("e1753bd4");
-        System.out.println(list + "\t" + temp);
+//        List<String> list = sqlSessionTemplate.selectList("console.getAll");
+//        ValueOperations valueOperations = redisTemplate.opsForValue();
+//        for (String id : list) {
+//            String tem = valueOperations.get(id, 0, -1);
+//            System.out.println(id + "\t" + tem);
+//        }
+//        list.remove("e1753bd4");
+//        System.out.println(list + "\t" + temp);
 //        if (hosts.size() > 0) {
 //            sqlSessionTemplate.update("console.updateHostsStatus", hosts);
 //        }
