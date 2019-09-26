@@ -47,7 +47,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
                     list2.add(host);
                 }
             }
-            saveHostStatus(list1, list2);
+            saveHostStatus(list2);
         } catch (Exception e) {
             logger.error("updateHostStatus error {}", e.getMessage());
         }
@@ -121,15 +121,15 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         sqlSessionTemplate.update("console.saveUpdate", params);
     }
 
-    public void saveHostStatus(List list1, List list2) {
-//        logger.warn("online hosts {}", list2);
-        if (list2.size() > 0) {
-            sqlSessionTemplate.update("console.flushHostsStatus", list2);
-        }else {
-            sqlSessionTemplate.update("console.saveHostsStatus", list2);
-        }
-        if (list2.size() > 0 && list2.size() != list1.size()) {
-            sqlSessionTemplate.update("console.updateHostsStatus", list2);
+    public void saveHostStatus(List list2) {
+        logger.warn("online hosts {}", list2);
+        try {
+            if (list2.size() > 0) {
+                sqlSessionTemplate.update("console.flushHostsStatus", list2);
+                sqlSessionTemplate.update("console.updateHostsStatus", list2);
+            }
+        } catch (Exception e) {
+            logger.error("flushHostsError {}", e.getMessage());
         }
     }
 
