@@ -93,7 +93,7 @@ public class StringBuildUtils {
                 }
                 String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
                 int product = Integer.parseInt(temp, 16);
-                String version = str.substring(12);
+                int version = Integer.parseInt(str.substring(12), 16);
                 map.put("type", product);
                 map.put("version", version);
                 saveUpdateHostMesh(map, false);

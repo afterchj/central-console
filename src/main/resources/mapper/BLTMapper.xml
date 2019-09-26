@@ -60,7 +60,9 @@
     </select>
 
     <update id="saveHost" parameterType="ConsoleVo">
-        UPDATE t_host_info
+        UPDATE t_host_info h
+        INNER JOIN t_host_mesh s ON h.id = s.hid
+        INNER JOIN t_mesh m ON m.id = s.mid
         <set>
             <if test="is_control != null">
                 is_control=#{is_control},
@@ -68,10 +70,10 @@
             <if test="is_master != null">
                 is_master=#{is_master},
             </if>
-            log_date=now()
+            h.log_date=now()
         </set>
         <if test="host!=null and host!=''">
-            WHERE mesh_id=#{host}
+            WHERE m.mesh_id=#{host}
         </if>
     </update>
     <select id="getHosts" resultType="string" parameterType="string">
