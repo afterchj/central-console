@@ -72,11 +72,14 @@ public interface Monitor4Dao {
     @Select("select count(*) from f_time_line where mesh_id=#{meshId} and tid=#{tid}")
     int findTimeLine(Map<String, Object> map);
 
-//    @Select("select mesh_name AS meshName,mesh_id AS meshId from t_host_info where mesh_id=#{meshId}")
-//    HostInfo findHostInfo(@Param("meshId") String meshId);
+    @Select("select count(*) from t_mesh where mesh_id=#{meshId}")
+    int findTMesh(@Param("meshId") String meshId);
 
-//    @Insert("insert into t_host_info (mesh_id,mesh_name,log_date) values (#{meshId},#{mname},NOW())")
-//    void insertHostInfo(@Param("meshId") String meshId,@Param("mname") String mname);
+    @Insert("insert into t_mesh (mesh_id,mesh_name,log_date) values (#{meshId},#{mname},NOW())")
+    void insertTMesh(@Param("meshId") String meshId,@Param("mname") String mname);
+
+    @Update("update t_mesh set mesh_name= #{mname},log_date=NOW() where mesh_id=#{meshId}")
+    void updateTMesh(@Param("meshId")String meshId,@Param("mname")String mname);
 
 //    @Update("update t_host_info set mesh_name = #{mname},log_date = NOW() where mesh_id = #{meshId}")
 //    void updateHostInfo(@Param("meshId")String meshId, @Param("mname")String mname);
@@ -84,6 +87,4 @@ public interface Monitor4Dao {
     @Select("select host_id from t_host_info where mesh_id=(select mesh_id from mesh_test where project=#{project}) and status=1")
     String getHostId(@Param("project") String host);
 
-    @Update("replace into t_mesh (mesh_name,mesh_id,log_date) VALUES (#{mname},#{meshId},NOW())")
-    void updateTMesh(@Param("meshId")String meshId,@Param("mname")String mname);
 }
