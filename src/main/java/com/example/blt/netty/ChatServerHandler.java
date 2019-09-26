@@ -149,6 +149,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
         redisTemplate.opsForValue().set(channel.id().toString(), channel.toString(), 50, TimeUnit.SECONDS);
+//        insertOrUpdateHost(channel, false);
         sendPoeInfo(channel);
     }
 
