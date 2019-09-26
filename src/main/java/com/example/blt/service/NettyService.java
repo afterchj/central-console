@@ -5,6 +5,7 @@ import com.example.blt.entity.dd.Topics;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.netty.ServerMain;
 import com.example.blt.task.DynamicScheduledTask;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,19 +35,19 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     @Resource
     private RedisTemplate redisTemplate;
 
-    @Scheduled(cron = "0/20 * * * * ?")
+    @Scheduled(cron = "0/30 * * * * ?")
     public void checkSize() {
         ValueOperations valueOperations = getOpsForValue();
-        List<String> hosts = sqlSessionTemplate.selectList("console.getAll");
-        List list = new ArrayList();
+        List<String> list1 = sqlSessionTemplate.selectList("console.getAll");
+        List<String> list2 = new ArrayList();
         try {
-            for (String host : hosts) {
-                Object object = valueOperations.get(host);
-                if (object != null) {
-                    list.add(host);
+            for (String host : list1) {
+                String str = valueOperations.get(host, 0, -1);
+                if (StringUtils.isNotEmpty(str)) {
+                    list2.add(host);
                 }
             }
-            saveHostStatus(list, list.size() != hosts.size());
+//            saveHostStatus(list1, list2);
         } catch (Exception e) {
             logger.error("updateHostStatus error {}", e.getMessage());
         }
@@ -120,15 +121,15 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         sqlSessionTemplate.update("console.saveUpdate", params);
     }
 
-    public void saveHostStatus(List list, boolean flag) {
-        if (list.size() == 0) {
-            sqlSessionTemplate.update("console.saveHostsStatus");
-            return;
-        } else {
-            sqlSessionTemplate.update("console.flushHostsStatus", list);
+    public void saveHostStatus(List list1, List list2) {
+        logger.warn("online hosts {}", list2);
+        if (list2.size() > 0) {
+            sqlSessionTemplate.update("console.flushHostsStatus", list2);
+        }else {
+            sqlSessionTemplate.update("console.saveHostsStatus", list2);
         }
-        if (flag) {
-            sqlSessionTemplate.update("console.updateHostsStatus", list);
+        if (list2.size() > 0 && list2.size() != list1.size()) {
+            sqlSessionTemplate.update("console.updateHostsStatus", list2);
         }
     }
 
@@ -142,7 +143,9 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         new ServerMain().run(8001);
         List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
         for (CronVo cronVo : cronVos) {
-            dynamicScheduledTask.configureTasks(cronVo);
+            if (cronVo.getItemSet() == 1) {
+                dynamicScheduledTask.configureTasks(cronVo);
+            }
         }
     }
 }

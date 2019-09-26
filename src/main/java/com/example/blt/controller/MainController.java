@@ -290,7 +290,7 @@ public class MainController {
     public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         String params = request.getParameter("params");
-        logger.warn("params********************"+params);
+//        logger.error("params********************"+params);
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
         String uid = String.valueOf(jsonObjectParams.get("uid"));
         String time = String.valueOf(jsonObjectParams.get("time"));
@@ -302,7 +302,12 @@ public class MainController {
                 Map<String, Object> map2 = new ConcurrentHashMap<>();
                 map2.put("meshId", projectDataList.get(i).getMeshId());
                 List<TimerList> timerListList = projectDataList.get(i).getTimerList();
-                monitor4Dao.updateTMesh(String.valueOf(map2.get("meshId")),projectDataList.get(i).getMname());
+                int countTmesh = monitor4Dao.findTMesh(String.valueOf(map2.get("meshId")));
+                if(countTmesh==0) {
+                    monitor4Dao.insertTMesh(String.valueOf(map2.get("meshId")), projectDataList.get(i).getMname());
+                }else {
+                    monitor4Dao.updateTMesh(String.valueOf(map2.get("meshId")), projectDataList.get(i).getMname());
+                }
                 for (int j = 0; j < timerListList.size(); j++) {
                     Integer tid = timerListList.get(j).getTimerLine().getTid();
                     map2.put("tid", tid);
@@ -331,8 +336,10 @@ public class MainController {
                             map2.put("minute", timePointList.get(k).getMinute());
                             map2.put("sceneId", sceneId);
                             map2.put("lightStatus", timePointList.get(k).getLight_status());
-                            JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
-                            redisService.pushMsg(jsonObject);
+                            if(timerListList.get(j).getTimerLine().getItem_set()==1) {
+                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+                                redisService.pushMsg(jsonObject);
+                            }
                             monitor4Dao.insertTimePoint(map2);
                         } else {
                             List<TimePointParams> detailvalueList = timePointList.get(k).getDetailvalueList();
@@ -342,8 +349,10 @@ public class MainController {
                                 map2.put("minute", timePointParams.getMinute());
                                 map2.put("sceneId", sceneId);
                                 map2.put("lightStatus", timePointParams.getLight_status());
-                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
-                                redisService.pushMsg(jsonObject);
+                                if(timerListList.get(j).getTimerLine().getItem_set()==1) {
+                                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+                                    redisService.pushMsg(jsonObject);
+                                }
                                 monitor4Dao.insertTimePoint(map2);
                             }
                         }
