@@ -95,6 +95,18 @@ public interface ControlCenterDao {
     @Delete("TRUNCATE TABLE t_host_info")
     void reSetHostInfo();
 
+    @Delete("TRUNCATE TABLE t_host_mesh")
+    void reSetHostMesh();
+
+    @Delete("TRUNCATE TABLE t_mesh")
+    void reSetMesh();
+
+    @Delete("TRUNCATE TABLE t_mesh_group")
+    void reSetMeshGroup();
+
+    @Delete("TRUNCATE TABLE t_cron")
+    void reSetCron();
+
     @Select("select status,flag from t_host_info where mesh_id=(select mesh_id from t_host_info where mesh_id=#{meshId} and host_id is not null having count(*)>1)")
     List<Map<String,Object>> getMeshState(@Param("meshId")String meshId);
 }

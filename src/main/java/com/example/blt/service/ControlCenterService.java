@@ -214,5 +214,9 @@ public class ControlCenterService {
         controlCenterDao.reSetTimePoint();
         controlCenterDao.reSetGroup();
         controlCenterDao.reSetHostInfo();
+        controlCenterDao.reSetHostMesh();
+        controlCenterDao.reSetMesh();
+        controlCenterDao.reSetMeshGroup();
+        controlCenterDao.reSetCron();
     }
 }
