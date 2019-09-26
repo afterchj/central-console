@@ -100,7 +100,6 @@ public class ControlCenterController {
                 model.addAttribute("timePoints", timePoints);
             }
         }
-
         for (MeshList mesh : meshs) {
             if (mesh.getMeshId().equals(meshId)) {
                 model.addAttribute("mname", mesh.getMname());
@@ -120,14 +119,14 @@ public class ControlCenterController {
     }
 
     /**
-     * 跳转到device.html
-     *
+     * 跳转到 control.html
      * @param model
      * @return
      */
     @RequestMapping("/netWorkGroupConsole")
-    public String netWorkGroupConsole(Model model, String gname, String meshId) {
-        List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gname, meshId);
+//    public String netWorkGroupConsole(Model model, String gname, String meshId) {
+    public String netWorkGroupConsole(Model model, Integer gid, String meshId) {
+        List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gid, meshId);
         List<GroupList> groupList = controlCenterService.getGroups();
         model.addAttribute("groupList", groupList);//组列表
         model.addAttribute("controlMasters", controlMasters);//网络列表
@@ -154,7 +153,8 @@ public class ControlCenterController {
      */
     @RequestMapping("/group")
     @ResponseBody
-    public Map<String, Object> group(String gname, String type, Integer id, String meshId) {
+//    public Map<String, Object> group(String gname, String type, Integer id, String meshId) {
+    public Map<String, Object> group(String type, Integer id, String meshId,String gname) {
         Map<String, Object> groupMap = new HashMap<>();
         Boolean flag = controlCenterService.groupOperation(gname, type, id, meshId);
 //        if (!flag){//组名重复

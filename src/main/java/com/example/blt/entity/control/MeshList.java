@@ -11,6 +11,15 @@ public class MeshList {
     private Integer id;
     private String meshId;
     private String mname;
+    private String flag;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     public Integer getId() {
         return id;

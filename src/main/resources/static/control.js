@@ -179,15 +179,15 @@ $(function () {
     });
     //点击创建组中的全部
     $(".all-group").click(function () {
-        window.location.href = "/control/netWorkGroupConsole?gname=全部";
+        window.location.href = "/control/netWorkGroupConsole";
     });
     //点击创建组中的单个组
     $(".one-group").click(function () {
-        window.location.href = "/control/netWorkGroupConsole?gname=" + $(this).text();
+        window.location.href = "/control/netWorkGroupConsole?gid=" + $(this).prev().val();
     });
     //选择组
     $(".select-group").click(function () {
-        window.location.href = "/control/netWorkGroupConsole?gname=" + $(this).text() + "&meshId=" + $(this).prev().val();
+        window.location.href = "/control/netWorkGroupConsole?gid=" + $(this).attr('alt') + "&meshId=" + $(this).prev().val();
     });
 
     //查看面板

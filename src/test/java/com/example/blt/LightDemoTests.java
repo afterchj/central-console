@@ -5,7 +5,6 @@ import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.dao.NewMonitorDao;
 import com.example.blt.dao.WebCmdDao;
 import com.example.blt.entity.LightDemo;
-import com.example.blt.entity.control.ControlMaster;
 import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.NewMonitorService;
 import org.junit.Test;
@@ -124,8 +123,8 @@ public class LightDemoTests {
     @Test
     public void getGroups() {
         String gname = null;
-        List<ControlMaster> controlGroups = controlCenterService.getControlGroups(gname, null);
-        System.out.println(controlGroups.toString());
+//        List<ControlMaster> controlGroups = controlCenterService.getControlGroups(gname, null);
+//        System.out.println(controlGroups.toString());
     }
 
     @Test

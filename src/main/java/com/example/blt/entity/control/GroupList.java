@@ -10,6 +10,15 @@ public class GroupList {
 
     private Integer id;
     private String gname;
+    private Integer groupId;
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
 
     public Integer getId() {
         return id;

@@ -19,23 +19,34 @@
     </sql>
     <select id="getControlGroups" resultType="com.example.blt.entity.control.ControlMaster">
         SELECT
-            <include refid="groupColumns"/>
+            g.gname as gname,
+            g.id as gid,
+            m.mesh_id as meshId,
+            ifnull(m.mesh_name,m.mesh_id) as mname,
+            flag
         FROM
-            t_host_info h
-            LEFT JOIN t_group g ON g.id = h.gid
-        WHERE
-          (h.ip != '127.0.0.1' or h.ip is null) AND h.mesh_id IS NOT NULL group by h.mesh_id
+            t_group g
+            JOIN t_mesh_group mg ON g.id = mg.gid
+            right JOIN t_mesh m ON mg.mid = m.id
+            <where>
+                <if test="gid!=null and meshId==null">
+                    g.id=#{gid}
+                </if>
+            </where>
     </select>
 
-    <select id="getControlGroupsByGname" resultType="com.example.blt.entity.control.ControlMaster">
-        SELECT
-            <include refid="groupColumns"/>
-        FROM
-        t_host_info h
-        LEFT JOIN t_group g ON g.id = h.gid
-        where
-            g.gname=#{gname} AND (h.ip != '127.0.0.1' or h.ip is null) and h.mesh_id is not null group by h.mesh_id
-    </select>
+    <!--<select id="getControlGroupsByGname" resultType="com.example.blt.entity.control.ControlMaster">-->
+        <!--SELECT-->
+            <!--g.gname as gname,-->
+            <!--g.id as gid,-->
+            <!--m.mesh_id as meshId,-->
+            <!--ifnull(m.mesh_name,m.mesh_id) as mname,-->
+            <!--if(m.flag='3','在线','离线') as flag-->
+        <!--FROM-->
+            <!--t_group g-->
+            <!--JOIN t_mesh_group mg ON g.id = mg.gid-->
+            <!--JOIN t_mesh m ON mg.mid = m.id where g.id=#{gid}-->
+    <!--</select>-->
 
     <select id="getPanels" resultType="com.example.blt.entity.control.ControlHost">
         SELECT
@@ -52,6 +63,17 @@
             t_host_info
         WHERE
             mesh_id = #{meshId} and  host_id is not null
+    </select>
+
+    <select id="getMeshState" resultType="map">
+        SELECT
+            hi.is_master as master,
+            hi.status
+        FROM
+            t_host_mesh hm
+            right JOIN t_host_info hi ON hm.hid = hi.id
+        WHERE
+            hm.mid = ( SELECT id FROM t_mesh WHERE mesh_id = #{meshId} )
     </select>
 
 </mapper>
