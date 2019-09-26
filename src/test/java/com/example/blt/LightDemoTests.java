@@ -196,4 +196,14 @@ public class LightDemoTests {
         System.out.println(colors);
         System.out.println(luminances);
     }
+
+    @Test
+    public void test12(){
+        String otaVersion = "0110";
+        String preOtaVersion;
+        String LastOtaVersion;
+                preOtaVersion = otaVersion.substring(0,2);
+                LastOtaVersion = otaVersion.substring(2,4);
+        System.out.println(preOtaVersion+" ："+LastOtaVersion);
+    }
 }

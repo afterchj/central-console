@@ -39,7 +39,6 @@ public class ControlCenterController {
 
     /**
      * 跳转到login.html
-     *
      * @return
      */
     @RequestMapping("/login")
@@ -49,7 +48,6 @@ public class ControlCenterController {
 
     /**
      * 点击登录
-     *
      * @param request  session
      * @param username 用户名
      * @return
@@ -71,7 +69,6 @@ public class ControlCenterController {
 
     /**
      * 跳转到index.html
-     *
      * @return
      */
     @RequestMapping("/index")
@@ -81,7 +78,6 @@ public class ControlCenterController {
 
     /**
      * 跳转到timing.html
-     *
      * @param model
      * @return
      */
@@ -124,7 +120,6 @@ public class ControlCenterController {
      * @return
      */
     @RequestMapping("/netWorkGroupConsole")
-//    public String netWorkGroupConsole(Model model, String gname, String meshId) {
     public String netWorkGroupConsole(Model model, Integer gid, String meshId) {
         List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gid, meshId);
         List<GroupList> groupList = controlCenterService.getGroups();
@@ -145,7 +140,6 @@ public class ControlCenterController {
 
     /**
      * 创建/重命名/删除组/选择组
-     *
      * @param gname 组名
      * @param type  操作类型
      * @param id    组id
@@ -153,25 +147,17 @@ public class ControlCenterController {
      */
     @RequestMapping("/group")
     @ResponseBody
-//    public Map<String, Object> group(String gname, String type, Integer id, String meshId) {
-    public Map<String, Object> group(String type, Integer id, String meshId,String gname) {
+    public Map<String, Object> group(String type, Integer id,String gname) {
         Map<String, Object> groupMap = new HashMap<>();
-        Boolean flag = controlCenterService.groupOperation(gname, type, id, meshId);
-//        if (!flag){//组名重复
-//            groupMap.put("exitGroup",1);
-//        }else {
-//            groupMap.put("exitGroup",0);
-//        }
+        Boolean flag = controlCenterService.groupOperation(gname, type, id);
         //组名重复 exitGroup:1
         int exitGroup = (!flag) ? 1 : 0;
         groupMap.put("exitGroup", exitGroup);
         return groupMap;
     }
 
-
     /**
      * 重命名/删除网络名
-     *
      * @param mname  网络名
      * @param meshId 网络id
      * @return exitMname:1 名称重复
@@ -188,7 +174,6 @@ public class ControlCenterController {
 
     /**
      * 重命名/删除面板
-     *
      * @param id
      * @param pname
      * @param type
@@ -209,7 +194,6 @@ public class ControlCenterController {
 
     /**
      * 设置主控关系
-     *
      * @param meshId 网络id
      * @return
      */

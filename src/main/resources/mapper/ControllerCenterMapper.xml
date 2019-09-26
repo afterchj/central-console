@@ -52,17 +52,18 @@
         SELECT
             id,
             CASE
-              WHEN STATUS='1' AND mac IS NOT NULL THEN '在线'
-              WHEN STATUS = '0' THEN '离线'
-              WHEN mac IS NULL THEN '异常'
+            WHEN STATUS = '1' THEN '在线'
+            WHEN STATUS = '0' THEN '离线'
             END AS state,
-            ifnull( other, ifnull( mac, ip ) ) AS pname,
+            ifnull( name, mac ) AS pname,
             mac,
-            CONCAT( product_type, '(', REPLACE ( ( substring( ota_version,- 3 ) ), '0', '.' ), ')' ) AS productType
+            product_type as productType,
+            ota_version as otaVersion
         FROM
             t_host_info
         WHERE
-            mesh_id = #{meshId} and  host_id is not null
+            id IN
+            (SELECT hm.hid FROM t_host_mesh hm,t_mesh m WHERE m.id = hm.mid AND m.mesh_id = #{meshId})
     </select>
 
     <select id="getMeshState" resultType="map">

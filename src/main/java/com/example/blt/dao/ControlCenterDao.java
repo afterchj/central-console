@@ -40,10 +40,10 @@ public interface ControlCenterDao {
     @Select("select id,gname,group_id as groupId from t_group")
     List<GroupList> getGroups();
 
-    @Select("select count(*) from t_host_info where mesh_name=#{mname} and ip!='127.0.0.1'")
+    @Select("select count(*) from t_mesh where mesh_name=#{mname}")
     Integer getMname(@Param("mname") String mname);
 
-    @Update("update t_host_info set mesh_name=#{mname} where mesh_id=#{meshId}")
+    @Update("update t_mesh set mesh_name=#{mname} where mesh_id=#{meshId}")
     void renameMesh(@Param("mname") String mname, @Param("meshId") String meshId);
 
     @Select("select count(*) FROM t_host_info WHERE other=#{pname}")
@@ -61,7 +61,7 @@ public interface ControlCenterDao {
     @Update("update t_host_info set master_id=1 where mesh_id=#{meshId}")
     void updatetMaster(@Param("meshId") String meshId);
 
-    @Update("update t_host_info set is_master=#{type} where mesh_id=#{meshId}")
+    @Update("update t_host_info set is_master=#{type} where id in(select hm.hid from t_host_mesh hm,t_mesh m where m.id=hm.mid and m.mesh_id=#{meshId})")
     void updateHostInfo(@Param("meshId") String meshId, @Param("type") int type);
 
     @Select("select id,mesh_id as meshId,ifnull(mesh_name,mesh_id) as mname ,flag from t_mesh")
@@ -74,8 +74,8 @@ public interface ControlCenterDao {
 
     List<ControlHost> getPanels(@Param("meshId") String meshId);
 
-    @Update("update t_host_info set is_master=0 where id in(select hm.hid from t_host_mesh hm,t_mesh m where m.id=hm.mid and m.mesh_id=#{meshId})")
-    void updateMasterByMeshId(@Param("meshId") String meshId);
+//    @Update("update t_host_info set is_master=0 where id in(select hm.hid from t_host_mesh hm,t_mesh m where m.id=hm.mid and m.mesh_id=#{meshId})")
+//    void updateMasterByMeshId(@Param("meshId") String meshId);
 
     @Update("update t_host_info set gid=null where gid=#{gid}")
     void updateMasterByGid(@Param("gid") Integer id);
@@ -83,7 +83,7 @@ public interface ControlCenterDao {
     @Select("select count(*) from t_host_info where ip !='127.0.0.1' and host_id is not null and mesh_id=#{meshId}")
     int getPanelNums(@Param("meshId") String meshId);
 
-    @Delete("DELETE FROM t_host_info where mesh_id=#{meshId}")
+    @Delete("DELETE FROM t_mesh where mesh_id=#{meshId}")
     void deleteMesh(@Param("meshId") String meshId);
 
     @Delete("TRUNCATE TABLE f_time_line")
@@ -110,9 +110,11 @@ public interface ControlCenterDao {
     @Delete("TRUNCATE TABLE t_cron")
     void reSetCron();
 
-//    @Select("select status,flag from t_host_info where mesh_id=(select mesh_id from t_host_info where mesh_id=#{meshId} and host_id is not null having count(*)>1)")
     List<Map<String,Object>> getMeshState(@Param("meshId")String meshId);
 
     @Delete("delete FROM t_mesh_group where gid=#{gid}")
     void deleteMeshGroupByGid(@Param("gid") Integer id);
+
+    @Delete("DELETE FROM t_mesh_group WHERE mid=(select id from t_mesh where mesh_id=#{meshId})")
+    void deleteMeshGroup(@Param("meshId")String meshId);
 }
