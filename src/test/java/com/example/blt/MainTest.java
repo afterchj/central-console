@@ -314,7 +314,7 @@ public class MainTest {
 
     @Test
     public void testSend() {
-        sqlSessionTemplate.update("console.saveHostsStatus");
+//        sqlSessionTemplate.update("console.saveHostsStatus");
 //        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
 //        System.out.println(JSON.toJSONString(cronVos) + "\t" + cronVos.size());
 //        List<String> hosts = sqlSessionTemplate.selectList("console.getHostsByGid", "45642");

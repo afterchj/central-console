@@ -17,6 +17,7 @@ public class HostInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String ip;
+    private String name;
     @Column(unique = true, length = 32)
     private String hostId;
     @Column(unique = true, length = 32)
