@@ -106,9 +106,9 @@ public class MainTest {
 //        String flag = arg1.substring(8, 10);
 //        map.put("flag", flag);
 //        sqlSessionTemplate.update("console.updateHostsFlag", map);
-        String temp = sqlSessionTemplate.selectOne("console.getHost");
-        String hostId = sqlSessionTemplate.selectOne("console.getHostId","81444189");
-        System.out.println(hostId);
+//        String temp = sqlSessionTemplate.selectOne("console.getHost");
+//        String hostId = sqlSessionTemplate.selectOne("console.getHostId","81444189");
+        System.out.println(Integer.parseInt("0A",16));
         List hosts = sqlSessionTemplate.selectList("console.getHosts");
 //        hosts.remove("e1753bd4");
 //        List<String> list = sqlSessionTemplate.selectList("console.getAll");

@@ -40,8 +40,8 @@ public class RedisService {
             int sceneId = object.getInteger("sceneId");
             int item_set = object.getInteger("item_set");
             int repetition = object.getInteger("repetition");
-            String minute = object.getString("minute");
-            String hour = object.getString("hour");
+            int minute = object.getInteger("minute");
+            int hour = object.getInteger("hour");
             String week = getWeek(object.getString("week"));
             CronVo cronVo = new CronVo();
             cronVo.setMeshId(meshId);
@@ -49,17 +49,14 @@ public class RedisService {
             cronVo.setItemSet(item_set);
             cronVo.setRepetition(repetition);
             cronVo.setCron(minute, hour, week);
-            cronVo.setCronName(meshId, sceneId);
+            cronVo.setCronName(meshId, sceneId, minute, hour);
             sqlSessionTemplate.insert("console.insertCron", cronVo);
 //            String key = String.format("task_%s_%s", meshId, sceneId);
-            if (item_set == 0 || repetition == 0) {
-                ScheduledFuture future = dynamicScheduledTask.futures.get(cronVo.getCronName());
-                if (future != null) {
-                    future.cancel(true);
-                }
-            } else {
-                dynamicScheduledTask.configureTasks(cronVo);
+            ScheduledFuture future = dynamicScheduledTask.futures.get(cronVo.getCronName());
+            if (future != null) {
+                future.cancel(true);
             }
+            dynamicScheduledTask.configureTasks(cronVo);
         } catch (Exception e) {
             logger.error("cron error [{}] ", e.getMessage());
         }
