@@ -27,7 +27,6 @@ public class DynamicScheduledTask {
     private ScheduledFuture future;
 
     public void configureTasks(CronVo cronVo) {
-        logger.warn("任务名称 {} 任务执行时间 {}",cronVo.getCronName(),cronVo.getCron());
         int itemSet = cronVo.getItemSet();
         if (itemSet == 1) {
             future = threadPoolTaskScheduler.schedule(new DetailTask(cronVo), new CronTrigger(cronVo.getCron()));

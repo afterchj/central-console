@@ -136,7 +136,7 @@
     </select>
 
     <insert id="insertCron" parameterType="CronVo">
-        REPLACE INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,create_date,update_date) VALUE (#{cronName},#{meshId},#{sceneId},#{itemSet},#{repetition},#{cron},now(),now())
+        INSERT INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,create_date,update_date) VALUE (#{cronName},#{meshId},#{sceneId},#{itemSet},#{repetition},#{cron},now(),now())
     </insert>
 
     <insert id="insertLog" parameterType="string">
