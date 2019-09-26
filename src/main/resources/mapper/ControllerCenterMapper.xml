@@ -55,7 +55,7 @@
             WHEN STATUS = '1' THEN '在线'
             WHEN STATUS = '0' THEN '离线'
             END AS state,
-            ifnull( name, mac ) AS pname,
+            if( name is null or name='', mac ,name) AS pname,
             mac,
             product_type as productType,
             ota_version as otaVersion

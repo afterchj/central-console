@@ -8,6 +8,8 @@ $(function () {
     var panelId;//mac
     var panelState;//面板状态
     var panelNameLabel;//面板名称标签
+    var pState;//面板总状态
+    var pNum;
     var match = /^[0-9A-Za-z\u4e00-\u9fa5]{2,8}$/;
     var text = "请输入2-8 位中文、字母、数字";
     //根据输入显示提示
@@ -43,12 +45,16 @@ $(function () {
         $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
         meshState = $(this).parent().next().next().text();
-        if (meshState == '网络在线'){
+        pNum = $(this).parent().next().next().next().find(":eq(0)").text();
+        pState = $(this).parent().next().next().next().find(":eq(1)").text();
+        pState = pState.indexOf("离线")==-1?true:false;
+        console.log('pNum:',pNum,' pState:',pState)
+        if (meshState == '网络在线' ||(pNum>0 && pState)){
             $(this).next().find(".delete-mesh").attr('data-target','#');
         }
     });
     $(".delete-mesh").click(function () {
-        if (meshState == '网络在线'){
+        if (meshState == '网络在线' ||(pNum>0 && pState)){
             layer.open({
                 content: '不可删除'
                 ,skin: 'msg'
