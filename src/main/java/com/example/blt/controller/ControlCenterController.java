@@ -210,23 +210,23 @@ public class ControlCenterController {
     @ResponseBody
     public String reSet(String type) {
         String msg = "success";
-        Boolean flag;
+//        Boolean flag;
         if (type.equals("reSet")) {
             controlCenterService.reSet();
         } else {
-            flag = sendReSetCmd("77050101CCCC");
-            if (flag) {
-                flag = sendReSetCmd("77050105CCCC");
-                if (flag) {
-                    flag = sendReSetCmd("77050106CCCC");
-                    if (!flag){
-                        msg =  "error";
-                    }
-                }else {
-                    msg =  "error";
-                }
-            }else {
-                msg =  "error";
+            String[] cmds = {"77050101CCCC", "77050105CCCC", "77050106CCCC"};
+            msg = recursiveSendCmd(msg,cmds);
+        }
+        return msg;
+    }
+
+    private String recursiveSendCmd(String msg,String...cmds){
+        Boolean flag;
+        for (int i=0;i<cmds.length;i++){
+            flag = sendReSetCmd(cmds[i]);
+            if (!flag){
+                msg = "error";
+                break;
             }
         }
         return msg;
