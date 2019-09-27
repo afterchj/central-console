@@ -152,11 +152,7 @@ public class ControlCenterService {
         if (type.equals(Operation.delete.getValue())) {
             controlCenterDao.deleteMeshGroupByGid(id);
             controlCenterDao.deleteGroup(id);
-        }
-//        else if (type.equals(Operation.select.getValue())) {
-//            controlCenterDao.selectGroup(id, meshId);
-//        }
-        else {
+        } else {
             Integer count = controlCenterDao.getGname(gname);
             if (count > 0) {//组名重复
                 return false;
@@ -189,7 +185,8 @@ public class ControlCenterService {
                 return false;
             }
             controlCenterDao.renamePname(pname, id);
-        } else if (type.equals(Operation.delete.getValue())) {
+        } else if (type.equals(Operation.delete.getValue())) {//删除面板
+            controlCenterDao.deleteHostMesh(id);//删除poe mesh关系
             controlCenterDao.deleteHost(id);
         }
         return true;
@@ -232,10 +229,11 @@ public class ControlCenterService {
 
     public Boolean meshOperations(String mname, String meshId) {
         Boolean flag = true;
-        if (StringUtils.isBlank(mname)) {
-            //删除网络
-            controlCenterDao.deleteMeshGroup(meshId);
-            controlCenterDao.deleteMesh(meshId);
+        if (StringUtils.isBlank(mname)) {//删除网络
+            controlCenterDao.deleteMeshGroup(meshId);//删除mesh group关系
+            controlCenterDao.deleteHostByMeshId(meshId);//删除面板
+            controlCenterDao.deleteHostMeshByMeshId(meshId);//删除 mesh 面板关系
+            controlCenterDao.deleteMesh(meshId);//删除网络
         } else {//重命名网络
             Integer count = controlCenterDao.getMname(mname);
             if (count > 0) {//名称重复

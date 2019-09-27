@@ -46,10 +46,10 @@ public interface ControlCenterDao {
     @Update("update t_mesh set mesh_name=#{mname} where mesh_id=#{meshId}")
     void renameMesh(@Param("mname") String mname, @Param("meshId") String meshId);
 
-    @Select("select count(*) FROM t_host_info WHERE other=#{pname}")
+    @Select("select count(*) FROM t_host_info WHERE name=#{pname}")
     Integer getPname(@Param("pname") String pname);
 
-    @Update("update t_host_info set other=#{pname} where id=#{id}")
+    @Update("update t_host_info set name=#{pname} where id=#{id}")
     void renamePname(@Param("pname") String pname, @Param("id") int id);
 
     @Delete("DELETE FROM t_host_info where id=#{id}")
@@ -117,4 +117,13 @@ public interface ControlCenterDao {
 
     @Delete("DELETE FROM t_mesh_group WHERE mid=(select id from t_mesh where mesh_id=#{meshId})")
     void deleteMeshGroup(@Param("meshId")String meshId);
+
+    @Delete("DELETE FROM t_host_mesh where hid=#{hid}")
+    void deleteHostMesh(@Param("hid") int id);
+
+    @Delete("DELETE FROM t_host_info where id in(select hm.hid from t_host_mesh hm,t_mesh m where m.id=hm.mid and m.mesh_id=#{meshId})")
+    void deleteHostByMeshId(String meshId);
+
+    @Delete("DELETE FROM t_host_mesh where mid=(select id from t_mesh where mesh_id=#{meshId})")
+    void deleteHostMeshByMeshId(String meshId);
 }
