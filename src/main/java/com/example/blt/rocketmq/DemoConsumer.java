@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-@RocketMQMessageListener(topic = "demo_topic", consumerGroup = "blt_local_consumer_demo_group")
+@RocketMQMessageListener(topic = "demo_topic", consumerGroup = "blt_consumer_demo_group")
 public class DemoConsumer implements RocketMQListener<String> {
 
     @Value("${rocketmq.model}")

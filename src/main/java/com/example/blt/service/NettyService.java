@@ -122,7 +122,6 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
     }
 
     public void saveHostStatus(List list1, List list2) {
-        logger.warn("online hosts {}", list2);
         try {
             if (list2.size() > 0) {
                 sqlSessionTemplate.update("console.flushHostsStatus", list2);
