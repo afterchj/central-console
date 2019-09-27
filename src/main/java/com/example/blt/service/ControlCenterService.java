@@ -87,61 +87,65 @@ public class ControlCenterService {
     }
 
     public List<ControlMaster> getControlGroups(Integer gid, String meshId) {
-        List<ControlMaster> controlMeshs;
         if (StringUtils.isNotBlank(meshId)) {//网络设置组
             controlCenterDao.selectGroup(gid, meshId);
             controlCenterDao.updateHostInfo(meshId,0);//取消主控设置
         }
-        controlMeshs = controlCenterDao.getControlGroups(gid, meshId);
+        List<ControlMaster> controlMeshs = controlCenterDao.getControlGroups(gid, meshId);
+        List<Map<String, Object>> meshStates;
         if (controlMeshs.size() > 0) {
             String flag;
             for (ControlMaster controlMesh : controlMeshs) {
                 meshId = controlMesh.getMeshId();
                 flag = controlMesh.getFlag();
-                String mState;
-                String pState = null;
-                Boolean master;
-                List<Map<String, Object>> meshStates = controlCenterDao.getMeshState(meshId);
-                int meshStatesSize = meshStates.size();
-                if (meshStates.size() > 0) {
-                    master = (Boolean) meshStates.get(0).get("master");
-                    mState = "网络在线";
-                    int pOffCount = 0;//单个网路下poe离线个数
-                    boolean states;
-                    if (meshStatesSize == 1) {
-                        states = (boolean) meshStates.get(0).get("status");
-                        if (!states) {
-                            mState = "网络离线";
-                            pState = "（离线）";
-                        }
-                    } else {
-                        for (Map<String, Object> meshState : meshStates) {
-                            states = (boolean) meshState.get("status");
-                            if (!flag.equals("3")) {
-                                mState = "网络离线";
-                            }
-                            if (!states) {
-                                pOffCount++;
-                            }
-                        }
-                        if (pOffCount == meshStatesSize) {//网路下所有poe离线
-                            mState = "网络离线";
-                            pState = "（离线）";
-                        } else if (pOffCount < meshStatesSize) {//网络下部分poe离线
-                            pState = "（存在异常）";
-                        }
-                    }
-                } else {
-                    mState = "网络离线";
-                    master = false;
-                }
-                controlMesh.setpNum(meshStatesSize);
-                controlMesh.setmState(mState);
-                controlMesh.setpState(pState);
-                controlMesh.setMaster(master);
+                meshStates = controlCenterDao.getMeshState(meshId);
+                setControlMaster(meshStates,flag,controlMesh);
             }
         }
         return controlMeshs;
+    }
+
+    private void setControlMaster(List<Map<String, Object>> meshStates,String flag,ControlMaster controlMesh){
+        int meshStatesSize = meshStates.size();
+        String mState;
+        String pState = null;
+        Boolean master;
+        if (meshStatesSize > 0) {
+            master = (Boolean) meshStates.get(0).get("master");
+            mState = "网络在线";
+            int pOffCount = 0;//单个网路下poe离线个数
+            boolean states;
+            if (meshStatesSize == 1) {
+                states = (boolean) meshStates.get(0).get("status");
+                if (!states) {
+                    mState = "网络离线";
+                    pState = "（离线）";
+                }
+            } else {
+                for (Map<String, Object> meshState : meshStates) {
+                    states = (boolean) meshState.get("status");
+                    if (!flag.equals("3")) {
+                        mState = "网络离线";
+                    }
+                    if (!states) {
+                        pOffCount++;
+                    }
+                }
+                if (pOffCount == meshStatesSize) {//网路下所有poe离线
+                    mState = "网络离线";
+                    pState = "（离线）";
+                } else if (pOffCount < meshStatesSize) {//网络下部分poe离线
+                    pState = "（存在异常）";
+                }
+            }
+        } else {
+            mState = "网络离线";
+            master = false;
+        }
+        controlMesh.setpNum(meshStatesSize);
+        controlMesh.setmState(mState);
+        controlMesh.setpState(pState);
+        controlMesh.setMaster(master);
     }
 
     public Integer getGname(String gname) {
@@ -193,7 +197,6 @@ public class ControlCenterService {
     }
 
     public void updateMaster(String meshId, int type) {
-//        controlCenterDao.updatetMaster(meshId);
         controlCenterDao.updateHostInfo(meshId, type);
     }
 
