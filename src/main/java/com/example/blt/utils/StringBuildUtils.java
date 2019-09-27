@@ -93,7 +93,7 @@ public class StringBuildUtils {
                 }
                 String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
                 int product = Integer.parseInt(temp, 16);
-                String version = str.substring(12);
+                String version = parseHixToStr(str.substring(12));
                 map.put("type", product);
                 map.put("version", version);
                 saveUpdateHostMesh(map, false);
@@ -136,6 +136,18 @@ public class StringBuildUtils {
             }
         }
         return sortMac.toString().toLowerCase();
+    }
+
+    public static String parseHixToStr(String str) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < str.length(); i += 2) {
+            String temp = String.valueOf(Integer.parseInt(str.substring(i, i + 2), 16));
+            if (temp.length() == 1) {
+                builder.append("0");
+            }
+            builder.append(temp);
+        }
+        return builder.toString();
     }
 
     public static void tempFormat(String format, String ip) {
@@ -287,13 +299,4 @@ public class StringBuildUtils {
         sqlSessionTemplate.insert("console.saveUpdateHosts", map);
     }
 
-    public static void updateHost(Map map, boolean flag) {
-        if (flag) {
-            try {
-                ProducerService.pushMsg(Topics.HOST_UPDATE_TOPIC.getTopic(), JSON.toJSONString(map));
-            } catch (Exception e) {
-            }
-        }
-        sqlSessionTemplate.update("console.updateHostsFlag", map);
-    }
 }

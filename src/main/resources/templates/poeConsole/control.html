@@ -86,12 +86,11 @@
                                             </button>
                                         </li>
                                         <li class="am-dropdown-header am-text-sm">
-                                            <a th:href="@{/control/netWorkGroupConsole(gname='全部')}" class="all-group">全部</a>
+                                            <a class="all-group">全部</a>
                                         </li>
                                         <li class="am-text-xs p-r list" th:each="group:${groupList}">
                                             <input type="hidden" th:value="${group.id}">
-                                            <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname})}"
-                                               th:text="${group.gname}" style="z-index: 9999;" class="one-group">
+                                            <a th:text="${group.gname}" style="z-index: 9999;" class="one-group">
                                             </a>
                                             <span class="area p-a group-rename group-operation">
                                                 <i class="fa fa-caret-right   " aria-hidden="true"></i>
@@ -154,7 +153,7 @@
                                         <li class="am-text-xs p-r" th:each="group:${groupList}">
                                             <input type="hidden" th:value="${controlMaster.meshId}">
                                             <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname},meshId=${controlMaster.meshId})}"
-                                               th:text="${group.gname}" class="select-group"></a>
+                                               th:text="${group.gname}" class="select-group" th:alt="${group.id}"></a>
                                         </li>
                                     </ul>
                                 </td>
@@ -163,7 +162,7 @@
                                         <label class="blue-green">
                                             <input type="hidden" th:value="${controlMaster.meshId}">
                                             <input type="checkbox" th:checked="${controlMaster.master}"
-                                                   th:disabled="${controlMaster.gname == null}"
+                                                   th:disabled="${controlMaster.gname == null || controlMaster.pNum == 0}"
                                                    th:alt="${controlMaster.gname == null}?'未选择组'"> 主控
                                         </label>
                                     </div>

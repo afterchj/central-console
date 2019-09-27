@@ -2,56 +2,80 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.blt.dao.ControlCenterDao" >
 
-    <sql id="groupColumns">
-        g.gname AS gname,
-        h.status,
-        h.is_master AS master,
-        h.gid,
-        h.mesh_id as meshId,
-        ifnull(h.mesh_name,h.mesh_id) as mname,
-        CASE
-          WHEN h.status='1' and h.host_id is not null and h.flag='03' THEN '网络在线'
-          WHEN h.status='0' or h.host_id is null or h.flag!='03' THEN '网络离线'
-        END AS mState,
---         if(h.status='1' and h.host_id is not null and h.flag='03','网络在线','网络离线') as mState,
-        if(h.host_id is null,'0','1') as pNum,
-        if(h.status='0','（离线）',null) as pState
-    </sql>
     <select id="getControlGroups" resultType="com.example.blt.entity.control.ControlMaster">
         SELECT
-            <include refid="groupColumns"/>
+            g.gname as gname,
+            g.id as gid,
+            m.mesh_id as meshId,
+            ifnull(m.mesh_name,m.mesh_id) as mname,
+            flag
         FROM
-            t_host_info h
-            LEFT JOIN t_group g ON g.id = h.gid
-        WHERE
-          (h.ip != '127.0.0.1' or h.ip is null) AND h.mesh_id IS NOT NULL group by h.mesh_id
-    </select>
-
-    <select id="getControlGroupsByGname" resultType="com.example.blt.entity.control.ControlMaster">
-        SELECT
-            <include refid="groupColumns"/>
-        FROM
-        t_host_info h
-        LEFT JOIN t_group g ON g.id = h.gid
-        where
-            g.gname=#{gname} AND (h.ip != '127.0.0.1' or h.ip is null) and h.mesh_id is not null group by h.mesh_id
+            t_group g
+            JOIN t_mesh_group mg ON g.id = mg.gid
+            right JOIN t_mesh m ON mg.mid = m.id
+            <where>
+                <if test="gid!=null and meshId==null">
+                    g.id=#{gid}
+                </if>
+            </where>
     </select>
 
     <select id="getPanels" resultType="com.example.blt.entity.control.ControlHost">
         SELECT
             id,
             CASE
-              WHEN STATUS='1' AND mac IS NOT NULL THEN '在线'
-              WHEN STATUS = '0' THEN '离线'
-              WHEN mac IS NULL THEN '异常'
+            WHEN STATUS = '1' THEN '在线'
+            WHEN STATUS = '0' THEN '离线'
             END AS state,
-            ifnull( other, ifnull( mac, ip ) ) AS pname,
+            if( name is null or name='', mac ,name) AS pname,
             mac,
-            CONCAT( product_type, '(', REPLACE ( ( substring( ota_version,- 3 ) ), '0', '.' ), ')' ) AS productType
+            product_type as productType,
+            ota_version as otaVersion
         FROM
             t_host_info
         WHERE
-            mesh_id = #{meshId} and  host_id is not null
+            id IN
+            (SELECT hm.hid FROM t_host_mesh hm,t_mesh m WHERE m.id = hm.mid AND m.mesh_id = #{meshId})
+    </select>
+
+    <select id="getMeshState" resultType="map">
+        SELECT
+            hi.is_master as master,
+            hi.status
+        FROM
+            t_host_mesh hm
+            right JOIN t_host_info hi ON hm.hid = hi.id
+        WHERE
+            hm.mid = ( SELECT id FROM t_mesh WHERE mesh_id = #{meshId} )
+    </select>
+
+    <select id="getTimeLinesByMeshId" resultType="TimeLine">
+        SELECT
+            id,
+            tname,
+            tid,
+            mesh_id AS meshId,
+            IF( repetition = '0', '不重复', '重复' ) repetition,
+            dayObj,
+            IF( item_set = '1', '启用', '停用' ) itemSet,
+            WEEK
+        FROM
+            f_time_line
+        WHERE
+            mesh_id = #{meshId} order by tid
+    </select>
+
+    <select id="getTimePointByTsid" resultType="TimePoint">
+        SELECT
+            tsid,
+            concat(IF( LENGTH( HOUR ) = 1, CONCAT( '0', HOUR ), HOUR ),
+                   ':',IF( LENGTH( MINUTE ) = 1, concat( '0', MINUTE ), MINUTE )
+            ) AS time,
+            scene_id
+        FROM
+            f_time_point
+        WHERE
+            tsid = #{tsid} order by time
     </select>
 
 </mapper>

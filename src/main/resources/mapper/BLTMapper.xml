@@ -56,11 +56,12 @@
 
     <select id="getHostInfo" resultType="map">
        SELECT id mname,host_id,mesh_id,h.is_master,h.is_control FROM t_host_info h WHERE h.ip!='127.0.0.1' AND h.status=1 AND mesh_id IS NOT NULL ORDER BY mname
---         SELECT mname,host_id,d.mesh_id,h.is_control flag FROM f_light_demo d INNER JOIN t_host_info h ON h.mesh_id=d.mesh_id WHERE h.status=1 GROUP BY d.mesh_id ORDER BY LPAD(mname, 3, 0)
     </select>
 
     <update id="saveHost" parameterType="ConsoleVo">
-        UPDATE t_host_info
+        UPDATE t_host_info h
+        INNER JOIN t_host_mesh s ON h.id = s.hid
+        INNER JOIN t_mesh m ON m.id = s.mid
         <set>
             <if test="is_control != null">
                 is_control=#{is_control},
@@ -68,10 +69,10 @@
             <if test="is_master != null">
                 is_master=#{is_master},
             </if>
-            log_date=now()
+            h.log_date=now()
         </set>
         <if test="host!=null and host!=''">
-            WHERE mesh_id=#{host}
+            WHERE m.mesh_id=#{host}
         </if>
     </update>
     <select id="getHosts" resultType="string" parameterType="string">
@@ -82,12 +83,21 @@
     </select>
 
     <select id="getHostsByGid" resultType="string">
-        SELECT
-            h.host_id
-        FROM
-            t_host_info h
-        LEFT JOIN t_group g ON h.gid = g.id
-        WHERE h.is_control=1 AND h.status=1 AND h.gid = (SELECT gid FROM t_host_info WHERE host_id = #{host})
+        SELECT DISTINCT host_id FROM t_host_info h
+        INNER JOIN t_host_mesh s ON s.hid=h.id
+        INNER JOIN t_mesh m ON m.id=s.mid
+        INNER JOIN t_mesh_group r ON r.mid=m.id
+        INNER JOIN t_group g ON g.id=r.gid
+        WHERE h.is_control=1
+        AND h.status=1
+        AND g.id in (
+        SELECT g.id FROM t_host_info h
+        INNER JOIN t_host_mesh s ON s.hid=h.id
+        INNER JOIN t_mesh m ON m.id=s.mid
+        INNER JOIN t_mesh_group r ON r.mid=m.id
+        INNER JOIN t_group g ON g.id=r.gid
+        WHERE h.host_id=#{host}
+        )
     </select>
 
     <select id="getHost" resultType="string">
@@ -102,9 +112,13 @@
         SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,repetition,cron FROM t_cron
     </select>
 
-    <select id="getHostId" resultType="string">
-        SELECT host_id FROM t_host_info WHERE ip=#{host} OR mesh_id=#{host}
+    <select id="getHostId" resultType="string" parameterType="string">
+        SELECT host_id FROM t_host_info h
+        INNER JOIN t_host_mesh s ON h.id=s.hid
+        INNER JOIN t_mesh m ON m.id = s.mid
+        WHERE m.mesh_id=#{host} OR h.ip=#{host}
     </select>
+
     <select id="getVaddr" resultType="string">
         SELECT vaddr FROM t_light_info
     </select>
@@ -121,7 +135,8 @@
     </select>
 
     <insert id="insertCron" parameterType="CronVo">
-        REPLACE INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,create_date,update_date) VALUE (#{cronName},#{meshId},#{sceneId},#{itemSet},#{repetition},#{cron},now(),now())
+        TRUNCATE TABLE t_cron;
+        INSERT INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,create_date,update_date) VALUE (#{cronName},#{meshId},#{sceneId},#{itemSet},#{repetition},#{cron},now(),now());
     </insert>
 
     <insert id="insertLog" parameterType="string">

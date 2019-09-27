@@ -17,6 +17,15 @@ public class ControlHost {
     private String pname;
     private String state;
     private String productType;
+    private String otaVersion;
+
+    public String getOtaVersion() {
+        return otaVersion;
+    }
+
+    public void setOtaVersion(String otaVersion) {
+        this.otaVersion = otaVersion;
+    }
 
     public String getState() {
         return state;

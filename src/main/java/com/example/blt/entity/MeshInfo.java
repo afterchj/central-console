@@ -1,6 +1,8 @@
 package com.example.blt.entity;
 
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +21,8 @@ public class MeshInfo implements Serializable {
     private String meshId;
     @Column(length = 32)
     private String meshName;
+    @ColumnDefault("03")
+    private String flag;
     private String other;
     private Date log_date = new Date();
 

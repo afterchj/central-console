@@ -39,7 +39,6 @@ public class ControlCenterController {
 
     /**
      * 跳转到login.html
-     *
      * @return
      */
     @RequestMapping("/login")
@@ -49,7 +48,6 @@ public class ControlCenterController {
 
     /**
      * 点击登录
-     *
      * @param request  session
      * @param username 用户名
      * @return
@@ -71,7 +69,6 @@ public class ControlCenterController {
 
     /**
      * 跳转到index.html
-     *
      * @return
      */
     @RequestMapping("/index")
@@ -81,7 +78,6 @@ public class ControlCenterController {
 
     /**
      * 跳转到timing.html
-     *
      * @param model
      * @return
      */
@@ -100,7 +96,6 @@ public class ControlCenterController {
                 model.addAttribute("timePoints", timePoints);
             }
         }
-
         for (MeshList mesh : meshs) {
             if (mesh.getMeshId().equals(meshId)) {
                 model.addAttribute("mname", mesh.getMname());
@@ -120,14 +115,13 @@ public class ControlCenterController {
     }
 
     /**
-     * 跳转到device.html
-     *
+     * 跳转到 control.html
      * @param model
      * @return
      */
     @RequestMapping("/netWorkGroupConsole")
-    public String netWorkGroupConsole(Model model, String gname, String meshId) {
-        List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gname, meshId);
+    public String netWorkGroupConsole(Model model, Integer gid, String meshId) {
+        List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gid, meshId);
         List<GroupList> groupList = controlCenterService.getGroups();
         model.addAttribute("groupList", groupList);//组列表
         model.addAttribute("controlMasters", controlMasters);//网络列表
@@ -146,7 +140,6 @@ public class ControlCenterController {
 
     /**
      * 创建/重命名/删除组/选择组
-     *
      * @param gname 组名
      * @param type  操作类型
      * @param id    组id
@@ -154,24 +147,17 @@ public class ControlCenterController {
      */
     @RequestMapping("/group")
     @ResponseBody
-    public Map<String, Object> group(String gname, String type, Integer id, String meshId) {
+    public Map<String, Object> group(String type, Integer id,String gname) {
         Map<String, Object> groupMap = new HashMap<>();
-        Boolean flag = controlCenterService.groupOperation(gname, type, id, meshId);
-//        if (!flag){//组名重复
-//            groupMap.put("exitGroup",1);
-//        }else {
-//            groupMap.put("exitGroup",0);
-//        }
+        Boolean flag = controlCenterService.groupOperation(gname, type, id);
         //组名重复 exitGroup:1
         int exitGroup = (!flag) ? 1 : 0;
         groupMap.put("exitGroup", exitGroup);
         return groupMap;
     }
 
-
     /**
      * 重命名/删除网络名
-     *
      * @param mname  网络名
      * @param meshId 网络id
      * @return exitMname:1 名称重复
@@ -188,7 +174,6 @@ public class ControlCenterController {
 
     /**
      * 重命名/删除面板
-     *
      * @param id
      * @param pname
      * @param type
@@ -209,7 +194,6 @@ public class ControlCenterController {
 
     /**
      * 设置主控关系
-     *
      * @param meshId 网络id
      * @return
      */
@@ -224,31 +208,35 @@ public class ControlCenterController {
 
     @RequestMapping("/reSet")
     @ResponseBody
-    public String reSet(String type){
+    public String reSet(String type) {
         String msg = "success";
-        Boolean flag;
-        if (type.equals("reSet")){
+//        Boolean flag;
+        if (type.equals("reSet")) {
             controlCenterService.reSet();
-        }else {
-            sendReSetCmd("77050101CCCC");
-//            if (flag){
-             sendReSetCmd("77050105CCCC");
-//            }
-//            if (flag){
-             sendReSetCmd("77050106CCCC");
-//            }
-//            if (!flag){
-//                msg =  "error";
-//            }
+        } else {
+            String[] cmds = {"77050101CCCC", "77050105CCCC", "77050106CCCC"};
+            msg = recursiveSendCmd(msg,cmds);
         }
         return msg;
     }
 
-    private boolean sendReSetCmd(String command){
+    private String recursiveSendCmd(String msg,String...cmds){
+        Boolean flag;
+        for (int i=0;i<cmds.length;i++){
+            flag = sendReSetCmd(cmds[i]);
+            if (!flag){
+                msg = "error";
+                break;
+            }
+        }
+        return msg;
+    }
+
+    private boolean sendReSetCmd(String command) {
         Boolean flag = true;
         Map<String, String> map = new HashMap<>();
         String host = "all";
-        map.put("command",command);
+        map.put("command", command);
         map.put("host", host);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);

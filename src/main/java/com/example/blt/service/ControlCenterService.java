@@ -86,61 +86,76 @@ public class ControlCenterService {
         return timePoints;
     }
 
-    public List<ControlMaster> getControlGroups(String gname, String meshId) {
-        List<ControlMaster> controlMeshs;
-        if (StringUtils.isNotBlank(meshId)) {//选择组
-            controlCenterDao.updateMasterGidByMeshId(meshId, gname);
+    public List<ControlMaster> getControlGroups(Integer gid, String meshId) {
+        if (StringUtils.isNotBlank(meshId)) {//网络设置组
+            controlCenterDao.selectGroup(gid, meshId);
+            controlCenterDao.updateHostInfo(meshId,0);//取消主控设置
         }
-        if (StringUtils.isNotBlank(gname) && StringUtils.isBlank(meshId)) {
-            controlMeshs = ("全部".equals(gname)) ? controlCenterDao.getControlGroups() : controlCenterDao
-                    .getControlGroupsByGname(gname);
-        } else {
-            controlMeshs = controlCenterDao.getControlGroups();
-        }
+        List<ControlMaster> controlMeshs = controlCenterDao.getControlGroups(gid, meshId);
+        List<Map<String, Object>> meshStates;
         if (controlMeshs.size() > 0) {
+            String flag;
             for (ControlMaster controlMesh : controlMeshs) {
                 meshId = controlMesh.getMeshId();
-                List<Map<String, Object>> meshStates = controlCenterDao.getMeshState(meshId);
-                if (meshStates.size() > 0) {
-                    String mState = "网络在线";
-                    String pState = null;
-                    int pOffCount = 0;//单个网路下poe离线个数
-                    int meshStatesSize = meshStates.size();
-                    for (Map<String, Object> meshState : meshStates) {
-                        boolean states = (boolean) meshState.get("status");
-                        String flag = (String) meshState.get("flag");
-                        if (StringUtils.isNotBlank(flag) && !flag.equals("03") ) {
-                            mState = "网络离线";
-                        }
-                        if (!states) {
-                            pOffCount++;
-                        }
-                    }
-                    if (pOffCount == meshStatesSize) {//网路下所有poe离线
-                        mState = "网络离线";
-                        pState = "（离线）";
-                    } else if (pOffCount < meshStatesSize) {//网络下部分poe离线
-                        pState = "（存在异常）";
-                    }
-                    controlMesh.setmState(mState);
-                    controlMesh.setpState(pState);
-                    controlMesh.setpNum(meshStatesSize);
-                }
+                flag = controlMesh.getFlag();
+                meshStates = controlCenterDao.getMeshState(meshId);
+                setControlMaster(meshStates,flag,controlMesh);
             }
         }
         return controlMeshs;
+    }
+
+    private void setControlMaster(List<Map<String, Object>> meshStates,String flag,ControlMaster controlMesh){
+        int meshStatesSize = meshStates.size();
+        String mState;
+        String pState = null;
+        Boolean master;
+        if (meshStatesSize > 0) {
+            master = (Boolean) meshStates.get(0).get("master");
+            mState = "网络在线";
+            int pOffCount = 0;//单个网路下poe离线个数
+            boolean states;
+            if (meshStatesSize == 1) {
+                states = (boolean) meshStates.get(0).get("status");
+                if (!states) {
+                    mState = "网络离线";
+                    pState = "（离线）";
+                }
+            } else {
+                for (Map<String, Object> meshState : meshStates) {
+                    states = (boolean) meshState.get("status");
+                    if (!flag.equals("3")) {
+                        mState = "网络离线";
+                    }
+                    if (!states) {
+                        pOffCount++;
+                    }
+                }
+                if (pOffCount == meshStatesSize) {//网路下所有poe离线
+                    mState = "网络离线";
+                    pState = "（离线）";
+                } else if (pOffCount < meshStatesSize) {//网络下部分poe离线
+                    pState = "（存在异常）";
+                }
+            }
+        } else {
+            mState = "网络离线";
+            master = false;
+        }
+        controlMesh.setpNum(meshStatesSize);
+        controlMesh.setmState(mState);
+        controlMesh.setpState(pState);
+        controlMesh.setMaster(master);
     }
 
     public Integer getGname(String gname) {
         return controlCenterDao.getGname(gname);
     }
 
-    public Boolean groupOperation(String gname, String type, Integer id, String meshId) {
+    public Boolean groupOperation(String gname, String type, Integer id) {
         if (type.equals(Operation.delete.getValue())) {
-            controlCenterDao.updateMasterByGid(id);
+            controlCenterDao.deleteMeshGroupByGid(id);
             controlCenterDao.deleteGroup(id);
-        } else if (type.equals(Operation.select.getValue())) {
-            controlCenterDao.selectGroup(gname, meshId);
         } else {
             Integer count = controlCenterDao.getGname(gname);
             if (count > 0) {//组名重复
@@ -174,14 +189,14 @@ public class ControlCenterService {
                 return false;
             }
             controlCenterDao.renamePname(pname, id);
-        } else if (type.equals(Operation.delete.getValue())) {
+        } else if (type.equals(Operation.delete.getValue())) {//删除面板
+            controlCenterDao.deleteHostMesh(id);//删除poe mesh关系
             controlCenterDao.deleteHost(id);
         }
         return true;
     }
 
     public void updateMaster(String meshId, int type) {
-//        controlCenterDao.updatetMaster(meshId);
         controlCenterDao.updateHostInfo(meshId, type);
     }
 
@@ -190,14 +205,38 @@ public class ControlCenterService {
     }
 
     public List<ControlHost> getPanels(String meshId) {
-        return controlCenterDao.getPanels(meshId);
+        List<ControlHost> controlHosts = controlCenterDao.getPanels(meshId);
+        String productType;
+        String otaVersion;
+        StringBuffer sb;
+        String preOtaVersion;
+        String lastOtaVersion;
+        Integer preVersion;
+        Integer lastVersion;
+        for (ControlHost controlHost:controlHosts){
+            productType = controlHost.getProductType();
+            otaVersion = controlHost.getOtaVersion();
+            if (StringUtils.isNotBlank(productType) && StringUtils.isNotBlank(otaVersion)){
+                sb = new StringBuffer();
+                sb.append(productType).append("(");
+                preOtaVersion = otaVersion.substring(0,2);
+                lastOtaVersion = otaVersion.substring(2,4);
+                preVersion = Integer.valueOf(preOtaVersion);
+                lastVersion = Integer.valueOf(lastOtaVersion);
+                sb.append(preVersion).append(".").append(lastVersion).append(")");
+                controlHost.setProductType(sb.toString());
+            }
+        }
+        return controlHosts;
     }
 
     public Boolean meshOperations(String mname, String meshId) {
         Boolean flag = true;
-        if (StringUtils.isBlank(mname)) {
-            //删除网络
-            controlCenterDao.deleteMesh(meshId);
+        if (StringUtils.isBlank(mname)) {//删除网络
+            controlCenterDao.deleteMeshGroup(meshId);//删除mesh group关系
+            controlCenterDao.deleteHostByMeshId(meshId);//删除面板
+            controlCenterDao.deleteHostMeshByMeshId(meshId);//删除 mesh 面板关系
+            controlCenterDao.deleteMesh(meshId);//删除网络
         } else {//重命名网络
             Integer count = controlCenterDao.getMname(mname);
             if (count > 0) {//名称重复
@@ -214,5 +253,9 @@ public class ControlCenterService {
         controlCenterDao.reSetTimePoint();
         controlCenterDao.reSetGroup();
         controlCenterDao.reSetHostInfo();
+        controlCenterDao.reSetHostMesh();
+        controlCenterDao.reSetMesh();
+        controlCenterDao.reSetMeshGroup();
+        controlCenterDao.reSetCron();
     }
 }

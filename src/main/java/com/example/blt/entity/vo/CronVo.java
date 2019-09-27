@@ -33,15 +33,15 @@ public class CronVo {
         return cronName;
     }
 
-    public void setCronName(String meshId, int sceneId) {
-        this.cronName = String.format("task_%s_%s", meshId, sceneId);
+    public void setCronName(String meshId, int sceneId,int minute,int hour) {
+        this.cronName = String.format("task_%s_%s_%s_%s", meshId, sceneId,minute,hour);
     }
 
     public String getCron() {
         return cron;
     }
 
-    public void setCron(String minute, String hour, String week) {
+    public void setCron(int minute, int hour, String week) {
         StringBuilder stringBuilder = new StringBuilder("0");
         stringBuilder.append(" " + minute);
         stringBuilder.append(" " + hour);
