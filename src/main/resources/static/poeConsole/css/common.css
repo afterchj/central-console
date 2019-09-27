@@ -296,6 +296,18 @@ and (min-device-width: 768px)
 and (max-device-width: 1024px) {
     /* style */
 }
+/* 联想小ipad横屏 */
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: landscape) {
+    .topNav .am-panel-default {
+        min-height: 768px !important;
+    }
+    .leftNav2{
+        min-height: 768px !important;
+    }
+}
 
 /* ipad横屏 */
 @media only screen
