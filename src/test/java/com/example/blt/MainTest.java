@@ -1,9 +1,8 @@
 package com.example.blt;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
-import com.example.blt.entity.vo.CronVo;
+import com.example.blt.entity.dd.Groups;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.PropertiesUtil;
@@ -14,7 +13,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.*;
 
@@ -44,6 +42,26 @@ public class MainTest {
 
     @Test
     public void testList() {
+        StringBuilder cmd = new StringBuilder("77010219");
+        int sceneId = 1;
+        switch (sceneId) {
+            case 21:
+                cmd = new StringBuilder(Groups.GROUPSA.getOff());
+                break;
+            case 22:
+                cmd = new StringBuilder(Groups.GROUPSA.getOn());
+                break;
+            default:
+                String strHex = Integer.toHexString(sceneId).toUpperCase();
+                if (strHex.length() == 1) {
+                    cmd.append("0" + strHex);
+                } else {
+                    cmd.append(strHex);
+                }
+                break;
+        }
+        logger.warn("cmd="+cmd.toString());
+
 //        HostService hostService = (HostService) SpringJpaUtil.getBean(HostService.class);
 //        logger.warn("size=" + hostService.getAll().size());
     }
@@ -108,7 +126,7 @@ public class MainTest {
 //        sqlSessionTemplate.update("console.updateHostsFlag", map);
 //        String temp = sqlSessionTemplate.selectOne("console.getHost");
 //        String hostId = sqlSessionTemplate.selectOne("console.getHostId","81444189");
-        System.out.println(Integer.parseInt("0A",16));
+        System.out.println(Integer.parseInt("0A", 16));
         List hosts = sqlSessionTemplate.selectList("console.getHosts");
 //        hosts.remove("e1753bd4");
 //        List<String> list = sqlSessionTemplate.selectList("console.getAll");

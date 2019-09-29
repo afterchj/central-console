@@ -55,7 +55,7 @@
     </select>
 
     <select id="getHostInfo" resultType="map">
-       SELECT id mname,host_id,mesh_id,h.is_master,h.is_control FROM t_host_info h WHERE h.ip!='127.0.0.1' AND h.status=1 AND mesh_id IS NOT NULL ORDER BY mname
+       SELECT id mname,host_id,ip mesh_id,h.is_master,h.is_control FROM t_host_info h WHERE h.ip!='127.0.0.1' AND h.status=1 ORDER BY mname
     </select>
 
     <update id="saveHost" parameterType="ConsoleVo">
