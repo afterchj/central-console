@@ -125,10 +125,11 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
         try {
             if (list2.size() > 0) {
                 sqlSessionTemplate.update("console.flushHostsStatus", list2);
-            } else if (list2.size() != list1.size()) {
-                sqlSessionTemplate.update("console.updateHostsStatus", list2);
+                if (list1.size() != list2.size()) {
+                    sqlSessionTemplate.update("console.updateHostsStatus", list2);
+                }
             } else {
-                sqlSessionTemplate.update("console.saveHostsStatus", list2);
+                sqlSessionTemplate.update("console.saveHostsStatus");
             }
         } catch (Exception e) {
             logger.error("flushHostsError {}", e.getMessage());
