@@ -1,11 +1,15 @@
 package com.example.blt.rocketmq;
 
-import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
-import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 
 /**
@@ -14,17 +18,33 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-@RocketMQMessageListener(topic = "demo_topic", consumerGroup = "blt_consumer_demo_group")
-public class DemoConsumer implements RocketMQListener<String> {
+public class DemoConsumer {
 
     @Value("${rocketmq.model}")
     private String mode;
+    @Value("${rocketmq.name-server}")
+    private String namesrvAddr;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Override
-    public void onMessage(String message) {
+    @PostConstruct
+    public void consumer() {
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("blt_demo_group");
+        consumer.setNamesrvAddr(namesrvAddr);
         try {
-            logger.warn("message=" + message);
+            consumer.subscribe("user-topic", "*");
+            consumer.registerMessageListener((MessageListenerConcurrently) (list, context) -> {
+                try {
+                    for (MessageExt messageExt : list) {
+                        logger.warn("message [{}]", new String(messageExt.getBody()));
+                    }
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                    return ConsumeConcurrentlyStatus.RECONSUME_LATER; //稍后再试
+                }
+                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS; //消费成功
+            });
+            consumer.start();
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

@@ -243,7 +243,7 @@ public class MainTest {
 //            map.put("topic", "topic_test");
 //            map.put("message", "Just is test messages " + i);
             try {
-                ProducerService.pushMsg("demo_topic", "Just is test messages " + i);
+                ProducerService.pushMsg("user-topic", "Just is test messages " + i);
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
