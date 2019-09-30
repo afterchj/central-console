@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
+import io.netty.handler.codec.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -149,6 +151,14 @@ public class HomeController {
     @RequestMapping("/getHost")
     public List getHosts() {
         List hosts = blTservice.getHostInfo();
+        return hosts;
+    }
+
+    @ResponseBody
+    @RequestMapping("/other")
+    public List other(HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        List hosts = blTservice.getAll();
         return hosts;
     }
 
