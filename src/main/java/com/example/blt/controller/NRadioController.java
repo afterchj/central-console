@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.blt.service.BLTService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
+import com.example.blt.utils.DimmingUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,35 +25,8 @@ public class NRadioController {
     static Map<Integer, String> colors;
     static Map<Integer, String> luminances;
     static {
-        colors = new HashMap<>();
-        luminances = new HashMap<>();
-        int colorsCount = 0;
-        int luminancesCount = 19;
-        for (int i = 0; i <= 100; i = i + 5) {
-            String str = Integer.toHexString(colorsCount).toUpperCase();
-            if (str.length()==1){
-                str = "0"+str;
-            }
-//            if (colorsCount<10){
-//                str = "0"+str;
-//            }
-            colors.put(i,str);
-            colorsCount = colorsCount + 1;
-        }
-        for (int i = 0; i <= 100; i = i + 5) {
-            String str = Integer.toHexString(luminancesCount).toUpperCase();
-            if (str.length()==1){
-                str = "0"+str;
-            }
-//            if (luminancesCount<10){
-//                str = "0"+str;
-//            }
-            if (i == 100){
-                str = "00";
-            }
-            luminances.put(i,str);
-            luminancesCount = luminancesCount - 1;
-        }
+        colors = DimmingUtil.toAddHexList("colors");
+        luminances = DimmingUtil.toAddHexList("luminances");
     }
     @Resource
     private BLTService blTservice;

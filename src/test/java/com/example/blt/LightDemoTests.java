@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//随机生成一个端口号
@@ -205,5 +206,38 @@ public class LightDemoTests {
                 preOtaVersion = otaVersion.substring(0,2);
                 LastOtaVersion = otaVersion.substring(2,4);
         System.out.println(preOtaVersion+" ："+LastOtaVersion);
+    }
+
+    @Test
+    public void test13(){
+        Map<String,Object> groupAndScenseMap = new ConcurrentHashMap<>();
+        int groupNum =  20;
+        int sceneNum = 20;
+        String numName = "groupNum";
+        String listName = "groups";
+        Map<String,Object> groupMap = setParameter(numName,listName,groupNum);
+        numName = "sceneNum";
+        listName = "scenes";
+        Map<String,Object> sceneMap = setParameter(numName,listName,sceneNum);
+        groupAndScenseMap.putAll(groupMap);
+        groupAndScenseMap.putAll(sceneMap);
+        System.out.println(groupAndScenseMap.toString());
+    }
+
+    public  static Map<String,Object> setParameter(String numName,String listName,int num){
+        Map<String,Object> map = new ConcurrentHashMap<>();
+        List<String> list = new ArrayList<>();
+        for (int i=0;i<num;i++){
+            String hexStr = String.format("%02x",i).toUpperCase();
+            list.add(hexStr);
+        }
+        map.put(numName,num);
+        map.put(listName,list);
+        return map;
+    }
+
+    @Test
+    public void test14(){
+        System.out.println(String.format("groups","Count"));
     }
 }
