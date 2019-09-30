@@ -28,27 +28,9 @@ public class DetailTask implements Runnable {
     @Override
     public void run() {
         String hostId = sqlSessionTemplate.selectOne("console.getHostId", cronVo.getMeshId());
-        StringBuilder cmd = new StringBuilder("77010219");
-        int sceneId = cronVo.getSceneId();
         JSONObject object = new JSONObject();
         object.put("host", hostId);
-        switch (sceneId) {
-            case 21:
-                object.put("command", Groups.GROUPSA.getOff());
-                break;
-            case 22:
-                object.put("command", Groups.GROUPSA.getOn());
-                break;
-            default:
-                String strHex = Integer.toHexString(sceneId).toUpperCase();
-                if (strHex.length() == 1) {
-                    cmd.append("0" + sceneId);
-                } else {
-                    cmd.append(sceneId);
-                }
-                object.put("command", cmd.toString());
-                break;
-        }
+        object.put("command", cronVo.getCommand());
         ClientMain.sendCron(object.toJSONString());
     }
 }

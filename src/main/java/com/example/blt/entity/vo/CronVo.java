@@ -6,6 +6,7 @@ package com.example.blt.entity.vo;
  */
 public class CronVo {
     private String cronName;
+    private String command;
     private int repetition;
     private int itemSet;
     private String cron;
@@ -48,6 +49,14 @@ public class CronVo {
         stringBuilder.append(" " + "? *");
         stringBuilder.append(" " + week);
         this.cron = stringBuilder.toString();
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     public String getMeshId() {

@@ -109,7 +109,7 @@
     </select>
 
     <select id="getCron" resultType="CronVo">
-        SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,repetition,cron FROM t_cron
+        SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,command,repetition,cron FROM t_cron
     </select>
 
     <select id="getHostId" resultType="string" parameterType="string">
@@ -136,7 +136,7 @@
 
     <insert id="insertCron" parameterType="CronVo">
         TRUNCATE TABLE t_cron;
-        INSERT INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,create_date,update_date) VALUE (#{cronName},#{meshId},#{sceneId},#{itemSet},#{repetition},#{cron},now(),now());
+        INSERT INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,command,create_date,update_date) VALUE (#{cronName},#{meshId},#{sceneId},#{itemSet},#{repetition},#{cron},#{command},now(),now());
     </insert>
 
     <insert id="insertLog" parameterType="string">

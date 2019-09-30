@@ -49,6 +49,7 @@ public class RedisService {
             cronVo.setItemSet(item_set);
             cronVo.setRepetition(repetition);
             cronVo.setCron(minute, hour, week);
+            cronVo.setCommand(getCmd(sceneId));
             cronVo.setCronName(meshId, sceneId, minute, hour);
             sqlSessionTemplate.insert("console.insertCron", cronVo);
 //            String key = String.format("task_%s_%s", meshId, sceneId);
@@ -96,5 +97,29 @@ public class RedisService {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public String getCmd(int sceneId) {
+        String command;
+        switch (sceneId) {
+            case 21:
+                command = "770103153232CCCC";
+                break;
+            case 22:
+                command = "770103153737CCCC";
+                break;
+            default:
+                StringBuilder cmd = new StringBuilder("77010219");
+                String strHex = Integer.toHexString(sceneId).toUpperCase();
+                if (strHex.length() == 1) {
+                    cmd.append("0" + sceneId);
+                } else {
+                    cmd.append(sceneId);
+                }
+                cmd.append("CCCC");
+                command = cmd.toString();
+                break;
+        }
+        return command;
     }
 }
