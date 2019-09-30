@@ -28,7 +28,7 @@ public class DetailTask implements Runnable {
 
     @Override
     public void run() {
-        logger.warn("网络id [{}] 任务名称 [{}] 执行命令 [{}]",cronVo.getMeshId(),cronVo.getCronName(),cronVo.getCommand());
+//        logger.warn("网络id [{}] 任务名称 [{}] 执行命令 [{}]",cronVo.getMeshId(),cronVo.getCronName(),cronVo.getCommand());
         String hostId = sqlSessionTemplate.selectOne("console.getHostId", cronVo.getMeshId());
         if (StringUtils.isNotEmpty(hostId)){
             JSONObject object = new JSONObject();
