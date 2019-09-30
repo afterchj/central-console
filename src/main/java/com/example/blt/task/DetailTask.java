@@ -5,6 +5,7 @@ import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.utils.SpringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,13 @@ public class DetailTask implements Runnable {
 
     @Override
     public void run() {
+        logger.warn("网络id [{}] 任务名称 [{}] 执行命令 [{}]",cronVo.getMeshId(),cronVo.getCronName(),cronVo.getCommand());
         String hostId = sqlSessionTemplate.selectOne("console.getHostId", cronVo.getMeshId());
-        JSONObject object = new JSONObject();
-        object.put("host", hostId);
-        object.put("command", cronVo.getCommand());
-        ClientMain.sendCron(object.toJSONString());
+        if (StringUtils.isNotEmpty(hostId)){
+            JSONObject object = new JSONObject();
+            object.put("host", hostId);
+            object.put("command", cronVo.getCommand());
+            ClientMain.sendCron(object.toJSONString());
+        }
     }
 }
