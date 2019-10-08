@@ -10,6 +10,7 @@ import com.example.blt.utils.DimmingUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,7 @@ public class TpadOfficeController {
 
     Logger logger = LoggerFactory.getLogger(TpadOfficeController.class);
 
+    @CrossOrigin
     @RequestMapping("/get")
     public Map<String, Object> get(@RequestBody OfficePa office) {
         List<Map<String,Object>> parameters = tpadOfficeService.getParameterSetting(office.getProjectName());
@@ -54,8 +56,8 @@ public class TpadOfficeController {
      * @param office
      * @return
      */
+    @CrossOrigin
     @RequestMapping("/sendCmd")
-//    @ResponseBody
     public String sendCmd(@RequestBody OfficePa office) {
         List<String> hostIds = tpadOfficeService.getHostId(office.getProjectName());
         if (hostIds.size() == 0){
