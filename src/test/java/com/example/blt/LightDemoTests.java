@@ -7,6 +7,7 @@ import com.example.blt.dao.WebCmdDao;
 import com.example.blt.entity.LightDemo;
 import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.NewMonitorService;
+import com.example.blt.service.TpadOfficeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,6 +41,9 @@ public class LightDemoTests {
 
     @Resource
     private ControlCenterService controlCenterService;
+
+    @Resource
+    private TpadOfficeService tpadOfficeService;
 
     @Test
     public void test() {
@@ -238,6 +242,7 @@ public class LightDemoTests {
 
     @Test
     public void test14(){
-        System.out.println(String.format("groups","Count"));
+        List<Map<String, Object>> tpatOffice = tpadOfficeService.getParameterSetting("tpatOffice");
+        System.out.println(tpatOffice);
     }
 }

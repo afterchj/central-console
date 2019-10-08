@@ -16,9 +16,16 @@ import java.util.Map;
 @Mapper
 public interface TpadOfficeDao {
 
-    @Select("select id from t_host_info where id=(select h.hid from t_mesh m,t_host_mesh h where m.id=h.mid and m.mesh_id=(select mesh_id from t_mesh_setting where project='taptOffice')) and status=1")
-    String getHostId(@Param("project")String projectName);
+//    @Select("select host_id from t_host_info where id=(select h.hid from t_mesh m,t_host_mesh h where m.id=h.mid and m.mesh_id=(select mesh_id from t_mesh_setting where project='taptOffice')) and status=1")
+    @Select("select host_id as hostId,is_master as master from t_host_info where id=(select h.hid from t_mesh m,t_host_mesh h where m.id=h.mid and m.mesh_id=(select mesh_id from t_mesh_setting where project=#{project}))")
+    List<Map<String,Object>> getHostId(@Param("project")String projectName);
 
     @Select("select count ,name from t_parameter_setting")
     List<Map<String,Object>> getParameterSetting();
+
+    @Select("select mesh_id as meshId ,id from t_mesh_setting where project=#{project}")
+    List<Map<String,Object>> getMesh(String projectName);
+
+    @Select("select host_id as hostId,is_master as master from t_host_info where id=(select h.hid from t_mesh m,t_host_mesh h where m.id=h.mid and m.mesh_id=#{meshId}) ")
+    List<Map<String,Object>> getHost(String meshId);
 }

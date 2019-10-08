@@ -7,8 +7,10 @@ import com.example.blt.service.TpadOfficeService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.DimmingUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,12 +31,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/office")
 public class TpadOfficeController {
 
-    static Map<Integer, String> colors;
-    static Map<Integer, String> luminances;
+    static Map<String, String> colors;
+    static Map<String, String> luminances;
 
     static {
-        colors = DimmingUtil.toAddHexList("colors");
-        luminances = DimmingUtil.toAddHexList("luminances");
+        colors = DimmingUtil.toAddHexList2("colors");
+        luminances = DimmingUtil.toAddHexList2("luminances");
     }
 
     @Resource
@@ -42,14 +44,24 @@ public class TpadOfficeController {
 
     Logger logger = LoggerFactory.getLogger(TpadOfficeController.class);
 
+    @RequestMapping("/get")
+    public Map<String, Object> get(@RequestBody OfficePa office) {
+        List<Map<String,Object>> parameters = tpadOfficeService.getParameterSetting(office.getProjectName());
+        return setGroupAndScene(parameters);
+    }
+
     /**
      * @param office
      * @return
      */
     @RequestMapping("/sendCmd")
-    public String sendCmd(OfficePa office) {
-        String hostId = tpadOfficeService.getHostId(office.getProjectName());
-//        Map<String, Object> parameter = tpadOfficeService.getParameterSetting();
+//    @ResponseBody
+    public String sendCmd(@RequestBody OfficePa office) {
+        List<String> hostIds = tpadOfficeService.getHostId(office.getProjectName());
+        if (hostIds.size() == 0){
+            return "error";
+        }
+        String hostId = hostIds.get(0);
         String type = office.getType();
         String operation = office.getOperation();
         String[] arr = office.getArr();
@@ -85,14 +97,15 @@ public class TpadOfficeController {
                         break;
                     case DIMMING://调光
                         sb = new StringBuffer();
-                        sb.append(TypeOperation.DIMMING_CMD_START.getKey()).append(colors.get(x)).append(luminances
-                                .get(y)).append("66");
+                        x = colors.get(x);
+                        y = luminances.get(y);
+                        sb.append(TypeOperation.DIMMING_CMD_START.getKey()).append(x).append(y).append("66");
                         cmd = sb.toString();
                         send(hostId, cmd);
                         break;
                 }
                 break;
-            case SCENE://场景
+            case SCENE://scene
                 sb = new StringBuffer();
                 sb.append(TypeOperation.SCENE_CMD_START.getKey()).append(arr[0]);
                 cmd = sb.toString();
@@ -111,7 +124,7 @@ public class TpadOfficeController {
                 }
                 break;
         }
-        logger.info("hostId:{},cmd:{}",hostId,cmd);
+        logger.warn("hostId:{},cmd:{}",hostId,cmd);
         return "success";
     }
 
@@ -123,22 +136,27 @@ public class TpadOfficeController {
         ExecuteTask.sendCmd(task);
     }
 
-    @RequestMapping("/get")
-    public Map<String, Object> get() {
-        List<Map<String,Object>> parameters = tpadOfficeService.getParameterSetting();
-        return setGroupAndScense(parameters);
-    }
-
-    public Map<String, Object> setGroupAndScense(List<Map<String,Object>> parameters) {
-        Map<String, Object> groupAndScenseMap = new ConcurrentHashMap<>();
+    public Map<String, Object> setGroupAndScene(List<Map<String,Object>> parameters) {
+        Map<String, Object> map = new ConcurrentHashMap<>();
         String name;
-        int count;
+        int count = 0;
+        String meshId;
+        List<Map<String,Object>> meshs = new ArrayList<>();
         for (Map<String,Object> parameter:parameters){
-            name = (String) parameter.get("name");
-            count = (int) parameter.get("count");
-            groupAndScenseMap.putAll(setParameter(name,count));
+            if (parameter.get("count")!=null){
+                name = (String) parameter.get("name");
+                count = (int) parameter.get("count");
+                if (count > 0){
+                    map.putAll(setParameter(name,count));
+                }
+            }
+            meshId = (String) parameter.get("meshId");
+            if (StringUtils.isNotBlank(meshId)){
+                meshs.add(parameter);
+            }
         }
-        return groupAndScenseMap;
+        map.put("meshs",meshs);
+        return map;
     }
 
     public Map<String, Object> setParameter(String name, int count) {

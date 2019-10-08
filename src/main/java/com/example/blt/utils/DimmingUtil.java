@@ -25,4 +25,19 @@ public class DimmingUtil {
         }
         return map;
     }
+
+    public static Map<String, String> toAddHexList2(String name){
+        Map<String, String> map = new ConcurrentHashMap<>();
+        int count = "colors".equals(name)?0:19;
+        String hexStr;
+        for (int i = 0; i <= 100; i = i + 5) {
+            hexStr = String.format("%02x",count).toUpperCase();
+            if ("luminances".equals(name) && i == 100){
+                hexStr = "00";
+            }
+            map.put(String.valueOf(i),hexStr);
+            count = "colors".equals(name)?count + 1:count - 1;
+        }
+        return map;
+    }
 }
