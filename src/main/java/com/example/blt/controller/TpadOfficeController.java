@@ -139,7 +139,7 @@ public class TpadOfficeController {
     public Map<String, Object> setGroupAndScene(List<Map<String,Object>> parameters) {
         Map<String, Object> map = new ConcurrentHashMap<>();
         String name;
-        int count = 0;
+        int count;
         String meshId;
         List<Map<String,Object>> meshs = new ArrayList<>();
         for (Map<String,Object> parameter:parameters){
