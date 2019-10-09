@@ -10,10 +10,38 @@ public class OfficePa {
 
     private String projectName;
     private String type;
-    private String Operation;
+//    private String Operation;
     private String[] arr;
     private String x;
     private String y;
+    private String unit;
+    private int[] unitArray;
+    private String operation;
+    private String project;
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public int[] getUnitArray() {
+        return unitArray;
+    }
+
+    public void setUnitArray(int[] unitArray) {
+        this.unitArray = unitArray;
+    }
 
     public String getX() {
         return x;
@@ -48,11 +76,11 @@ public class OfficePa {
     }
 
     public String getOperation() {
-        return Operation;
+        return operation;
     }
 
     public void setOperation(String operation) {
-        Operation = operation;
+        this.operation = operation;
     }
 
     public String[] getArr() {

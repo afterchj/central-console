@@ -56,21 +56,30 @@ public class ControlCenterController {
 
     Logger logger = LoggerFactory.getLogger(ControlCenterController.class);
 
-    //    @CrossOrigin
     @PostMapping("/get")
     @ResponseBody
     public Map<String, Object> get(@RequestBody OfficePa office) {
-//    public String get(@RequestBody String projectName) {
-        List<Map<String,Object>> parameters = tpadOfficeService.getParameterSetting(office.getProjectName());
-        return setGroupAndScene(parameters);
-//        return "succcess";
+//        List<Map<String,Object>> parameters = tpadOfficeService.getParameterSetting(office.getProjectName());
+        Map<String, Object> map = new HashMap<>();
+        map.put("data","success");
+        return map;
+    }
+
+    @PostMapping("/get2")
+    @ResponseBody
+    public Map<String, Object> get2(@RequestBody OfficePa office) {
+        Map<String, Object> map = new ConcurrentHashMap<>();
+        String project = office.getProject();
+        String unit = tpadOfficeService.getUnitName(project);
+        List<Map<String,Object>> units = tpadOfficeService.getUnits(unit);
+        map.put("data","");
+        return map;
     }
 
     /**
      * @param office
      * @return
      */
-    @CrossOrigin
     @PostMapping("/sendCmd")
     @ResponseBody
     public String sendCmd(@RequestBody OfficePa office) {

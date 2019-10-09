@@ -1,6 +1,7 @@
 package com.example.blt.service;
 
 import com.example.blt.dao.TpadOfficeDao;
+import com.example.blt.entity.office.TypeOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +55,25 @@ public class TpadOfficeService {
         List<Map<String,Object>> meshs = tpadOfficeDao.getMesh(projectName);
         list.addAll(meshs);
         return list;
+    }
+
+    public List<Map<String, Object>> getUnits(String unit) {
+        TypeOperation type = TypeOperation.getType(unit);
+        List<Map<String,Object>> units = new ArrayList<>();
+        switch (type){
+            case GROUP:
+                break;
+            case Place:
+                units = tpadOfficeDao.getPlaces();
+                break;
+            case MESH:
+                units = tpadOfficeDao.getMeshs();
+                break;
+        }
+        return units;
+    }
+
+    public String getUnitName(String project) {
+        return tpadOfficeDao.getUnitName(project);
     }
 }

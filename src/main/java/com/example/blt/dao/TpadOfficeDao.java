@@ -28,4 +28,13 @@ public interface TpadOfficeDao {
 
     @Select("select host_id as hostId,is_master as master from t_host_info where id=(select h.hid from t_mesh m,t_host_mesh h where m.id=h.mid and m.mesh_id=#{meshId}) ")
     List<Map<String,Object>> getHost(String meshId);
+
+    @Select("select unit from t_parameter_setting where project=#{project}")
+    String getUnitName(String project);
+
+    @Select("select id,mesh_name as name from t_mesh")
+    List<Map<String,Object>> getMeshs();
+
+    @Select("")
+    List<Map<String,Object>> getPlaces();
 }
