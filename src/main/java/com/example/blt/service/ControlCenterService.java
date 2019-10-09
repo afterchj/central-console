@@ -249,6 +249,8 @@ public class ControlCenterService {
     }
 
     public void reSet() {
+        String gname;
+        StringBuffer sb;
         controlCenterDao.reSetTimeLine();
         controlCenterDao.reSetTimePoint();
         controlCenterDao.reSetGroup();
@@ -257,5 +259,10 @@ public class ControlCenterService {
         controlCenterDao.reSetMesh();
         controlCenterDao.reSetMeshGroup();
         controlCenterDao.reSetCron();
+        for (int i=1;i<4;i++){
+            sb = new StringBuffer();
+            gname = sb.append("组").append(i).toString();
+            controlCenterDao.createGroup(gname);
+        }
     }
 }
