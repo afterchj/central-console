@@ -3,6 +3,7 @@ package com.example.blt.netty;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.Topics;
+import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
@@ -46,7 +47,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         String addr = channel.remoteAddress().toString();
         String ip = addr.substring(1, addr.indexOf(":"));
         String host = channel.id().toString();
-        String master = sqlSessionTemplate.selectOne("console.getHost", host);
+        String master = sqlSessionTemplate.selectOne("console.getMaster", host);
         List<String> hosts = null;
         String type = null;
         String cmd = arg1;
@@ -56,6 +57,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             cmd = jsonObject.getString("command");
             to = jsonObject.getString("host");
             type = jsonObject.getString("type");
+            if (to.equals(master)) {
+                to = "master";
+            }
         } catch (Exception e) {
 //            if (arg1.indexOf("182716324621") != -1) {
 //                logger.error("ip [{}] cmd [{}]", to, cmd);
@@ -81,9 +85,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (arg1.indexOf("77050705") != -1) {
                 cmd = "77050103";
             }
-        }
-        if (to.equals(master)) {
-            to = "master";
+            if (host.equals(master)) {
+                to = "master";
+            }
         }
         if ("master".equals(to)) {
             hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
