@@ -18,6 +18,15 @@ public class OfficePa {
     private int[] unitArray;
     private String operation;
     private String project;
+    private Integer sceneId;
+
+    public Integer getSceneId() {
+        return sceneId;
+    }
+
+    public void setSceneId(Integer sceneId) {
+        this.sceneId = sceneId;
+    }
 
     public String getProject() {
         return project;
