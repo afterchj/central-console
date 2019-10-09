@@ -151,25 +151,26 @@ public class StringBuildUtils {
     }
 
     public static void tempFormat(String format, String ip) {
-        String mid = format.substring(16, 18);
+        String dataEvent = format.substring(16, 18);
         String str = format.substring(26);
         int len = str.length();
         String cid = str.substring(len - 2);
-        String prefix = str.substring(0, 2).toUpperCase();
+        String messageId = str.substring(0, 2).toUpperCase();
         String x = str.substring(4, 6);
         String y = str.substring(6, 8);
         int status = 0;
         Map map = new ConcurrentHashMap<>();
         map.put("host", ip);
+        map.put("other", dataEvent);
         if (str.contains("3232")) {
             map.put("status", 0);
         } else {
             map.put("status", 1);
         }
-//        logger.warn("format [{}] prefix [{}]", str,prefix);
-        switch (prefix) {
+//        logger.warn("format [{}] messageId [{}]", str,messageId);
+        switch (messageId) {
             case "42":
-                map.put("ctype", prefix);
+                map.put("ctype", messageId);
                 map.put("cid", cid);
                 break;
             case "52"://52表示遥控器控制命令，01,02字段固定，01表示开，02表示关
@@ -181,19 +182,17 @@ public class StringBuildUtils {
                     status = 1;
 //                    ClientMain.sendCron(AddrUtil.getIp(false), Groups.GROUPSA.getOff());
                 }
-                map.put("ctype", prefix);
+                map.put("ctype", messageId);
                 map.put("cid", cmd);
                 map.put("status", status);
                 break;
             case "C0"://pad或手机，C0代表全控，37 37字段是x、y值
-                map.put("ctype", prefix);
-                map.put("cid", mid);
+                map.put("ctype", messageId);
                 map.put("x", x);
                 map.put("y", y);
                 break;
             case "C3"://pad或手机，C0代表全控，37 37字段是x、y值
-                map.put("ctype", prefix);
-                map.put("cid", mid);
+                map.put("ctype", messageId);
                 map.put("x", str.substring(4, 8));
                 map.put("y", str.substring(8, 10));
                 break;
@@ -209,8 +208,7 @@ public class StringBuildUtils {
                 break;
             case "CC":
 //                温湿度 77 04 0E 02 20 9D 01 00 00 CC, 温度 00 00 湿度  00 00
-                map.put("ctype", prefix);
-                map.put("cid", mid);
+                map.put("ctype", messageId);
                 map.put("x", str.substring(30, 38));
                 map.put("y", str.substring(38, 42));
                 break;
@@ -220,12 +218,10 @@ public class StringBuildUtils {
 //               77 04 10 02 20 05 00 00 00 C1 32 32 00 00 00 00 00 00 01 CC CC
                 //C1代表组控，32 32字段是x、y值, 02字段是组ID
 //               C4，RGB组控77 04 10 02 20 95 00 00 00 C4 5F 02 00 00 00 00 00 00 02 4F
-                if ("C1".equals(prefix) || "C4".equals(prefix)) {
-                    map.put("ctype", prefix);
-                    map.put("x", x);
-                    map.put("y", y);
-                    map.put("cid", cid);
-                }
+                map.put("ctype", messageId);
+                map.put("x", str.substring(2, 4));
+                map.put("y", str.substring(4, 6));
+                map.put("cid", cid);
                 break;
         }
         if (!map.containsKey("ctype")) return;

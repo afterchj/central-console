@@ -28,10 +28,10 @@ public class ClientMain {
 //        private static String host = "192.168.51.97";
 //        private static String host = "119.3.49.192";
 
-    public static void main(String[] args) throws IOException {
-        run(AddrUtil.getIp(false));
-//        run("iotsztp.cn", 8001);
-    }
+//    public static void main(String[] args) throws IOException {
+//        run(AddrUtil.getIp(false));
+////        run("iotsztp.cn", 8001);
+//    }
 
     public static void run(String host) throws IOException {
         Channel channel = getChannel(host);
@@ -84,11 +84,11 @@ public class ClientMain {
             //使用指定的 端口设置套 接字地址
             channel = bootstrap.connect(host, PORT).sync().channel();
         } catch (Exception e) {
-            logger.error("InterruptedException=" + e.getMessage());
+            logger.error("Exception error{}", e.getMessage());
             try {
                 channel.closeFuture().sync();
             } catch (InterruptedException e1) {
-                e.printStackTrace();
+                logger.error("InterruptedException error{}", e1.getMessage());
             }
         }
         return channel;
