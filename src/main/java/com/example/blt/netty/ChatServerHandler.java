@@ -3,7 +3,6 @@ package com.example.blt.netty;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
@@ -82,9 +81,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (arg1.indexOf("77050705") != -1) {
                 cmd = "77050103";
             }
-            if (host.equals(master)) {
-                to = "master";
-            }
+        }
+        if (host.equals(master)) {
+            to = "master";
         }
         if ("master".equals(to)) {
             hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
