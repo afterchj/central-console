@@ -82,7 +82,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 cmd = "77050103";
             }
         }
-        if (host.equals(master)) {
+        if (to.equals(master)) {
             to = "master";
         }
         if ("master".equals(to)) {
