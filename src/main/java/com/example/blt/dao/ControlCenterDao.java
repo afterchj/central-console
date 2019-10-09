@@ -110,4 +110,7 @@ public interface ControlCenterDao {
 
     @Delete("DELETE FROM t_host_mesh where mid=(select id from t_mesh where mesh_id=#{meshId})")
     void deleteHostMeshByMeshId(String meshId);
+
+    @Select("select count(*) from t_group")
+    Integer getGroupCount();
 }

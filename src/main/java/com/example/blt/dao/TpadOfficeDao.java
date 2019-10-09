@@ -35,6 +35,9 @@ public interface TpadOfficeDao {
     @Select("select id,mesh_name as name from t_mesh")
     List<Map<String,Object>> getMeshs();
 
-    @Select("")
+    @Select("select id,place_name as name from t_eplace")
     List<Map<String,Object>> getPlaces();
+
+    @Select("select id,gname as name from t_egroup")
+    List<Map<String,Object>> getGroups();
 }

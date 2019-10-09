@@ -62,6 +62,7 @@ public class TpadOfficeService {
         List<Map<String,Object>> units = new ArrayList<>();
         switch (type){
             case GROUP:
+                units = tpadOfficeDao.getGroups();
                 break;
             case Place:
                 units = tpadOfficeDao.getPlaces();
