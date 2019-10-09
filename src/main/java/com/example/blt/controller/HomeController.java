@@ -156,8 +156,7 @@ public class HomeController {
 
     @ResponseBody
     @RequestMapping("/other")
-    public List other(HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
+    public List other() {
         List hosts = blTservice.getAll();
         return hosts;
     }

@@ -2,10 +2,7 @@ package com.example.blt;
 
 import com.example.blt.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 
 /**
@@ -13,6 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE");
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -29,7 +33,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        String[] url = {"/control/index","/control/timer","/control/netWorkGroupConsole"};
+        String[] url = {"/control/index", "/control/timer", "/control/netWorkGroupConsole"};
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns(url);
         WebMvcConfigurer.super.addInterceptors(registry);
     }
