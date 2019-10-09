@@ -56,23 +56,22 @@ public class ControlCenterController {
 
     Logger logger = LoggerFactory.getLogger(ControlCenterController.class);
 
+//    @PostMapping("/get")
+//    @ResponseBody
+//    public Map<String, Object> get(@RequestBody OfficePa office) {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("data","success");
+//        return map;
+//    }
+
     @PostMapping("/get")
     @ResponseBody
     public Map<String, Object> get(@RequestBody OfficePa office) {
-//        List<Map<String,Object>> parameters = tpadOfficeService.getParameterSetting(office.getProjectName());
-        Map<String, Object> map = new HashMap<>();
-        map.put("data","success");
-        return map;
-    }
-
-    @PostMapping("/get2")
-    @ResponseBody
-    public Map<String, Object> get2(@RequestBody OfficePa office) {
         Map<String, Object> map = new ConcurrentHashMap<>();
         String project = office.getProject();
         String unit = tpadOfficeService.getUnitName(project);
         List<Map<String,Object>> units = tpadOfficeService.getUnits(unit);
-        map.put("data","");
+        map.put("data",units);
         return map;
     }
 
@@ -83,6 +82,18 @@ public class ControlCenterController {
     @PostMapping("/sendCmd")
     @ResponseBody
     public String sendCmd(@RequestBody OfficePa office) {
+        String project = office.getProject();
+        String unit = tpadOfficeService.getUnitName(project);
+        TypeOperation type1 = TypeOperation.getType(unit);
+        tpadOfficeService.sendCmd(unit,office);
+        switch (type1){
+            case GROUP:
+                break;
+            case Place:
+                break;
+            case MESH:
+                break;
+        }
         List<String> hostIds = tpadOfficeService.getHostId(office.getProjectName());
         if (hostIds.size() == 0){
             return "error";

@@ -40,4 +40,23 @@ public interface TpadOfficeDao {
 
     @Select("select id,gname as name from t_egroup")
     List<Map<String,Object>> getGroups();
+
+    String getHostIdByGroupId(int id);
+
+    @Select("select mesh_id as meshId from t_mesh where id=(select mid from t_egroup where id=#{id})")
+    String getMeshIdByGid(int id);
+
+    String getHostIdByMeshId(String meshId);
+
+    @Select("select group_id as groupId from t_egroup where id=#{id}")
+    Integer getEGroupId(int id);
+
+    @Select("select mesh_id as meshId from t_mesh where id=#{id}")
+    String getMesIdByMid(int id);
+
+    @Select("select mesh_id as meshId from t_mesh where id=(select mid from t_eplace where id=#{id})")
+    String getMeshIdByPid(int id);
+
+    @Select("select group_id as groupId from t_egroup where pid=#{id}")
+    List<Integer> getGroupIdsByPid(int id);
 }
