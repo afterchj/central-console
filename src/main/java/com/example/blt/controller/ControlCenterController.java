@@ -8,7 +8,6 @@ import com.example.blt.entity.control.ControlMaster;
 import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.control.MeshList;
 import com.example.blt.entity.office.OfficePa;
-import com.example.blt.entity.office.TypeOperation;
 import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.TpadOfficeService;
 import com.example.blt.task.ControlTask;
@@ -19,7 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -56,14 +58,6 @@ public class ControlCenterController {
 
     Logger logger = LoggerFactory.getLogger(ControlCenterController.class);
 
-//    @PostMapping("/get")
-//    @ResponseBody
-//    public Map<String, Object> get(@RequestBody OfficePa office) {
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("data","success");
-//        return map;
-//    }
-
     @PostMapping("/get")
     @ResponseBody
     public Map<String, Object> get(@RequestBody OfficePa office) {
@@ -84,93 +78,8 @@ public class ControlCenterController {
     public String sendCmd(@RequestBody OfficePa office) {
         String project = office.getProject();
         String unit = tpadOfficeService.getUnitName(project);
-        TypeOperation type1 = TypeOperation.getType(unit);
         tpadOfficeService.sendCmd(unit,office);
-        switch (type1){
-            case GROUP:
-                break;
-            case Place:
-                break;
-            case MESH:
-                break;
-        }
-        List<String> hostIds = tpadOfficeService.getHostId(office.getProjectName());
-        if (hostIds.size() == 0){
-            return "error";
-        }
-        String hostId = hostIds.get(0);
-        String type = office.getType();
-        String operation = office.getOperation();
-        String[] arr = office.getArr();
-        String x = office.getX();
-        String y = office.getY();
-        String cmd = null;
-        StringBuffer sb;
-        TypeOperation typeEnum = TypeOperation.getType(type);
-        TypeOperation numEnum = TypeOperation.getType(x);
-        TypeOperation operationEnum = TypeOperation.getType(operation);
-        switch (typeEnum) {
-            case GROUP://组
-                switch (operationEnum) {
-                    case ON_OFF://开关
-                        for (int i = 0; i < arr.length; i++) {
-                            switch (numEnum) {
-                                case ON:
-                                    sb = new StringBuffer();
-                                    sb.append(TypeOperation.GROUP_ON_OFF_START.getKey()).append(arr[i]).append
-                                            (TypeOperation.GROUP_ON_END.getKey());
-                                    cmd = sb.toString();
-                                    send(hostId, cmd);
-                                    break;
-                                case OFF:
-                                    sb = new StringBuffer();
-                                    sb.append(TypeOperation.GROUP_ON_OFF_START.getKey()).append(arr[i]).append
-                                            (TypeOperation.GROUP_OFF_END.getKey());
-                                    cmd = sb.toString();
-                                    send(hostId, cmd);
-                                    break;
-                            }
-                        }
-                        break;
-                    case DIMMING://调光
-                        sb = new StringBuffer();
-                        x = colors.get(x);
-                        y = luminances.get(y);
-                        sb.append(TypeOperation.DIMMING_CMD_START.getKey()).append(x).append(y).append("66");
-                        cmd = sb.toString();
-                        send(hostId, cmd);
-                        break;
-                }
-                break;
-            case SCENE://scene
-                sb = new StringBuffer();
-                sb.append(TypeOperation.SCENE_CMD_START.getKey()).append(arr[0]);
-                cmd = sb.toString();
-                send(hostId, cmd);
-                break;
-            case MESH://mesh
-                switch (numEnum){
-                    case ON:
-                        cmd = TypeOperation.MESH_ON_CMD.getKey();
-                        send(hostId,cmd);
-                        break;
-                    case OFF:
-                        cmd = TypeOperation.MESH_OFF_CMD.getKey();
-                        send(hostId,cmd);
-                        break;
-                }
-                break;
-        }
-        logger.warn("hostId:{},cmd:{}",hostId,cmd);
         return "success";
-    }
-
-    public void send(String hostId, String cmd) {
-        Map<String, String> map = new HashMap<>();
-        map.put("command", cmd);
-        map.put("host", hostId);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
-        ExecuteTask.sendCmd(task);
     }
 
     /**
