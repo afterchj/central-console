@@ -8,10 +8,11 @@ package com.example.blt.entity.office;
  **/
 public enum  TypeOperation {
 
-    GROUP("group"),SCENE("scene"),ON_OFF("onOff"),DIMMING("dimming"),MESH("mesh"),GROUP_ON_OFF_START("77010416"),
-    GROUP_ON_END("373766"),GROUP_OFF_END("323266"),ON("37"),OFF("32"),DIMMING_CMD_START("77010315"),SCENE_CMD_START
-            ("77010219"),MESH_ON_CMD("77010315373766"),MESH_OFF_CMD("77010315323266"),Place("place"),CMD_END
-            ("66"),MESH_ON_OFF_CMD_START("77010315");
+    GROUP("group"),SCENE("scene"),PLACE("place"),MESH("mesh"),ON_OFF("onOff"),DIMMING("dimming"),
+    GROUP_ON_OFF_START("77010416"), GROUP_ON_END("373766"),GROUP_OFF_END("323266"),
+    ON("37"),OFF("32"),CMD_END("66"),
+    DIMMING_CMD_START("77010315"), SCENE_CMD_START("77010219"),
+    MESH_ON_CMD("77010315373766"),MESH_OFF_CMD("77010315323266"), MESH_ON_OFF_CMD_START("77010315");
 
     private String key;
 

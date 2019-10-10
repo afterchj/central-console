@@ -242,7 +242,7 @@ public class LightDemoTests {
 
     @Test
     public void test14(){
-        List<Map<String, Object>> tpatOffice = tpadOfficeService.getParameterSetting("tpatOffice");
-        System.out.println(tpatOffice);
+//        List<Map<String, Object>> tpatOffice = tpadOfficeService.getParameterSetting("tpatOffice");
+//        System.out.println(tpatOffice);
     }
 }

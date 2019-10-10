@@ -8,13 +8,8 @@ package com.example.blt.entity.office;
  **/
 public class OfficePa {
 
-    private String projectName;
-    private String type;
-//    private String Operation;
-    private String[] arr;
     private String x;
     private String y;
-    private String unit;
     private int[] unitArray;
     private String operation;
     private String project;
@@ -34,14 +29,6 @@ public class OfficePa {
 
     public void setProject(String project) {
         this.project = project;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public int[] getUnitArray() {
@@ -68,35 +55,11 @@ public class OfficePa {
         this.y = y;
     }
 
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getOperation() {
         return operation;
     }
 
     public void setOperation(String operation) {
         this.operation = operation;
-    }
-
-    public String[] getArr() {
-        return arr;
-    }
-
-    public void setArr(String[] arr) {
-        this.arr = arr;
     }
 }

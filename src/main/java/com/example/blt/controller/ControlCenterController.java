@@ -12,10 +12,7 @@ import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.TpadOfficeService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
-import com.example.blt.utils.DimmingUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,30 +39,20 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/control")
 public class ControlCenterController {
 
-    static Map<String, String> colors;
-    static Map<String, String> luminances;
-
-    static {
-        colors = DimmingUtil.toAddHexList2("colors");
-        luminances = DimmingUtil.toAddHexList2("luminances");
-    }
-
     @Resource
     private ControlCenterService controlCenterService;
 
     @Resource
     private TpadOfficeService tpadOfficeService;
 
-    Logger logger = LoggerFactory.getLogger(ControlCenterController.class);
-
     @PostMapping("/get")
     @ResponseBody
     public Map<String, Object> get(@RequestBody OfficePa office) {
         Map<String, Object> map = new ConcurrentHashMap<>();
         String project = office.getProject();
-        String unit = tpadOfficeService.getUnitName(project);
-        List<Map<String,Object>> units = tpadOfficeService.getUnits(unit);
-        map.put("data",units);
+        Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
+        List<Map<String,Object>> parameterSettings = tpadOfficeService.getUnits(parameterSetting);
+        map.put("data",parameterSettings);
         return map;
     }
 
@@ -77,9 +64,14 @@ public class ControlCenterController {
     @ResponseBody
     public String sendCmd(@RequestBody OfficePa office) {
         String project = office.getProject();
-        String unit = tpadOfficeService.getUnitName(project);
-        tpadOfficeService.sendCmd(unit,office);
-        return "success";
+        Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
+        String unit = (String) parameterSetting.get("unit");
+        try {
+            tpadOfficeService.send(unit,office);
+            return "success";
+        } catch (Exception e) {
+            return "error";
+        }
     }
 
     /**
