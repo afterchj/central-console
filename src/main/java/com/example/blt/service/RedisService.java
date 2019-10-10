@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.task.DynamicScheduledTask;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,11 +54,11 @@ public class RedisService {
                 CronVo cronVo = new CronVo();
                 JSONObject object = cronArr.getJSONObject(i);
                 String meshId = object.getString("meshId");
-                int sceneId = object.getInteger("sceneId");
-                int item_set = object.getInteger("item_set");
-                int repetition = object.getInteger("repetition");
-                int minute = object.getInteger("minute");
-                int hour = object.getInteger("hour");
+                Integer sceneId = object.getInteger("sceneId");
+                Integer item_set = object.getInteger("item_set");
+                Integer repetition = object.getInteger("repetition");
+                Integer minute = object.getInteger("minute");
+                Integer hour = object.getInteger("hour");
                 String week = getWeek(object.getString("week"));
                 cronVo.setMeshId(meshId);
                 cronVo.setSceneId(sceneId);
@@ -67,16 +68,17 @@ public class RedisService {
                 cronVo.setCommand(getCmd(sceneId));
                 cronVo.setCronName(meshId, sceneId, minute, hour);
                 voList.add(cronVo);
+//                logger.warn("cronName {}", cronVo.getCronName());
                 dynamicScheduledTask.configureTasks(cronVo);
             }
-        } catch (Exception e) {
-            logger.error("cron error [{}] ", e.getMessage());
-        } finally {
             sqlSessionTemplate.insert("console.insertCron", voList);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public String getWeek(String str) {
+        if (StringUtils.isEmpty(str)) return null;
         String[] weeks = str.split(",");
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i < weeks.length; i++) {
