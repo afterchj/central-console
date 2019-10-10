@@ -7,6 +7,7 @@ import com.example.blt.entity.office.TypeOperation;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.DimmingUtil;
+import com.example.blt.utils.JoinCmdUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.example.blt.entity.office.TypeOperation.CMD_END;
 
 /**
  * @program: central-console
@@ -39,8 +38,12 @@ public class TpadOfficeService {
     }
 
     Logger logger = LoggerFactory.getLogger(TpadOfficeService.class);
+
     @Resource
     private TpadOfficeDao tpadOfficeDao;
+
+    @Resource
+    private JoinCmdUtil joinCmdUtil;
 
     public String getHostId(String meshId) {
         String hostId = "";
@@ -58,16 +61,16 @@ public class TpadOfficeService {
         return hostId;
     }
 
-    public List<Map<String, Object>> getUnits(Map<String,Object> parameterSetting) {
+    public List<Map<String, Object>> getUnits(Map<String, Object> parameterSetting) {
         String unit = (String) parameterSetting.get("unit");
         Integer sceneCount = (Integer) parameterSetting.get("sceneCount");
         List<Integer> scenes = new ArrayList<>();
-        Map<String,Object> map = new ConcurrentHashMap<>();
-        for (int i=1;i<=sceneCount;i++){
+        Map<String, Object> map = new ConcurrentHashMap<>();
+        for (int i = 1; i <= sceneCount; i++) {
             scenes.add(i);
         }
-        map.put("scenes",scenes);
-        map.put("sceneCount",sceneCount);
+        map.put("scenes", scenes);
+        map.put("sceneCount", sceneCount);
         List<Map<String, Object>> units = new ArrayList<>();
         List<Map<String, Object>> parameterSettings = new ArrayList<>();
         TypeOperation type = TypeOperation.getType(unit);
@@ -82,12 +85,12 @@ public class TpadOfficeService {
                 units = tpadOfficeDao.getMeshs();
                 break;
         }
-        map.put("units",units);
+        map.put("units", units);
         parameterSettings.add(map);
         return parameterSettings;
     }
 
-    public Map<String,Object> getParameterSetting(String project) {
+    public Map<String, Object> getParameterSetting(String project) {
         return tpadOfficeDao.getParameterSetting(project);
     }
 
@@ -100,16 +103,25 @@ public class TpadOfficeService {
         Integer sceneId = office.getSceneId();
         switch (opeEnum) {
             case ON_OFF:
+                if (sceneId != null){
+                    throw new Exception("无效的参数sceneId");
+                }
                 sendCmd(x, y, unitArray, null, unit);
                 break;
             case DIMMING:
+                if (sceneId != null){
+                    throw new Exception("无效的参数sceneId");
+                }
                 x = colors.get(x);
                 y = luminances.get(y);
+                if (x == null || y == null) {
+                    throw new Exception("未知的冷暖色");
+                }
                 sendCmd(x, y, unitArray, null, unit);
                 break;
             case SCENE:
-                if (sceneId == null){
-                    throw new Exception();
+                if (sceneId == null) {
+                    throw new Exception("场景id为空");
                 }
                 sendCmd(null, null, unitArray, sceneId, unit);
                 break;
@@ -123,82 +135,72 @@ public class TpadOfficeService {
         String cmd;
         String meshId = null;
         Integer groupId = null;
+        String oldMeshId = null;
+        String type = null;
+        List<Integer> groupIds = new ArrayList<>();
         if (unitArray == null || unitArray.length == 0) {
             hostId = "all";
             if (sceneId != null) {
-                unit = "scene";
+                type = "scene";
             } else {
-                unit = "mesh";
+                type = "mesh";
             }
-            cmd = joinCmd(unit, x, y, null, sceneId);
+            cmd = joinCmdUtil.joinCmd(type, x, y, null, sceneId);
             send(hostId, cmd);
             logger.warn("hostId:{},cmd:{}", hostId, cmd);
         } else {
             for (int i = 0; i < unitArray.length; i++) {
                 int id = unitArray[i];
-                TypeOperation type = TypeOperation.getType(unit);
-                switch (type) {
+                TypeOperation typeEnum = TypeOperation.getType(unit);
+                switch (typeEnum) {
                     case MESH:
                         meshId = tpadOfficeDao.getMesIdByMid(id);
+                        type = "mesh";
                         break;
                     case PLACE:
+                        oldMeshId = meshId;
                         meshId = tpadOfficeDao.getMeshIdByPid(id);
-                        List<Integer> groupIds = tpadOfficeDao.getGroupIdsByPid(id);
-                        for (Integer group : groupIds) {
-                            groupId = group;
-                            unit = "group";
-                        }
+                        groupIds = tpadOfficeDao.getGroupIdsByPid(id);
                         break;
                     case GROUP:
+                        oldMeshId = meshId;
                         meshId = tpadOfficeDao.getMeshIdByGid(id);
                         groupId = tpadOfficeDao.getEGroupId(id);
+                        type = "group";
                         break;
                     default:
                         throw new Exception("参数错误");
                 }
                 hostId = getHostId(meshId);
                 if (StringUtils.isBlank(hostId)) {
-                    throw new Exception();
+                    throw new Exception("host未知");
                 }
-                if (sceneId != null) {
-                    unit = "scene";
+                if (sceneId != null) {//切换场景操作
+                    if (oldMeshId!=null && oldMeshId.equals(meshId)){//排除场景命令重复
+                        continue;
+                    }
+                    type = "scene";
+                    cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                    send(hostId, cmd);
+                    logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                }else {
+                    if (groupIds.size()>0){//区域为基础单元操作(不包括切换场景)
+                        for (Integer group : groupIds) {
+                            groupId = group;
+                            type = "group";
+                            cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                            send(hostId, cmd);
+                            logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                        }
+                    }else {//其它基础单元操作(不包括切换场景)
+                        cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                        send(hostId, cmd);
+                        logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                    }
                 }
-                cmd = joinCmd(unit, x, y, groupId, sceneId);
-                send(hostId, cmd);
-                logger.warn("hostId:{},cmd:{}", hostId, cmd);
             }
         }
     }
-
-    public String joinCmd(String type, String x, String y, Integer groupId, Integer sceneId) throws Exception {
-        String cmd = null;
-        StringBuffer sb;
-        TypeOperation type1 = TypeOperation.getType(type);
-        switch (type1) {
-            case MESH:
-                if (StringUtils.isNotBlank(x)) {
-                    sb = new StringBuffer();
-                    cmd = sb.append(TypeOperation.MESH_ON_OFF_CMD_START.getKey()).append(x).append(y).append(
-                            CMD_END.getKey()).toString();
-                }
-                break;
-            case GROUP:
-                sb = new StringBuffer();
-                String hexGroupId = String.format("%02x", groupId).toUpperCase();
-                cmd = sb.append(TypeOperation.GROUP_ON_OFF_START.getKey()).append(hexGroupId).append(x).append(y)
-                        .append(CMD_END.getKey()).toString();
-                break;
-            case SCENE:
-                sb = new StringBuffer();
-                String HexSceneId = String.format("%02x",sceneId).toUpperCase();
-                cmd = sb.append(TypeOperation.SCENE_CMD_START.getKey()).append(HexSceneId).toString();
-                break;
-            default:
-                throw new Exception("参数错误");
-        }
-        return cmd;
-    }
-
 
     private void send(String hostId, String cmd) {
         Map<String, String> map = new HashMap<>();
@@ -207,5 +209,4 @@ public class TpadOfficeService {
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
     }
-
 }
