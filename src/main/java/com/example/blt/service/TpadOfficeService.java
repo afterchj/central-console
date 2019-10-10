@@ -61,7 +61,7 @@ public class TpadOfficeService {
         return hostId;
     }
 
-    public List<Map<String, Object>> getUnits(Map<String, Object> parameterSetting) {
+    public Map<String, Object> getUnits(Map<String, Object> parameterSetting) {
         String unit = (String) parameterSetting.get("unit");
         Integer sceneCount = (Integer) parameterSetting.get("sceneCount");
         List<Integer> scenes = new ArrayList<>();
@@ -72,7 +72,7 @@ public class TpadOfficeService {
         map.put("scenes", scenes);
         map.put("sceneCount", sceneCount);
         List<Map<String, Object>> units = new ArrayList<>();
-        List<Map<String, Object>> parameterSettings = new ArrayList<>();
+//        List<Map<String, Object>> parameterSettings = new ArrayList<>();
         TypeOperation type = TypeOperation.getType(unit);
         switch (type) {
             case GROUP:
@@ -86,8 +86,8 @@ public class TpadOfficeService {
                 break;
         }
         map.put("units", units);
-        parameterSettings.add(map);
-        return parameterSettings;
+//        parameterSettings.add(map);
+        return map;
     }
 
     public Map<String, Object> getParameterSetting(String project) {

@@ -51,7 +51,7 @@ public class ControlCenterController {
         Map<String, Object> map = new ConcurrentHashMap<>();
         String project = office.getProject();
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
-        List<Map<String,Object>> parameterSettings = tpadOfficeService.getUnits(parameterSetting);
+        Map<String,Object> parameterSettings = tpadOfficeService.getUnits(parameterSetting);
         map.put("data",parameterSettings);
         return map;
     }
