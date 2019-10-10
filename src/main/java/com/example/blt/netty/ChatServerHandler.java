@@ -98,9 +98,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len <= 50) {
-            logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             if (cmd.indexOf("77050103") != -1) {
                 redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
+            }else {
+                logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             }
             StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
