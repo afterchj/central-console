@@ -39,11 +39,19 @@ public class RedisService {
     public void consumeMsg(String msg) {
         JSONObject jsonObject = JSONObject.parseObject(msg);
         List<CronVo> voList = new ArrayList<>();
-        CronVo cronVo = new CronVo();
         try {
-            JSONArray crons = jsonObject.getJSONArray("cron");
-            for (int i = 0; i < crons.size(); i++) {
-                JSONObject object = crons.getJSONObject(i);
+            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+            ScheduledFuture future;
+            for (CronVo cron : cronVos) {
+                future = dynamicScheduledTask.futures.get(cron.getCronName());
+                if (future != null) {
+                    future.cancel(true);
+                }
+            }
+            JSONArray cronArr = jsonObject.getJSONArray("cron");
+            for (int i = 0; i < cronArr.size(); i++) {
+                CronVo cronVo = new CronVo();
+                JSONObject object = cronArr.getJSONObject(i);
                 String meshId = object.getString("meshId");
                 int sceneId = object.getInteger("sceneId");
                 int item_set = object.getInteger("item_set");
@@ -61,17 +69,10 @@ public class RedisService {
                 voList.add(cronVo);
                 dynamicScheduledTask.configureTasks(cronVo);
             }
-            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
-            sqlSessionTemplate.insert("console.insertCron", voList);
-            ScheduledFuture future;
-            for (CronVo cron : cronVos) {
-                future = dynamicScheduledTask.futures.get(cron.getCronName());
-                if (future != null) {
-                    future.cancel(true);
-                }
-            }
         } catch (Exception e) {
             logger.error("cron error [{}] ", e.getMessage());
+        } finally {
+            sqlSessionTemplate.insert("console.insertCron", voList);
         }
     }
 

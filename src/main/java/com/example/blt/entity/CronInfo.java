@@ -13,7 +13,7 @@ public class CronInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 32)
+    @Column(unique = true,length = 32)
     private String cronName;
     @Column(length = 32)
     private String command;
