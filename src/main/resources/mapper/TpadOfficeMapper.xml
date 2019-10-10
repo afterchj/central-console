@@ -11,4 +11,14 @@
         	id = ( SELECT h.hid FROM t_mesh m, t_host_mesh h WHERE m.id = h.mid AND m.mesh_id = #{meshId} )
     </select>
 
+    <select id="getHost" resultType="map">
+        SELECT host_id AS hostId,
+		    is_master AS master
+        FROM t_host_info
+        WHERE id in
+            (SELECT h.hid
+            FROM t_mesh m,t_host_mesh h
+            WHERE m.id=h.mid AND m.mesh_id=#{meshId})
+    </select>
+
 </mapper>

@@ -7,7 +7,10 @@ import com.example.blt.entity.office.TypeOperation;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.DimmingUtil;
+import com.example.blt.utils.JoinCmdUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,8 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.example.blt.entity.office.TypeOperation.CMD_END;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program: central-console
@@ -35,66 +37,64 @@ public class TpadOfficeService {
         luminances = DimmingUtil.toAddHexList2("luminances");
     }
 
+    Logger logger = LoggerFactory.getLogger(TpadOfficeService.class);
+
     @Resource
     private TpadOfficeDao tpadOfficeDao;
 
-    public List<String> getHostId(String projectName) {
-        List<Map<String, Object>> meshs = tpadOfficeDao.getMesh(projectName);
-        List<String> hostIds = new ArrayList<>();
-        String meshId;
-        String hostId;
-        List<Map<String, Object>> hosts;
-        if (meshs.size() > 0) {
-            for (Map<String, Object> mesh : meshs) {
-                hostId = "";
-                meshId = (String) mesh.get("meshId");
-                hosts = tpadOfficeDao.getHost(meshId);
-                if (hosts.size() > 1) {
-                    for (Map<String, Object> host : hosts) {
-                        if ((Boolean) host.get("master")) {//主控poe
-                            hostId = (String) host.get("hostId");
-                        }
-                    }
+    @Resource
+    private JoinCmdUtil joinCmdUtil;
+
+    public String getHostId(String meshId) {
+        String hostId = "";
+        List<Map<String, Object>> hosts = tpadOfficeDao.getHost(meshId);
+        if (hosts.size() > 1) {
+            for (Map<String, Object> host : hosts) {
+                if ((Boolean) host.get("master")) {//主控poe
+                    hostId = (String) host.get("hostId");
                 }
-                if (StringUtils.isBlank(hostId) && hosts.size() > 0) {//只有一个poe or 没有主控poe
-                    hostId = (String) hosts.get(0).get("hostId");
-                }
-                hostIds.add(hostId);
             }
         }
-
-        return hostIds;
+        if (StringUtils.isBlank(hostId) && hosts.size() > 0) {//只有一个poe or 没有主控poe
+            hostId = (String) hosts.get(0).get("hostId");
+        }
+        return hostId;
     }
 
-    public List<Map<String, Object>> getParameterSetting(String projectName) {
-        List<Map<String, Object>> list = tpadOfficeDao.getParameterSetting();
-        List<Map<String, Object>> meshs = tpadOfficeDao.getMesh(projectName);
-        list.addAll(meshs);
-        return list;
-    }
-
-    public List<Map<String, Object>> getUnits(String unit) {
-        TypeOperation type = TypeOperation.getType(unit);
+    public Map<String, Object> getUnits(Map<String, Object> parameterSetting) {
+        String unit = (String) parameterSetting.get("unit");
+        Integer sceneCount = (Integer) parameterSetting.get("sceneCount");
+        List<Integer> scenes = new ArrayList<>();
+        Map<String, Object> map = new ConcurrentHashMap<>();
+        for (int i = 1; i <= sceneCount; i++) {
+            scenes.add(i);
+        }
+        map.put("scenes", scenes);
+        map.put("sceneCount", sceneCount);
         List<Map<String, Object>> units = new ArrayList<>();
+//        List<Map<String, Object>> parameterSettings = new ArrayList<>();
+        TypeOperation type = TypeOperation.getType(unit);
         switch (type) {
             case GROUP:
                 units = tpadOfficeDao.getGroups();
                 break;
-            case Place:
+            case PLACE:
                 units = tpadOfficeDao.getPlaces();
                 break;
             case MESH:
                 units = tpadOfficeDao.getMeshs();
                 break;
         }
-        return units;
+        map.put("units", units);
+//        parameterSettings.add(map);
+        return map;
     }
 
-    public String getUnitName(String project) {
-        return tpadOfficeDao.getUnitName(project);
+    public Map<String, Object> getParameterSetting(String project) {
+        return tpadOfficeDao.getParameterSetting(project);
     }
 
-    public void sendCmd(String unit, OfficePa office) {
+    public void send(String unit, OfficePa office) throws Exception {
         String operation = office.getOperation();
         String x = office.getX();
         String y = office.getY();
@@ -103,87 +103,104 @@ public class TpadOfficeService {
         Integer sceneId = office.getSceneId();
         switch (opeEnum) {
             case ON_OFF:
-                sendOnOffOrDimming(x, y, unitArray, null, unit);
+                if (sceneId != null){
+                    throw new Exception("无效的参数sceneId");
+                }
+                sendCmd(x, y, unitArray, null, unit);
                 break;
             case DIMMING:
+                if (sceneId != null){
+                    throw new Exception("无效的参数sceneId");
+                }
                 x = colors.get(x);
                 y = luminances.get(y);
-                sendOnOffOrDimming(x, y, unitArray, null, unit);
+                if (x == null || y == null) {
+                    throw new Exception("未知的冷暖色");
+                }
+                sendCmd(x, y, unitArray, null, unit);
                 break;
             case SCENE:
-                sendOnOffOrDimming(null, null, unitArray, sceneId, unit);
+                if (sceneId == null) {
+                    throw new Exception("场景id为空");
+                }
+                sendCmd(null, null, unitArray, sceneId, unit);
                 break;
+            default:
+                throw new Exception("参数错误");
         }
     }
 
-    private void sendOnOffOrDimming(String x, String y, int[] unitArray, Integer sceneId, String unit) {
-        String hostId = null;
+    private void sendCmd(String x, String y, int[] unitArray, Integer sceneId, String unit) throws Exception {
+        String hostId;
         String cmd;
-        String meshId;
-        String hexGroupId = null;
-        Integer groupId;
-        if (unitArray.length == 0) {
+        String meshId = null;
+        Integer groupId = null;
+        String oldMeshId = null;
+        String type = null;
+        List<Integer> groupIds = new ArrayList<>();
+        if (unitArray == null || unitArray.length == 0) {
             hostId = "all";
             if (sceneId != null) {
-                unit = "scene";
+                type = "scene";
             } else {
-                unit = "mesh";
+                type = "mesh";
             }
-            cmd = joinCmd(unit, x, y, null, sceneId);
+            cmd = joinCmdUtil.joinCmd(type, x, y, null, sceneId);
             send(hostId, cmd);
+            logger.warn("hostId:{},cmd:{}", hostId, cmd);
         } else {
             for (int i = 0; i < unitArray.length; i++) {
                 int id = unitArray[i];
-                if (unit.equals("mesh")) {
-                    meshId = tpadOfficeDao.getMesIdByMid(id);
-                    hostId = tpadOfficeDao.getHostIdByMeshId(meshId);
-                } else if (unit.equals("place")) {
-                    meshId = tpadOfficeDao.getMeshIdByPid(id);
-                    hostId = tpadOfficeDao.getHostIdByMeshId(meshId);
-                    List<Integer> groupIds = tpadOfficeDao.getGroupIdsByPid(id);
-                    for (Integer group : groupIds) {
-                        hexGroupId = String.format("%02x", group).toUpperCase();
-                        unit = "group";
+                TypeOperation typeEnum = TypeOperation.getType(unit);
+                switch (typeEnum) {
+                    case MESH:
+                        meshId = tpadOfficeDao.getMesIdByMid(id);
+                        type = "mesh";
+                        break;
+                    case PLACE:
+                        oldMeshId = meshId;
+                        meshId = tpadOfficeDao.getMeshIdByPid(id);
+                        groupIds = tpadOfficeDao.getGroupIdsByPid(id);
+                        break;
+                    case GROUP:
+                        oldMeshId = meshId;
+                        meshId = tpadOfficeDao.getMeshIdByGid(id);
+                        groupId = tpadOfficeDao.getEGroupId(id);
+                        type = "group";
+                        break;
+                    default:
+                        throw new Exception("参数错误");
+                }
+                hostId = getHostId(meshId);
+                if (StringUtils.isBlank(hostId)) {
+                    throw new Exception("host未知");
+                }
+                if (sceneId != null) {//切换场景操作
+                    if (oldMeshId!=null && oldMeshId.equals(meshId)){//排除场景命令重复
+                        continue;
                     }
-                } else if (unit.equals("group")) {
-                    meshId = tpadOfficeDao.getMeshIdByGid(id);
-                    groupId = tpadOfficeDao.getEGroupId(id);
-                    hostId = tpadOfficeDao.getHostIdByMeshId(meshId);
-                    hexGroupId = String.format("%02x", groupId).toUpperCase();
+                    type = "scene";
+                    cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                    send(hostId, cmd);
+                    logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                }else {
+                    if (groupIds.size()>0){//区域为基础单元操作(不包括切换场景)
+                        for (Integer group : groupIds) {
+                            groupId = group;
+                            type = "group";
+                            cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                            send(hostId, cmd);
+                            logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                        }
+                    }else {//其它基础单元操作(不包括切换场景)
+                        cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                        send(hostId, cmd);
+                        logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                    }
                 }
             }
-            if (sceneId != null) {
-                unit = "scene";
-            }
-            cmd = joinCmd(unit, x, y, hexGroupId, sceneId);
-            send(hostId, cmd);
         }
     }
-
-    public String joinCmd(String type, String x, String y, String groupId, Integer sceneId) {
-        String cmd = null;
-        StringBuffer sb;
-        switch (type) {
-            case "mesh":
-                if (StringUtils.isNotBlank(x)) {
-                    sb = new StringBuffer();
-                    cmd = sb.append(TypeOperation.MESH_ON_OFF_CMD_START).append(x).append(y).append(
-                            CMD_END).toString();
-                }
-                break;
-            case "group":
-                sb = new StringBuffer();
-                cmd = sb.append(TypeOperation.GROUP_ON_OFF_START).append(groupId).append(x).append(y)
-                        .append(CMD_END).toString();
-                break;
-            case "scene":
-                sb = new StringBuffer();
-                cmd = sb.append(TypeOperation.SCENE_CMD_START).append(sceneId).toString();
-                break;
-        }
-        return cmd;
-    }
-
 
     private void send(String hostId, String cmd) {
         Map<String, String> map = new HashMap<>();
@@ -192,5 +209,4 @@ public class TpadOfficeService {
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
     }
-
 }
