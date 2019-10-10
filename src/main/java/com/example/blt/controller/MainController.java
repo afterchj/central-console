@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -178,7 +175,7 @@ public class MainController {
             success = "error";
         }
         map.put("success", success);
-        logger.info("sendByMeshId result: {},host: {},command: {}",success,host,command);
+        logger.info("sendByMeshId result: {},host: {},command: {}", success, host, command);
         return map;
     }
 
@@ -289,6 +286,7 @@ public class MainController {
     @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
     public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
+        Map<String, String> cronMap = new HashMap<>();
         String params = request.getParameter("params");
 //        logger.error("params********************"+params);
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
@@ -297,15 +295,16 @@ public class MainController {
         int projectId = (int) jsonObjectParams.get("projectId");
         String project_data = JSON.toJSONString(jsonObjectParams.get("project_data"));
         try {
+            List cronList = new ArrayList();
             List<ProjectData> projectDataList = JSONArray.parseArray(project_data, ProjectData.class);
             for (int i = 0; i < projectDataList.size(); i++) {
                 Map<String, Object> map2 = new ConcurrentHashMap<>();
                 map2.put("meshId", projectDataList.get(i).getMeshId());
                 List<TimerList> timerListList = projectDataList.get(i).getTimerList();
                 int countTmesh = monitor4Dao.findTMesh(String.valueOf(map2.get("meshId")));
-                if(countTmesh==0) {
+                if (countTmesh == 0) {
                     monitor4Dao.insertTMesh(String.valueOf(map2.get("meshId")), projectDataList.get(i).getMname());
-                }else {
+                } else {
                     monitor4Dao.updateTMesh(String.valueOf(map2.get("meshId")), projectDataList.get(i).getMname());
                 }
                 for (int j = 0; j < timerListList.size(); j++) {
@@ -336,9 +335,10 @@ public class MainController {
                             map2.put("minute", timePointList.get(k).getMinute());
                             map2.put("sceneId", sceneId);
                             map2.put("lightStatus", timePointList.get(k).getLight_status());
-                            if(timerListList.get(j).getTimerLine().getItem_set()==1) {
-                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
-                                redisService.pushMsg(jsonObject);
+                            if (timerListList.get(j).getTimerLine().getItem_set() == 1) {
+                                cronList.add(map2);
+//                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+//                                redisService.pushMsg(jsonObject);
                             }
                             monitor4Dao.insertTimePoint(map2);
                         } else {
@@ -349,9 +349,10 @@ public class MainController {
                                 map2.put("minute", timePointParams.getMinute());
                                 map2.put("sceneId", sceneId);
                                 map2.put("lightStatus", timePointParams.getLight_status());
-                                if(timerListList.get(j).getTimerLine().getItem_set()==1) {
-                                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
-                                    redisService.pushMsg(jsonObject);
+                                if (timerListList.get(j).getTimerLine().getItem_set() == 1) {
+                                    cronList.add(map2);
+//                                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+//                                    redisService.pushMsg(jsonObject);
                                 }
                                 monitor4Dao.insertTimePoint(map2);
                             }
@@ -359,10 +360,12 @@ public class MainController {
                     }
                 }
             }
+            cronMap.put("cron",JSONObject.toJSONString(cronList));
+            redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
             map.put("result", "000");
         } catch (Exception e) {
             map.put("result", "200");
-            logger.warn("error********************"+e);
+            logger.warn("error********************" + e);
         }
         return map;
     }

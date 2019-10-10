@@ -1,5 +1,6 @@
 package com.example.blt.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.task.DynamicScheduledTask;
@@ -11,6 +12,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -34,30 +37,39 @@ public class RedisService {
     }
 
     public void consumeMsg(String msg) {
+        JSONObject jsonObject = JSONObject.parseObject(msg);
+        List<CronVo> voList = new ArrayList<>();
+        CronVo cronVo = new CronVo();
         try {
-            JSONObject object = JSONObject.parseObject(msg);
-            String meshId = object.getString("meshId");
-            int sceneId = object.getInteger("sceneId");
-            int item_set = object.getInteger("item_set");
-            int repetition = object.getInteger("repetition");
-            int minute = object.getInteger("minute");
-            int hour = object.getInteger("hour");
-            String week = getWeek(object.getString("week"));
-            CronVo cronVo = new CronVo();
-            cronVo.setMeshId(meshId);
-            cronVo.setSceneId(sceneId);
-            cronVo.setItemSet(item_set);
-            cronVo.setRepetition(repetition);
-            cronVo.setCron(minute, hour, week);
-            cronVo.setCommand(getCmd(sceneId));
-            cronVo.setCronName(meshId, sceneId, minute, hour);
-            sqlSessionTemplate.insert("console.insertCron", cronVo);
-//            String key = String.format("task_%s_%s", meshId, sceneId);
-            ScheduledFuture future = dynamicScheduledTask.futures.get(cronVo.getCronName());
-            if (future != null) {
-                future.cancel(true);
+            JSONArray crons = jsonObject.getJSONArray("cron");
+            for (int i = 0; i < crons.size(); i++) {
+                JSONObject object = crons.getJSONObject(i);
+                String meshId = object.getString("meshId");
+                int sceneId = object.getInteger("sceneId");
+                int item_set = object.getInteger("item_set");
+                int repetition = object.getInteger("repetition");
+                int minute = object.getInteger("minute");
+                int hour = object.getInteger("hour");
+                String week = getWeek(object.getString("week"));
+                cronVo.setMeshId(meshId);
+                cronVo.setSceneId(sceneId);
+                cronVo.setItemSet(item_set);
+                cronVo.setRepetition(repetition);
+                cronVo.setCron(minute, hour, week);
+                cronVo.setCommand(getCmd(sceneId));
+                cronVo.setCronName(meshId, sceneId, minute, hour);
+                voList.add(cronVo);
+                dynamicScheduledTask.configureTasks(cronVo);
             }
-            dynamicScheduledTask.configureTasks(cronVo);
+            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+            sqlSessionTemplate.insert("console.insertCron", voList);
+            ScheduledFuture future;
+            for (CronVo cron : cronVos) {
+                future = dynamicScheduledTask.futures.get(cron.getCronName());
+                if (future != null) {
+                    future.cancel(true);
+                }
+            }
         } catch (Exception e) {
             logger.error("cron error [{}] ", e.getMessage());
         }

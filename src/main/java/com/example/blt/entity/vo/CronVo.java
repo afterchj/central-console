@@ -74,4 +74,6 @@ public class CronVo {
     public void setSceneId(int sceneId) {
         this.sceneId = sceneId;
     }
+
+
 }
