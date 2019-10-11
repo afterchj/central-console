@@ -163,9 +163,13 @@ public class MainController {
     @RequestMapping(value = "/sendByMeshId", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendByMeshId(String host, String command) {
-        host = monitor4Dao.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
+        host = monitor4Dao.getHostId(host);
+        if (host == null){
+            success = "error";
+            logger.error("method:sendByMeshId,not find hostId, project:{},command:{}",host,command);
+        }
         map.put("command", command);
         map.put("host", host);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
@@ -182,9 +186,13 @@ public class MainController {
     @RequestMapping(value = "/sendScenseByMeshId", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendScenseByMeshId(String host, String command) {
-        host = monitor4Dao.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
+        host = monitor4Dao.getHostId(host);
+        if (host == null){
+            success = "error";
+            logger.error("method:sendByMeshId,not find hostId, project:{},command:{}",host,command);
+        }
         if (command.equals("场景一")) {
             command = "7701021901";
         } else if (command.equals("场景二")) {
