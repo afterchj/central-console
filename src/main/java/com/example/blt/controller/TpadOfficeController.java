@@ -35,6 +35,10 @@ public class TpadOfficeController {
     private TpadOfficeService tpadOfficeService;
 
 
+    @RequestMapping("/index")
+    public String index(){
+        return "redirect:../dist/index.html";
+    }
 
     @PostMapping("/get")
     @ResponseBody
