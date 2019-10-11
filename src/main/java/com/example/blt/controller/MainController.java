@@ -11,7 +11,6 @@ import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
 import com.example.blt.service.CacheableService;
 import com.example.blt.service.RedisService;
-import com.example.blt.service.TpadOfficeService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -24,10 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -53,8 +49,6 @@ public class MainController {
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
 
-    @Resource
-    private TpadOfficeService tpadOfficeService;
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
@@ -169,13 +163,9 @@ public class MainController {
     @RequestMapping(value = "/sendByMeshId", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendByMeshId(String host, String command) {
+        host = monitor4Dao.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
-        host = monitor4Dao.getHostId(host);
-        if (host == null){
-            success = "error";
-            logger.error("method:sendByMeshId,not find hostId, project:{},command:{}",host,command);
-        }
         map.put("command", command);
         map.put("host", host);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
@@ -185,20 +175,16 @@ public class MainController {
             success = "error";
         }
         map.put("success", success);
-        logger.warn("sendByMeshId result: {},host: {},command: {}",success,host,command);
+        logger.info("sendByMeshId result: {},host: {},command: {}", success, host, command);
         return map;
     }
 
     @RequestMapping(value = "/sendScenseByMeshId", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendScenseByMeshId(String host, String command) {
+        host = monitor4Dao.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
-        host = monitor4Dao.getHostId(host);
-        if (host == null){
-            success = "error";
-            logger.error("method:sendScenseByMeshId,not find hostId, project:{},command:{}",host,command);
-        }
         if (command.equals("场景一")) {
             command = "7701021901";
         } else if (command.equals("场景二")) {
@@ -300,6 +286,7 @@ public class MainController {
     @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
     public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
+        Map<String, String> cronMap = new HashMap<>();
         String params = request.getParameter("params");
 //        logger.error("params********************"+params);
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
@@ -308,15 +295,17 @@ public class MainController {
         int projectId = (int) jsonObjectParams.get("projectId");
         String project_data = JSON.toJSONString(jsonObjectParams.get("project_data"));
         try {
+            List cronList = new ArrayList();
             List<ProjectData> projectDataList = JSONArray.parseArray(project_data, ProjectData.class);
             for (int i = 0; i < projectDataList.size(); i++) {
+                String meshId = projectDataList.get(i).getMeshId();
                 Map<String, Object> map2 = new ConcurrentHashMap<>();
-                map2.put("meshId", projectDataList.get(i).getMeshId());
+                map2.put("meshId", meshId);
                 List<TimerList> timerListList = projectDataList.get(i).getTimerList();
                 int countTmesh = monitor4Dao.findTMesh(String.valueOf(map2.get("meshId")));
-                if(countTmesh==0) {
+                if (countTmesh == 0) {
                     monitor4Dao.insertTMesh(String.valueOf(map2.get("meshId")), projectDataList.get(i).getMname());
-                }else {
+                } else {
                     monitor4Dao.updateTMesh(String.valueOf(map2.get("meshId")), projectDataList.get(i).getMname());
                 }
                 for (int j = 0; j < timerListList.size(); j++) {
@@ -342,27 +331,35 @@ public class MainController {
                     List<TimePointParams> timePointList = timerListList.get(j).getTimerLine().getTimePointList();
                     for (int k = 0; k < timePointList.size(); k++) {
                         if (timePointList.get(k).getDetailvalueList() == null) {
+                            Map cron = new HashMap();
                             Integer sceneId = timePointList.get(k).getSence_index();
                             map2.put("hour", timePointList.get(k).getHour());
                             map2.put("minute", timePointList.get(k).getMinute());
                             map2.put("sceneId", sceneId);
                             map2.put("lightStatus", timePointList.get(k).getLight_status());
-                            if(timerListList.get(j).getTimerLine().getItem_set()==1) {
-                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
-                                redisService.pushMsg(jsonObject);
+                            if (timerListList.get(j).getTimerLine().getItem_set() == 1) {
+//                                logger.warn("meshId {} sceneId {}", meshId, sceneId);
+                                cron.putAll(map2);
+                                cronList.add(cron);
+//                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+//                                redisService.pushMsg(jsonObject);
                             }
                             monitor4Dao.insertTimePoint(map2);
                         } else {
                             List<TimePointParams> detailvalueList = timePointList.get(k).getDetailvalueList();
                             for (TimePointParams timePointParams : detailvalueList) {
+                                Map cron = new HashMap();
                                 Integer sceneId = timePointParams.getSence_index();
                                 map2.put("hour", timePointParams.getHour());
                                 map2.put("minute", timePointParams.getMinute());
                                 map2.put("sceneId", sceneId);
                                 map2.put("lightStatus", timePointParams.getLight_status());
-                                if(timerListList.get(j).getTimerLine().getItem_set()==1) {
-                                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
-                                    redisService.pushMsg(jsonObject);
+                                if (timerListList.get(j).getTimerLine().getItem_set() == 1) {
+//                                    logger.warn("meshId {} sceneId {}", meshId, sceneId);
+                                    cron.putAll(map2);
+                                    cronList.add(cron);
+//                                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+//                                    redisService.pushMsg(jsonObject);
                                 }
                                 monitor4Dao.insertTimePoint(map2);
                             }
@@ -370,10 +367,12 @@ public class MainController {
                     }
                 }
             }
+            cronMap.put("cron", JSONObject.toJSONString(cronList));
+            redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
             map.put("result", "000");
         } catch (Exception e) {
             map.put("result", "200");
-            logger.warn("error********************"+e);
+            logger.warn("error********************" + e);
         }
         return map;
     }

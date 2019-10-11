@@ -335,11 +335,11 @@ public class MainTest {
     @Test
     public void testSend() {
 //        sqlSessionTemplate.update("console.saveHostsStatus");
-        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
-        System.out.println(JSON.toJSONString(cronVos) + "\t" + cronVos.size());
+//        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+//        System.out.println(JSON.toJSONString(cronVos) + "\t" + cronVos.size());
 //        List<String> hosts = sqlSessionTemplate.selectList("console.getHostsByGid", "45642");
-//        String host = sqlSessionTemplate.selectOne("console.getHost", "bc10b37");
-//        System.out.println("flag=" + "master".equals(host));
+        String host = sqlSessionTemplate.selectOne("console.getMaster", "03d167cb");
+        System.out.println("flag=" + "".equals(host));
 //        System.out.println(hosts.size() + "\t" + host);
 //        JSONObject object = new JSONObject();
 //        object.put("host", "master");

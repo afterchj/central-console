@@ -130,13 +130,19 @@
     <select id="getLight" resultType="string" parameterType="string">
         SELECT vaddr FROM t_light_info WHERE host=#{ip}
     </select>
+
     <select id="getTotal" resultType="int">
         SELECT COUNT(0) lmacn FROM f_light_demo
     </select>
 
-    <insert id="insertCron" parameterType="CronVo">
+    <insert id="insertCron" parameterType="list">
         TRUNCATE TABLE t_cron;
-        INSERT INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,command,create_date,update_date) VALUE (#{cronName},#{meshId},#{sceneId},#{itemSet},#{repetition},#{cron},#{command},now(),now());
+        INSERT IGNORE INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,command,create_date,update_date) VALUES
+        <foreach collection="list" item="v" index="index" separator=",">
+            (
+            #{v.cronName},#{v.meshId},#{v.sceneId},#{v.itemSet},#{v.repetition},#{v.cron},#{v.command},now(),now()
+            )
+        </foreach>
     </insert>
 
     <insert id="insertLog" parameterType="string">

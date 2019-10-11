@@ -1,8 +1,10 @@
 package com.example.blt.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.task.DynamicScheduledTask;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -34,36 +38,47 @@ public class RedisService {
     }
 
     public void consumeMsg(String msg) {
+        JSONObject jsonObject = JSONObject.parseObject(msg);
+        List<CronVo> voList = new ArrayList<>();
         try {
-            JSONObject object = JSONObject.parseObject(msg);
-            String meshId = object.getString("meshId");
-            int sceneId = object.getInteger("sceneId");
-            int item_set = object.getInteger("item_set");
-            int repetition = object.getInteger("repetition");
-            int minute = object.getInteger("minute");
-            int hour = object.getInteger("hour");
-            String week = getWeek(object.getString("week"));
-            CronVo cronVo = new CronVo();
-            cronVo.setMeshId(meshId);
-            cronVo.setSceneId(sceneId);
-            cronVo.setItemSet(item_set);
-            cronVo.setRepetition(repetition);
-            cronVo.setCron(minute, hour, week);
-            cronVo.setCommand(getCmd(sceneId));
-            cronVo.setCronName(meshId, sceneId, minute, hour);
-            sqlSessionTemplate.insert("console.insertCron", cronVo);
-//            String key = String.format("task_%s_%s", meshId, sceneId);
-            ScheduledFuture future = dynamicScheduledTask.futures.get(cronVo.getCronName());
-            if (future != null) {
-                future.cancel(true);
+            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+            ScheduledFuture future;
+            for (CronVo cron : cronVos) {
+                future = dynamicScheduledTask.futures.get(cron.getCronName());
+                if (future != null) {
+                    future.cancel(true);
+                }
             }
-            dynamicScheduledTask.configureTasks(cronVo);
+            JSONArray cronArr = jsonObject.getJSONArray("cron");
+            for (int i = 0; i < cronArr.size(); i++) {
+                CronVo cronVo = new CronVo();
+                JSONObject object = cronArr.getJSONObject(i);
+                String meshId = object.getString("meshId");
+                Integer sceneId = object.getInteger("sceneId");
+                Integer item_set = object.getInteger("item_set");
+                Integer repetition = object.getInteger("repetition");
+                Integer minute = object.getInteger("minute");
+                Integer hour = object.getInteger("hour");
+                String week = getWeek(object.getString("week"));
+                cronVo.setMeshId(meshId);
+                cronVo.setSceneId(sceneId);
+                cronVo.setItemSet(item_set);
+                cronVo.setRepetition(repetition);
+                cronVo.setCron(minute, hour, week);
+                cronVo.setCommand(getCmd(sceneId));
+                cronVo.setCronName(meshId, sceneId, minute, hour);
+                voList.add(cronVo);
+//                logger.warn("cronName {}", cronVo.getCronName());
+                dynamicScheduledTask.configureTasks(cronVo);
+            }
+            sqlSessionTemplate.insert("console.insertCron", voList);
         } catch (Exception e) {
-            logger.error("cron error [{}] ", e.getMessage());
+            e.printStackTrace();
         }
     }
 
     public String getWeek(String str) {
+        if (StringUtils.isEmpty(str)) return null;
         String[] weeks = str.split(",");
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i < weeks.length; i++) {
