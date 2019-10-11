@@ -53,11 +53,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.25</version>
         </dependency>
-<!--?        <dependency>-->
-<!--?            <groupId>org.apache.rocketmq</groupId>-->
-<!--?            <artifactId>rocketmq-spring-boot-starter</artifactId>-->
-<!--?            <version>2.0.3</version>-->
-<!--?        </dependency>-->
+        <!--?        <dependency>-->
+        <!--?            <groupId>org.apache.rocketmq</groupId>-->
+        <!--?            <artifactId>rocketmq-spring-boot-starter</artifactId>-->
+        <!--?            <version>2.0.3</version>-->
+        <!--?        </dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
@@ -77,11 +77,6 @@
             <groupId>commons-pool</groupId>
             <artifactId>commons-pool</artifactId>
             <version>1.5.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.whalin</groupId>
-            <artifactId>Memcached-Java-Client</artifactId>
-            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
@@ -136,17 +131,22 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.googlecode.xmemcached</groupId>
-            <artifactId>xmemcached</artifactId>
-            <version>2.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--?        <dependency>-->
+        <!--?            <groupId>com.whalin</groupId>-->
+        <!--?            <artifactId>Memcached-Java-Client</artifactId>-->
+        <!--?            <version>3.0.2</version>-->
+        <!--?        </dependency>-->
+        <!--?        <dependency>-->
+        <!--?            <groupId>com.googlecode.xmemcached</groupId>-->
+        <!--?            <artifactId>xmemcached</artifactId>-->
+        <!--?            <version>2.0.0</version>-->
+        <!--?            <exclusions>-->
+        <!--?                <exclusion>-->
+        <!--?                    <artifactId>slf4j-api</artifactId>-->
+        <!--?                    <groupId>org.slf4j</groupId>-->
+        <!--?                </exclusion>-->
+        <!--?            </exclusions>-->
+        <!--?        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
