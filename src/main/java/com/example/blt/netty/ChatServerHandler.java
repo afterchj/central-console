@@ -3,7 +3,6 @@ package com.example.blt.netty;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.exception.NoTopicException;
 import com.example.blt.service.ProducerService;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
@@ -14,6 +13,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         try {
             JSONObject jsonObject = JSON.parseObject(arg1);
             cmd = jsonObject.getString("command");
-            to = jsonObject.getString("host");
+            to = StringUtils.isNotEmpty(jsonObject.getString("host")) ? jsonObject.getString("host") : "";
             type = jsonObject.getString("type");
             if (to.equals(master)) {
                 to = "master";
@@ -100,7 +100,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if (len > 9 && len <= 50) {
             if (cmd.indexOf("77050103") != -1) {
                 redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
-            }else {
+            } else {
                 logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
             }
             StringBuildUtils.parseLocalCmd(cmd, to);
