@@ -15,7 +15,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE");
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE")
+                .allowedHeaders("*")
+                .allowedMethods("*")
+                //暴露哪些头部信息（因为跨域访问默认不能获取全部头部信息）
+                .exposedHeaders("Header1", "Header2");
     }
 
     @Override

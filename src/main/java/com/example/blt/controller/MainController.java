@@ -11,6 +11,7 @@ import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
 import com.example.blt.service.CacheableService;
 import com.example.blt.service.RedisService;
+import com.example.blt.service.TpadOfficeService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -52,6 +53,8 @@ public class MainController {
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
 
+    @Resource
+    private TpadOfficeService tpadOfficeService;
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
@@ -166,9 +169,13 @@ public class MainController {
     @RequestMapping(value = "/sendByMeshId", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendByMeshId(String host, String command) {
-        host = monitor4Dao.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
+        host = monitor4Dao.getHostId(host);
+        if (host == null){
+            success = "error";
+            logger.error("method:sendByMeshId,not find hostId, project:{},command:{}",host,command);
+        }
         map.put("command", command);
         map.put("host", host);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
@@ -178,16 +185,20 @@ public class MainController {
             success = "error";
         }
         map.put("success", success);
-        logger.info("sendByMeshId result: {},host: {},command: {}",success,host,command);
+        logger.warn("sendByMeshId result: {},host: {},command: {}",success,host,command);
         return map;
     }
 
     @RequestMapping(value = "/sendScenseByMeshId", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendScenseByMeshId(String host, String command) {
-        host = monitor4Dao.getHostId(host);
         Map<String, String> map = new HashMap<>();
         String success = "success";
+        host = monitor4Dao.getHostId(host);
+        if (host == null){
+            success = "error";
+            logger.error("method:sendScenseByMeshId,not find hostId, project:{},command:{}",host,command);
+        }
         if (command.equals("场景一")) {
             command = "7701021901";
         } else if (command.equals("场景二")) {
