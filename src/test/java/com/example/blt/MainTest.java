@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.vo.CronVo;
-import com.example.blt.service.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.PropertiesUtil;
 import com.example.blt.utils.SpringUtils;
@@ -242,11 +241,11 @@ public class MainTest {
 //            Map map = new HashMap();
 //            map.put("topic", "topic_test");
 //            map.put("message", "Just is test messages " + i);
-            try {
-                ProducerService.pushMsg("user-topic", "Just is test messages " + i);
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
+//            try {
+//                ProducerService.pushMsg("user-topic", "Just is test messages " + i);
+//            } catch (Exception e) {
+//                logger.error(e.getMessage());
+//            }
         }
     }
 

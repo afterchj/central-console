@@ -1,10 +1,8 @@
 package com.example.blt.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.example.blt.config.WebSocket;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.service.ProducerService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -263,35 +261,35 @@ public class StringBuildUtils {
     }
 
     public static void saveLight(Map map, boolean flag) {
-        if (flag) {
-            try {
-                ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
-            } catch (Exception e) {
-            }
-        }
+//        if (flag) {
+//            try {
+//                ProducerService.pushMsg(Topics.LIGHT_TOPIC.getTopic(), JSON.toJSONString(map));
+//            } catch (Exception e) {
+//            }
+//        }
         sqlSessionTemplate.selectOne("console.saveLight", map);
     }
 
     public static void saveConsole(String topic, Map map, boolean flag) {
-        if (flag) {
-            try {
-                String info = JSON.toJSONString(map);
-                ProducerService.pushMsg(topic, info);
-            } catch (Exception e) {
-            }
-        }
+//        if (flag) {
+//            try {
+//                String info = JSON.toJSONString(map);
+//                ProducerService.pushMsg(topic, info);
+//            } catch (Exception e) {
+//            }
+//        }
         sqlSessionTemplate.selectOne("console.saveConsole", map);
         WebSocket.sendMessage(map);
     }
 
     public static void saveUpdateHostMesh(Map map, boolean flag) {
         logger.warn("map {}", map);
-        if (flag) {
-            try {
-                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
-            } catch (Exception e) {
-            }
-        }
+//        if (flag) {
+//            try {
+//                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
+//            } catch (Exception e) {
+//            }
+//        }
         sqlSessionTemplate.insert("console.saveUpdateHosts", map);
     }
 
