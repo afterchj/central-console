@@ -58,11 +58,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.25</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
-            <version>2.0.3</version>
-        </dependency>
+<!--?        <dependency>-->
+<!--?            <groupId>org.apache.rocketmq</groupId>-->
+<!--?            <artifactId>rocketmq-spring-boot-starter</artifactId>-->
+<!--?            <version>2.0.3</version>-->
+<!--?        </dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>

@@ -112,12 +112,12 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 //    }
 
     private void updateLight(Map params, boolean flag) {
-        if (flag) {
-            try {
-                ProducerService.pushMsg(Topics.UPDATE_TOPIC.getTopic(), JSON.toJSONString(params));
-            } catch (Exception e) {
-            }
-        }
+//        if (flag) {
+//            try {
+//                ProducerService.pushMsg(Topics.UPDATE_TOPIC.getTopic(), JSON.toJSONString(params));
+//            } catch (Exception e) {
+//            }
+//        }
         sqlSessionTemplate.update("console.saveUpdate", params);
     }
 

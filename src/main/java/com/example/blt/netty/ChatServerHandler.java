@@ -3,7 +3,6 @@ package com.example.blt.netty;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.Topics;
-import com.example.blt.service.ProducerService;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
 import io.netty.channel.Channel;
@@ -13,7 +12,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -173,20 +172,5 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         channel.writeAndFlush("77050101CCCC");//获取mesh信息
         channel.writeAndFlush("77050105CCCC");//获取mac信息
         channel.writeAndFlush("77050106CCCC");//获取ota信息
-    }
-
-    public static void insertOrUpdateHost(Channel channel, boolean flag) {
-        Map map = new ConcurrentHashMap();
-        String addr = channel.remoteAddress().toString();
-        map.put("ip", addr.substring(1, addr.indexOf(":")));
-        map.put("host", channel.id().toString());
-        map.put("status", channel.isActive());
-        if (flag) {
-            try {
-                ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
-            } catch (Exception e) {
-            }
-        }
-        sqlSessionTemplate.insert("console.saveUpdateHosts", map);
     }
 }
