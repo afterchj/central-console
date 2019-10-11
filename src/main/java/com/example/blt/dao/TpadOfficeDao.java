@@ -28,13 +28,13 @@ public interface TpadOfficeDao {
 //    @Select("")
 //    String getUnitName(String project);
 
-    @Select("select id,mesh_name as name from t_mesh")
+    @Select("select id,mesh_name as name,0 as status from t_mesh")
     List<Map<String,Object>> getMeshs();
 
-    @Select("select id,place_name as name from t_eplace")
+    @Select("select id,place_name as name,0 as status from t_eplace")
     List<Map<String,Object>> getPlaces();
 
-    @Select("select id,gname as name from t_egroup")
+    @Select("select id,gname as name,0 as status from t_egroup")
     List<Map<String,Object>> getGroups();
 
     @Select("select mesh_id as meshId from t_mesh where id=(select mid from t_egroup where id=#{id})")
