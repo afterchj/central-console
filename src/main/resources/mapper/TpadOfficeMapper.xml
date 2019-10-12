@@ -21,4 +21,15 @@
             WHERE m.id=h.mid AND m.mesh_id=#{meshId})
     </select>
 
+    <select id="getMidByHostId" resultType="integer">
+        SELECT
+	        mid
+        FROM
+	        t_host_mesh hm,
+	        t_host_info hi
+        WHERE
+	        hm.hid = hi.id
+	        AND hi.host_id = #{hostId}
+    </select>
+
 </mapper>

@@ -28,7 +28,7 @@ public interface TpadOfficeDao {
 //    @Select("")
 //    String getUnitName(String project);
 
-    @Select("select id,mesh_name as name,0 as status from t_mesh")
+    @Select("select id,ifnull(mesh_name,mesh_id) as name,0 as status from t_mesh")
     List<Map<String,Object>> getMeshs();
 
     @Select("select id,place_name as name,0 as status from t_eplace")
@@ -51,4 +51,12 @@ public interface TpadOfficeDao {
 
     @Select("select group_id as groupId from t_egroup where pid=#{id}")
     List<Integer> getGroupIdsByPid(int id);
+
+    Integer getMidByHostId(String hostId);
+
+    @Select("select id from t_egroup where group_id=#{groupId} and mid=#{mid}")
+    Integer getEGid(@Param("mid") Integer mid, @Param("groupId") Integer groupId);
+
+    @Select("select pid from t_egroup where group_id=#{groupId} and mid=#{mid}")
+    Integer getEPid(Integer mid, Integer groupId);
 }

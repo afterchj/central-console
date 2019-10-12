@@ -1,9 +1,6 @@
 package com.example.blt;
 
-import com.example.blt.dao.LightListDao;
-import com.example.blt.dao.Monitor4Dao;
-import com.example.blt.dao.NewMonitorDao;
-import com.example.blt.dao.WebCmdDao;
+import com.example.blt.dao.*;
 import com.example.blt.entity.LightDemo;
 import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.NewMonitorService;
@@ -44,6 +41,9 @@ public class LightDemoTests {
 
     @Resource
     private TpadOfficeService tpadOfficeService;
+
+    @Resource
+    private TpadOfficeDao tpadOfficeDao;
 
     @Test
     public void test() {
@@ -242,7 +242,7 @@ public class LightDemoTests {
 
     @Test
     public void test14(){
-//        List<Map<String, Object>> tpatOffice = tpadOfficeService.getParameterSetting("tpatOffice");
-//        System.out.println(tpatOffice);
+        Integer eGid = tpadOfficeDao.getEGid(1, 1);
+        System.out.println(eGid);
     }
 }

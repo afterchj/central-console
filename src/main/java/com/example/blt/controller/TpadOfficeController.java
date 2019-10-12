@@ -1,6 +1,7 @@
 package com.example.blt.controller;
 
 import com.example.blt.entity.office.OfficePa;
+import com.example.blt.entity.office.OfficeWS;
 import com.example.blt.service.TpadOfficeService;
 import com.example.blt.utils.DimmingUtil;
 import org.springframework.stereotype.Controller;
@@ -67,6 +68,15 @@ public class TpadOfficeController {
         } catch (Exception e) {
             return "error";
         }
+    }
+
+    @PostMapping("/analysisWs")
+    @ResponseBody
+    public Map<String,Integer> analysisWs(@RequestBody OfficeWS officeWS){
+        String project = officeWS.getProject();
+        Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
+        Map<String, Integer> map = tpadOfficeService.analysisWs(parameterSetting,officeWS);
+        return map;
     }
 
 }

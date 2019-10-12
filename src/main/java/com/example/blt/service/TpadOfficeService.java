@@ -3,6 +3,7 @@ package com.example.blt.service;
 import com.alibaba.fastjson.JSON;
 import com.example.blt.dao.TpadOfficeDao;
 import com.example.blt.entity.office.OfficePa;
+import com.example.blt.entity.office.OfficeWS;
 import com.example.blt.entity.office.TypeOperation;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
@@ -72,7 +73,6 @@ public class TpadOfficeService {
         map.put("scenes", scenes);
         map.put("sceneCount", sceneCount);
         List<Map<String, Object>> units = new ArrayList<>();
-//        List<Map<String, Object>> parameterSettings = new ArrayList<>();
         TypeOperation type = TypeOperation.getType(unit);
         switch (type) {
             case GROUP:
@@ -86,7 +86,6 @@ public class TpadOfficeService {
                 break;
         }
         map.put("units", units);
-//        parameterSettings.add(map);
         return map;
     }
 
@@ -208,5 +207,30 @@ public class TpadOfficeService {
         map.put("host", hostId);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
+    }
+
+    public Map<String,Integer> analysisWs(Map<String, Object> parameterSetting, OfficeWS officeWS) {
+        Map<String,Integer> map = new ConcurrentHashMap<>();
+        Integer id = null;
+        String hostId = officeWS.getHost();
+        Integer status = officeWS.getStatus();
+        Integer groupId = officeWS.getCid();
+        String unit = (String) parameterSetting.get("unit");
+        TypeOperation unitEnum = TypeOperation.getType(unit);
+        Integer mid = tpadOfficeDao.getMidByHostId(hostId);
+        switch (unitEnum){
+            case GROUP:
+                id = tpadOfficeDao.getEGid(mid,groupId);
+                break;
+            case PLACE:
+                id = tpadOfficeDao.getEPid(mid,groupId);
+                break;
+            case MESH:
+                id = mid;
+                break;
+        }
+        map.put("id",id);
+        map.put("status",status);
+        return map;
     }
 }
