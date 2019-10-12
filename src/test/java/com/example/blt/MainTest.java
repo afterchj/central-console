@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.vo.CronVo;
+import com.example.blt.rabbitmq.ProducerService;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.PropertiesUtil;
 import com.example.blt.utils.SpringUtils;
@@ -15,7 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -230,22 +233,12 @@ public class MainTest {
     }
 
     @Test
-    public void testRocketMQ() {
-//        String c0 = "77010315323266";
-//        String c1 = "7701041601373766";
-//        String c2 = "7701021906";
-//        ExecuteTask.parseLocalCmd(c0, "127.0.0.1");
-//        ExecuteTask.parseLocalCmd(c1, "127.0.0.1");
-//        ExecuteTask.parseLocalCmd(c2, "127.0.0.1");
-        for (int i = 0; i < 10; i++) {
-//            Map map = new HashMap();
-//            map.put("topic", "topic_test");
-//            map.put("message", "Just is test messages " + i);
-//            try {
-//                ProducerService.pushMsg("user-topic", "Just is test messages " + i);
-//            } catch (Exception e) {
-//                logger.error(e.getMessage());
-//            }
+    public void testMQ() {
+        try {
+            ProducerService.pushMsg("order.update","hello order.update");
+//            ProducerService.pushMsg("order.insert","hello order.insert");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
