@@ -21,13 +21,13 @@
 <script type="text/javascript">
     let socket;
     $(function () {
-        let url = location.host;
+        let url = location.host+"/central-console";
         console.log(location.href, url);
 
         $("#test").click(function () {
             let cmd = $("#txt").val();
             let host = $("#hosts").val();
-            $.get("/test", {"command": cmd, "host": host}, function (result) {
+            $.get("test", {"command": cmd, "host": host}, function (result) {
                 console.log("cmd", cmd, "host", host, "result", result);
             });
             socket.send(cmd);
@@ -36,14 +36,14 @@
         $(".host").click(function () {
             let mesh_id = $.trim($(this).val());
             let flag = $(this).is(':checked');
-            $.get("/save", {"host": mesh_id, "is_control": flag}, function (result) {
+            $.get("save", {"host": mesh_id, "is_control": flag}, function (result) {
                 console.log("mesh_id", mesh_id, "flag", flag, "result", result);
             });
         })
         $(".master").click(function () {
             let mesh_id = $.trim($(this).val());
             let flag = $(this).is(':checked');
-            $.get("/save", {"host": mesh_id, "is_master": flag}, function (result) {
+            $.get("save", {"host": mesh_id, "is_master": flag}, function (result) {
                 console.log("mesh_id", mesh_id, "flag", flag, "result", result);
             });
         })
@@ -71,7 +71,7 @@
             $("#" + id).text("开")
         }
         console.log("id", id, "flag", flag);
-        $.get("/switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
+        $.get("switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
             console.log("result", result);
         })
     }
@@ -91,7 +91,7 @@
             $("#" + id).val("77010315323266");
             $("#" + id).text("开")
         }
-        $.get("/switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
+        $.get("switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
             console.log("result", result);
         })
     }
