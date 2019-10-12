@@ -20,7 +20,7 @@ $(function () {
         if (typeof (WebSocket) == "undefined") {
             console.log("遗憾：您的浏览器不支持WebSocket");
         } else {
-            socket = new WebSocket("ws://" + url + "/ws/webSocket");
+            socket = new WebSocket("ws://" + url + "/central-console/ws/webSocket");
             //连接打开事件
             socket.onopen = function () {
                 console.log("Socket 已打开！");
@@ -146,11 +146,11 @@ function light2() {
                 }
                 imgList.push($(this).find('img').attr('src'));
             })
-            if (!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1) {
+            if (!isAllEqual(onOffList) && imgList.indexOf('/central-console/static/img/2.png') != -1) {
                 $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div').removeClass('active')
-            } else if (!isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') == -1 && imgList.indexOf('/static/img/1.png') != -1) {
-                $('.switch-part.total img').attr('src', '/static/img/1.png')
+            } else if (!isAllEqual(onOffList) && imgList.indexOf('/central-console/static/img/2.png') == -1 && imgList.indexOf('/static/img/1.png') != -1) {
+                $('.switch-part.total img').attr('src', '/central-console/static/img/1.png')
                 $('.switch-part.total .on-off>div').removeClass('active')
             } else if (isAllEqual(onOffList) && onOffList.indexOf('ON') != -1) {
                 $('.switch-part.total img').attr('src', '')
@@ -163,11 +163,11 @@ function light2() {
             //     $('.switch-part.total img').attr('src', '/static/img/1.png')
             //     $('.switch-part.total .on-off>div').removeClass('active')
             // }
-            else if(isAllEqual(onOffList) && imgList.indexOf('/static/img/2.png') != -1){
+            else if(isAllEqual(onOffList) && imgList.indexOf('/central-console/static/img/2.png') != -1){
                 $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div').removeClass('active')
-            }else if (isAllEqual(onOffList) && imgList.indexOf('/static/img/1.png') != -1){
-                $('.switch-part.total img').attr('src', '/static/img/1.png')
+            }else if (isAllEqual(onOffList) && imgList.indexOf('/central-console/static/img/1.png') != -1){
+                $('.switch-part.total img').attr('src', '/central-console/static/img/1.png')
                 $('.switch-part.total .on-off>div').removeClass('active')
             }
         }
@@ -239,7 +239,7 @@ function light() {
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                 totalStatus.push('dis');
             }else if (on==1&&off==1){
-                $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+                $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(0)').find('img').attr('src', '/central-console/static/img/1.png');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(0)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                 totalStatus.push('diff');
             }else if (on==1&&off==0){
@@ -269,7 +269,7 @@ function light() {
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                 totalStatus.push('dis');
             }else if (twoOn==1&&twoOff==1){
-                $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+                $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(0)').find('img').attr('src', '/central-console/static/img/1.png');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(1)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                 totalStatus.push('diff');
             }else if (twoOn==1&&twoOff==0){
@@ -299,7 +299,7 @@ function light() {
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                 totalStatus.push('dis');
             }else if (thirdOn==1&&thirdOff==1){
-                $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+                $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(0)').find('img').attr('src', '/central-console/static/img/1.png');
                 $(".switch.clearfix").find('.clearfix.switch-part.f-l:eq(2)').find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                 totalStatus.push('diff');
             }else if (thirdOn==1&&thirdOff==0){
@@ -328,7 +328,7 @@ function light() {
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                 totalStatus.push('dis');
             }else if (fourOn==1&&fourOff==1){
-                $(".f-r>.clearfix.switch-part ").find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+                $(".f-r>.clearfix.switch-part ").find('.f-l:eq(0)').find('img').attr('src', '/central-console/static/img/1.png');
                 $(".f-r>.clearfix.switch-part ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                 totalStatus.push('diff');
             }else if (fourOn==1&&fourOff==0){
@@ -358,7 +358,7 @@ function light() {
                     return false;
                 }
                 if (value=='diff'){
-                    $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+                    $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '/central-console/static/img/1.png');
                     $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
                     return false;
                 }
@@ -376,7 +376,7 @@ function light() {
                 $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '');
                 $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div:last-child').addClass('active').siblings().removeClass('active');
             }else if (groupStatusOn=='off'&&groupStatusOff=='on'){
-                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '/static/img/1.png');
+                $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(0)').find('img').attr('src', '/central-console/static/img/1.png');
                 $(".f-r>.clearfix.switch-part.total ").find('.f-l:eq(2)').find('.on-off>div').removeClass('active');
             }
 
@@ -471,12 +471,12 @@ $('.on-off>div').click(function () {
         var command = '77010315323266';
     }
     console.log('host:',host,'command:',command);
-    $.post("/sendByMeshId", {"command": command, "host": host}, function () {
+    $.post("sendByMeshId", {"command": command, "host": host}, function () {
     })
 })
 $("select").change(function () {
     var command = $.trim($(this).val());
-    $.post("/sendScenseByMeshId", {
+    $.post("sendScenseByMeshId", {
         "command": command,
         "host": host
     }, function () {

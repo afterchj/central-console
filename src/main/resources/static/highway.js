@@ -25,8 +25,8 @@ $(".on-off").click(function () {
     var topOneCheckboxState = $(".top-one-checkbox").prop('checked');
     var topTwoCheckboxState = $(".top-two-checkbox").prop('checked');
     // console.log('topOneCheckboxState:',topOneCheckboxState,' topTwoCheckboxState:',topTwoCheckboxState,' group:',group,' groupOne:',groupOne,' groupTwo:',groupTwo);
-    if (src == '/static/img/switch-off.png'){//开
-        $(this).attr('src','/static/img/switch-on.png');
+    if (src == '/central-console/static/img/switch-off.png'){//开
+        $(this).attr('src','/central-console/static/img/switch-on.png');
         command1 = '770104160' + groupOne + '3737' + '66';
         command2 = '770104160' + groupTwo + '3737' + '66';
         if ((!topOneCheckboxState && !topTwoCheckboxState)||(topOneCheckboxState && topTwoCheckboxState)){//都故障或都有故障
@@ -34,7 +34,7 @@ $(".on-off").click(function () {
                 if (data.success == 'success'){
                     $.post("sendByMeshId", {"command": command2, "host": host},function (data) {
                         if (data.success == 'success'){
-                            $(onOffThis).parent().parent().parent().next().find('img').attr('src','/static/img/red2.png');
+                            $(onOffThis).parent().parent().parent().next().find('img').attr('src','/central-console/static/img/red2.png');
                             if (topOneCheckboxState && topTwoCheckboxState){//都有故障
                                 $('.first-line,.second-line').removeClass('active');
                                 $('.first-line,.second-line').addClass('active');//整条路段故障
@@ -46,7 +46,7 @@ $(".on-off").click(function () {
         }else if (topOneCheckboxState && !topTwoCheckboxState){//第一段故障
             $.post("sendByMeshId", {"command": command1, "host": host},function (data) {
                 if (data.success == 'success'){
-                    $(onOffThis).parent().parent().parent().next().find('.one-100 img').attr('src','/static/img/red2.png');//故障侧灯亮
+                    $(onOffThis).parent().parent().parent().next().find('.one-100 img').attr('src','/central-console/static/img/red2.png');//故障侧灯亮
                     $('.first-line,.second-line').removeClass('active');
                     $(".first-line").addClass('active');//显示故障一侧
                 }
@@ -54,7 +54,7 @@ $(".on-off").click(function () {
         }else if (!topOneCheckboxState && topTwoCheckboxState){//第二段故障
             $.post("sendByMeshId", {"command": command2, "host": host},function (data) {
                 if (data.success == 'success'){
-                    $(onOffThis).parent().parent().parent().next().find('.two-100 img').attr('src','/static/img/red2.png');//故障侧灯亮
+                    $(onOffThis).parent().parent().parent().next().find('.two-100 img').attr('src','/central-console/static/img/red2.png');//故障侧灯亮
                     $('.first-line,.second-line').removeClass('active');
                     $(".second-line").addClass('active');//显示故障一侧
                 }
@@ -67,9 +67,9 @@ $(".on-off").click(function () {
             if (data.success == 'success'){
                 $.post("sendByMeshId", {"command": command2, "host": host},function (data) {
                     if (data.success == 'success'){
-                        $(onOffThis).parent().parent().parent().next().find('img').attr('src','/static/img/gray.png');//关灯
-                        $(onOffThis).attr('src','/static/img/switch-off.png');//开关按钮变关
-                        var isOnState = $(".on-off").is('img[src="/static/img/switch-on.png"]');//其它车道是否有开灯的车道
+                        $(onOffThis).parent().parent().parent().next().find('img').attr('src','/central-console/static/img/gray.png');//关灯
+                        $(onOffThis).attr('src','/central-console/static/img/switch-off.png');//开关按钮变关
+                        var isOnState = $(".on-off").is('img[src="/central-console/static/img/switch-on.png"]');//其它车道是否有开灯的车道
                         // console.log('isOnState',isOnState);
                         if (!isOnState){//所有车道灯关闭
                             $('.first-line,.second-line').removeClass('active');

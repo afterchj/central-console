@@ -78,5 +78,4 @@ public class TpadOfficeController {
         Map<String, Integer> map = tpadOfficeService.analysisWs(parameterSetting,officeWS);
         return map;
     }
-
 }
