@@ -73,7 +73,7 @@ public class RedisService {
             }
             sqlSessionTemplate.insert("console.insertCron", voList);
         } catch (Exception e) {
-            e.printStackTrace();
+           logger.error(e.getMessage());
         }
     }
 
