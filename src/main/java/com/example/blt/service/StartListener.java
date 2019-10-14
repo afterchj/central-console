@@ -25,7 +25,7 @@ import java.util.Map;
  * Created by hongjian.chen on 2019/5/17.
  */
 @Service
-public class NettyService implements ApplicationListener<ContextRefreshedEvent> {
+public class StartListener implements ApplicationListener<ContextRefreshedEvent> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
@@ -142,8 +142,7 @@ public class NettyService implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        logger.warn("nettyService starting...");
-        new ServerMain().run(8001);
+        logger.warn("springBoot started.");
         List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
         for (CronVo cronVo : cronVos) {
             if (cronVo.getItemSet() == 1) {
