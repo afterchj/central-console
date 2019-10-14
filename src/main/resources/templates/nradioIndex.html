@@ -200,25 +200,25 @@
     var cmd;
     $("#switch").click(function () {
         cmd = "77010315373766";
-        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
+        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);
         });
     });
     $("#switch2").click(function () {
         cmd = "77010315323266";
-        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
+        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);
         });
     });
     $("#accept").click(function () {
         cmd = "7701010466";
-        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
+        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);
         });
     });
     $("#OTA").click(function () {
         cmd = "7701010566";
-        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
+        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);
         });
     });
@@ -239,7 +239,7 @@
             color = $("#color").val();
         }
         console.log(color, luminance);
-        $.post("/nradio/change", {"color": color, "luminance": luminance}, function (data) {
+        $.post("/central-console/nradio/change", {"color": color, "luminance": luminance}, function (data) {
             console.log(data);
         })
     }
@@ -261,7 +261,7 @@
                 cmd = "7701021904";
                 break;
         }
-        $.post("/nradio/send", {"host": host, "cmd": cmd}, function (data) {
+        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);
         });
     });
@@ -284,7 +284,7 @@
         if (typeof (WebSocket) == "undefined") {
             console.log("遗憾：您的浏览器不支持WebSocket");
         } else {
-            socket = new WebSocket("ws://" + url + "/ws/webSocket");
+            socket = new WebSocket("ws://" + url + "/central-console/ws/webSocket");
 
             //连接打开事件
             socket.onopen = function () {
