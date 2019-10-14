@@ -20,7 +20,7 @@ public interface TpadOfficeDao {
     @Select("select host_id as hostId,is_master as master from t_host_info where id=(select h.hid from t_mesh m,t_host_mesh h where m.id=h.mid and m.mesh_id=(select mesh_id from t_mesh_setting where project=#{project}))")
     List<Map<String,Object>> getHostId(@Param("project")String projectName);
 
-    @Select("select unit,scene_count as sceneCount from t_parameter_setting where project=#{project}")
+    @Select("select unit,scene_count as sceneCount,scene_id as sceneId ,x , y, status from t_parameter_setting where project=#{project}")
     Map<String,Object> getParameterSetting(String project);
 
     List<Map<String,Object>> getHost(String meshId);
@@ -28,13 +28,13 @@ public interface TpadOfficeDao {
 //    @Select("")
 //    String getUnitName(String project);
 
-    @Select("select id,ifnull(mesh_name,mesh_id) as name,0 as status from t_mesh")
+    @Select("select id,ifnull(mesh_name,mesh_id) as name, status from t_mesh")
     List<Map<String,Object>> getMeshs();
 
-    @Select("select id,place_name as name,0 as status from t_eplace")
+    @Select("select id,place_name as name, status from t_eplace")
     List<Map<String,Object>> getPlaces();
 
-    @Select("select id,gname as name,0 as status from t_egroup")
+    @Select("select id,gname as name, status from t_egroup")
     List<Map<String,Object>> getGroups();
 
     @Select("select mesh_id as meshId from t_mesh where id=(select mid from t_egroup where id=#{id})")

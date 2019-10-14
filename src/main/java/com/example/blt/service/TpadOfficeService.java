@@ -71,7 +71,7 @@ public class TpadOfficeService {
             scenes.add(i);
         }
         map.put("scenes", scenes);
-        map.put("sceneCount", sceneCount);
+//        map.put("sceneCount", sceneCount);
         List<Map<String, Object>> units = new ArrayList<>();
         TypeOperation type = TypeOperation.getType(unit);
         switch (type) {
@@ -86,6 +86,7 @@ public class TpadOfficeService {
                 break;
         }
         map.put("units", units);
+        map.putAll(parameterSetting);
         return map;
     }
 

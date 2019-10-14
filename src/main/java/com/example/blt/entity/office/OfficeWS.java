@@ -12,6 +12,21 @@ public class OfficeWS {
     private Integer status;
     private Integer cid;
     private String project;
+    private String ctype;
+    private String x;
+    private String y;
+
+    public String getX() {
+        return x;
+    }
+
+    public String getY() {
+        return y;
+    }
+
+    public String getCtype() {
+        return ctype;
+    }
 
     public String getHost() {
         return host;

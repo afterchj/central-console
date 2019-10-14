@@ -4,11 +4,7 @@ import com.example.blt.entity.office.OfficePa;
 import com.example.blt.entity.office.OfficeWS;
 import com.example.blt.service.TpadOfficeService;
 import com.example.blt.utils.DimmingUtil;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -20,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author: Mr.Ma
  * @create: 2019-09-30 10:53
  **/
-@Controller
+@RestController
 @RequestMapping("/office")
 public class TpadOfficeController {
 
@@ -42,7 +38,7 @@ public class TpadOfficeController {
     }
 
     @PostMapping("/get")
-    @ResponseBody
+//    @ResponseBody
     public Map<String, Object> get(@RequestBody OfficePa office) {
         Map<String, Object> map = new ConcurrentHashMap<>();
         String project = office.getProject();
@@ -57,7 +53,7 @@ public class TpadOfficeController {
      * @return
      */
     @PostMapping("/sendCmd")
-    @ResponseBody
+//    @ResponseBody
     public String sendCmd(@RequestBody OfficePa office) {
         String project = office.getProject();
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
@@ -71,7 +67,7 @@ public class TpadOfficeController {
     }
 
     @PostMapping("/analysisWs")
-    @ResponseBody
+//    @ResponseBody
     public Map<String,Integer> analysisWs(@RequestBody OfficeWS officeWS){
         String project = officeWS.getProject();
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
