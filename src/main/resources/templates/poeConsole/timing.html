@@ -140,7 +140,7 @@
     })
     $(".left-timing-title li").click(function () {
         var tsid = $(this).find('input').val();
-        $.post("/control/timePointList",{"tsid":tsid},function (data) {
+        $.post("/central-console/control/timePointList",{"tsid":tsid},function (data) {
 //            var timePoints = [];
             var timePoints = data.timePoints;
             $(".right-timing-detail").empty();
