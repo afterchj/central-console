@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class ProducerService {
 
-    private static final String EXCHANGE_NAME = "test_exchange_topic";
+    private static final String EXCHANGE_NAME = "blt_topic_exchange";
     private static Logger logger = LoggerFactory.getLogger(ProducerService.class);
     public static Connection connection;
     public static Channel channel;

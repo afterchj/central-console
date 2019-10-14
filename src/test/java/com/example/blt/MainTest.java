@@ -235,9 +235,9 @@ public class MainTest {
     @Test
     public void testMQ() {
         try {
-            ProducerService.pushMsg("order.update","hello order.update");
-//            ProducerService.pushMsg("order.insert","hello order.insert");
-        } catch (IOException e) {
+            ProducerService.pushMsg("topic.console.local","hello local console");
+            ProducerService.pushMsg("topic.console.remote","hello remote.console");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
