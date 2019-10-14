@@ -153,9 +153,9 @@
         if (username!="admin" || pwd!="admin"){
             $("#hint").text('用户名密码不正确');
         }else {
-            $.post('/control/toLogin',{'username':username},function (data) {
+            $.post('/central-console/control/toLogin',{'username':username},function (data) {
                 if (data=='success'){
-                    window.location.href='/control/index';
+                    window.location.href='/central-console/control/index';
                 }
             });
 

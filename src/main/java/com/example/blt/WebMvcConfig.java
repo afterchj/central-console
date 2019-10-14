@@ -37,6 +37,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+//        String[] url = {"/central-console/control/index", "/central-console/control/timer", "/central-console/control/netWorkGroupConsole"};
         String[] url = {"/control/index", "/control/timer", "/control/netWorkGroupConsole"};
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns(url);
         WebMvcConfigurer.super.addInterceptors(registry);
