@@ -66,7 +66,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
             if (arg1.indexOf("77050107") != -1) {
                 cmd = "77050103";
-                sendPoeInfo(arg0);
+//                sendPoeInfo(arg0);
             }
             if (arg1.indexOf("77050208") != -1) {
                 cmd = "77050103";
@@ -96,12 +96,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
         if (len > 9 && len <= 50) {
-            if (cmd.indexOf("77050103") != -1) {
-                redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
-            } else {
-                logger.warn("hostId[{}] to [{}] hosts[{}] cmd [{}]", host, to, hosts, cmd);
-            }
-            StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
                 if (address != null) {
@@ -121,11 +115,17 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             }
                         } else if (id.equals(to)) {
                             if (StringUtils.isNotEmpty(host_id)) {
-                                ch.writeAndFlush(cmd);
+                                arg0.write(cmd);
                             }
                         }
                     }
                 }
+            }
+            if (cmd.indexOf("77050103") != -1) {
+                redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
+            } else {
+                StringBuildUtils.parseLocalCmd(cmd, to);
+                logger.warn("hostId[{}] to [{}] hosts[{}] cmd [{}]", host, to, hosts, cmd);
             }
         }
         if (arg1.length() >= 16) {
