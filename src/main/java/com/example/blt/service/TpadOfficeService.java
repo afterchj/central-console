@@ -227,18 +227,14 @@ public class TpadOfficeService {
         String unit = (String) parameterSetting.get("unit");
         switch (ctype){
             case "C0":
-                if ("all".equals(hostId)){
-                    if ("32".equals(x) || "37".equals(x)){
+                if ("32".equals(x) || "37".equals(x)){
+                    if ("all".equals(hostId)){
                         tpadOfficeDao.updateStatus(project,status);
                     }else {
-                        storageDimmingStatus(x,y,project);
+                        id = storageUnitStatus(statusMap,unit,ctype);
                     }
                 }else {
-                    if ("32".equals(x) || "37".equals(x)){
-                        id = storageUnitStatus(statusMap,unit,ctype);
-                    }else {
-                        storageDimmingStatus(x,y,project);
-                    }
+                    storageDimmingStatus(x,y,project);
                 }
                 break;
             case "CW":
