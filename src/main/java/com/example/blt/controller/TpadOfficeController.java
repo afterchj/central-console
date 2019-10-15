@@ -71,7 +71,7 @@ public class TpadOfficeController {
     public Map<String,Integer> analysisWs(@RequestBody OfficeWS officeWS){
         String project = officeWS.getProject();
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
-        Map<String, Integer> map = tpadOfficeService.analysisWs(parameterSetting,officeWS);
+        Map<String, Integer> map = tpadOfficeService.analysisWsAndStorageStatus(parameterSetting,officeWS);
         return map;
     }
 }

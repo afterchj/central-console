@@ -11,10 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RunWith(SpringRunner.class)
@@ -242,7 +239,17 @@ public class LightDemoTests {
 
     @Test
     public void test14(){
-        Integer eGid = tpadOfficeDao.getEGid(1, 1);
-        System.out.println(eGid);
+        Map<String,String> xMap = new TreeMap<>();
+        Map<String,String> yMap = new TreeMap<>();
+        String[] xKeyArr = {"00", "01", "02", "03","04","05","06","07","08","09","0A","0B","0C","0D","0E","0F","10","11","12","13","14"};
+        String[] xValueArr = { "0","5","10","15","20","25","30","35","40","45","50","55","60","65","70","75","80","85","90","95","100"};
+        String[] yValueArr = { "0","5","10","15","20","25","30","35","40","45","50","55","60","65","70","75","80","85","90","100"};
+        String[] yKeyArr = {"00", "01", "02", "03","04","05","06","07","08","09","0A","0B","0C","0D","0E","0F","10","11","12","13"};
+        for (int i=0;i<xKeyArr.length;i++){
+            xMap.put(xKeyArr[i],xValueArr[i]);
+        }
+        for (int j = 0;j<yKeyArr.length;j++){
+            yMap.put(yKeyArr[j],yValueArr[(yKeyArr.length-1)-j]);
+        }
     }
 }
