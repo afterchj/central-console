@@ -31,7 +31,6 @@ $(".on-off").click(function () {
         command1 = '77011465FFFFFFFF2A00000000C137370000000000000' + groupOne + 'CCCC';
         // command1 = '77011465FFFFFFFF2019000000C132320000000000000' + groupOne + 'CCCC';
         command2 = '77011465FFFFFFFF2A00000000C137370000000000000' + groupTwo + 'CCCC';
-        console.log(command1.size())
         if ((!topOneCheckboxState && !topTwoCheckboxState)||(topOneCheckboxState && topTwoCheckboxState)){//都故障或都有故障
             $.post("sendByMeshId", {"command": command1, "host": host},function (data) {
                 if (data.success == 'success'){
