@@ -2,7 +2,6 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.entity.dd.Topics;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
 import io.netty.channel.Channel;
@@ -65,7 +64,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 cmd = "77050103";
             }
             if (arg1.indexOf("77050107") != -1) {
-                sendPoeInfo(channel);
+                cmd = "77050103";
+                sendPoeInfo(arg0);
             }
             if (arg1.indexOf("77050208") != -1) {
                 cmd = "77050103";
@@ -98,7 +98,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (cmd.indexOf("77050103") != -1) {
                 redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
             } else {
-                logger.warn("hostId[{}] to [{}] hosts[{}] cmd [{}]", host,to, hosts, cmd);
+                logger.warn("hostId[{}] to [{}] hosts[{}] cmd [{}]", host, to, hosts, cmd);
             }
             StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
@@ -148,8 +148,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        Channel channel = ctx.channel();
-        sendPoeInfo(channel);
+        sendPoeInfo(ctx);
     }
 
     //退出链接
@@ -163,9 +162,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         ctx.close().sync();
     }
 
-    public void sendPoeInfo(Channel channel) {
-        channel.writeAndFlush("77050101CCCC");//获取mesh信息
-        channel.writeAndFlush("77050105CCCC");//获取mac信息
-        channel.writeAndFlush("77050106CCCC");//获取ota信息
+    public void sendPoeInfo(ChannelHandlerContext ctx) {
+        SocketAddress address = ctx.channel().remoteAddress();
+        String str = address.toString();
+        String ip = str.substring(1, str.indexOf(":"));
+        if (!ip.equals("127.0.0.1")) {
+            ctx.writeAndFlush("77050101CCCC");//获取mesh信息
+            ctx.writeAndFlush("77050105CCCC");//获取mac信息
+            ctx.writeAndFlush("77050106CCCC");//获取ota信息
+        }
     }
 }

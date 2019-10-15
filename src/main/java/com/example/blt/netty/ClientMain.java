@@ -28,7 +28,7 @@ public class ClientMain {
 //        private static String host = "119.3.49.192";
 
 //    public static void main(String[] args) throws IOException {
-//        run(AddrUtil.getIp(false));
+////        run(AddrUtil.getIp(false));
 //        run("iotsztp.com");
 //    }
 
