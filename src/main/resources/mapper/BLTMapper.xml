@@ -112,6 +112,10 @@
         SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,command,repetition,cron FROM t_cron
     </select>
 
+    <select id="getHost" resultType="string" parameterType="string">
+        SELECT host_id FROM t_host_info h WHERE h.host_id=#{host}
+    </select>
+
     <select id="getHostId" resultType="string" parameterType="string">
         SELECT host_id FROM t_host_info h
         INNER JOIN t_host_mesh s ON h.id=s.hid
