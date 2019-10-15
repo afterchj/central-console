@@ -30,12 +30,16 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class TpadOfficeService {
 
-    static Map<String, String> colors;
-    static Map<String, String> luminances;
+    static Map<String, String> hexColors;
+    static Map<String, String> hexLuminances;
+    static Map<String, String> decimalismColors;
+    static Map<String, String> decimalismLuminances;
 
     static {
-        colors = DimmingUtil.toAddHexList2("colors");
-        luminances = DimmingUtil.toAddHexList2("luminances");
+        hexColors = DimmingUtil.toAddHexList2("colors");
+        hexLuminances = DimmingUtil.toAddHexList2("luminances");
+        decimalismColors = DimmingUtil.toDecimalism("colors");
+        decimalismLuminances = DimmingUtil.toDecimalism("luminances");
     }
 
     Logger logger = LoggerFactory.getLogger(TpadOfficeService.class);
@@ -112,8 +116,8 @@ public class TpadOfficeService {
                 if (sceneId != null){
                     throw new Exception("无效的参数sceneId");
                 }
-                x = colors.get(x);
-                y = luminances.get(y);
+                x = hexColors.get(x);
+                y = hexLuminances.get(y);
                 if (x == null || y == null) {
                     throw new Exception("未知的冷暖色");
                 }
@@ -228,9 +232,10 @@ public class TpadOfficeService {
         if (cid != null){
             statusMap.put("cid",cid);
         }
-        if (status != null){
-            statusMap.put("status",status);
+        if (status == null){
+            status = 0;
         }
+        statusMap.put("status",status);
         statusMap.put("id",id);
         String unit = (String) parameterSetting.get("unit");
         switch (ctype){
@@ -239,6 +244,8 @@ public class TpadOfficeService {
                     if ("32".equals(x) || "37".equals(x)){
                         tpadOfficeDao.updateStatus(project,status);
                     }else {
+                        x = decimalismColors.get(x);//转化为10进制数
+                        y = decimalismLuminances.get(y);
                         tpadOfficeDao.updateXY(project,x,y);
                     }
                 }else {
@@ -260,6 +267,8 @@ public class TpadOfficeService {
                                 break;
                         }
                     }else {
+                        x = decimalismColors.get("x");
+                        y = decimalismLuminances.get("y");
                         tpadOfficeDao.updateXY(project,x,y);
                     }
 
@@ -277,6 +286,7 @@ public class TpadOfficeService {
         }
         statusMap = new ConcurrentHashMap<>();
         statusMap.put("id",id);
+        statusMap.put("status",status);
         return statusMap;
     }
 }
