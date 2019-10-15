@@ -1,5 +1,7 @@
 package com.example.blt.entity.office;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @program: central-console
  * @description:
@@ -11,6 +13,7 @@ public class OfficeWS {
     private String host;
     private Integer status;
     private Integer cid;
+    @NotNull(message = "项目名不为空")
     private String project;
     private String ctype;
     private String x;

@@ -179,7 +179,7 @@ public class MainController {
             success = "error";
         }
         map.put("success", success);
-        logger.info("sendByMeshId result: {},host: {},command: {}", success, host, command);
+        logger.warn("sendByMeshId result: {},host: {},command: {}", success, host, command);
         return map;
     }
 
@@ -225,6 +225,7 @@ public class MainController {
         ControlTask task = new ControlTask(JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
         map.put("success", success);
+        logger.warn("sendScenseByMeshId result: {},host: {},command: {}", success, host, command);
         return map;
     }
 

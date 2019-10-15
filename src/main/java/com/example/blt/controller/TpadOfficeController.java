@@ -3,10 +3,14 @@ package com.example.blt.controller;
 import com.example.blt.entity.office.OfficePa;
 import com.example.blt.entity.office.OfficeWS;
 import com.example.blt.service.TpadOfficeService;
-import com.example.blt.utils.DimmingUtil;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,19 +22,11 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 @RestController
 @RequestMapping("/office")
+@Validated
 public class TpadOfficeController {
-
-    static Map<String, String> colors;
-    static Map<String, String> luminances;
-
-    static {
-        colors = DimmingUtil.toAddHexList2("colors");
-        luminances = DimmingUtil.toAddHexList2("luminances");
-    }
 
     @Resource
     private TpadOfficeService tpadOfficeService;
-
 
     @RequestMapping("/index")
     public String index(){
@@ -39,7 +35,7 @@ public class TpadOfficeController {
 
     @PostMapping("/get")
 //    @ResponseBody
-    public Map<String, Object> get(@RequestBody OfficePa office) {
+    public Map<String, Object> get(@Valid @RequestBody OfficePa office) {
         Map<String, Object> map = new ConcurrentHashMap<>();
         String project = office.getProject();
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
