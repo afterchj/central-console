@@ -127,8 +127,11 @@ public class MainTest {
 //        sqlSessionTemplate.update("console.updateHostsFlag", map);
 //        String temp = sqlSessionTemplate.selectOne("console.getHost");
 //        String hostId = sqlSessionTemplate.selectOne("console.getHostId","81444189");
-        System.out.println(Integer.parseInt("0A", 16));
-        List hosts = sqlSessionTemplate.selectList("console.getHosts");
+//        System.out.println(Integer.parseInt("0A", 16));
+//        List hosts = sqlSessionTemplate.selectList("console.getHosts");
+        String host="03d167ab";
+        String host_id = sqlSessionTemplate.selectOne("console.getHost", "00d7ab1f");
+        logger.warn("host_id="+host_id);
 //        hosts.remove("e1753bd4");
 //        List<String> list = sqlSessionTemplate.selectList("console.getAll");
 //        ValueOperations valueOperations = redisTemplate.opsForValue();
