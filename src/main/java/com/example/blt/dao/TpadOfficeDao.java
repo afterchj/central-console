@@ -55,8 +55,8 @@ public interface TpadOfficeDao {
     @Select("select id from t_egroup where group_id=#{groupId} and mid=#{mid}")
     Integer getEGid(@Param("mid") Integer mid, @Param("groupId") Integer cid);
 
-    @Select("select pid from t_egroup where group_id=#{groupId} and mid=#{mid}")
-    Integer getEPid(@Param("mid") Integer mid, @Param("groupId") Integer groupId);
+    @Select("select pid from t_egroup where group_id=#{cid} and mid=#{mid}")
+    Integer getEPid(Map<String,Integer> map);
 
     @Update("update t_parameter_setting set scene_id=#{sceneId} where project=#{project}")
     void updateSceneId(@Param("sceneId") Integer cid,@Param("project") String project);

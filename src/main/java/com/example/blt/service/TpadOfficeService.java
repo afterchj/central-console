@@ -215,16 +215,55 @@ public class TpadOfficeService {
     }
 
     public Map<String,Integer> analysisWsAndStorageStatus(Map<String, Object> parameterSetting,OfficeWS officeWS){
-        Map<String,Integer> statusMap = new ConcurrentHashMap<>();
+        String x = officeWS.getX();
+        String y = officeWS.getY();
         String ctype = officeWS.getCtype();
-        Integer cid = officeWS.getCid();
         String project = officeWS.getProject();
         String hostId = officeWS.getHost();
         Integer status = officeWS.getStatus();
+        Integer cid = officeWS.getCid();
         Integer id = 0;
-        Integer mid = null;
-        String x = officeWS.getX();
-        String y = officeWS.getY();
+        Map<String,Integer> statusMap = setStatusMap(officeWS);
+        String unit = (String) parameterSetting.get("unit");
+        switch (ctype){
+            case "C0":
+                if ("all".equals(hostId)){
+                    if ("32".equals(x) || "37".equals(x)){
+                        tpadOfficeDao.updateStatus(project,status);
+                    }else {
+                        storageDimmingStatus(x,y,project);
+                    }
+                }else {
+                    if ("32".equals(x) || "37".equals(x)){
+                        id = storageUnitStatus(statusMap,unit,ctype);
+                    }else {
+                        storageDimmingStatus(x,y,project);
+                    }
+                }
+                break;
+            case "CW":
+                id = storageUnitStatus(statusMap,unit,ctype);
+                break;
+            case "42":
+                tpadOfficeDao.updateSceneId(cid,project);
+                break;
+            case "52":
+                break;
+        }
+        status = statusMap.get("status");
+        statusMap = new ConcurrentHashMap<>();
+        statusMap.put("id",id);
+        statusMap.put("status",status);
+        return statusMap;
+    }
+
+    private Map<String,Integer> setStatusMap(OfficeWS officeWS){
+        Map<String,Integer> statusMap = new ConcurrentHashMap<>();
+        Integer cid = officeWS.getCid();
+        String hostId = officeWS.getHost();
+        Integer status = officeWS.getStatus();
+        Integer id = 0;
+        Integer mid;
         if (!"all".equals(hostId)){
             mid = tpadOfficeDao.getMidByHostId(hostId);
             statusMap.put("mid",mid);
@@ -237,56 +276,42 @@ public class TpadOfficeService {
         }
         statusMap.put("status",status);
         statusMap.put("id",id);
-        String unit = (String) parameterSetting.get("unit");
+        return statusMap;
+    }
+
+    private Integer storageUnitStatus(Map<String,Integer> statusMap,String unit,String ctype){
+        Integer id = 0;
         switch (ctype){
             case "C0":
-                if ("all".equals(hostId)){
-                    if ("32".equals(x) || "37".equals(x)){
-                        tpadOfficeDao.updateStatus(project,status);
-                    }else {
-                        x = decimalismColors.get(x);//转化为10进制数
-                        y = decimalismLuminances.get(y);
-                        tpadOfficeDao.updateXY(project,x,y);
-                    }
-                }else {
-                    if ("32".equals(x) || "37".equals(x)){
-                        TypeOperation unitEnum = TypeOperation.getType(unit);
-                        switch (unitEnum){
-                            case GROUP:
-                                    tpadOfficeDao.updateEGroupStatus(statusMap);
-                                    id = statusMap.get("id");
-                                break;
-                            case PLACE:
-                                    id = tpadOfficeDao.getEPid(mid,cid);
-                                    statusMap.put("pid",id);
-                                    tpadOfficeDao.updateEPlaceStatus(statusMap);
-                                break;
-                            case MESH:
-                                id = mid;
-                                tpadOfficeDao.updateMeshStatus(statusMap);
-                                break;
-                        }
-                    }else {
-                        x = decimalismColors.get("x");
-                        y = decimalismLuminances.get("y");
-                        tpadOfficeDao.updateXY(project,x,y);
-                    }
-
+                TypeOperation unitEnum = TypeOperation.getType(unit);
+                switch (unitEnum){
+                    case GROUP:
+                        tpadOfficeDao.updateEGroupStatus(statusMap);
+                        id = statusMap.get("id");
+                        break;
+                    case PLACE:
+                        id = tpadOfficeDao.getEPid(statusMap);
+                        statusMap.put("pid",id);
+                        tpadOfficeDao.updateEPlaceStatus(statusMap);
+                        break;
+                    case MESH:
+                        id = statusMap.get("mid");
+                        tpadOfficeDao.updateMeshStatus(statusMap);
+                        break;
                 }
                 break;
             case "CW":
                 tpadOfficeDao.updateEGroupStatus(statusMap);
                 id = statusMap.get("id");
                 break;
-            case "42":
-                tpadOfficeDao.updateSceneId(cid,project);
-                break;
-            case "52":
-                break;
         }
-        statusMap = new ConcurrentHashMap<>();
-        statusMap.put("id",id);
-        statusMap.put("status",status);
-        return statusMap;
+        return id;
     }
+
+    private void storageDimmingStatus(String x,String y,String project){
+        x = decimalismColors.get(x);
+        y = decimalismLuminances.get(y);
+        tpadOfficeDao.updateXY(project,x,y);
+    }
+
 }
