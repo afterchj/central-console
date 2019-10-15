@@ -1,8 +1,6 @@
 package com.example.blt.dao;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -55,8 +53,27 @@ public interface TpadOfficeDao {
     Integer getMidByHostId(String hostId);
 
     @Select("select id from t_egroup where group_id=#{groupId} and mid=#{mid}")
-    Integer getEGid(@Param("mid") Integer mid, @Param("groupId") Integer groupId);
+    Integer getEGid(@Param("mid") Integer mid, @Param("groupId") Integer cid);
 
     @Select("select pid from t_egroup where group_id=#{groupId} and mid=#{mid}")
-    Integer getEPid(Integer mid, Integer groupId);
+    Integer getEPid(@Param("mid") Integer mid, @Param("groupId") Integer groupId);
+
+    @Update("update t_parameter_setting set scene_id=#{sceneId} where project=#{project}")
+    void updateSceneId(@Param("sceneId") Integer cid,@Param("project") String project);
+
+    @Update("update t_egroup set status=#{status} where mid=#{mid} and group_id=#{cid}")
+    @SelectKey(statement="select (select id from t_egroup where mid=#{mid} and group_id=#{cid})id from DUAL",before=true,keyProperty="id",resultType=Integer.class,keyColumn="id")
+    void updateEGroupStatus(Map<String,Integer> map);
+
+    @Update("update t_parameter_setting set status=#{status} where project=#{project}")
+    void updateStatus(@Param("project") String project, @Param("status") Integer status);
+
+    @Update("update t_parameter_setting set x=#{x},y=#{y} where project=#{project}")
+    void updateXY(@Param("project") String project, @Param("x") String x, @Param("y") String y);
+
+    @Update("update t_eplace set status=#{status} where id=#{pid}")
+    void updateEPlaceStatus(Map<String, Integer> statusMap);
+
+    @Update("update t_mesh set status=#{status} where id=#{mid}")
+    void updateMeshStatus(Map<String, Integer> statusMap);
 }

@@ -11,10 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RunWith(SpringRunner.class)
@@ -242,7 +239,12 @@ public class LightDemoTests {
 
     @Test
     public void test14(){
-        Integer eGid = tpadOfficeDao.getEGid(1, 1);
-        System.out.println(eGid);
+        Map<String,Integer> map = new ConcurrentHashMap<>();
+        map.put("mid",24);
+        map.put("cid",10);
+        map.put("status",1);
+        map.put("id",0);
+        tpadOfficeDao.updateEGroupStatus(map);
+        System.out.println(map.toString());
     }
 }
