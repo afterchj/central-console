@@ -18,8 +18,8 @@ public class ServerMain {
     private static Logger logger = LoggerFactory.getLogger(ServerMain.class);
 
     public void run(int port) {
-        EventLoopGroup acceptor = new NioEventLoopGroup();
-        EventLoopGroup worker = new NioEventLoopGroup();
+        EventLoopGroup acceptor = new NioEventLoopGroup(2);
+        EventLoopGroup worker = new NioEventLoopGroup(4);
         final ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.option(ChannelOption.SO_BACKLOG, 1024); //设置TCP相关信息
         bootstrap.childOption(ChannelOption.ALLOW_HALF_CLOSURE, false);

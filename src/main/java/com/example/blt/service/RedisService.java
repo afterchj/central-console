@@ -39,6 +39,7 @@ public class RedisService {
 
     public void consumeMsg(String msg) {
         JSONObject jsonObject = JSONObject.parseObject(msg);
+        JSONArray cronArr = jsonObject.getJSONArray("cron");
         List<CronVo> voList = new ArrayList<>();
         try {
             List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
@@ -49,7 +50,6 @@ public class RedisService {
                     future.cancel(true);
                 }
             }
-            JSONArray cronArr = jsonObject.getJSONArray("cron");
             for (int i = 0; i < cronArr.size(); i++) {
                 CronVo cronVo = new CronVo();
                 JSONObject object = cronArr.getJSONObject(i);
@@ -73,7 +73,7 @@ public class RedisService {
             }
             sqlSessionTemplate.insert("console.insertCron", voList);
         } catch (Exception e) {
-           logger.error(e.getMessage());
+            logger.error("error {} cronArr {}", e.getMessage(), cronArr);
         }
     }
 
