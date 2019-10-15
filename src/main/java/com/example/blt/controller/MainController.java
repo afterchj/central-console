@@ -294,7 +294,6 @@ public class MainController {
     @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
     public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
-        Map<String, String> cronMap = new HashMap<>();
         String params = request.getParameter("params");
 //        logger.error("params********************"+params);
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
@@ -375,8 +374,11 @@ public class MainController {
                     }
                 }
             }
-            cronMap.put("cron", JSONObject.toJSONString(cronList));
-            redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
+            if(cronList.size()!=0) {
+                Map<String, String> cronMap = new HashMap<>();
+                cronMap.put("cron", JSONObject.toJSONString(cronList));
+                redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
+            }
             map.put("result", "000");
         } catch (Exception e) {
             map.put("result", "200");

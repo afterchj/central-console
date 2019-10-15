@@ -20,8 +20,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.net.SocketAddress;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -100,7 +98,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (cmd.indexOf("77050103") != -1) {
                 redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
             } else {
-                logger.warn("hostId[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
+                logger.warn("hostId[{}] to [{}] hosts[{}] cmd [{}]", host,to, hosts, cmd);
             }
             StringBuildUtils.parseLocalCmd(cmd, to);
             for (Channel ch : group) {
@@ -151,15 +149,12 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
-        redisTemplate.opsForValue().set(channel.id().toString(), channel.toString(), 50, TimeUnit.SECONDS);
-//        insertOrUpdateHost(channel, false);
         sendPoeInfo(channel);
     }
 
     //退出链接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        Channel channel = ctx.channel();
     }
 
     @Override
