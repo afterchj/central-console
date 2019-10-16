@@ -27,8 +27,10 @@ $(".on-off").click(function () {
     // console.log('topOneCheckboxState:',topOneCheckboxState,' topTwoCheckboxState:',topTwoCheckboxState,' group:',group,' groupOne:',groupOne,' groupTwo:',groupTwo);
     if (src == '/central-console/static/img/switch-off.png'){//开
         $(this).attr('src','/central-console/static/img/switch-on.png');
-        command1 = '770104160' + groupOne + '3737' + '66';
-        command2 = '770104160' + groupTwo + '3737' + '66';
+        // command2 = '770104160' + groupTwo + '3737' + '66';
+        command1 = '77011465FFFFFFFF2A00000000C137370000000000000' + groupOne + 'CCCC';
+        // command1 = '77011465FFFFFFFF2019000000C132320000000000000' + groupOne + 'CCCC';
+        command2 = '77011465FFFFFFFF2A00000000C137370000000000000' + groupTwo + 'CCCC';
         if ((!topOneCheckboxState && !topTwoCheckboxState)||(topOneCheckboxState && topTwoCheckboxState)){//都故障或都有故障
             $.post("sendByMeshId", {"command": command1, "host": host},function (data) {
                 if (data.success == 'success'){
@@ -61,8 +63,9 @@ $(".on-off").click(function () {
             })
         }
     }else {//关
-        command1 = '770104160' + groupOne + '3232' + '66';
-        command2 = '770104160' + groupTwo + '3232' + '66';
+        // command1 = '770104160' + groupOne + '3232' + '66';
+        command1 = '77011465FFFFFFFF2A00000000C132320000000000000' + groupOne + 'CCCC';
+        command2 = '77011465FFFFFFFF2A00000000C132320000000000000' + groupTwo + 'CCCC';
         $.post("sendByMeshId", {"command": command1, "host": host},function (data) {
             if (data.success == 'success'){
                 $.post("sendByMeshId", {"command": command2, "host": host},function (data) {

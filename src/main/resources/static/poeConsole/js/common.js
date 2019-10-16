@@ -58,16 +58,16 @@ $("#dataReset-modal button.yes").click(function () {
         $('#spinner').show();
         $('#spinner .spinner-text').text('正在恢复出厂设置');
         setTimeout(function () {
-            $.post('/control/reSet',{"type":"reSet"},function (data) {
+            $.post('/central-console/control/reSet',{"type":"reSet"},function (data) {
                 if (data == 'success'){
                     $('#dataReset-modal .modal-dialog').hide();
                     $('#spinner').show();
                     $('#spinner .spinner-text').text('正在同步数据');
                     setTimeout(function () {
                         //同步数据
-                        $.post('/control/reSet',{"type":"synchrodata"},function (data) {
+                        $.post('/central-console/control/reSet',{"type":"synchrodata"},function (data) {
                             if (data == 'success'){
-                                window.location.href = "/control/index";
+                                window.location.href = "/central-console/control/index";
                             }
                         });
                     },3000);
