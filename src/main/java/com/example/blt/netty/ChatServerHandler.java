@@ -115,7 +115,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             }
                         } else if (id.equals(to)) {
                             if (StringUtils.isNotEmpty(host_id)) {
-                                ch.writeAndFlush(cmd);
+                                arg0.writeAndFlush(cmd);
                             }
                         }
                     }

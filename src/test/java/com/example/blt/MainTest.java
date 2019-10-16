@@ -340,9 +340,9 @@ public class MainTest {
 //        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
 //        System.out.println(JSON.toJSONString(cronVos) + "\t" + cronVos.size());
 //        List<String> hosts = sqlSessionTemplate.selectList("console.getHostsByGid", "45642");
-        String host = sqlSessionTemplate.selectOne("console.getMaster", "03d167cb");
+        String host = sqlSessionTemplate.selectOne("console.getHostId", "d3ce299f");
         System.out.println("flag=" + "".equals(host));
-//        System.out.println(hosts.size() + "\t" + host);
+        System.out.println("host=" + host);
 //        JSONObject object = new JSONObject();
 //        object.put("host", "master");
 //        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
