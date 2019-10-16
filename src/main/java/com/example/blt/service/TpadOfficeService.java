@@ -149,7 +149,8 @@ public class TpadOfficeService {
             } else {
                 type = "mesh";
             }
-            cmd = joinCmdUtil.joinCmd(type, x, y, null, sceneId);
+//            cmd = joinCmdUtil.joinCmd(type, x, y, null, sceneId);
+            cmd = JoinCmdUtil.joinNewCmd(type, x, y, null, sceneId);
             send(hostId, cmd);
             logger.warn("hostId:{},cmd:{}", hostId, cmd);
         } else {
@@ -184,7 +185,8 @@ public class TpadOfficeService {
                         continue;
                     }
                     type = "scene";
-                    cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+//                    cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                    cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                     send(hostId, cmd);
                     logger.warn("hostId:{},cmd:{}", hostId, cmd);
                 }else {
@@ -192,12 +194,14 @@ public class TpadOfficeService {
                         for (Integer group : groupIds) {
                             groupId = group;
                             type = "group";
-                            cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+//                            cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                            cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                             send(hostId, cmd);
                             logger.warn("hostId:{},cmd:{}", hostId, cmd);
                         }
                     }else {//其它基础单元操作(不包括切换场景)
-                        cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+//                        cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
+                        cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                         send(hostId, cmd);
                         logger.warn("hostId:{},cmd:{}", hostId, cmd);
                     }
