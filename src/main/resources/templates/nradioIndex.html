@@ -196,9 +196,11 @@
     $('.am-btn-group .total-control,.am-btn-group  .scene-select').click(function () {
         $(this).addClass('active').siblings().removeClass('active');
     });
-    var host = "all";
+    var project = "all";
     var cmd;
+    var map = {"project": project, "groupId": 0,"x":32,"y":32,"type":"group"};
     $("#switch").click(function () {
+        map.
         cmd = "77010315373766";
         $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
             console.log(data);

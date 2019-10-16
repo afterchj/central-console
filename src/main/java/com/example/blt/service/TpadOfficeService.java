@@ -107,13 +107,13 @@ public class TpadOfficeService {
         Integer sceneId = office.getSceneId();
         switch (opeEnum) {
             case ON_OFF:
-                if (sceneId != null){
+                if (sceneId != null) {
                     throw new Exception("无效的参数sceneId");
                 }
                 sendCmd(x, y, unitArray, null, unit);
                 break;
             case DIMMING:
-                if (sceneId != null){
+                if (sceneId != null) {
                     throw new Exception("无效的参数sceneId");
                 }
                 x = hexColors.get(x);
@@ -181,7 +181,7 @@ public class TpadOfficeService {
                     throw new Exception("host未知");
                 }
                 if (sceneId != null) {//切换场景操作
-                    if (oldMeshId!=null && oldMeshId.equals(meshId)){//排除场景命令重复
+                    if (oldMeshId != null && oldMeshId.equals(meshId)) {//排除场景命令重复
                         continue;
                     }
                     type = "scene";
@@ -189,8 +189,8 @@ public class TpadOfficeService {
                     cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                     send(hostId, cmd);
                     logger.warn("hostId:{},cmd:{}", hostId, cmd);
-                }else {
-                    if (groupIds.size()>0){//区域为基础单元操作(不包括切换场景)
+                } else {
+                    if (groupIds.size() > 0) {//区域为基础单元操作(不包括切换场景)
                         for (Integer group : groupIds) {
                             groupId = group;
                             type = "group";
@@ -199,7 +199,7 @@ public class TpadOfficeService {
                             send(hostId, cmd);
                             logger.warn("hostId:{},cmd:{}", hostId, cmd);
                         }
-                    }else {//其它基础单元操作(不包括切换场景)
+                    } else {//其它基础单元操作(不包括切换场景)
 //                        cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
                         cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                         send(hostId, cmd);
@@ -218,100 +218,113 @@ public class TpadOfficeService {
         ExecuteTask.sendCmd(task);
     }
 
-    public Map<String,Integer> analysisWsAndStorageStatus(Map<String, Object> parameterSetting,OfficeWS officeWS){
+    public Map<String, Integer> analysisWsAndStorageStatus(Map<String, Object> parameterSetting, OfficeWS officeWS) {
         String x = officeWS.getX();
         String y = officeWS.getY();
         String ctype = officeWS.getCtype();
         String project = officeWS.getProject();
         String hostId = officeWS.getHost();
-        Integer status = officeWS.getStatus();
+//        Integer status = officeWS.getStatus();
         Integer cid = officeWS.getCid();
         Integer id = 0;
-        Map<String,Integer> statusMap = setStatusMap(officeWS);
+        Map<String, Integer> statusMap = setStatusMap(officeWS);
         String unit = (String) parameterSetting.get("unit");
-        switch (ctype){
-            case "C0":
-                if ("32".equals(x) || "37".equals(x)){
-                    if ("all".equals(hostId)){
-                        tpadOfficeDao.updateStatus(project,status);
-                    }else {
-                        id = storageUnitStatus(statusMap,unit,ctype);
-                    }
-                }else {
-                    storageDimmingStatus(x,y,project);
+        switch (ctype) {
+            case "C1"://组控
+//                if ("32".equals(x) || "37".equals(x)) {//开关
+////                    if ("all".equals(hostId)) {//所有poe
+////                        tpadOfficeDao.updateStatus(project, status);
+////                    } else {//单个poe
+//                    id = storageUnitStatus(statusMap, unit, hostId);
+////                    }
+//                } else {//调光
+//                    storageDimmingStatus(x, y, project);
+//                }
+//                break;
+            case "C0"://群控
+                if ("32".equals(x) || "37".equals(x)) {//开关
+//                    if ("all".equals(hostId)) {//所有poe
+//                        tpadOfficeDao.updateStatus(project, status);
+                       id = storageUnitStatus(statusMap, unit, hostId);
+//                    } else {//单个poe
+//                        id = storageUnitStatus(statusMap, unit, null);
+//                    }
+                } else {//调光
+                    storageDimmingStatus(x, y, project);
                 }
                 break;
-            case "CW":
-                id = storageUnitStatus(statusMap,unit,ctype);
+            case "42"://场景切换
+                tpadOfficeDao.updateSceneId(cid, project);
                 break;
-            case "42":
-                tpadOfficeDao.updateSceneId(cid,project);
-                break;
-            case "52":
+            case "52"://遥控器
                 break;
         }
-        status = statusMap.get("status");
+        Integer status = statusMap.get("status");
         statusMap = new ConcurrentHashMap<>();
-        statusMap.put("id",id);
-        statusMap.put("status",status);
+        statusMap.put("id", id);
+        statusMap.put("status", status);
         return statusMap;
     }
 
-    private Map<String,Integer> setStatusMap(OfficeWS officeWS){
-        Map<String,Integer> statusMap = new ConcurrentHashMap<>();
-        Integer cid = officeWS.getCid();
-        String hostId = officeWS.getHost();
-        Integer status = officeWS.getStatus();
+    private Integer storageUnitStatus(Map<String, Integer> statusMap, String unit, String hostId) {
         Integer id = 0;
-        Integer mid;
-        if (!"all".equals(hostId)){
-            mid = tpadOfficeDao.getMidByHostId(hostId);
-            statusMap.put("mid",mid);
-        }
-        if (cid != null){
-            statusMap.put("cid",cid);
-        }
-        if (status == null){
-            status = 0;
-        }
-        statusMap.put("status",status);
-        statusMap.put("id",id);
-        return statusMap;
-    }
-
-    private Integer storageUnitStatus(Map<String,Integer> statusMap,String unit,String ctype){
-        Integer id = 0;
-        switch (ctype){
-            case "C0":
-                TypeOperation unitEnum = TypeOperation.getType(unit);
-                switch (unitEnum){
-                    case GROUP:
-                        tpadOfficeDao.updateEGroupStatus(statusMap);
-                        id = statusMap.get("id");
-                        break;
-                    case PLACE:
-                        id = tpadOfficeDao.getEPid(statusMap);
-                        statusMap.put("pid",id);
-                        tpadOfficeDao.updateEPlaceStatus(statusMap);
-                        break;
-                    case MESH:
-                        id = statusMap.get("mid");
-                        tpadOfficeDao.updateMeshStatus(statusMap);
-                        break;
+        TypeOperation unitEnum = TypeOperation.getType(unit);
+        switch (unitEnum) {
+            case GROUP:
+                if ("all".equals(hostId)) {
+                    tpadOfficeDao.updateAllEGroupStatus(statusMap.get("status"));
+                } else {
+                    tpadOfficeDao.updateEGroupStatus(statusMap);
+                    id = statusMap.get("id");
                 }
                 break;
-            case "CW":
-                tpadOfficeDao.updateEGroupStatus(statusMap);
-                id = statusMap.get("id");
+            case PLACE:
+                if ("all".equals(hostId)) {
+                    tpadOfficeDao.updateAllEPlaceStatus(statusMap.get("status"));
+                } else {
+                    id = tpadOfficeDao.getEPid(statusMap);
+                    statusMap.put("pid", id);
+                    tpadOfficeDao.updateEPlaceStatus(statusMap);
+                }
+
+                break;
+            case MESH:
+                if ("all".equals(hostId)) {
+                    tpadOfficeDao.updateAllMeshStatus(statusMap.get("status"));
+                } else {
+                    id = statusMap.get("mid");
+                    tpadOfficeDao.updateMeshStatus(statusMap);
+                }
                 break;
         }
         return id;
     }
 
-    private void storageDimmingStatus(String x,String y,String project){
+    private void storageDimmingStatus(String x, String y, String project) {
         x = decimalismColors.get(x);
         y = decimalismLuminances.get(y);
-        tpadOfficeDao.updateXY(project,x,y);
+        tpadOfficeDao.updateXY(project, x, y);
     }
 
+    private Map<String, Integer> setStatusMap(OfficeWS officeWS) {
+        Map<String, Integer> statusMap = new ConcurrentHashMap<>();
+        Integer cid = officeWS.getCid();
+        String hostId = officeWS.getHost();
+        Integer status = officeWS.getStatus();
+        Integer id = 0;
+        Integer mid;
+        if (!"all".equals(hostId)) {
+            mid = tpadOfficeDao.getMidByHostId(hostId);
+            statusMap.put("mid", mid);
+        }
+        if (cid != null) {
+            statusMap.put("cid", cid);
+        }
+        if (status == null) {
+            status = 0;
+        }
+        statusMap.put("status", status);
+        statusMap.put("id", id);
+        return statusMap;
+    }
 }

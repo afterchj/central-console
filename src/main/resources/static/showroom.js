@@ -1,6 +1,7 @@
 /**
  * Created by yuanjie.fang on 2019/6/28.
  */
+var project = 'showroom';
 $(function () {
     // light2();
     // setInterval(function () {
@@ -149,7 +150,7 @@ function light2() {
             if (!isAllEqual(onOffList) && imgList.indexOf('/central-console/static/img/2.png') != -1) {
                 $('.switch-part.total img').attr('src', '')
                 $('.switch-part.total .on-off>div').removeClass('active')
-            } else if (!isAllEqual(onOffList) && imgList.indexOf('/central-console/static/img/2.png') == -1 && imgList.indexOf('/static/img/1.png') != -1) {
+            } else if (!isAllEqual(onOffList) && imgList.indexOf('/central-console/static/img/2.png') == -1 && imgList.indexOf('/central-console/static/img/1.png') != -1) {
                 $('.switch-part.total img').attr('src', '/central-console/static/img/1.png')
                 $('.switch-part.total .on-off>div').removeClass('active')
             } else if (isAllEqual(onOffList) && onOffList.indexOf('ON') != -1) {
@@ -451,37 +452,51 @@ function light() {
         }
     })
 }
-var host = 'showroom';
 $('.on-off>div').click(function () {
     $(this).addClass('active').siblings().removeClass('active');
     var groupOrder = parseInt($(this).parent().parent().siblings('.groupOrder').find('.groupName').text());
+    var x;
+    var y;
+    var type;
     if ($(this).text() == 'ON') {
-        var onOffOrder = '3737';
+        // var onOffOrder = '3737';
+        x = '37';
+        y = '37';
     } else if ($(this).text() == 'OFF') {
-        var onOffOrder = '3232';
+        // var onOffOrder = '3232';
+        x = '32';
+        y = '32';
     }
     if (groupOrder <= 9) {
-        var command = '770104160' + groupOrder + onOffOrder + '66';
+        // var command = '770104160' + groupOrder + onOffOrder + '66';
+        type = 'group';
     } else if (groupOrder == 10) {
-        var command = '770104160A' + onOffOrder + '66';
+        groupOrder = 'A';
+        // var command = '770104160A' + onOffOrder + '66';
+        type = 'group';
     }
     if ($(this).attr("alt") == "total-on") {
-        var command = '77010315373766';
+        // var command = '77010315373766';
+        type = 'mesh';
+        x = '37';
+        y = '37';
+        groupOrder = '0';
     } else if ($(this).attr("alt") == "total-off") {
-        var command = '77010315323266';
+        // var command = '77010315323266';
+        type = 'mesh';
+        x = '32';
+        y = '32';
+        groupOrder = '0';
     }
-    console.log('host:',host,'command:',command);
-    $.post("sendByMeshId", {"command": command, "host": host}, function () {
-    })
+    var map = {"project": project, "groupId": groupOrder,"x":x,"y":y,"type":type};
+    // console.log('host:',host,'command:',command);
+    $.post("/central-console/sendByProject", map, function () {});
 })
 $("select").change(function () {
-    var command = $.trim($(this).val());
-    $.post("sendScenseByMeshId", {
-        "command": command,
-        "host": host
-    }, function () {
-
-    })
+    var sceneId = $.trim($(this).val());
+    var type = 'scene';
+    var map = {"project": project, "sceneId": sceneId,"type":type};
+    $.post("sendByProject", map,function () {});
 })
 function Array_2(nRow, nColumn) {
     var array1 = new Array();

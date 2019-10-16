@@ -9,7 +9,6 @@ import com.example.blt.entity.TimePointParams;
 import com.example.blt.entity.TimerList;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
-import com.example.blt.service.CacheableService;
 import com.example.blt.service.RedisService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
@@ -18,13 +17,15 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -188,13 +189,20 @@ public class MainController {
     @ResponseBody
     public Map<String, String> sendByProject(String project,Integer groupId,String x,String y,String type,Integer sceneId) {
         Map<String, String> map = new HashMap<>();
-        String success = "success";
-        String host = monitor4Dao.getHostId(project);
-        if (host == null){
-            success = "error";
-            logger.error("method:sendByMeshId;can not find hostId; project:{}",project);
-        }
+        String host;
         String command;
+        String success = "success";
+        if ("all".equals(project)){//全控
+            host = "all";
+        }else {
+            host = monitor4Dao.getHostId(project);
+            if (host == null){
+                success = "error";
+                logger.error("method:sendByMeshId;can not find hostId; project:{}",project);
+                map.put("success", success);
+                return map;
+            }
+        }
         try {
             command = JoinCmdUtil.joinNewCmd(type,x,y,groupId,sceneId);
             map.put("command", command);
@@ -262,6 +270,8 @@ public class MainController {
     }
 
 
+
+
     @RequestMapping(value = "/sendSocket7", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendSocket7(@RequestParam("commands") List<String> commands, String host) {
@@ -283,45 +293,45 @@ public class MainController {
         map.put("success", success);
         return map;
     }
-
-    @Resource
-    private CacheableService cacheableService;
-
-    @RequestMapping(value = "/getMsgByMF", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> getMsgByMF(@RequestBody String params) {
-
-        Map<String, String> map = new HashMap<>();
-        map.put("result", "success");
-        System.out.println(params);
-        JSONObject jsonObject = JSONObject.parseObject(params);
-        String msg = jsonObject.getString("msg");
-        String type = jsonObject.getString("type");
-        Cache cache = guavaCacheManager.getCache("msg");
-        cache.put(type, msg);
-        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("msg").get(type);
-        System.out.println(new Date() + " : " + valueWrapper.get());
-        return map;
-    }
-
-    @RequestMapping(value = "/getMsgByMF2", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> getMsgByMF2(@RequestBody String params) {
-        Map<String, String> map = new HashMap<>();
-        map.put("result", "success");
-        System.out.println(params);
-        JSONObject jsonObject = JSONObject.parseObject(params);
-        String msg = jsonObject.getString("msg");
-        String type = jsonObject.getString("type");
-        cacheableService.setCache(type, msg);
-//        System.out.println(new Date()+" : "+msg);
+//
+//    @Resource
+//    private CacheableService cacheableService;
+//
+//    @RequestMapping(value = "/getMsgByMF", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, String> getMsgByMF(@RequestBody String params) {
+//
+//        Map<String, String> map = new HashMap<>();
+//        map.put("result", "success");
+//        System.out.println(params);
+//        JSONObject jsonObject = JSONObject.parseObject(params);
+//        String msg = jsonObject.getString("msg");
+//        String type = jsonObject.getString("type");
 //        Cache cache = guavaCacheManager.getCache("msg");
-//        cache.put(type,msg);
-        msg = cacheableService.getCache(type);
-        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("msg").get(type);
-        System.out.println(new Date() + " : " + msg);
-        return map;
-    }
+//        cache.put(type, msg);
+//        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("msg").get(type);
+//        System.out.println(new Date() + " : " + valueWrapper.get());
+//        return map;
+//    }
+//
+//    @RequestMapping(value = "/getMsgByMF2", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, String> getMsgByMF2(@RequestBody String params) {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("result", "success");
+//        System.out.println(params);
+//        JSONObject jsonObject = JSONObject.parseObject(params);
+//        String msg = jsonObject.getString("msg");
+//        String type = jsonObject.getString("type");
+//        cacheableService.setCache(type, msg);
+////        System.out.println(new Date()+" : "+msg);
+////        Cache cache = guavaCacheManager.getCache("msg");
+////        cache.put(type,msg);
+//        msg = cacheableService.getCache(type);
+//        Cache.ValueWrapper valueWrapper = guavaCacheManager.getCache("msg").get(type);
+//        System.out.println(new Date() + " : " + msg);
+//        return map;
+//    }
 
 
     @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
