@@ -125,17 +125,13 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (cmd.indexOf("77050103") != -1) {
                 redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
             } else {
-                if (cmd.length() >= 16) {
-                    if (cmd.indexOf("CCCC") != -1) {
-                        StringBuildUtils.buildLightInfo(ip, host, cmd);
-//                        ExecuteTask.pingInfo(host, arg1);
-                    }else {
-                        StringBuildUtils.parseLocalCmd(cmd, to);
-                    }
-                }
+                logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
             }
         }
-        logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
+        if (arg1.length() >= 16) {
+            StringBuildUtils.buildLightInfo(ip, host, arg1);
+//                ExecuteTask.pingInfo(host, arg1);
+        }
     }
 
     @Override
