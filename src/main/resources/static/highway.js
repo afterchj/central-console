@@ -16,25 +16,29 @@ $(".on-off").click(function () {
         groupOne = 'C';
         groupTwo = 'D';
     }
-    var command1;
-    var command2;
-    var host = 'highway';
+    // var command1;
+    // var command2;
+    var project = 'highway';
     // var host = 'all';
     var src = $(this).attr('src');
     var onOffThis = $(this);
+    var onOneMap = {"project": project, "groupId": groupOne,"x":"37","y":"37","type":"group"};
+    var onTwoMap = {"project": project, "groupId": groupTwo,"x":"37","y":"37","type":"group"};
+    var offOneMap = {"project": project, "groupId": groupOne,"x":"32","y":"32","type":"group"};
+    var offTwoMap = {"project": project, "groupId": groupTwo,"x":"32","y":"32","type":"group"};
     var topOneCheckboxState = $(".top-one-checkbox").prop('checked');
     var topTwoCheckboxState = $(".top-two-checkbox").prop('checked');
     // console.log('topOneCheckboxState:',topOneCheckboxState,' topTwoCheckboxState:',topTwoCheckboxState,' group:',group,' groupOne:',groupOne,' groupTwo:',groupTwo);
     if (src == '/central-console/static/img/switch-off.png'){//开
         $(this).attr('src','/central-console/static/img/switch-on.png');
+        // command1 = '770104160' + groupOne + '3737' + '66';
         // command2 = '770104160' + groupTwo + '3737' + '66';
-        command1 = '77011465FFFFFFFF2A00000000C137370000000000000' + groupOne + 'CCCC';
-        // command1 = '77011465FFFFFFFF2019000000C132320000000000000' + groupOne + 'CCCC';
-        command2 = '77011465FFFFFFFF2A00000000C137370000000000000' + groupTwo + 'CCCC';
+        // command1 = '77011465FFFFFFFF2A00000000C137370000000000000' + groupOne + 'CCCC';
+        // command2 = '77011465FFFFFFFF2A00000000C137370000000000000' + groupTwo + 'CCCC';
         if ((!topOneCheckboxState && !topTwoCheckboxState)||(topOneCheckboxState && topTwoCheckboxState)){//都故障或都有故障
-            $.post("sendByMeshId", {"command": command1, "host": host},function (data) {
+            $.post("sendByProject", onOneMap,function (data) {
                 if (data.success == 'success'){
-                    $.post("sendByMeshId", {"command": command2, "host": host},function (data) {
+                    $.post("sendByMeshId", onTwoMap,function (data) {
                         if (data.success == 'success'){
                             $(onOffThis).parent().parent().parent().next().find('img').attr('src','/central-console/static/img/red2.png');
                             if (topOneCheckboxState && topTwoCheckboxState){//都有故障
@@ -46,7 +50,7 @@ $(".on-off").click(function () {
                 }
             });
         }else if (topOneCheckboxState && !topTwoCheckboxState){//第一段故障
-            $.post("sendByMeshId", {"command": command1, "host": host},function (data) {
+            $.post("sendByProject", onOneMap,function (data) {
                 if (data.success == 'success'){
                     $(onOffThis).parent().parent().parent().next().find('.one-100 img').attr('src','/central-console/static/img/red2.png');//故障侧灯亮
                     $('.first-line,.second-line').removeClass('active');
@@ -54,7 +58,7 @@ $(".on-off").click(function () {
                 }
             })
         }else if (!topOneCheckboxState && topTwoCheckboxState){//第二段故障
-            $.post("sendByMeshId", {"command": command2, "host": host},function (data) {
+            $.post("sendByProject", onTwoMap,function (data) {
                 if (data.success == 'success'){
                     $(onOffThis).parent().parent().parent().next().find('.two-100 img').attr('src','/central-console/static/img/red2.png');//故障侧灯亮
                     $('.first-line,.second-line').removeClass('active');
@@ -64,11 +68,13 @@ $(".on-off").click(function () {
         }
     }else {//关
         // command1 = '770104160' + groupOne + '3232' + '66';
-        command1 = '77011465FFFFFFFF2A00000000C132320000000000000' + groupOne + 'CCCC';
-        command2 = '77011465FFFFFFFF2A00000000C132320000000000000' + groupTwo + 'CCCC';
-        $.post("sendByMeshId", {"command": command1, "host": host},function (data) {
+        // command2 = '770104160' + groupTwo + '3232' + '66';
+        // command1 = '770104160' + groupOne + '3232' + '66';
+        // command1 = '77011465FFFFFFFF2A00000000C132320000000000000' + groupOne + 'CCCC';
+        // command2 = '77011465FFFFFFFF2A00000000C132320000000000000' + groupTwo + 'CCCC';
+        $.post("sendByProject", offOneMap,function (data) {
             if (data.success == 'success'){
-                $.post("sendByMeshId", {"command": command2, "host": host},function (data) {
+                $.post("sendByProject", offTwoMap,function (data) {
                     if (data.success == 'success'){
                         $(onOffThis).parent().parent().parent().next().find('img').attr('src','/central-console/static/img/gray.png');//关灯
                         $(onOffThis).attr('src','/central-console/static/img/switch-off.png');//开关按钮变关

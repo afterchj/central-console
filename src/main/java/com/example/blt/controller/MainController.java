@@ -13,6 +13,7 @@ import com.example.blt.service.CacheableService;
 import com.example.blt.service.RedisService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
+import com.example.blt.utils.JoinCmdUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,6 +181,37 @@ public class MainController {
         }
         map.put("success", success);
         logger.warn("sendByMeshId result: {},host: {},command: {}", success, host, command);
+        return map;
+    }
+
+    @RequestMapping(value = "/sendByProject", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> sendByProject(String project,Integer groupId,String x,String y,String type,Integer sceneId) {
+        Map<String, String> map = new HashMap<>();
+        String success = "success";
+        String host = monitor4Dao.getHostId(project);
+        if (host == null){
+            success = "error";
+            logger.error("method:sendByMeshId;can not find hostId; project:{}",project);
+        }
+        String command;
+        try {
+            command = JoinCmdUtil.joinNewCmd(type,x,y,groupId,sceneId);
+            map.put("command", command);
+            map.put("host", host);
+            ControlTask task = new ControlTask(JSON.toJSONString(map));
+            String code = ExecuteTask.sendCmd(task);
+            if ("fail".equals(code)) {
+                //失败
+                success = "error";
+            }
+            logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = "error";
+            logger.warn("method:sendByMeshId;can not join cmd; result: {};host: {}", success, host);
+        }
+        map.put("success", success);
         return map;
     }
 
