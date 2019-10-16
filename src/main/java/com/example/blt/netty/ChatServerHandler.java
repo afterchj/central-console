@@ -58,7 +58,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (to.equals(master)) {
                 to = "master";
             }
-            StringBuildUtils.parseLocalCmd(cmd, to);
         } catch (Exception e) {
 //            if (arg1.indexOf("182716324621") != -1) {
 //                logger.error("ip [{}] cmd [{}]", to, cmd);
@@ -126,10 +125,12 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (cmd.indexOf("77050103") != -1) {
                 redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
             } else {
-                if (arg1.length() >= 16) {
-                    if (arg1.indexOf("CCCC") != -1) {
-                        StringBuildUtils.buildLightInfo(ip, host, arg1);
+                if (cmd.length() >= 16) {
+                    if (cmd.indexOf("CCCC") != -1) {
+                        StringBuildUtils.buildLightInfo(ip, host, cmd);
 //                        ExecuteTask.pingInfo(host, arg1);
+                    }else {
+                        StringBuildUtils.parseLocalCmd(cmd, to);
                     }
                 }
             }
