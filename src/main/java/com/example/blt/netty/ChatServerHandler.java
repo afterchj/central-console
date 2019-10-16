@@ -53,6 +53,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             JSONObject jsonObject = JSON.parseObject(arg1);
             cmd = jsonObject.getString("command");
             to = StringUtils.isNotEmpty(jsonObject.getString("host")) ? jsonObject.getString("host") : "";
+            host_id = to;
             type = jsonObject.getString("type");
             if (to.equals(master)) {
                 to = "master";
@@ -115,7 +116,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                             }
                         } else if (id.equals(to)) {
                             if (StringUtils.isNotEmpty(host_id)) {
-                                arg0.writeAndFlush(cmd);
+                                ch.writeAndFlush(cmd);
                             }
                         }
                     }
@@ -125,7 +126,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
             } else {
                 StringBuildUtils.parseLocalCmd(cmd, to);
-                logger.warn("hostId[{}] to [{}] hosts[{}] cmd [{}]", host, to, hosts, cmd);
+                logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
             }
         }
         if (arg1.length() >= 16) {
