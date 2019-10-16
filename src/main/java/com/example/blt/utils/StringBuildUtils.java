@@ -227,37 +227,42 @@ public class StringBuildUtils {
     }
 
     public static void parseLocalCmd(String str, String ip) {
-        Map map = new ConcurrentHashMap();
-        String prefix = str.substring(0, 8);
-        if (str.contains("3232")) {
-            map.put("status", 0);
+        if (str.indexOf("CCCC") != -1) {
+            tempFormat(str.substring(0,str.length() - 4), ip);
         } else {
-            map.put("status", 1);
+            Map map = new ConcurrentHashMap();
+            String prefix = str.substring(0, 8);
+            if (str.contains("3232")) {
+                map.put("status", 0);
+            } else {
+                map.put("status", 1);
+            }
+            map.put("host", ip);
+            String cmd = str.substring(prefix.length());
+            Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
+            switch (prefix) {
+                case "77010416":
+                    map.put("ctype", "CW");
+                    map.put("x", cmd.substring(2, 4));
+                    map.put("y", cmd.substring(4, 6));
+                    map.put("cid", cid);
+                    break;
+                case "77010315":
+                    map.put("ctype", "C0");
+                    map.put("x", cmd.substring(0, 2));
+                    map.put("y", cmd.substring(2, 4));
+                    break;
+                case "77010219":
+                    map.put("ctype", "42");
+                    map.put("cid", cid);
+                    break;
+                default:
+                    break;
+            }
+            if (!map.containsKey("ctype")) return;
+            saveConsole(Topics.LOCAL_TOPIC.getTopic(), map, false);
         }
-        map.put("host", ip);
-        String cmd = str.substring(prefix.length());
-        Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
-        switch (prefix) {
-            case "77010416":
-                map.put("ctype", "CW");
-                map.put("x", cmd.substring(2, 4));
-                map.put("y", cmd.substring(4, 6));
-                map.put("cid", cid);
-                break;
-            case "77010315":
-                map.put("ctype", "C0");
-                map.put("x", cmd.substring(0, 2));
-                map.put("y", cmd.substring(2, 4));
-                break;
-            case "77010219":
-                map.put("ctype", "42");
-                map.put("cid", cid);
-                break;
-            default:
-                break;
-        }
-        if (!map.containsKey("ctype")) return;
-        saveConsole(Topics.LOCAL_TOPIC.getTopic(), map, false);
+
     }
 
     public static void saveLight(Map map, boolean flag) {

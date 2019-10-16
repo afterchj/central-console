@@ -364,6 +364,8 @@ public class MainTest {
 
     @Test
     public void testProperties() {
+        String str="77011465FFFFFFFF2A00000000C000373700000000CCCC";
+        System.out.println(str.substring(0,str.length() - 4));
         String mode = PropertiesUtil.getValue("rocketmq.model");
         System.out.println("mode=" + mode);
     }
