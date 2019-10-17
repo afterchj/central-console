@@ -77,7 +77,6 @@ public class TpadOfficeController {
         try {
             map = tpadOfficeService.analysisWsAndStorageStatus(parameterSetting,officeWS);
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("method: analysisWs;result {}",e.getMessage());
         }
         return map;
