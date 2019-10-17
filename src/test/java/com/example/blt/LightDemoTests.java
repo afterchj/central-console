@@ -242,4 +242,19 @@ public class LightDemoTests {
         String HexSceneId = String.format("%02x", 1).toUpperCase();
         System.out.println(HexSceneId);
     }
+
+    public void get(int i) throws Exception {
+        if (i == 0){
+            throw new Exception("i==0");
+        }
+    }
+
+    @Test
+    public void test15(){
+        try {
+            get(0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

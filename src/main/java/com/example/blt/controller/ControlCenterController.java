@@ -1,6 +1,5 @@
 package com.example.blt.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.ControlHost;
@@ -9,23 +8,19 @@ import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.control.MeshList;
 import com.example.blt.entity.office.CmdJoin;
 import com.example.blt.service.ControlCenterService;
-import com.example.blt.task.ControlTask;
-import com.example.blt.task.ExecuteTask;
+import com.example.blt.service.TpadOfficeService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program: central-console
@@ -39,6 +34,9 @@ public class ControlCenterController {
 
     @Resource
     private ControlCenterService controlCenterService;
+
+    @Resource
+    private TpadOfficeService tpadOfficeService;
 
     /**
      * 跳转到login.html
@@ -57,10 +55,15 @@ public class ControlCenterController {
      */
     @RequestMapping("/toLogin")
     @ResponseBody
-    public String toLogin(HttpServletRequest request, @RequestBody String username) {
+    public String toLogin(HttpServletRequest request, String username, String pwd) {
+        String status = "success";
+        if (!"admin".equals(username) || !"admin".equals(pwd)){
+            status = "error";
+            return status;
+        }
         HttpSession session = request.getSession();
         session.setAttribute("username", username);
-        return "success";
+        return status;
     }
 
     @RequestMapping("/loginOut")
@@ -213,75 +216,23 @@ public class ControlCenterController {
     @ResponseBody
     public String reSet(String type) {
         String msg = "success";
-//        Boolean flag;
+        String host = "all";
         if (type.equals("reSet")) {
             controlCenterService.reSet();
         } else {
-//            String[] cmds = {"77050101CCCC", "77050105CCCC", "77050106CCCC"};
-            String[] cmds = {CmdJoin.CMD_INQUIRY_MESHID.getKey(), CmdJoin.CMD_INQUIRY_MAC.getKey(), CmdJoin.CMD_INQUIRY_VERSION.getKey()};
-            msg = recursiveSendCmd(msg,cmds);
-        }
-        return msg;
-    }
-
-    private String recursiveSendCmd(String msg,String...cmds){
-        Boolean flag;
-        for (int i=0;i<cmds.length;i++){
-            flag = sendReSetCmd(cmds[i]);
-            if (!flag){
+            String[] cmdArr = {CmdJoin.CMD_INQUIRY_MESHID.getKey(), CmdJoin.CMD_INQUIRY_MAC.getKey(), CmdJoin.CMD_INQUIRY_VERSION.getKey()};
+            try {
+                recursiveSendCmd(host,cmdArr);
+            } catch (Exception e) {
                 msg = "error";
-                break;
             }
         }
         return msg;
     }
 
-    private boolean sendReSetCmd(String command) {
-        Boolean flag = true;
-        Map<String, String> map = new HashMap<>();
-        String host = "all";
-        map.put("command", command);
-        map.put("host", host);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
-        String code = ExecuteTask.sendCmd(task);
-        if ("fail".equals(code)) {
-            flag = false;
+    private void recursiveSendCmd(String host,String...cmdArr) throws Exception {
+        for (int i=0;i<cmdArr.length;i++){
+            tpadOfficeService.send(host,cmdArr[i]);
         }
-        return flag;
-    }
-
-    public Map<String, Object> setGroupAndScene(List<Map<String,Object>> parameters) {
-        Map<String, Object> map = new ConcurrentHashMap<>();
-        String name;
-        int count;
-        String meshId;
-        List<Map<String,Object>> meshs = new ArrayList<>();
-        for (Map<String,Object> parameter:parameters){
-            if (parameter.get("count")!=null){
-                name = (String) parameter.get("name");
-                count = (int) parameter.get("count");
-                if (count > 0){
-                    map.putAll(setParameter(name,count));
-                }
-            }
-            meshId = (String) parameter.get("meshId");
-            if (StringUtils.isNotBlank(meshId)){
-                meshs.add(parameter);
-            }
-        }
-        map.put("meshs",meshs);
-        return map;
-    }
-
-    public Map<String, Object> setParameter(String name, int count) {
-        Map<String, Object> map = new ConcurrentHashMap<>();
-        List<String> list = new ArrayList<>();
-        for (int i = 1; i <= count; i++) {
-            String hexStr = String.format("%02x", i).toUpperCase();
-            list.add(hexStr);
-        }
-        map.put(String.format("%sCount",name), count);
-        map.put(name, list);
-        return map;
     }
 }
