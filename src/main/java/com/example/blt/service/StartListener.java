@@ -35,23 +35,23 @@ public class StartListener implements ApplicationListener<ContextRefreshedEvent>
     @Resource
     private RedisTemplate redisTemplate;
 
-    @Scheduled(cron = "0/30 * * * * ?")
-    public void checkSize() {
-        ValueOperations valueOperations = getOpsForValue();
-        List<String> list1 = sqlSessionTemplate.selectList("console.getAll");
-        List<String> list2 = new ArrayList();
-        try {
-            for (String host : list1) {
-                String str = valueOperations.get(host, 0, -1);
-                if (StringUtils.isNotEmpty(str)) {
-                    list2.add(host);
-                }
-            }
-            saveHostStatus(list1, list2);
-        } catch (Exception e) {
-            logger.error("updateHostStatus error {}", e.getMessage());
-        }
-    }
+//    @Scheduled(cron = "0/30 * * * * ?")
+//    public void checkSize() {
+//        ValueOperations valueOperations = getOpsForValue();
+//        List<String> list1 = sqlSessionTemplate.selectList("console.getAll");
+//        List<String> list2 = new ArrayList();
+//        try {
+//            for (String host : list1) {
+//                String str = valueOperations.get(host, 0, -1);
+//                if (StringUtils.isNotEmpty(str)) {
+//                    list2.add(host);
+//                }
+//            }
+//            saveHostStatus(list1, list2);
+//        } catch (Exception e) {
+//            logger.error("updateHostStatus error {}", e.getMessage());
+//        }
+//    }
 
 //    public void pingAB() throws InterruptedException {
 //        Thread.sleep(10000);

@@ -47,6 +47,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         String host_id = sqlSessionTemplate.selectOne("console.getHostId", host);
         List<String> hosts = null;
         String type = null;
+        String input = "";
         String cmd = arg1;
         String to = host;
         try {
@@ -59,29 +60,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 to = "master";
             }
         } catch (Exception e) {
-//            if (arg1.indexOf("182716324621") != -1) {
-//                logger.error("ip [{}] cmd [{}]", to, cmd);
-//            }
-            if (arg1.indexOf("77050901") != -1) {
-                cmd = "77050103";
-            }
-            if (arg1.indexOf("77050107") != -1) {
-                cmd = "77050103";
-//                sendPoeInfo(arg0);
-            }
-            if (arg1.indexOf("77050208") != -1) {
-                cmd = "77050103";
-            }
-            if (arg1.indexOf("77010F65") != -1) {
-                cmd = "77050103";
-            }
-            if (arg1.indexOf("77050304") != -1) {
-                cmd = "77050103";
-            }
-            if (arg1.indexOf("77050506") != -1) {
-                cmd = "77050103";
-            }
-            if (arg1.indexOf("77050705") != -1) {
+            input = arg1;
+            if (arg1.indexOf("7705") != -1) {
                 cmd = "77050103";
             }
             if (host.equals(master)) {
@@ -122,15 +102,21 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     }
                 }
             }
-            if (cmd.indexOf("77050103") != -1) {
-                redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
+            if (input.indexOf("77050103") != -1) {
+                redisTemplate.opsForValue().set(host, input, 50, TimeUnit.SECONDS);
             } else {
                 logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
             }
         }
-        if (arg1.length() >= 16) {
-            StringBuildUtils.buildLightInfo(ip, host, arg1);
-//                ExecuteTask.pingInfo(host, arg1);
+//        if (input.indexOf("182716324621") != -1) {
+//            logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, input);
+//        }
+//        if (input.indexOf("77050107") != -1) {
+//            sendPoeInfo(arg0);
+//        }
+        if (input.length() >= 16) {
+            StringBuildUtils.buildLightInfo(ip, host, input);
+//            ExecuteTask.pingInfo(host, arg1);
         }
     }
 
