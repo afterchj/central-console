@@ -10,9 +10,11 @@ import com.example.blt.entity.TimerList;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
 import com.example.blt.service.RedisService;
+import com.example.blt.service.TpadOfficeService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.JoinCmdUtil;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +53,9 @@ public class MainController {
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
 
+    @Resource
+    private TpadOfficeService tpadOfficeService;
+
 
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
@@ -78,89 +83,89 @@ public class MainController {
         return result;
     }
 
-    @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> sendSocket4(String host, String command) {
-        host = blTservice.getHostId(host);
-        Map<String, String> map = new HashMap<>();
-        String result;
-        if (command.equalsIgnoreCase("ON")) {
-            //开
-            command = "77010315373766";
-        } else if (command.equalsIgnoreCase("OFF")) {
-            //关
-            command = "77010315323266";
-        }
-        map.put("host", host);
-        map.put("command", command);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
-        result = ExecuteTask.sendCmd(task);
-        map.put("success", result);
-        return map;
-    }
-
-    @RequestMapping(value = "/sendSocket5", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> sendSocket5(String host, String command) {
-        host = blTservice.getHostId(host);
-        Map<String, String> map = new HashMap<>();
-        String success = "success";
-        if (command.equals("场景一")) {
-            command = "7701021901";
-        } else if (command.equals("场景二")) {
-            command = "7701021902";
-        } else if (command.equals("场景三")) {
-            command = "7701021903";
-        } else if (command.equals("场景四")) {
-            command = "7701021904";
-        } else if (command.equals("场景五")) {
-            command = "7701021905";
-        } else if (command.equals("场景六")) {
-            command = "7701021906";
-        } else if (command.equals("场景七")) {
-            command = "7701021907";
-        } else if (command.equals("场景八")) {
-            command = "7701021908";
-        } else if (command.equals("场景1")) {
-            command = "7701021901";
-        } else if (command.equals("场景2")) {
-            command = "7701021902";
-        } else if (command.equals("场景3")) {
-            command = "7701021903";
-        } else if (command.equals("场景4")) {
-            command = "7701021904";
-        } else if (command.equals("场景5")) {
-            command = "7701021905";
-        }
-        String cmd = host + ":" + command;
-        map.put("command", command);
-        map.put("host", host);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
-        ExecuteTask.sendCmd(task);
-//        SocketUtil.sendCmd2(host, cmd);
-        map.put("success", success);
-        return map;
-    }
-
-    @RequestMapping(value = "/sendSocket6", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> sendSocket6(String host, String command) {
-        host = blTservice.getHostId(host);
-        Map<String, String> map = new HashMap<>();
-        String success = "success";
-        String cmd1 = host + ":" + command;
-//        String code1 = SocketUtil.sendCmd2(host, cmd1);
-        map.put("command", command);
-        map.put("host", host);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
-        String code = ExecuteTask.sendCmd(task);
-        if ("fail".equals(code)) {
-//            失败
-            success = "error";
-        }
-        map.put("success", success);
-        return map;
-    }
+//    @RequestMapping(value = "/sendSocket4", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, String> sendSocket4(String host, String command) {
+//        host = blTservice.getHostId(host);
+//        Map<String, String> map = new HashMap<>();
+//        String result;
+//        if (command.equalsIgnoreCase("ON")) {
+//            //开
+//            command = "77010315373766";
+//        } else if (command.equalsIgnoreCase("OFF")) {
+//            //关
+//            command = "77010315323266";
+//        }
+//        map.put("host", host);
+//        map.put("command", command);
+//        ControlTask task = new ControlTask(JSON.toJSONString(map));
+//        result = ExecuteTask.sendCmd(task);
+//        map.put("success", result);
+//        return map;
+//    }
+//
+//    @RequestMapping(value = "/sendSocket5", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, String> sendSocket5(String host, String command) {
+//        host = blTservice.getHostId(host);
+//        Map<String, String> map = new HashMap<>();
+//        String success = "success";
+//        if (command.equals("场景一")) {
+//            command = "7701021901";
+//        } else if (command.equals("场景二")) {
+//            command = "7701021902";
+//        } else if (command.equals("场景三")) {
+//            command = "7701021903";
+//        } else if (command.equals("场景四")) {
+//            command = "7701021904";
+//        } else if (command.equals("场景五")) {
+//            command = "7701021905";
+//        } else if (command.equals("场景六")) {
+//            command = "7701021906";
+//        } else if (command.equals("场景七")) {
+//            command = "7701021907";
+//        } else if (command.equals("场景八")) {
+//            command = "7701021908";
+//        } else if (command.equals("场景1")) {
+//            command = "7701021901";
+//        } else if (command.equals("场景2")) {
+//            command = "7701021902";
+//        } else if (command.equals("场景3")) {
+//            command = "7701021903";
+//        } else if (command.equals("场景4")) {
+//            command = "7701021904";
+//        } else if (command.equals("场景5")) {
+//            command = "7701021905";
+//        }
+//        String cmd = host + ":" + command;
+//        map.put("command", command);
+//        map.put("host", host);
+//        ControlTask task = new ControlTask(JSON.toJSONString(map));
+//        ExecuteTask.sendCmd(task);
+////        SocketUtil.sendCmd2(host, cmd);
+//        map.put("success", success);
+//        return map;
+//    }
+//
+//    @RequestMapping(value = "/sendSocket6", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, String> sendSocket6(String host, String command) {
+//        host = blTservice.getHostId(host);
+//        Map<String, String> map = new HashMap<>();
+//        String success = "success";
+//        String cmd1 = host + ":" + command;
+////        String code1 = SocketUtil.sendCmd2(host, cmd1);
+//        map.put("command", command);
+//        map.put("host", host);
+//        ControlTask task = new ControlTask(JSON.toJSONString(map));
+//        String code = ExecuteTask.sendCmd(task);
+//        if ("fail".equals(code)) {
+////            失败
+//            success = "error";
+//        }
+//        map.put("success", success);
+//        return map;
+//    }
 
     @RequestMapping(value = "/sendByMeshId", method = RequestMethod.POST)
     @ResponseBody
@@ -189,8 +194,9 @@ public class MainController {
     @ResponseBody
     public Map<String, String> sendByProject(String project,Integer groupId,String x,String y,String type,Integer sceneId) {
         Map<String, String> map = new HashMap<>();
+        Map<String,String> onOffMap;
         String host;
-        String command;
+        String command = null;
         String success = "success";
         if ("all".equals(project)){//全控
             host = "all";
@@ -204,6 +210,11 @@ public class MainController {
             }
         }
         try {
+            if (StringUtils.isNotBlank(x)){
+                onOffMap = tpadOfficeService.changeXY(x,y);
+                x = onOffMap.get("x");
+                y = onOffMap.get("y");
+            }
             command = JoinCmdUtil.joinNewCmd(type,x,y,groupId,sceneId);
             map.put("command", command);
             map.put("host", host);
@@ -212,16 +223,19 @@ public class MainController {
             if ("fail".equals(code)) {
                 //失败
                 success = "error";
+                logger.error("method:sendByMeshId;send error; project:{}",project);
+                map.put("success", success);
+                return map;
             }
-            logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
         } catch (Exception e) {
-            e.printStackTrace();
             success = "error";
             logger.warn("method:sendByMeshId;can not join cmd; result: {};host: {}", success, host);
         }
         map.put("success", success);
+        logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
         return map;
     }
+
 
     @RequestMapping(value = "/sendScenseByMeshId", method = RequestMethod.POST)
     @ResponseBody
@@ -268,9 +282,6 @@ public class MainController {
         logger.warn("sendScenseByMeshId result: {},host: {},command: {}", success, host, command);
         return map;
     }
-
-
-
 
     @RequestMapping(value = "/sendSocket7", method = RequestMethod.POST)
     @ResponseBody

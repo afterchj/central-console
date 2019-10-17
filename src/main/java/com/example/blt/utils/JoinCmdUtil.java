@@ -55,19 +55,17 @@ public class JoinCmdUtil {
     }
 
     public static String joinNewCmd(String type, String x, String y, Integer groupId, Integer sceneId) throws Exception {
-        String cmd = null;
+        String cmd;
         StringBuffer sb;
         TypeOperation typeEnum = TypeOperation.getType(type);
         switch (typeEnum) {
             case MESH:
-                if (StringUtils.isNotBlank(x)) {
-                    sb = new StringBuffer();
-                    cmd = sb.append(CmdJoin.CMD_MESH_START.getKey())
-                            .append(x)
-                            .append(y)
-                            .append(CmdJoin.CMD_MESH_END.getKey())
-                            .toString();
-                }
+                sb = new StringBuffer();
+                cmd = sb.append(CmdJoin.CMD_MESH_START.getKey())
+                        .append(x)
+                        .append(y)
+                        .append(CmdJoin.CMD_MESH_END.getKey())
+                        .toString();
                 break;
             case GROUP:
                 sb = new StringBuffer();
@@ -86,6 +84,16 @@ public class JoinCmdUtil {
                 cmd = sb.append(CmdJoin.CMD_SCENE_START.getKey())
                         .append(hexSceneId)
                         .append(CmdJoin.END.getKey())
+                        .toString();
+                break;
+            case ACCEPT_ID:
+                sb = new StringBuffer();
+                cmd = sb.append(CmdJoin.CMD_ACCEPT_ID.getKey())
+                        .toString();
+                break;
+            case OTA:
+                sb = new StringBuffer();
+                cmd = sb.append(CmdJoin.CMD_OTA.getKey())
                         .toString();
                 break;
             default:

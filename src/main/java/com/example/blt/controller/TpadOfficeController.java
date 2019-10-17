@@ -3,6 +3,8 @@ package com.example.blt.controller;
 import com.example.blt.entity.office.OfficePa;
 import com.example.blt.entity.office.OfficeWS;
 import com.example.blt.service.TpadOfficeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,8 @@ public class TpadOfficeController {
 
     @Resource
     private TpadOfficeService tpadOfficeService;
+
+    Logger logger = LoggerFactory.getLogger(TpadOfficeController.class);
 
     @RequestMapping("/index")
     public String index(){
@@ -54,12 +58,14 @@ public class TpadOfficeController {
         String project = office.getProject();
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
         String unit = (String) parameterSetting.get("unit");
+        String status = "success";
         try {
             tpadOfficeService.send(unit,office);
-            return "success";
         } catch (Exception e) {
-            return "error";
+            status = "error";
+            logger.error("method: sendCmd;result {}",e.getMessage());
         }
+        return status;
     }
 
     @PostMapping("/analysisWs")

@@ -47,10 +47,10 @@ public class TpadOfficeService {
     @Resource
     private TpadOfficeDao tpadOfficeDao;
 
-    @Resource
-    private JoinCmdUtil joinCmdUtil;
+//    @Resource
+//    private JoinCmdUtil joinCmdUtil;
 
-    public String getHostId(String meshId) {
+    public String getHostId(String meshId) throws Exception {
         String hostId = "";
         List<Map<String, Object>> hosts = tpadOfficeDao.getHost(meshId);
         if (hosts.size() > 1) {
@@ -62,6 +62,9 @@ public class TpadOfficeService {
         }
         if (StringUtils.isBlank(hostId) && hosts.size() > 0) {//只有一个poe or 没有主控poe
             hostId = (String) hosts.get(0).get("hostId");
+        }
+        if (StringUtils.isBlank(hostId)){
+            throw new Exception("host未知");
         }
         return hostId;
     }
@@ -141,6 +144,7 @@ public class TpadOfficeService {
         Integer groupId = null;
         String oldMeshId = null;
         String type = null;
+        Boolean flag;
         List<Integer> groupIds = new ArrayList<>();
         if (unitArray == null || unitArray.length == 0) {
             hostId = "all";
@@ -152,7 +156,7 @@ public class TpadOfficeService {
 //            cmd = joinCmdUtil.joinCmd(type, x, y, null, sceneId);
             cmd = JoinCmdUtil.joinNewCmd(type, x, y, null, sceneId);
             send(hostId, cmd);
-            logger.warn("hostId:{},cmd:{}", hostId, cmd);
+            logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
         } else {
             for (int i = 0; i < unitArray.length; i++) {
                 int id = unitArray[i];
@@ -177,9 +181,9 @@ public class TpadOfficeService {
                         throw new Exception("参数错误");
                 }
                 hostId = getHostId(meshId);
-                if (StringUtils.isBlank(hostId)) {
-                    throw new Exception("host未知");
-                }
+//                if (StringUtils.isBlank(hostId)) {
+//                    throw new Exception("host未知");
+//                }
                 if (sceneId != null) {//切换场景操作
                     if (oldMeshId != null && oldMeshId.equals(meshId)) {//排除场景命令重复
                         continue;
@@ -188,7 +192,7 @@ public class TpadOfficeService {
 //                    cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
                     cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                     send(hostId, cmd);
-                    logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                    logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
                 } else {
                     if (groupIds.size() > 0) {//区域为基础单元操作(不包括切换场景)
                         for (Integer group : groupIds) {
@@ -197,27 +201,42 @@ public class TpadOfficeService {
 //                            cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
                             cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                             send(hostId, cmd);
-                            logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                            logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
                         }
                     } else {//其它基础单元操作(不包括切换场景)
 //                        cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
                         cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                         send(hostId, cmd);
-                        logger.warn("hostId:{},cmd:{}", hostId, cmd);
+                        logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
                     }
                 }
             }
         }
     }
 
-    private void send(String hostId, String cmd) {
+    public void send(String hostId, String cmd) throws Exception {
         Map<String, String> map = new HashMap<>();
         map.put("command", cmd);
         map.put("host", hostId);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
-        ExecuteTask.sendCmd(task);
+        String code = ExecuteTask.sendCmd(task);
+        if ("fail".equals(code)) {
+            StringBuffer sb = new StringBuffer();
+            String msg = sb.append("发送失败;hostId:")
+                    .append(hostId)
+                    .append(" ;cmd")
+                    .append(cmd)
+                    .toString();
+            throw new Exception(msg);
+        }
     }
 
+    /**
+     * 解析websocket，存储参数状态,只需要处理id>0的值
+     * @param parameterSetting 配置信息
+     * @param officeWS websocket返回值
+     * @return 单元主键id,开关状态(默认为0)
+     */
     public Map<String, Integer> analysisWsAndStorageStatus(Map<String, Object> parameterSetting, OfficeWS officeWS) {
         String x = officeWS.getX();
         String y = officeWS.getY();
@@ -266,10 +285,17 @@ public class TpadOfficeService {
         return statusMap;
     }
 
+    /**
+     * 存储对应单元状态
+     * @param statusMap 单元状态
+     * @param unit 何种单元
+     * @param hostId hostId
+     * @return 返回单元主键id
+     */
     private Integer storageUnitStatus(Map<String, Integer> statusMap, String unit, String hostId) {
         Integer id = 0;
         TypeOperation unitEnum = TypeOperation.getType(unit);
-        switch (unitEnum) {
+        switch (unitEnum) {//选择何种存储单元
             case GROUP:
                 if ("all".equals(hostId)) {
                     tpadOfficeDao.updateAllEGroupStatus(statusMap.get("status"));
@@ -300,6 +326,12 @@ public class TpadOfficeService {
         return id;
     }
 
+    /**
+     * 存储调光状态
+     * @param x x
+     * @param y y
+     * @param project 项目名
+     */
     private void storageDimmingStatus(String x, String y, String project) {
         x = decimalismColors.get(x);
         y = decimalismLuminances.get(y);
@@ -326,5 +358,22 @@ public class TpadOfficeService {
         statusMap.put("status", status);
         statusMap.put("id", id);
         return statusMap;
+    }
+
+    /**
+     * 调光时百分比转化为灯中真实的xy值
+     * @param x 色温
+     * @param y 亮度
+     * @return
+     */
+    public Map<String,String> changeXY(String x, String y) {
+        Map<String,String> map = new ConcurrentHashMap<>();
+        if (!"32".equals(x) && !"37".equals(x)){
+            x = hexColors.get(x);
+            y = hexLuminances.get(y);
+        }
+        map.put("x",x);
+        map.put("y",y);
+        return map;
     }
 }

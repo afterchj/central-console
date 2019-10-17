@@ -84,6 +84,7 @@ public interface Monitor4Dao {
 //    void updateHostInfo(@Param("meshId")String meshId, @Param("mname")String mname);
 
     @Select("select host_id from t_host_info where id in(select hm.hid from t_host_mesh hm,t_mesh m where hm.mid=m.id and m.mesh_id=(select mesh_id from t_mesh_setting  where project=#{project})) and status=1")
+//    @Select("select host_id from t_host_info where id in(select hm.hid from t_host_mesh hm,t_mesh m where hm.mid=m.id and m.mesh_id=(select mesh_id from t_mesh_setting  where project=#{project}))")
     String getHostId(@Param("project") String host);
 
 }

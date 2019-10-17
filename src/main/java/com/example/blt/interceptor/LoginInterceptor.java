@@ -18,14 +18,13 @@ public class LoginInterceptor implements HandlerInterceptor {
      * 开始进入地址请求拦截
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        Boolean flag = true;
         HttpSession session = request.getSession();
-        if(session.getAttribute("username") != null){
-            return true;
-        }else{
-            response.sendRedirect("/central-console/control/login");	//未登录，跳转到登录页
-            return false;
+        if(session.getAttribute("username") == null){
+            response.sendRedirect("/central-console/control/login");//未登录，跳转到登录页
+            flag = false;
         }
+        return flag;
     }
 }
