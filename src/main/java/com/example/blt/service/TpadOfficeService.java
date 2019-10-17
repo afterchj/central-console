@@ -327,4 +327,15 @@ public class TpadOfficeService {
         statusMap.put("id", id);
         return statusMap;
     }
+
+    public Map<String,String> changeXY(String x, String y) {
+        Map<String,String> map = new ConcurrentHashMap<>();
+        if (!"32".equals(x) && !"37".equals(x)){
+            x = hexColors.get(x);
+            y = hexLuminances.get(y);
+        }
+        map.put("x",x);
+        map.put("y",y);
+        return map;
+    }
 }

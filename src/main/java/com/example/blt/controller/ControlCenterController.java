@@ -7,6 +7,7 @@ import com.example.blt.entity.control.ControlHost;
 import com.example.blt.entity.control.ControlMaster;
 import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.control.MeshList;
+import com.example.blt.entity.office.CmdJoin;
 import com.example.blt.service.ControlCenterService;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
@@ -216,7 +217,8 @@ public class ControlCenterController {
         if (type.equals("reSet")) {
             controlCenterService.reSet();
         } else {
-            String[] cmds = {"77050101CCCC", "77050105CCCC", "77050106CCCC"};
+//            String[] cmds = {"77050101CCCC", "77050105CCCC", "77050106CCCC"};
+            String[] cmds = {CmdJoin.CMD_INQUIRY_MESHID.getKey(), CmdJoin.CMD_INQUIRY_MAC.getKey(), CmdJoin.CMD_INQUIRY_VERSION.getKey()};
             msg = recursiveSendCmd(msg,cmds);
         }
         return msg;

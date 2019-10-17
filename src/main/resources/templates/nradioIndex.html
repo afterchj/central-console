@@ -197,32 +197,28 @@
         $(this).addClass('active').siblings().removeClass('active');
     });
     var project = "all";
-    var cmd;
-    var map = {"project": project, "groupId": 0,"x":32,"y":32,"type":"group"};
-    $("#switch").click(function () {
-        map.
-        cmd = "77010315373766";
-        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
-            console.log(data);
-        });
+    var cmd,x='32',y='32',groupId=0,type='mesh';
+    var map = {"project": project, "groupId": groupId,"x":x,"y":y,"type":type};
+//    var host = 'all';
+    $("#switch").click(function () {//on
+//        cmd = "77010315373766";
+        map.x='37',map.y='37';
+        $.post("sendByProject", map , function (data) {console.log(data);});
     });
-    $("#switch2").click(function () {
-        cmd = "77010315323266";
-        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
-            console.log(data);
-        });
+    $("#switch2").click(function () {//off
+//        cmd = "77010315323266";
+        map.x='32',map.y='32';
+        $.post("sendByProject", map, function (data) {console.log(data);});
     });
     $("#accept").click(function () {
-        cmd = "7701010466";
-        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
-            console.log(data);
-        });
+//        cmd = "7701010466";
+        map.type='acceptID'
+        $.post("sendByProject", map, function (data) {console.log(data);});
     });
     $("#OTA").click(function () {
-        cmd = "7701010566";
-        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
-            console.log(data);
-        });
+//        cmd = "7701010566";
+        map.type='ota';
+        $.post("sendByProject", map, function (data) {console.log(data);});
     });
 
     $('#show').click(function () {
@@ -241,29 +237,34 @@
             color = $("#color").val();
         }
         console.log(color, luminance);
-        $.post("/central-console/nradio/change", {"color": color, "luminance": luminance}, function (data) {
-            console.log(data);
-        })
-    }
-    ;
+        map.x = color,map.y = luminance;
+        $.post("sendByProject", map, function (data) {console.log(data);})
+    };
 
     $(".scene-select").click(function () {
+        type = 'scene';
+        var sceneId;
         var text = $(this).text();
         switch (text) {
             case "场景一":
-                cmd = "7701021901";
+//                cmd = "7701021901";
+                sceneId = 1;
                 break;
             case "场景二":
-                cmd = "7701021902";
+//                cmd = "7701021902";
+                sceneId = 2;
                 break;
             case "场景三":
-                cmd = "7701021903";
+//                cmd = "7701021903";
+                sceneId = 3;
                 break;
             case "场景四":
-                cmd = "7701021904";
+//                cmd = "7701021904";
+                sceneId = 4;
                 break;
         }
-        $.post("/central-console/nradio/send", {"host": host, "cmd": cmd}, function (data) {
+        map.sceneId = sceneId;
+        $.post("sendByProject", map, function (data) {
             console.log(data);
         });
     });
@@ -292,53 +293,8 @@
                 var ctype = data.ctype;
                 var x = data.x;
                 var y = data.y;
-                var xMap =
-                {
-                    "00": 0,
-                    "01": 5,
-                    "02": 10,
-                    "03": 15,
-                    "04": 20,
-                    "05": 25,
-                    "06": 30,
-                    "07": 35,
-                    "08": 40,
-                    "09": 45,
-                    "0A": 50,
-                    "0B": 55,
-                    "0C": 60,
-                    "0D": 65,
-                    "0E": 70,
-                    "0F": 75,
-                    "10": 80,
-                    "11": 85,
-                    "12": 90,
-                    "13": 95,
-                    "14": 100
-                };
-                var yMap = {
-                    "13": 0,
-                    "12": 5,
-                    "11": 10,
-                    "10": 15,
-                    "0F": 20,
-                    "0E": 25,
-                    "0D": 30,
-                    "0C": 35,
-                    "0B": 40,
-                    "0A": 45,
-                    "09": 50,
-                    "08": 55,
-                    "07": 60,
-                    "06": 65,
-                    "05": 70,
-                    "04": 75,
-                    "03": 80,
-                    "02": 85,
-                    "01": 90,
-                    "00": 95,
-                    "00": 100
-                };
+                var xMap = {"00": 0, "01": 5, "02": 10, "03": 15, "04": 20, "05": 25, "06": 30, "07": 35, "08": 40, "09": 45, "0A": 50, "0B": 55, "0C": 60, "0D": 65, "0E": 70, "0F": 75, "10": 80, "11": 85, "12": 90, "13": 95, "14": 100};
+                var yMap = {"13": 0, "12": 5, "11": 10, "10": 15, "0F": 20, "0E": 25, "0D": 30, "0C": 35, "0B": 40, "0A": 45, "09": 50, "08": 55, "07": 60, "06": 65, "05": 70, "04": 75, "03": 80, "02": 85, "01": 90, "00": 100};
                 var cid = data.cid;
                 switch (ctype) {
                     case "C0":
