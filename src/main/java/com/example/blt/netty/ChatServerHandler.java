@@ -59,9 +59,11 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (to.equals(master)) {
                 to = "master";
             }
+            StringBuildUtils.buildLightInfo(ip, host, cmd);
         } catch (Exception e) {
             input = arg1;
-            if (arg1.indexOf("7705") != -1) {
+            StringBuildUtils.buildLightInfo(ip, host, input);
+            if (input.indexOf("7705") != -1) {
                 cmd = "77050103";
             }
             if (host.equals(master)) {
@@ -114,10 +116,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 //        if (input.indexOf("77050107") != -1) {
 //            sendPoeInfo(arg0);
 //        }
-        if (input.length() >= 16) {
-            StringBuildUtils.buildLightInfo(ip, host, input);
-//            ExecuteTask.pingInfo(host, arg1);
-        }
     }
 
     @Override
