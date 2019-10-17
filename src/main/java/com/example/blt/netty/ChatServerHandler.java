@@ -59,7 +59,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             if (to.equals(master)) {
                 to = "master";
             }
-            StringBuildUtils.buildLightInfo(ip, host, cmd);
+            StringBuildUtils.buildLightInfo(ip, to, cmd);
         } catch (Exception e) {
             input = arg1;
             StringBuildUtils.buildLightInfo(ip, host, input);
