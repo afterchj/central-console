@@ -38,7 +38,7 @@ public class StringBuildUtils {
                 map.put("ip", ip);
                 map.put("host", host);
                 map.put("status", 1);
-                if (str.indexOf("77011365") != -1) {
+                if (str.indexOf("77011365") != -1&&str.length()>=32) {
                     ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                     String vaddr = str.substring(18, 26);
                     vaddrSet.add(vaddr);
@@ -55,7 +55,7 @@ public class StringBuildUtils {
                     map.put("x", x);
                     map.put("y", y);
                     saveLight(map, false);
-                } else if (str.indexOf("77011366") != -1) {
+                } else if (str.indexOf("77011366") != -1&&str.length()>=44) {
                     ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                     ipSet.add(host);
                     String lmac = str.substring(16, 28);
