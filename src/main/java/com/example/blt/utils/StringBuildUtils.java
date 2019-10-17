@@ -106,7 +106,7 @@ public class StringBuildUtils {
                 }
             }
         } else {
-            parseLocalCmd(msg, ip);
+            parseLocalCmd(msg, host);
         }
     }
 
@@ -230,7 +230,7 @@ public class StringBuildUtils {
         saveConsole(Topics.CONSOLE_TOPIC.getTopic(), map, false);
     }
 
-    public static void parseLocalCmd(String str, String ip) {
+    public static void parseLocalCmd(String str, String host) {
         Map map = new ConcurrentHashMap();
         String prefix = str.substring(0, 8);
         if (str.contains("3232")) {
@@ -238,7 +238,7 @@ public class StringBuildUtils {
         } else {
             map.put("status", 1);
         }
-        map.put("host", ip);
+        map.put("host", host);
         String cmd = str.substring(prefix.length());
         Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
         switch (prefix) {
