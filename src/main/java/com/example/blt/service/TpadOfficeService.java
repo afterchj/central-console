@@ -237,7 +237,7 @@ public class TpadOfficeService {
      * @param officeWS websocket返回值
      * @return 单元主键id,开关状态(默认为0)
      */
-    public Map<String, Integer> analysisWsAndStorageStatus(Map<String, Object> parameterSetting, OfficeWS officeWS) {
+    public Map<String, Integer> analysisWsAndStorageStatus(Map<String, Object> parameterSetting, OfficeWS officeWS) throws Exception {
         String x = officeWS.getX();
         String y = officeWS.getY();
         String ctype = officeWS.getCtype();
@@ -338,7 +338,7 @@ public class TpadOfficeService {
         tpadOfficeDao.updateXY(project, x, y);
     }
 
-    private Map<String, Integer> setStatusMap(OfficeWS officeWS) {
+    private Map<String, Integer> setStatusMap(OfficeWS officeWS) throws Exception {
         Map<String, Integer> statusMap = new ConcurrentHashMap<>();
         Integer cid = officeWS.getCid();
         String hostId = officeWS.getHost();
@@ -347,7 +347,12 @@ public class TpadOfficeService {
         Integer mid;
         if (!"all".equals(hostId)) {
             mid = tpadOfficeDao.getMidByHostId(hostId);
-            statusMap.put("mid", mid);
+            if (mid == null){
+                throw new Exception("host未知");
+            }else {
+                statusMap.put("mid", mid);
+            }
+
         }
         if (cid != null) {
             statusMap.put("cid", cid);
