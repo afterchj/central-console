@@ -1,10 +1,8 @@
 package com.example.blt.service;
 
-import com.alibaba.fastjson.JSON;
-import com.example.blt.entity.dd.Topics;
 import com.example.blt.entity.vo.CronVo;
-import com.example.blt.netty.ServerMain;
 import com.example.blt.task.DynamicScheduledTask;
+import com.example.blt.utils.PropertiesUtil;
 import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -35,23 +33,25 @@ public class StartListener implements ApplicationListener<ContextRefreshedEvent>
     @Resource
     private RedisTemplate redisTemplate;
 
-//    @Scheduled(cron = "0/30 * * * * ?")
-//    public void checkSize() {
-//        ValueOperations valueOperations = getOpsForValue();
-//        List<String> list1 = sqlSessionTemplate.selectList("console.getAll");
-//        List<String> list2 = new ArrayList();
-//        try {
-//            for (String host : list1) {
-//                String str = valueOperations.get(host, 0, -1);
-//                if (StringUtils.isNotEmpty(str)) {
-//                    list2.add(host);
-//                }
-//            }
-//            saveHostStatus(list1, list2);
-//        } catch (Exception e) {
-//            logger.error("updateHostStatus error {}", e.getMessage());
-//        }
-//    }
+    @Scheduled(cron = "0/30 * * * * ?")
+    public void checkSize() {
+        String mode = PropertiesUtil.getValue("spring.profiles.active");
+        if ("test".equals(mode)) return;
+        ValueOperations valueOperations = getOpsForValue();
+        List<String> list1 = sqlSessionTemplate.selectList("console.getAll");
+        List<String> list2 = new ArrayList();
+        try {
+            for (String host : list1) {
+                String str = valueOperations.get(host, 0, -1);
+                if (StringUtils.isNotEmpty(str)) {
+                    list2.add(host);
+                }
+            }
+            saveHostStatus(list1, list2);
+        } catch (Exception e) {
+            logger.error("updateHostStatus error {}", e.getMessage());
+        }
+    }
 
 //    public void pingAB() throws InterruptedException {
 //        Thread.sleep(10000);
