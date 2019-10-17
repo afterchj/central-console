@@ -366,7 +366,7 @@ public class MainTest {
     public void testProperties() {
         String str="77011465FFFFFFFF2A00000000C000373700000000CCCC";
         System.out.println(str.substring(0,str.length() - 4));
-        String mode = PropertiesUtil.getValue("rocketmq.model");
+        String mode = PropertiesUtil.getValue("spring.profiles.active");
         System.out.println("mode=" + mode);
     }
 }

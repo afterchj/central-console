@@ -38,9 +38,6 @@
     <Loggers>
         <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
         <Logger name="org.springframework" level="ERROR"/>
-        <Logger name="org.mybatis" level="ERROR"/>
-        <Logger name="org.hibernate" level="ERROR"/>
-        <Logger name="RocketmqClient" level="ERROR"/>
         <Root level="WARN">
             <AppenderRef ref="console"></AppenderRef>
             <AppenderRef ref="error"></AppenderRef>
