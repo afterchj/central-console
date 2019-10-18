@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,24 +49,24 @@ public class TpadOfficeService {
     @Resource
     private TpadOfficeDao tpadOfficeDao;
 
-//    @Resource
-//    private JoinCmdUtil joinCmdUtil;
-
     public String getHostId(String meshId) throws Exception {
         String hostId = "";
         List<Map<String, Object>> hosts = tpadOfficeDao.getHost(meshId);
-        if (hosts.size() > 1) {
-            for (Map<String, Object> host : hosts) {
-                if ((Boolean) host.get("master")) {//主控poe
-                    hostId = (String) host.get("hostId");
+        if (hosts.size()<=0){
+            throw new Exception(new StringBuffer().append("poe不在线, meshId:").append(meshId).toString());
+        }else {
+            if (hosts.size() == 1){
+                hostId = (String) hosts.get(0).get("hostId");
+            }else {
+                for (Map<String, Object> host : hosts) {
+                    if ((Boolean) host.get("master")) {//主控poe
+                        hostId = (String) host.get("hostId");
+                    }
+                }
+                if (StringUtils.isBlank(hostId)){
+                    hostId = (String) hosts.get(0).get("hostId");
                 }
             }
-        }
-        if (StringUtils.isBlank(hostId) && hosts.size() > 0) {//只有一个poe or 没有主控poe
-            hostId = (String) hosts.get(0).get("hostId");
-        }
-        if (StringUtils.isBlank(hostId)) {
-            throw new Exception("host未知");
         }
         return hostId;
     }
@@ -209,7 +208,7 @@ public class TpadOfficeService {
     }
 
     public void send(String hostId, String cmd) throws Exception {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new ConcurrentHashMap<>();
         map.put("command", cmd);
         map.put("host", hostId);
         ControlTask task = new ControlTask(JSON.toJSONString(map));

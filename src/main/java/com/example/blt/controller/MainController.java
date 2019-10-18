@@ -216,20 +216,10 @@ public class MainController {
                 y = onOffMap.get("y");
             }
             command = JoinCmdUtil.joinNewCmd(type,x,y,groupId,sceneId);
-            map.put("command", command);
-            map.put("host", host);
-            ControlTask task = new ControlTask(JSON.toJSONString(map));
-            String code = ExecuteTask.sendCmd(task);
-            if ("fail".equals(code)) {
-                //失败
-                success = "发送命令失败";
-                logger.error("method:sendByMeshId;send error; project:{}",project);
-                map.put("success", success);
-                return map;
-            }
+            tpadOfficeService.send(host,command);
         } catch (Exception e) {
-            success = "error";
-            logger.warn("method:sendByMeshId;can not join cmd; result: {};host: {}", success, host);
+            success = e.getMessage();
+            logger.warn("method:sendByMeshId;can not join cmd; result: {};host: {}", e.getMessage(), host);
         }
         map.put("success", success);
         logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
