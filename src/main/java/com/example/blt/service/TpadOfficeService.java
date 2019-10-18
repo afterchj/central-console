@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -209,7 +208,7 @@ public class TpadOfficeService {
     }
 
     public void send(String hostId, String cmd) throws Exception {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new ConcurrentHashMap<>();
         map.put("command", cmd);
         map.put("host", hostId);
         ControlTask task = new ControlTask(JSON.toJSONString(map));
