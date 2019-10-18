@@ -47,7 +47,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         String host_id = sqlSessionTemplate.selectOne("console.getHostId", host);
         List<String> hosts = null;
         String type = null;
-        String input = "";
         String cmd = arg1;
         String to = host;
         try {
@@ -61,10 +60,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
             StringBuildUtils.buildLightInfo(ip, to, cmd);
         } catch (Exception e) {
-            input = arg1;
-            StringBuildUtils.buildLightInfo(ip, host, input);
-            if (input.indexOf("7705") != -1) {
-                cmd = "77050103";
+            redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
+            StringBuildUtils.buildLightInfo(ip, host, cmd);
+            if (cmd.indexOf("7705") != -1) {
+                cmd = "77050103CCCC";
             }
             if (host.equals(master)) {
                 to = "master";
@@ -104,11 +103,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     }
                 }
             }
-            if (input.indexOf("77050103") != -1) {
-                redisTemplate.opsForValue().set(host, input, 50, TimeUnit.SECONDS);
-            } else {
-                logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
-            }
+        }
+        if (cmd.indexOf("77050103") == -1) {
+            logger.warn("flag[{}] hostId[{}] to [{}] hosts[{}] input[{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
         }
 //        if (input.indexOf("182716324621") != -1) {
 //            logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, input);
