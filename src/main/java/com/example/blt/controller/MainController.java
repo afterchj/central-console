@@ -219,7 +219,6 @@ public class MainController {
             tpadOfficeService.send(host,command);
         } catch (Exception e) {
             success = e.getMessage();
-            logger.warn("method:sendByMeshId;can not join cmd; result: {};host: {}", e.getMessage(), host);
         }
         map.put("success", success);
         logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
