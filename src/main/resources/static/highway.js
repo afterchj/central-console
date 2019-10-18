@@ -38,7 +38,7 @@ $(".on-off").click(function () {
         if ((!topOneCheckboxState && !topTwoCheckboxState)||(topOneCheckboxState && topTwoCheckboxState)){//都故障或都有故障
             $.post("sendByProject", onOneMap,function (data) {
                 if (data.success == 'success'){
-                    $.post("sendByMeshId", onTwoMap,function (data) {
+                    $.post("sendByProject", onTwoMap,function (data) {
                         if (data.success == 'success'){
                             $(onOffThis).parent().parent().parent().next().find('img').attr('src','/central-console/static/img/red2.png');
                             if (topOneCheckboxState && topTwoCheckboxState){//都有故障
