@@ -38,7 +38,7 @@ public class StringBuildUtils {
                 map.put("ip", ip);
                 map.put("host", host);
                 map.put("status", 1);
-                if (str.indexOf("77011365") != -1&&str.length()>=32) {
+                if (str.indexOf("77011365") != -1 && str.length() >= 32) {
                     ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                     String vaddr = str.substring(18, 26);
                     vaddrSet.add(vaddr);
@@ -55,7 +55,7 @@ public class StringBuildUtils {
                     map.put("x", x);
                     map.put("y", y);
                     saveLight(map, false);
-                } else if (str.indexOf("77011366") != -1&&str.length()>=44) {
+                } else if (str.indexOf("77011366") != -1 && str.length() >= 44) {
                     ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
                     ipSet.add(host);
                     String lmac = str.substring(16, 28);
@@ -87,9 +87,12 @@ public class StringBuildUtils {
                     map.put("flag", flag);
                     saveUpdateHostMesh(map, false);
                 } else if (str.indexOf("77050506") != -1) {
-                    logger.warn("otaInfo {}", str);
-                    if (str.length() > 16) {
-                        str = str.substring(str.length() - 16);
+                    if (str.indexOf("C")==0) {
+                        if (str.length() > 16) {
+                            str = str.substring(str.length() - 16);
+                        }else {
+                            str=str.substring(1)+"C";
+                        }
                     }
                     String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
                     int product = Integer.parseInt(temp, 16);

@@ -5,7 +5,6 @@ import com.example.blt.entity.dd.Groups;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -27,17 +26,27 @@ public class StringBuildUtilsTest {
     @Test
     public void test() {
 //        System.out.println("77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","").length());
-        String strHex = Integer.toHexString(45408);
-        String str="C77050506903e0109";
-        if (str.length() > 16) {
-            str = str.substring(str.length() - 16);
+        String msg = "770509010201000007000302CCCC770507052100FF7FC5ECCCCC770505060B1A010CCCCC";
+        String[] array = msg.split("CCCC");
+        for (String str : array) {
+            System.out.println("str=" + str);
         }
-        String mac=StringBuildUtils.buildMac("90e3");
-        mac=StringBuildUtils.sortMac(mac).replace(":", "");
+        String strHex = Integer.toHexString(45408);
+        String str = "C770505060B1A010";
+        if (str.indexOf("C")==0) {
+            if (str.length() > 16) {
+                str = str.substring(str.length() - 16);
+            }else {
+                str=str.substring(1)+"C";
+            }
+        }
+        System.out.println("format="+str);
+//        String mac=StringBuildUtils.buildMac("90e3");
+//        mac=StringBuildUtils.sortMac(mac).replace(":", "");
         String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
         int product = Integer.parseInt(temp, 16);
         String version = StringBuildUtils.parseHixToStr(str.substring(12));
-        System.out.println(strHex+"\t"+temp+"\t"+product+"\t"+version+"\t"+mac);
+        System.out.println(strHex + "\t" + temp + "\t" + product + "\t" + version);
 //        String msg="77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","");
 //        while (str.length() < 20) {
 ////            str += "C";
