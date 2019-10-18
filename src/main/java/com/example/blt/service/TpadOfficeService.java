@@ -217,7 +217,7 @@ public class TpadOfficeService {
             StringBuffer sb = new StringBuffer();
             String msg = sb.append("发送失败;hostId:")
                     .append(hostId)
-                    .append(" ;cmd")
+                    .append(" ;cmd: ")
                     .append(cmd)
                     .toString();
             throw new Exception(msg);
