@@ -45,8 +45,12 @@ $(".on-off").click(function () {
                                 $('.first-line,.second-line').removeClass('active');
                                 $('.first-line,.second-line').addClass('active');//整条路段故障
                             }
+                        }else {
+                            alert(data.success);
                         }
                     });
+                }else {
+                    alert(data.success);
                 }
             });
         }else if (topOneCheckboxState && !topTwoCheckboxState){//第一段故障
@@ -55,6 +59,8 @@ $(".on-off").click(function () {
                     $(onOffThis).parent().parent().parent().next().find('.one-100 img').attr('src','/central-console/static/img/red2.png');//故障侧灯亮
                     $('.first-line,.second-line').removeClass('active');
                     $(".first-line").addClass('active');//显示故障一侧
+                }else {
+                    alert(data.success);
                 }
             })
         }else if (!topOneCheckboxState && topTwoCheckboxState){//第二段故障
@@ -63,6 +69,8 @@ $(".on-off").click(function () {
                     $(onOffThis).parent().parent().parent().next().find('.two-100 img').attr('src','/central-console/static/img/red2.png');//故障侧灯亮
                     $('.first-line,.second-line').removeClass('active');
                     $(".second-line").addClass('active');//显示故障一侧
+                }else {
+                    alert(data.success);
                 }
             })
         }
@@ -83,8 +91,12 @@ $(".on-off").click(function () {
                         if (!isOnState){//所有车道灯关闭
                             $('.first-line,.second-line').removeClass('active');
                         }
+                    }else {
+                        alert(data.success);
                     }
                 });
+            }else {
+                alert(data.success);
             }
         });
     }

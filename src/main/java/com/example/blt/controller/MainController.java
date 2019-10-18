@@ -203,7 +203,7 @@ public class MainController {
         }else {
             host = monitor4Dao.getHostId(project);
             if (host == null){
-                success = "error";
+                success = "poe不在线";
                 logger.error("method:sendByMeshId;can not find hostId; project:{}",project);
                 map.put("success", success);
                 return map;
@@ -222,7 +222,7 @@ public class MainController {
             String code = ExecuteTask.sendCmd(task);
             if ("fail".equals(code)) {
                 //失败
-                success = "error";
+                success = "发送命令失败";
                 logger.error("method:sendByMeshId;send error; project:{}",project);
                 map.put("success", success);
                 return map;

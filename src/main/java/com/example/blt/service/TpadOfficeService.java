@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.example.blt.entity.office.TypeOperation.DIMMING;
+import static com.example.blt.entity.office.TypeOperation.ON_OFF;
+
 /**
  * @program: central-console
  * @description:
@@ -63,7 +66,7 @@ public class TpadOfficeService {
         if (StringUtils.isBlank(hostId) && hosts.size() > 0) {//只有一个poe or 没有主控poe
             hostId = (String) hosts.get(0).get("hostId");
         }
-        if (StringUtils.isBlank(hostId)){
+        if (StringUtils.isBlank(hostId)) {
             throw new Exception("host未知");
         }
         return hostId;
@@ -108,17 +111,16 @@ public class TpadOfficeService {
         int[] unitArray = office.getUnitArray();
         TypeOperation opeEnum = TypeOperation.getType(operation);
         Integer sceneId = office.getSceneId();
+        if (ON_OFF.getKey().equals(operation) || DIMMING.getKey().equals(operation)) {
+            if (sceneId != null) {
+                throw new Exception("无效的参数sceneId");
+            }
+        }
         switch (opeEnum) {
             case ON_OFF:
-                if (sceneId != null) {
-                    throw new Exception("无效的参数sceneId");
-                }
                 sendCmd(x, y, unitArray, null, unit);
                 break;
             case DIMMING:
-                if (sceneId != null) {
-                    throw new Exception("无效的参数sceneId");
-                }
                 x = hexColors.get(x);
                 y = hexLuminances.get(y);
                 if (x == null || y == null) {
@@ -144,7 +146,6 @@ public class TpadOfficeService {
         Integer groupId = null;
         String oldMeshId = null;
         String type = null;
-        Boolean flag;
         List<Integer> groupIds = new ArrayList<>();
         if (unitArray == null || unitArray.length == 0) {
             hostId = "all";
@@ -153,7 +154,6 @@ public class TpadOfficeService {
             } else {
                 type = "mesh";
             }
-//            cmd = joinCmdUtil.joinCmd(type, x, y, null, sceneId);
             cmd = JoinCmdUtil.joinNewCmd(type, x, y, null, sceneId);
             send(hostId, cmd);
             logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
@@ -181,15 +181,11 @@ public class TpadOfficeService {
                         throw new Exception("参数错误");
                 }
                 hostId = getHostId(meshId);
-//                if (StringUtils.isBlank(hostId)) {
-//                    throw new Exception("host未知");
-//                }
                 if (sceneId != null) {//切换场景操作
                     if (oldMeshId != null && oldMeshId.equals(meshId)) {//排除场景命令重复
                         continue;
                     }
                     type = "scene";
-//                    cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
                     cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                     send(hostId, cmd);
                     logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
@@ -198,13 +194,11 @@ public class TpadOfficeService {
                         for (Integer group : groupIds) {
                             groupId = group;
                             type = "group";
-//                            cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
                             cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                             send(hostId, cmd);
                             logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
                         }
                     } else {//其它基础单元操作(不包括切换场景)
-//                        cmd = joinCmdUtil.joinCmd(type, x, y, groupId, sceneId);
                         cmd = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
                         send(hostId, cmd);
                         logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
@@ -233,9 +227,10 @@ public class TpadOfficeService {
 
     /**
      * 解析websocket，存储参数状态,只需要处理id>0的值
+     *
      * @param parameterSetting 配置信息
-     * @param officeWS websocket返回值
-     * @return 单元主键id,开关状态(默认为0)
+     * @param officeWS         websocket返回值
+     * @return 单元主键id, 开关状态(默认为0)
      */
     public Map<String, Integer> analysisWsAndStorageStatus(Map<String, Object> parameterSetting, OfficeWS officeWS) throws Exception {
         String x = officeWS.getX();
@@ -250,24 +245,9 @@ public class TpadOfficeService {
         String unit = (String) parameterSetting.get("unit");
         switch (ctype) {
             case "C1"://组控
-//                if ("32".equals(x) || "37".equals(x)) {//开关
-////                    if ("all".equals(hostId)) {//所有poe
-////                        tpadOfficeDao.updateStatus(project, status);
-////                    } else {//单个poe
-//                    id = storageUnitStatus(statusMap, unit, hostId);
-////                    }
-//                } else {//调光
-//                    storageDimmingStatus(x, y, project);
-//                }
-//                break;
             case "C0"://群控
                 if ("32".equals(x) || "37".equals(x)) {//开关
-//                    if ("all".equals(hostId)) {//所有poe
-//                        tpadOfficeDao.updateStatus(project, status);
-                       id = storageUnitStatus(statusMap, unit, hostId);
-//                    } else {//单个poe
-//                        id = storageUnitStatus(statusMap, unit, null);
-//                    }
+                    id = storageUnitStatus(statusMap, unit, hostId);
                 } else {//调光
                     storageDimmingStatus(x, y, project);
                 }
@@ -287,9 +267,10 @@ public class TpadOfficeService {
 
     /**
      * 存储对应单元状态
+     *
      * @param statusMap 单元状态
-     * @param unit 何种单元
-     * @param hostId hostId
+     * @param unit      何种单元
+     * @param hostId    hostId
      * @return 返回单元主键id
      */
     private Integer storageUnitStatus(Map<String, Integer> statusMap, String unit, String hostId) {
@@ -328,8 +309,9 @@ public class TpadOfficeService {
 
     /**
      * 存储调光状态
-     * @param x x
-     * @param y y
+     *
+     * @param x       x
+     * @param y       y
      * @param project 项目名
      */
     private void storageDimmingStatus(String x, String y, String project) {
@@ -347,9 +329,9 @@ public class TpadOfficeService {
         Integer mid;
         if (!"all".equals(hostId)) {
             mid = tpadOfficeDao.getMidByHostId(hostId);
-            if (mid == null){
+            if (mid == null) {
                 throw new Exception("host未知");
-            }else {
+            } else {
                 statusMap.put("mid", mid);
             }
 
@@ -367,18 +349,19 @@ public class TpadOfficeService {
 
     /**
      * 调光时百分比转化为灯中真实的xy值
+     *
      * @param x 色温
      * @param y 亮度
      * @return
      */
-    public Map<String,String> changeXY(String x, String y) {
-        Map<String,String> map = new ConcurrentHashMap<>();
-        if (!"32".equals(x) && !"37".equals(x)){
+    public Map<String, String> changeXY(String x, String y) {
+        Map<String, String> map = new ConcurrentHashMap<>();
+        if (!"32".equals(x) && !"37".equals(x)) {
             x = hexColors.get(x);
             y = hexLuminances.get(y);
         }
-        map.put("x",x);
-        map.put("y",y);
+        map.put("x", x);
+        map.put("y", y);
         return map;
     }
 }

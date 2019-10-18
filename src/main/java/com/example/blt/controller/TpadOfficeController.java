@@ -38,7 +38,6 @@ public class TpadOfficeController {
     }
 
     @PostMapping("/get")
-//    @ResponseBody
     public Map<String, Object> get(@Valid @RequestBody OfficePa office) {
         Map<String, Object> map = new ConcurrentHashMap<>();
         String project = office.getProject();
@@ -53,7 +52,6 @@ public class TpadOfficeController {
      * @return
      */
     @PostMapping("/sendCmd")
-//    @ResponseBody
     public String sendCmd(@RequestBody OfficePa office) {
         String project = office.getProject();
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
@@ -69,7 +67,6 @@ public class TpadOfficeController {
     }
 
     @PostMapping("/analysisWs")
-//    @ResponseBody
     public Map<String,Integer> analysisWs(@RequestBody OfficeWS officeWS){
         String project = officeWS.getProject();
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
