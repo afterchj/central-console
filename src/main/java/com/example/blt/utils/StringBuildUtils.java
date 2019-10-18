@@ -87,6 +87,7 @@ public class StringBuildUtils {
                     map.put("flag", flag);
                     saveUpdateHostMesh(map, false);
                 } else if (str.indexOf("77050506") != -1) {
+                    logger.warn("otaInfo {}", str);
                     if (str.length() > 16) {
                         str = str.substring(str.length() - 16);
                     }

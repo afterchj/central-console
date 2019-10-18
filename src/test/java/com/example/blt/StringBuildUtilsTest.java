@@ -5,6 +5,7 @@ import com.example.blt.entity.dd.Groups;
 import com.example.blt.netty.ClientMain;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -26,25 +27,27 @@ public class StringBuildUtilsTest {
     @Test
     public void test() {
 //        System.out.println("77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","").length());
-        String str="C770505060B1A0109";
+        String strHex = Integer.toHexString(45408);
+        String str="C77050506903e0109";
         if (str.length() > 16) {
             str = str.substring(str.length() - 16);
         }
+        String mac=StringBuildUtils.buildMac("90e3");
+        mac=StringBuildUtils.sortMac(mac).replace(":", "");
         String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
         int product = Integer.parseInt(temp, 16);
-        String version = str.substring(12);
-        System.out.println(product+"\t"+version);
-        String msg="77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","");
-        while (str.length() < 20) {
-            str += "C";
-        }
-//        StringBuildUtils.buildLightInfo("127.0.0.1","8e4461ca",msg);
-        String[] array = msg.split("CCCC");
-        while (array[0].length() < 20) {
-            array[0] += "C";
-        }
-        System.out.println(array[0]);
-        System.out.println(JSON.toJSONString(array));
+        String version = StringBuildUtils.parseHixToStr(str.substring(12));
+        System.out.println(strHex+"\t"+temp+"\t"+product+"\t"+version+"\t"+mac);
+//        String msg="77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","");
+//        while (str.length() < 20) {
+////            str += "C";
+////        }
+////        String[] array = msg.split("CCCC");
+////        while (array[0].length() < 20) {
+////            array[0] += "C";
+////        }
+////        System.out.println(array[0]);
+////        System.out.println(JSON.toJSONString(array));
 //        String[] array = "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC".split("CCCC");
 //        System.out.println("array=" + array[0] + "\t" + "770509010908040207070801CCCC77050705791000D7ACF0CCCC".length());
 //        String key = String.format("task_%s_%s", "88888888", 1);

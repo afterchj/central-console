@@ -48,7 +48,6 @@ public class ServerMain {
                 logger.warn("端口[" + port + "]绑定成功!");
             } else {
                 logger.error("端口[" + port + "]绑定失败!");
-                bind(serverBootstrap, port + 1);
             }
         });
     }
