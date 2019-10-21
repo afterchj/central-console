@@ -215,10 +215,7 @@ public class TpadOfficeService {
         String code = ExecuteTask.sendCmd(task);
         if ("fail".equals(code)) {
             StringBuffer sb = new StringBuffer();
-            String msg = sb.append("发送失败;hostId:")
-                    .append(hostId)
-                    .append(" ;cmd")
-                    .append(cmd)
+            String msg = sb.append("发送失败;")
                     .toString();
             throw new Exception(msg);
         }
