@@ -60,7 +60,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
             StringBuildUtils.buildLightInfo(ip, to, cmd);
         } catch (Exception e) {
-            redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
             StringBuildUtils.buildLightInfo(ip, host, cmd);
             if (cmd.indexOf("7705") != -1) {
                 cmd = "77050103CCCC";
@@ -103,10 +102,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                     }
                 }
             }
+            if (cmd.indexOf("77050103") != -1) {
+                //缓存心跳包
+                redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
+            } else {
+                logger.warn("flag[{}] hostId[{}] to [{}] hosts[{}] input[{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
+            }
         }
-        if (cmd.indexOf("77050103") == -1) {
-            logger.warn("flag[{}] hostId[{}] to [{}] hosts[{}] input[{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
-        }
+
 //        if (input.indexOf("182716324621") != -1) {
 //            logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, input);
 //        }
