@@ -104,7 +104,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             }
             if (cmd.indexOf("77050103") != -1) {
                 //缓存心跳包
-                redisTemplate.opsForValue().set(host, arg1, 50, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(host, cmd, 50, TimeUnit.SECONDS);
             } else {
                 logger.warn("flag[{}] hostId[{}] to [{}] hosts[{}] input[{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
             }
