@@ -203,11 +203,13 @@
     $("#switch").click(function () {//on
 //        cmd = "77010315373766";
         map.x='37',map.y='37';
+        map.type = 'mesh';
         $.post("sendByProject", map , function (data) {console.log(data);});
     });
     $("#switch2").click(function () {//off
 //        cmd = "77010315323266";
         map.x='32',map.y='32';
+        map.type = 'mesh';
         $.post("sendByProject", map, function (data) {console.log(data);});
     });
     $("#accept").click(function () {
@@ -238,6 +240,7 @@
         }
         console.log(color, luminance);
         map.x = color,map.y = luminance;
+        map.type = 'mesh';
         $.post("sendByProject", map, function (data) {console.log(data);})
     };
 
