@@ -264,6 +264,7 @@
                 break;
         }
         map.sceneId = sceneId;
+        map.type = 'scene';
         $.post("sendByProject", map, function (data) {
             console.log(data);
         });

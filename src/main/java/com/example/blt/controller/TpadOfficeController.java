@@ -62,7 +62,7 @@ public class TpadOfficeController {
         String status = "success";
         if (StringUtils.isBlank(project)){
             status = "error";
-            logger.error("method: sendCmd;result project is null");
+            logger.error("method: sendCmd;result: project is null");
             return status;
         }
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
