@@ -66,7 +66,7 @@ public class RedisService {
                 cronVo.setRepetition(repetition);
                 cronVo.setCron(minute, hour, week);
                 cronVo.setCommand(getCmd(sceneId));
-                cronVo.setCronName(meshId, sceneId, minute, hour);
+                cronVo.setCronName(minute, hour);
                 voList.add(cronVo);
 //                logger.warn("cronName {}", cronVo.getCronName());
                 dynamicScheduledTask.configureTasks(cronVo);

@@ -69,29 +69,27 @@ public class StringBuildUtils {
                     ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
                     ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                     saveLight(map, false);
-                } else if (str.indexOf("77050901") != -1) {
-                    if (str.length() >= 24) {
-                        String meshId = str.substring(8, 24);
-                        char[] chars = meshId.toCharArray();
-                        StringBuffer buffer = new StringBuffer();
-                        for (int i = 0; i < chars.length; i++) {
-                            if (i % 2 != 0) {
-                                buffer.append(chars[i]);
-                            }
+                } else if (str.indexOf("77050901") != -1 && str.length() >= 24) {
+                    String meshId = str.substring(8, 24);
+                    char[] chars = meshId.toCharArray();
+                    StringBuffer buffer = new StringBuffer();
+                    for (int i = 0; i < chars.length; i++) {
+                        if (i % 2 != 0) {
+                            buffer.append(chars[i]);
                         }
-                        map.put("meshId", buffer.toString());
-                        saveUpdateHostMesh(map, false);
                     }
-                } else if (str.indexOf("77050208") != -1) {
+                    map.put("meshId", buffer.toString());
+                    saveUpdateHostMesh(map, false);
+                } else if (str.indexOf("77050208") != -1 && str.length() >= 10) {
                     String flag = str.substring(8, 10);
                     map.put("flag", flag);
                     saveUpdateHostMesh(map, false);
                 } else if (str.indexOf("77050506") != -1) {
-                    if (str.indexOf("C")==0) {
+                    if (str.indexOf("C") == 0) {
                         if (str.length() > 16) {
                             str = str.substring(str.length() - 16);
-                        }else {
-                            str=str.substring(1)+"C";
+                        } else {
+                            str = str.substring(1) + "C";
                         }
                     }
                     String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
@@ -235,37 +233,39 @@ public class StringBuildUtils {
     }
 
     public static void parseLocalCmd(String str, String host) {
-        Map map = new ConcurrentHashMap();
-        String prefix = str.substring(0, 8);
-        if (str.contains("3232")) {
-            map.put("status", 0);
-        } else {
-            map.put("status", 1);
+        if (str.length() > 8) {
+            Map map = new ConcurrentHashMap();
+            String prefix = str.substring(0, 8);
+            if (str.contains("3232")) {
+                map.put("status", 0);
+            } else {
+                map.put("status", 1);
+            }
+            map.put("host", host);
+            String cmd = str.substring(prefix.length());
+            Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
+            switch (prefix) {
+                case "77010416":
+                    map.put("ctype", "CW");
+                    map.put("x", cmd.substring(2, 4));
+                    map.put("y", cmd.substring(4, 6));
+                    map.put("cid", cid);
+                    break;
+                case "77010315":
+                    map.put("ctype", "C0");
+                    map.put("x", cmd.substring(0, 2));
+                    map.put("y", cmd.substring(2, 4));
+                    break;
+                case "77010219":
+                    map.put("ctype", "42");
+                    map.put("cid", cid);
+                    break;
+                default:
+                    break;
+            }
+            if (!map.containsKey("ctype")) return;
+            saveConsole(Topics.LOCAL_TOPIC.getTopic(), map, false);
         }
-        map.put("host", host);
-        String cmd = str.substring(prefix.length());
-        Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
-        switch (prefix) {
-            case "77010416":
-                map.put("ctype", "CW");
-                map.put("x", cmd.substring(2, 4));
-                map.put("y", cmd.substring(4, 6));
-                map.put("cid", cid);
-                break;
-            case "77010315":
-                map.put("ctype", "C0");
-                map.put("x", cmd.substring(0, 2));
-                map.put("y", cmd.substring(2, 4));
-                break;
-            case "77010219":
-                map.put("ctype", "42");
-                map.put("cid", cid);
-                break;
-            default:
-                break;
-        }
-        if (!map.containsKey("ctype")) return;
-        saveConsole(Topics.LOCAL_TOPIC.getTopic(), map, false);
     }
 
     public static void saveLight(Map map, boolean flag) {

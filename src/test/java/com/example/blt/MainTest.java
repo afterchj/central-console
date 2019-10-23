@@ -1,6 +1,5 @@
 package com.example.blt;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
@@ -61,7 +60,7 @@ public class MainTest {
                 }
                 break;
         }
-        logger.warn("cmd="+cmd.toString());
+        logger.warn("cmd=" + cmd.toString());
 
 //        HostService hostService = (HostService) SpringJpaUtil.getBean(HostService.class);
 //        logger.warn("size=" + hostService.getAll().size());
@@ -129,9 +128,9 @@ public class MainTest {
 //        String hostId = sqlSessionTemplate.selectOne("console.getHostId","81444189");
 //        System.out.println(Integer.parseInt("0A", 16));
 //        List hosts = sqlSessionTemplate.selectList("console.getHosts");
-        String host="03d167ab";
+        String host = "03d167ab";
         String host_id = sqlSessionTemplate.selectOne("console.getHost", "00d7ab1f");
-        logger.warn("host_id="+host_id);
+        logger.warn("host_id=" + host_id);
 //        hosts.remove("e1753bd4");
 //        List<String> list = sqlSessionTemplate.selectList("console.getAll");
 //        ValueOperations valueOperations = redisTemplate.opsForValue();
@@ -336,13 +335,34 @@ public class MainTest {
 
     @Test
     public void testSend() {
+        List<CronVo> list = new ArrayList<>();
+        int k = 0;
+        for (int i = 0; i < 24; i++) {
+            for (int j = 0; j < 60; j++) {
+                CronVo cronVo = new CronVo();
+                if (j % 2 == 0) {
+                    cronVo.setCommand("770103153232CCCC");
+                    cronVo.setSceneId(21);
+                } else {
+                    cronVo.setCommand("770103153737CCCC");
+                    cronVo.setSceneId(22);
+                }
+                cronVo.setCron(j, i, "SUN,MON,TUE,WED,THU,FRI,SAT");
+                cronVo.setMeshId("38628386");
+                cronVo.setRepetition(1);
+                cronVo.setItemSet(1);
+                cronVo.setCronName(i, j);
+                list.add(cronVo);
+            }
+        }
+        sqlSessionTemplate.insert("console.insertCron", list);
 //        sqlSessionTemplate.update("console.saveHostsStatus");
 //        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
 //        System.out.println(JSON.toJSONString(cronVos) + "\t" + cronVos.size());
 //        List<String> hosts = sqlSessionTemplate.selectList("console.getHostsByGid", "45642");
-        String host = sqlSessionTemplate.selectOne("console.getHostId", "d3ce299f");
-        System.out.println("flag=" + "".equals(host));
-        System.out.println("host=" + host);
+//        String host = sqlSessionTemplate.selectOne("console.getHostId", "d3ce299f");
+//        System.out.println("flag=" + "".equals(host));
+//        System.out.println("host=" + host);
 //        JSONObject object = new JSONObject();
 //        object.put("host", "master");
 //        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
@@ -364,8 +384,8 @@ public class MainTest {
 
     @Test
     public void testProperties() {
-        String str="77011465FFFFFFFF2A00000000C000373700000000CCCC";
-        System.out.println(str.substring(0,str.length() - 4));
+        String str = "77011465FFFFFFFF2A00000000C000373700000000CCCC";
+        System.out.println(str.substring(0, str.length() - 4));
         String mode = PropertiesUtil.getValue("spring.profiles.active");
         System.out.println("mode=" + mode);
     }
