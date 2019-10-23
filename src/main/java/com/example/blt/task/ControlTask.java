@@ -1,6 +1,5 @@
 package com.example.blt.task;
 
-import com.example.blt.netty.ClientMain;
 import com.example.blt.socket.EchoClient;
 
 import java.util.concurrent.Callable;
