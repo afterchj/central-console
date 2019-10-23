@@ -22,7 +22,7 @@ public class StringBuildUtilsTest {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
-
+    private static final ClientMain CLIENT_MAIN = new ClientMain();
     @Test
     public void test() {
 //        System.out.println("77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","").length());
@@ -144,9 +144,9 @@ public class StringBuildUtilsTest {
                 }
                 logger.warn("flag=" + flag);
                 if ("01".equals(flag)) {
-                    ClientMain.sendCron(Groups.GROUPSA.getOn());
+                    CLIENT_MAIN.sendCron(Groups.GROUPSA.getOn());
                 } else if ("02".equals(flag)) {
-                    ClientMain.sendCron(Groups.GROUPSA.getOff());
+                    CLIENT_MAIN.sendCron(Groups.GROUPSA.getOff());
                 }
                 map.put("ctype", prefix);
                 map.put("cid", flag);
