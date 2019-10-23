@@ -3,6 +3,7 @@ package com.example.blt.controller;
 import com.example.blt.entity.office.OfficePa;
 import com.example.blt.entity.office.OfficeWS;
 import com.example.blt.service.TpadOfficeService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +33,10 @@ public class TpadOfficeController {
 
     Logger logger = LoggerFactory.getLogger(TpadOfficeController.class);
 
+    public TpadOfficeController(TpadOfficeService tpadOfficeService) {
+        this.tpadOfficeService = tpadOfficeService;
+    }
+
     @RequestMapping("/index")
     public String index(){
         return "redirect:../dist/index.html";
@@ -54,9 +59,14 @@ public class TpadOfficeController {
     @PostMapping("/sendCmd")
     public String sendCmd(@RequestBody OfficePa office) {
         String project = office.getProject();
+        String status = "success";
+        if (StringUtils.isBlank(project)){
+            status = "error";
+            logger.error("method: sendCmd;result: project is null");
+            return status;
+        }
         Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
         String unit = (String) parameterSetting.get("unit");
-        String status = "success";
         try {
             tpadOfficeService.send(unit,office);
         } catch (Exception e) {
