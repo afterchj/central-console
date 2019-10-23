@@ -5,6 +5,8 @@ import com.example.blt.dao.TpadOfficeDao;
 import com.example.blt.entity.office.OfficePa;
 import com.example.blt.entity.office.OfficeWS;
 import com.example.blt.entity.office.TypeOperation;
+import com.example.blt.netty.ClientMain;
+import com.example.blt.socket.EchoClient;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.DimmingUtil;
@@ -31,7 +33,7 @@ import static com.example.blt.entity.office.TypeOperation.ON_OFF;
  **/
 @Service
 public class TpadOfficeService {
-
+    private static final EchoClient CLIENT_MAIN = new EchoClient();
     static Map<String, String> hexColors;
     static Map<String, String> hexLuminances;
     static Map<String, String> decimalismColors;
@@ -211,7 +213,7 @@ public class TpadOfficeService {
         Map<String, String> map = new ConcurrentHashMap<>();
         map.put("command", cmd);
         map.put("host", hostId);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
+        ControlTask task = new ControlTask(CLIENT_MAIN,JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
         if ("fail".equals(code)) {
             StringBuffer sb = new StringBuffer();

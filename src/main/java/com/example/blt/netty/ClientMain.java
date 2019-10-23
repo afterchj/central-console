@@ -19,20 +19,22 @@ public class ClientMain {
 
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
 
-    private final static String HOST = "127.0.0.1";
+//    private final static String HOST = "127.0.0.1";
+    private final static String HOST = "192.168.10.10";
     private final static int PORT = 8001;
+    private static final EventLoopGroup worker = new NioEventLoopGroup();
 
 //    private static String host = "192.168.56.1";
 //        private static String host = "192.168.16.60";
 //        private static String host = "192.168.51.97";
 //        private static String host = "119.3.49.192";
 
-//    public static void main(String[] args) throws IOException {
-////        run(AddrUtil.getIp(false));
-//        run("iotsztp.com");
-//    }
+    public static void main(String[] args) throws IOException {
+//        run(AddrUtil.getIp(false));
+        new ClientMain().run(HOST);
+    }
 
-    public static void run(String host) throws IOException {
+    public void run(String host) throws IOException {
         Channel channel = getChannel(host);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         logger.warn("请输入指令：");
@@ -47,7 +49,7 @@ public class ClientMain {
         }
     }
 
-    public static void sendCron(String str) {
+    public void sendCron(String str) {
         Channel channel = getChannel(HOST);
         //向服务端发送内容
         channel.writeAndFlush(str);
@@ -58,7 +60,7 @@ public class ClientMain {
         }
     }
 
-    public static void sendCron(String... str) {
+    public void sendCron(String... str) {
         Channel channel = getChannel(str[0]);
         //向服务端发送内容
         channel.writeAndFlush(str[1]);
@@ -70,10 +72,9 @@ public class ClientMain {
     }
 
 
-    private static Channel getChannel(String host) {
+    private Channel getChannel(String host) {
         Channel channel = null;
         //设置一个worker线程，使用
-        EventLoopGroup worker = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(worker);
         //指定所使用的 NIO 传输 Channel

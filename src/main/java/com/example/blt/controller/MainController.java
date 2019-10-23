@@ -8,9 +8,11 @@ import com.example.blt.entity.ProjectData;
 import com.example.blt.entity.TimePointParams;
 import com.example.blt.entity.TimerList;
 import com.example.blt.entity.vo.ConsoleVo;
+import com.example.blt.netty.ClientMain;
 import com.example.blt.service.BLTService;
 import com.example.blt.service.RedisService;
 import com.example.blt.service.TpadOfficeService;
+import com.example.blt.socket.EchoClient;
 import com.example.blt.task.ControlTask;
 import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.JoinCmdUtil;
@@ -37,6 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RestController
 public class MainController {
 
+    private static final EchoClient CLIENT_MAIN = new EchoClient();
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @Resource
@@ -60,7 +63,7 @@ public class MainController {
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(info);
+        ControlTask task = new ControlTask(CLIENT_MAIN,info);
         String result = ExecuteTask.sendCmd(task);
         return result;
     }
@@ -70,7 +73,7 @@ public class MainController {
         List<String> ips = blTservice.getHosts();
         String host = consoleVo.getHost();
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(info);
+        ControlTask task = new ControlTask(CLIENT_MAIN,info);
         String result = ExecuteTask.sendCmd(task);
         int index = consoleVo.getCommand().indexOf("7701011B");
         if (index != -1) {
@@ -179,7 +182,7 @@ public class MainController {
         }
         map.put("command", command);
         map.put("host", host);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
+        ControlTask task = new ControlTask(CLIENT_MAIN,JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
         if ("fail".equals(code)) {
 //            失败
@@ -266,7 +269,7 @@ public class MainController {
         }
         map.put("command", command);
         map.put("host", host);
-        ControlTask task = new ControlTask(JSON.toJSONString(map));
+        ControlTask task = new ControlTask(CLIENT_MAIN,JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
         map.put("success", success);
         logger.warn("sendScenseByMeshId result: {},host: {},command: {}", success, host, command);
@@ -283,7 +286,7 @@ public class MainController {
 //        String code1 = SocketUtil.sendCmd2(host, cmd1);
             map.put("command", commands.get(i));
             map.put("host", host);
-            ControlTask task = new ControlTask(JSON.toJSONString(map));
+            ControlTask task = new ControlTask(CLIENT_MAIN,JSON.toJSONString(map));
             String code = ExecuteTask.sendCmd(task);
             if ("fail".equals(code)) {
 //            失败

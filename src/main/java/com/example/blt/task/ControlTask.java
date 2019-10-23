@@ -1,6 +1,7 @@
 package com.example.blt.task;
 
 import com.example.blt.netty.ClientMain;
+import com.example.blt.socket.EchoClient;
 
 import java.util.concurrent.Callable;
 
@@ -10,8 +11,10 @@ import java.util.concurrent.Callable;
 public class ControlTask implements Callable<String> {
 
     private String val;
+    private EchoClient clientMain;
 
-    public ControlTask(String val) {
+    public ControlTask(EchoClient clientMain, String val) {
+        this.clientMain = clientMain;
         this.val = val;
     }
 
@@ -19,7 +22,7 @@ public class ControlTask implements Callable<String> {
     public String call() {
         String result;
         try {
-          ClientMain.sendCron(val);
+            clientMain.sendCron(val);
             result = "ok";
         } catch (Exception e) {
             result = "fail";

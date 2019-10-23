@@ -3,6 +3,7 @@ package com.example.blt.task;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.netty.ClientMain;
+import com.example.blt.socket.EchoClient;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.MapUtil;
 import com.example.blt.utils.SpringUtils;
@@ -24,6 +25,7 @@ public class ExecuteTask {
     private static Logger logger = LoggerFactory.getLogger(ExecuteTask.class);
     private static ExecutorService executorService = Executors.newCachedThreadPool();
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+    private static final EchoClient CLIENT_MAIN = new EchoClient();
 //    private staticClientMainClientMain =ClientMain();
 //    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
@@ -39,11 +41,11 @@ public class ExecuteTask {
                     JSONObject object = new JSONObject();
                     object.put("host", ip);
                     object.put("command", "7701011B66");
-                    ClientMain.sendCron(object.toJSONString());
+                    CLIENT_MAIN.sendCron(object.toJSONString());
                     if (flag) {
                         Thread.sleep(5000);
                         object.put("command", "7701012766");
-                        ClientMain.sendCron(object.toJSONString());
+                        CLIENT_MAIN.sendCron(object.toJSONString());
                     }
                 }
                 Thread.sleep(20000);
@@ -101,7 +103,7 @@ public class ExecuteTask {
             JSONObject object = new JSONObject();
             object.put("host", "all");
             object.put("command", msg);
-            ClientMain.sendCron(object.toJSONString());
+            CLIENT_MAIN.sendCron(object.toJSONString());
         }
     }
 
