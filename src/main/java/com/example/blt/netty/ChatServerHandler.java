@@ -44,7 +44,6 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         String ip = addr.substring(1, addr.indexOf(":"));
         String host = channel.id().toString();
         String master = sqlSessionTemplate.selectOne("console.getMaster", host);
-        String host_id = sqlSessionTemplate.selectOne("console.getHostId", host);
         List<String> hosts = null;
         String type = null;
         String cmd = arg1;
@@ -53,11 +52,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
             JSONObject jsonObject = JSON.parseObject(arg1);
             cmd = jsonObject.getString("command");
             to = StringUtils.isNotEmpty(jsonObject.getString("host")) ? jsonObject.getString("host") : "";
-            host_id = to;
             type = jsonObject.getString("type");
-            if (to.equals(master)) {
-                to = "master";
-            }
             StringBuildUtils.buildLightInfo(ip, to, cmd);
         } catch (Exception e) {
             StringBuildUtils.buildLightInfo(ip, host, cmd);
@@ -94,10 +89,8 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                                     }
                                 }
                             }
-                        } else if (id.equals(to) && cmd.indexOf("77050103") != -1) {
-                            if (StringUtils.isNotEmpty(host_id)) {
-                                ch.writeAndFlush(cmd);
-                            }
+                        } else if (id.equals(to)) {
+                            ch.writeAndFlush(cmd);
                         }
                     }
                 }
@@ -106,7 +99,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 //缓存心跳包
                 redisTemplate.opsForValue().set(host, cmd, 50, TimeUnit.SECONDS);
             } else {
-                logger.warn("flag[{}] hostId[{}] to [{}] hosts[{}] input[{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, cmd);
+                logger.warn("hostId[{}] to [{}] hosts[{}] input[{}]", host, to, hosts, cmd);
             }
         }
 

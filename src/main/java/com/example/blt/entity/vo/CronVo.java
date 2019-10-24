@@ -34,8 +34,8 @@ public class CronVo {
         return cronName;
     }
 
-    public void setCronName(String meshId, int sceneId,int minute,int hour) {
-        this.cronName = String.format("task_%s_%s_%s_%s", meshId, sceneId,minute,hour);
+    public void setCronName(int minute,int hour) {
+        this.cronName = String.format("task_%s_%s",minute,hour);
     }
 
     public String getCron() {

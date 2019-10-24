@@ -29,9 +29,14 @@ public class DetailTask implements Runnable {
     public void run() {
 //        logger.warn("网络id [{}] 任务名称 [{}] 执行命令 [{}]",cronVo.getMeshId(),cronVo.getCronName(),cronVo.getCommand());
         String hostId = sqlSessionTemplate.selectOne("console.getHostId", cronVo.getMeshId());
+        String master = sqlSessionTemplate.selectOne("console.getMaster", hostId);
         if (StringUtils.isNotEmpty(hostId)) {
             JSONObject object = new JSONObject();
-            object.put("host", hostId);
+            if (StringUtils.equals(hostId, master)) {
+                object.put("host", "master");
+            } else {
+                object.put("host", hostId);
+            }
             object.put("command", cronVo.getCommand());
             CLIENT_MAIN.sendCron(object.toJSONString());
         }

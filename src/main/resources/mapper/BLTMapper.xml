@@ -129,7 +129,7 @@
         SELECT host_id FROM t_host_info h
         INNER JOIN t_host_mesh s ON h.id=s.hid
         INNER JOIN t_mesh m ON m.id = s.mid
-        WHERE h.host_id=#{host} OR h.ip=#{host} OR m.mesh_id=#{host}
+        WHERE h.host_id=#{host} OR h.ip=#{host} OR m.mesh_id=#{host} LIMIT 1
     </select>
 
     <select id="getVaddr" resultType="string">
