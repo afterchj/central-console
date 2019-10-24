@@ -89,7 +89,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                                     }
                                 }
                             }
-                        } else if (id.equals(to) && cmd.indexOf("77050103") != -1) {
+                        } else if (id.equals(to)) {
                             ch.writeAndFlush(cmd);
                         }
                     }
