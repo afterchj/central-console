@@ -100,7 +100,10 @@ public class TpadOfficeService {
         return map;
     }
 
-    public Map<String, Object> getParameterSetting(String project) {
+    public Map<String, Object> getParameterSetting(String project) throws Exception {
+        if (StringUtils.isBlank(project)){
+            throw new Exception("project is null");
+        }
         return tpadOfficeDao.getParameterSetting(project);
     }
 

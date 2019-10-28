@@ -206,7 +206,7 @@ public class MainController {
             host = monitor4Dao.getHostId(project);
             if (host == null) {
                 success = "poe不在线";
-                logger.error("method:sendByMeshId;can not find hostId; project:{}", project);
+                logger.error("method:sendByProject;can not find hostId; project:{}", project);
                 map.put("success", success);
                 return map;
             }

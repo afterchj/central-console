@@ -3,7 +3,6 @@ package com.example.blt.controller;
 import com.example.blt.entity.office.OfficePa;
 import com.example.blt.entity.office.OfficeWS;
 import com.example.blt.service.TpadOfficeService;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,17 +37,24 @@ public class TpadOfficeController {
         this.tpadOfficeService = tpadOfficeService;
     }
 
-    @RequestMapping("/index")
-    public String index(){
-        return "redirect:../dist/index.html";
-    }
+//    @RequestMapping("/index")
+//    public String index(){
+//        return "redirect:../dist/index.html";
+//    }
 
     @PostMapping("/get")
     public Map<String, Object> get(@Valid @RequestBody OfficePa office) {
         Map<String, Object> map = new ConcurrentHashMap<>();
         String project = office.getProject();
-        Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
-        Map<String,Object> parameterSettings = tpadOfficeService.getUnits(parameterSetting);
+        Map<String,Object> parameterSetting;
+        Map<String,Object> parameterSettings = new HashMap<>();
+        try {
+            parameterSetting = tpadOfficeService.getParameterSetting(project);
+            parameterSettings = tpadOfficeService.getUnits(parameterSetting);
+        } catch (Exception e) {
+            Object[] errorArr = {this.getClass().getSimpleName(),Thread.currentThread().getStackTrace()[1].getMethodName(),e.getMessage()};
+            logger.error("controller:[{}],method:[{}],result:[{}]",errorArr);
+        }
         map.put("data",parameterSettings);
         return map;
     }
@@ -60,14 +67,9 @@ public class TpadOfficeController {
     public String sendCmd(@RequestBody OfficePa office) {
         String project = office.getProject();
         String status = "success";
-        if (StringUtils.isBlank(project)){
-            status = "error";
-            logger.error("method: sendCmd;result: project is null");
-            return status;
-        }
-        Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
-        String unit = (String) parameterSetting.get("unit");
         try {
+            Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
+            String unit = (String) parameterSetting.get("unit");
             tpadOfficeService.send(unit,office);
         } catch (Exception e) {
             status = "error";
@@ -79,9 +81,9 @@ public class TpadOfficeController {
     @PostMapping("/analysisWs")
     public Map<String,Integer> analysisWs(@RequestBody OfficeWS officeWS){
         String project = officeWS.getProject();
-        Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
-        Map<String, Integer> map = null;
+        Map<String, Integer> map = new HashMap<>();
         try {
+            Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
             map = tpadOfficeService.analysisWsAndStorageStatus(parameterSetting,officeWS);
         } catch (Exception e) {
             logger.error("method: analysisWs;result {}",e.getMessage());
