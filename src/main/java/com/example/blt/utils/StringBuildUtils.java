@@ -71,15 +71,17 @@ public class StringBuildUtils {
                     saveLight(map, false);
                 } else if (str.indexOf("77050901") != -1 && str.length() >= 24) {
                     String meshId = str.substring(8, 24);
-                    char[] chars = meshId.toCharArray();
-                    StringBuffer buffer = new StringBuffer();
-                    for (int i = 0; i < chars.length; i++) {
-                        if (i % 2 != 0) {
-                            buffer.append(chars[i]);
+                    if (!"00000000".equals(meshId)) {
+                        char[] chars = meshId.toCharArray();
+                        StringBuffer buffer = new StringBuffer();
+                        for (int i = 0; i < chars.length; i++) {
+                            if (i % 2 != 0) {
+                                buffer.append(chars[i]);
+                            }
                         }
+                        map.put("meshId", buffer.toString());
+                        saveUpdateHostMesh(map, false);
                     }
-                    map.put("meshId", buffer.toString());
-                    saveUpdateHostMesh(map, false);
                 } else if (str.indexOf("77050208") != -1 && str.length() >= 10) {
                     String flag = str.substring(8, 10);
                     map.put("flag", flag);
