@@ -62,7 +62,7 @@ public class MainController {
     @RequestMapping("/switch")
     public String console(ConsoleVo consoleVo) {
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(CLIENT_MAIN,info);
+        ControlTask task = new ControlTask(CLIENT_MAIN, info);
         String result = ExecuteTask.sendCmd(task);
         return result;
     }
@@ -72,7 +72,7 @@ public class MainController {
         List<String> ips = blTservice.getHosts();
         String host = consoleVo.getHost();
         String info = JSON.toJSONString(consoleVo);
-        ControlTask task = new ControlTask(CLIENT_MAIN,info);
+        ControlTask task = new ControlTask(CLIENT_MAIN, info);
         String result = ExecuteTask.sendCmd(task);
         int index = consoleVo.getCommand().indexOf("7701011B");
         if (index != -1) {
@@ -175,13 +175,13 @@ public class MainController {
         Map<String, String> map = new HashMap<>();
         String success = "success";
         host = monitor4Dao.getHostId(host);
-        if (host == null){
+        if (host == null) {
             success = "error";
-            logger.error("method:sendByMeshId,not find hostId, project:{},command:{}",host,command);
+            logger.error("method:sendByMeshId,not find hostId, project:{},command:{}", host, command);
         }
         map.put("command", command);
         map.put("host", host);
-        ControlTask task = new ControlTask(CLIENT_MAIN,JSON.toJSONString(map));
+        ControlTask task = new ControlTask(CLIENT_MAIN, JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
         if ("fail".equals(code)) {
 //            失败
@@ -194,31 +194,31 @@ public class MainController {
 
     @RequestMapping(value = "/sendByProject", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> sendByProject(String project,Integer groupId,String x,String y,String type,Integer sceneId) {
+    public Map<String, String> sendByProject(String project, Integer groupId, String x, String y, String type, Integer sceneId) {
         Map<String, String> map = new HashMap<>();
-        Map<String,String> onOffMap;
+        Map<String, String> onOffMap;
         String host;
         String command = null;
         String success = "success";
-        if ("all".equals(project)){//全控
+        if ("all".equals(project)) {//全控
             host = "all";
-        }else {
+        } else {
             host = monitor4Dao.getHostId(project);
-            if (host == null){
+            if (host == null) {
                 success = "poe不在线";
-                logger.error("method:sendByMeshId;can not find hostId; project:{}",project);
+                logger.error("method:sendByMeshId;can not find hostId; project:{}", project);
                 map.put("success", success);
                 return map;
             }
         }
         try {
-            if (StringUtils.isNotBlank(x)){
-                onOffMap = tpadOfficeService.changeXY(x,y);
+            if (StringUtils.isNotBlank(x)) {
+                onOffMap = tpadOfficeService.changeXY(x, y);
                 x = onOffMap.get("x");
                 y = onOffMap.get("y");
             }
-            command = JoinCmdUtil.joinNewCmd(type,x,y,groupId,sceneId);
-            tpadOfficeService.send(host,command);
+            command = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
+            tpadOfficeService.send(host, command);
         } catch (Exception e) {
             success = e.getMessage();
         }
@@ -234,9 +234,9 @@ public class MainController {
         Map<String, String> map = new HashMap<>();
         String success = "success";
         host = monitor4Dao.getHostId(host);
-        if (host == null){
+        if (host == null) {
             success = "error";
-            logger.error("method:sendByMeshId,not find hostId, project:{},command:{}",host,command);
+            logger.error("method:sendByMeshId,not find hostId, project:{},command:{}", host, command);
         }
         if (command.equals("场景一")) {
             command = "7701021901";
@@ -267,7 +267,7 @@ public class MainController {
         }
         map.put("command", command);
         map.put("host", host);
-        ControlTask task = new ControlTask(CLIENT_MAIN,JSON.toJSONString(map));
+        ControlTask task = new ControlTask(CLIENT_MAIN, JSON.toJSONString(map));
         ExecuteTask.sendCmd(task);
         map.put("success", success);
         logger.warn("sendScenseByMeshId result: {},host: {},command: {}", success, host, command);
@@ -284,7 +284,7 @@ public class MainController {
 //        String code1 = SocketUtil.sendCmd2(host, cmd1);
             map.put("command", commands.get(i));
             map.put("host", host);
-            ControlTask task = new ControlTask(CLIENT_MAIN,JSON.toJSONString(map));
+            ControlTask task = new ControlTask(CLIENT_MAIN, JSON.toJSONString(map));
             String code = ExecuteTask.sendCmd(task);
             if ("fail".equals(code)) {
 //            失败
@@ -336,11 +336,11 @@ public class MainController {
 //    }
 
 
-    @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
-    public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
+    @RequestMapping(value = "/uploadDataFromAlink2", method = RequestMethod.POST)
+    public Map<String, String> uploadDataFromAlink2(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         String params = request.getParameter("params");
-//        logger.error("params********************"+params);
+//        logger.warn("params********************"+params);
         JSONObject jsonObjectParams = JSONObject.parseObject(params);
         String uid = String.valueOf(jsonObjectParams.get("uid"));
         String time = String.valueOf(jsonObjectParams.get("time"));
@@ -426,6 +426,67 @@ public class MainController {
             }
             map.put("result", "000");
         } catch (Exception e) {
+            map.put("result", "200");
+            logger.warn("error********************" + e);
+        }
+        return map;
+    }
+
+
+
+    @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
+    public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            List cronList = new ArrayList();
+            Map<String, Object> map2 = new ConcurrentHashMap<>();
+            map2.put("meshId", "38628386");
+            int countTmesh = monitor4Dao.findTMesh("38628386");
+            if (countTmesh == 0) {
+                monitor4Dao.insertTMesh("38628386", "38628386");
+            }
+            map2.put("tid", 1);
+            int count = monitor4Dao.findTimeLine(map2);
+            if (count != 0) {
+                Map<String, Object> map3 = new ConcurrentHashMap<>();
+                map3.put("meshId", map2.get("meshId"));
+                map3.put("tid", 1);
+                sqlSessionTemplate.delete("console.deleteTimerData", map3);
+            }
+            map2.put("ischoose", 0);
+            map2.put("item_set", 1);
+            map2.put("item_desc", "重复,周日,周一,周二,周三,周四,周五,周六");
+            map2.put("week", "重复,周日,周一,周二,周三,周四,周五,周六");
+            map2.put("dayObj", "{\"tus\": 0,\"loop\": 1,\"sat\": 0,\"wed\": 0,\"fri\": 0,\"mon\": 1,\"sun\": 0,\"thr\": 0}");
+            map2.put("tname", "Timeline_00");
+            map2.put("repetition", "1");
+            map2.put("item_tag", 0);
+            monitor4Dao.insertTimeLine(map2);
+            for (int i = 0; i < 24; i++) {
+                for (int j = 0; j < 60; j++) {
+                    Map cron = new HashMap();
+                    Integer sceneId;
+                    if (j % 2 == 0) {
+                        sceneId = 21;
+                    } else {
+                        sceneId = 22;
+                    }
+                    map2.put("hour", i);
+                    map2.put("minute", j);
+                    map2.put("sceneId", sceneId);
+                    map2.put("lightStatus", 0);
+                    cron.putAll(map2);
+                    cronList.add(cron);
+                    monitor4Dao.insertTimePoint(map2);
+                }
+            }
+            if(cronList.size()!=0) {
+                Map<String, String> cronMap = new HashMap<>();
+                cronMap.put("cron", JSONObject.toJSONString(cronList));
+                redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
+            }
+            map.put("result", "000");
+        }catch (Exception e) {
             map.put("result", "200");
             logger.warn("error********************" + e);
         }
