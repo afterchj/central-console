@@ -2,6 +2,7 @@ package com.example.blt.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.entity.dd.CommandDict;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.task.DynamicScheduledTask;
 import org.apache.commons.lang.StringUtils;
@@ -118,13 +119,13 @@ public class RedisService {
         String command;
         switch (sceneId) {
             case 21:
-                command = "770103153232CCCC";
+                command = CommandDict.MESH_OFF.getCmd();
                 break;
             case 22:
-                command = "770103153737CCCC";
+                command = CommandDict.MESH_ON.getCmd();
                 break;
             default:
-                StringBuilder cmd = new StringBuilder("77010219");
+                StringBuilder cmd = new StringBuilder(CommandDict.SCENE.getCmd());
                 String strHex = Integer.toHexString(sceneId).toUpperCase();
                 if (strHex.length() == 1) {
                     cmd.append("0" + sceneId);
