@@ -336,8 +336,8 @@ public class MainController {
 //    }
 
 
-    @RequestMapping(value = "/uploadDataFromAlink2", method = RequestMethod.POST)
-    public Map<String, String> uploadDataFromAlink2(HttpServletRequest request) {
+    @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
+    public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         String params = request.getParameter("params");
 //        logger.warn("params********************"+params);
@@ -434,8 +434,8 @@ public class MainController {
 
 
 
-    @RequestMapping(value = "/uploadDataFromAlink", method = RequestMethod.POST)
-    public Map<String, String> uploadDataFromAlink(HttpServletRequest request) {
+    @RequestMapping(value = "/uploadDataFromAlink2", method = RequestMethod.POST)
+    public Map<String, String> uploadDataFromAlink2(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         try {
             List cronList = new ArrayList();
