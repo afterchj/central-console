@@ -139,7 +139,9 @@ public class ControlCenterController {
     public Map<String, Object> getPanels(String meshId) {
         Map<String, Object> panelMap = new HashMap<>();
         List<ControlHost> controlHosts = controlCenterService.getPanels(meshId);
+        ControlHost meshAndPOEStatus = controlCenterService.getMeshAndPOEStatus(controlHosts.get(0),meshId);
         panelMap.put("controlHosts", controlHosts);
+        panelMap.put("meshAndPOEStatus", meshAndPOEStatus);
         panelMap.put("meshId", meshId);
         return panelMap;
     }

@@ -18,6 +18,24 @@ public class ControlHost {
     private String state;
     private String productType;
     private String otaVersion;
+    private String pState;
+    private String mState;
+
+    public String getpState() {
+        return pState;
+    }
+
+    public void setpState(String pState) {
+        this.pState = pState;
+    }
+
+    public String getmState() {
+        return mState;
+    }
+
+    public void setmState(String mState) {
+        this.mState = mState;
+    }
 
     public String getOtaVersion() {
         return otaVersion;

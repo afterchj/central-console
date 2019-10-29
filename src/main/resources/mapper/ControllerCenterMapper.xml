@@ -30,7 +30,8 @@
             if( name is null or name='', mac ,name) AS pname,
             mac,
             product_type as productType,
-            ota_version as otaVersion
+            ota_version as otaVersion,
+            #{meshId} as meshId
         FROM
             t_host_info
         WHERE
@@ -38,7 +39,7 @@
             (SELECT hm.hid FROM t_host_mesh hm,t_mesh m WHERE m.id = hm.mid AND m.mesh_id = #{meshId})
     </select>
 
-    <select id="getMeshState" resultType="map">
+    <select id="getPOEState" resultType="map">
         SELECT
             hi.is_master as master,
             hi.status

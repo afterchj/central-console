@@ -94,7 +94,7 @@ public interface ControlCenterDao {
     @Delete("TRUNCATE TABLE t_cron")
     void reSetCron();
 
-    List<Map<String,Object>> getMeshState(@Param("meshId")String meshId);
+    List<Map<String,Object>> getPOEState(@Param("meshId")String meshId);
 
     @Delete("delete FROM t_mesh_group where gid=#{gid}")
     void deleteMeshGroupByGid(@Param("gid") Integer id);
@@ -113,4 +113,7 @@ public interface ControlCenterDao {
 
     @Select("select count(*) from t_group")
     Integer getGroupCount();
+
+    @Select("select flag from t_mesh where mesh_id=#{meshId}")
+    String getMeshState(String meshId);
 }
