@@ -5,7 +5,6 @@ import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.vo.CronVo;
 import com.example.blt.utils.ConsoleUtil;
-import com.example.blt.utils.PropertiesUtil;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
 import org.junit.Test;
@@ -384,9 +383,15 @@ public class MainTest {
 
     @Test
     public void testProperties() {
-        String str = "77011465FFFFFFFF2A00000000C000373700000000CCCC";
-        System.out.println(str.substring(0, str.length() - 4));
-        String mode = PropertiesUtil.getValue("spring.profiles.active");
-        System.out.println("mode=" + mode);
+//        String str = "77011465FFFFFFFF2A00000000C000373700000000CCCC";
+//        System.out.println(str.substring(0, str.length() - 4));
+//        String mode = PropertiesUtil.getValue("spring.profiles.active");
+//        System.out.println("mode=" + mode);
+
+        String msg = "770509010909050901020304CCCC770505060B1A010CCCCC770507051900FF7FC5ECCCCC";
+        String[] array = msg.split("CCCC");
+        for (String str : array) {
+            logger.warn("str=" + str);
+        }
     }
 }
