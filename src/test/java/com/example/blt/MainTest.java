@@ -394,4 +394,22 @@ public class MainTest {
             logger.warn("str=" + str);
         }
     }
+
+    @Test
+    public void testArray() {
+        String msg = "770507051900FF7FC5ECCCCC770509010909050901020304CCCC770505060B1A010CCCCC";
+        String[] array = msg.split("CCCC");
+        for (String str : array) {
+            logger.warn("str=" + str);
+        }
+        String mesh = "C770509010909050901020304".substring(9, 25);
+        char[] chars = mesh.toCharArray();
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < chars.length; i++) {
+            if (i % 2 != 0) {
+                buffer.append(chars[i]);
+            }
+        }
+        System.out.println("770509010909050901020304".indexOf("77050901")+"\t"+buffer.toString());
+    }
 }

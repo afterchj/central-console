@@ -35,6 +35,7 @@ public class StringBuildUtils {
                     }
                 }
                 for (String str : array) {
+                    int meshIndex = str.indexOf("77050901");
                     Map map = new HashMap();
                     map.put("ip", ip);
                     map.put("host", host);
@@ -70,8 +71,11 @@ public class StringBuildUtils {
                         ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
                         ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                         saveLight(map, false);
-                    } else if (str.indexOf("77050901") != -1 && str.length() >= 24) {
+                    } else if (meshIndex != -1 && str.length() >= 24) {
                         String mesh = str.substring(8, 24);
+                        if (meshIndex==1){
+                            mesh = str.substring(9, 25);
+                        }
                         char[] chars = mesh.toCharArray();
                         StringBuffer buffer = new StringBuffer();
                         for (int i = 0; i < chars.length; i++) {
@@ -83,6 +87,8 @@ public class StringBuildUtils {
                         if (!meshId.equals("00000000")) {
                             map.put("meshId", buffer.toString());
                             saveUpdateHostMesh(map, false);
+                        } else {
+                            logger.warn("msg[{}]", msg);
                         }
                     } else if (str.indexOf("77050208") != -1 && str.length() >= 10) {
                         String flag = str.substring(8, 10);
