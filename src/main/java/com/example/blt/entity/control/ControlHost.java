@@ -20,6 +20,15 @@ public class ControlHost {
     private String otaVersion;
     private String pState;
     private String mState;
+    private int pCount;
+
+    public int getpCount() {
+        return pCount;
+    }
+
+    public void setpCount(int pCount) {
+        this.pCount = pCount;
+    }
 
     public String getpState() {
         return pState;

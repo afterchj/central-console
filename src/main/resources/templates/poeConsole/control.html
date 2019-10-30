@@ -133,6 +133,7 @@
                                     <span th:text="${controlMaster.pNum}"></span>
                                     <span class="am-text-xs" th:if="${controlMaster.pState!=null}"
                                           th:text="${controlMaster.pState}"></span>
+                                    <span class="am-text-xs" th:if="${controlMaster.pState==null}"></span>
                                     <span class="area p-a tool panel-show-msg">
                                         <img th:src="@{/static/poeConsole/img/open.png}" alt="" class="" >
                                     </span>

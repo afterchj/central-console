@@ -218,8 +218,11 @@ $(function () {
                 if (controlHosts.length > 0) {
                     // console.log("meshAndPOEStatus",data.meshAndPOEStatus);
                     // console.log("meshId",data.meshAndPOEStatus.meshId);
-                    thisMesh.prev().text(data.meshAndPOEStatus.pState);//面板数量状态实时更新
-                    thisMesh.parent().prev().text(data.meshAndPOEStatus.mState);//网络状态实时更新
+                    $(thisMesh).prev().text(data.meshAndPOEStatus.pState);//面板数量状态实时更新
+                    $(thisMesh).parent().prev().text(data.meshAndPOEStatus.mState);//网络状态实时更新
+                    console.log($(thisMesh).prev().prev().text(),data.meshAndPOEStatus.pCount);
+                    $(thisMesh).prev().prev().text(data.meshAndPOEStatus.pCount);
+
                     var rows = controlHosts.length + 1;
                     tr += '<tr class="am-text-xs panel-show-detail"><th rowspan="' + rows + '" ></th><th class="d-panel-msg ">面板名称</th> <th class="d-panel-msg ">面板MAC</th><th class="d-panel-msg ">版本型号</th><th class="d-panel-msg ">面板状态</th>';
                     tr += '<th rowspan="' + rows + '"></th>';

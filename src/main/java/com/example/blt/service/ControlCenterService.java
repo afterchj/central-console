@@ -131,7 +131,7 @@ public class ControlCenterService {
                 if (pOffCount == POEStatesSize) {//网路下所有poe离线
                     mState = "网络离线";
                     pState = "（离线）";
-                } else if (pOffCount < POEStatesSize) {//网络下部分poe离线
+                } else if (pOffCount>0 && (pOffCount < POEStatesSize)) {//网络下部分poe离线
                     pState = "（存在异常）";
                 }
             }
@@ -215,13 +215,14 @@ public class ControlCenterService {
         long offPOECount = controlHosts.stream().filter(controlHost -> controlHost.getState().equals("离线")).count();
         int count = controlHosts.size();
         if (count > 0) {//设置网络状态
+            controlHosts.get(0).setmState("网络在线");
             if (offPOECount == count) {
                 controlHosts.get(0).setpState("（离线）");
                 controlHosts.get(0).setmState("网络离线");
-            } else if (offPOECount < count) {
+            } else if (offPOECount > 0 && (offPOECount < count)) {
                 controlHosts.get(0).setpState("（存在异常）");
-                controlHosts.get(0).setmState("网络在线");
             }
+            controlHosts.get(0).setpCount(count);
         }
         for (ControlHost controlHost : controlHosts) {
             productType = controlHost.getProductType();
