@@ -153,7 +153,7 @@ public class StringBuildUtils {
             str += "C";
         }
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < str.length(); i += 2) {
+        for (int i = 0; i < str.length() - 1; i += 2) {
             String temp = String.valueOf(Integer.parseInt(str.substring(i, i + 2), 16));
             if (temp.length() == 1) {
                 builder.append("0");
@@ -314,7 +314,7 @@ public class StringBuildUtils {
         sqlSessionTemplate.insert("console.saveUpdateHosts", map);
     }
 
-    public static void main(String[] args) {
-        buildLightInfo("127.0.0.1", "1234asdads", "770509010909050901020304CCCC770505060B1A010CCCCC770507051900FF7FC5ECCCCC");
-    }
+//    public static void main(String[] args) {
+//        buildLightInfo("127.0.0.1", "1234asdads", "770509010909050901020304CCCC770505060B1A010CCCCC770507051900FF7FC5ECCCCC");
+//    }
 }
