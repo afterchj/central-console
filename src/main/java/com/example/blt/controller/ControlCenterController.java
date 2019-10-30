@@ -1,5 +1,6 @@
 package com.example.blt.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.ControlHost;
@@ -9,7 +10,12 @@ import com.example.blt.entity.control.MeshList;
 import com.example.blt.entity.office.CmdJoin;
 import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.TpadOfficeService;
+import com.example.blt.socket.EchoClient;
+import com.example.blt.task.ControlTask;
+import com.example.blt.task.ExecuteTask;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program: central-console
@@ -32,11 +39,15 @@ import java.util.Map;
 @RequestMapping("/control")
 public class ControlCenterController {
 
+    private static final EchoClient CLIENT_MAIN = new EchoClient();
+
     @Resource
     private ControlCenterService controlCenterService;
 
     @Resource
     private TpadOfficeService tpadOfficeService;
+
+    Logger logger = LoggerFactory.getLogger(ControlCenterController.class);
 
     /**
      * 跳转到login.html
@@ -225,13 +236,35 @@ public class ControlCenterController {
             controlCenterService.reSet();
         } else {
             String[] cmdArr = {CmdJoin.CMD_INQUIRY_MESHID.getKey(), CmdJoin.CMD_INQUIRY_MAC.getKey(), CmdJoin.CMD_INQUIRY_VERSION.getKey()};
-            try {
-                recursiveSendCmd(host,cmdArr);
-            } catch (Exception e) {
-                msg = "error";
-            }
+//            try {
+
+//                tpadOfficeService.send(host,cmdArr[0]);
+//                tpadOfficeService.send(host,cmdArr[1]);
+//                tpadOfficeService.send(host,cmdArr[2]);
+                send(host,cmdArr[0]);
+            logger.warn("method:[reSet] host:[all] cmd:[{}]",cmdArr[0]);
+                send(host,cmdArr[1]);
+            logger.warn("method:[reSet] host:[all] cmd:[{}]",cmdArr[1]);
+                send(host,cmdArr[2]);
+            logger.warn("method:[reSet] host:[all] cmd:[{}]",cmdArr[2]);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                recursiveSendCmd(host,cmdArr);
+//            } catch (Exception e) {
+//                msg = "error";
+//            }
         }
         return msg;
+    }
+
+    public void send(String hostId, String cmd){
+        Map<String, String> map = new ConcurrentHashMap<>();
+        map.put("command", cmd);
+        map.put("host", hostId);
+        ControlTask task = new ControlTask(CLIENT_MAIN, JSON.toJSONString(map));
+        ExecuteTask.sendCmd(task);
     }
 
     private void recursiveSendCmd(String host,String...cmdArr) throws Exception {
