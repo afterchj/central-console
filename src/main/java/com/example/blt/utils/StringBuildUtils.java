@@ -71,15 +71,16 @@ public class StringBuildUtils {
                         ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
                         saveLight(map, false);
                     } else if (str.indexOf("77050901") != -1 && str.length() >= 24) {
-                        String meshId = str.substring(8, 24);
-                        if (!"00000000".equals(meshId)) {
-                            char[] chars = meshId.toCharArray();
-                            StringBuffer buffer = new StringBuffer();
-                            for (int i = 0; i < chars.length; i++) {
-                                if (i % 2 != 0) {
-                                    buffer.append(chars[i]);
-                                }
+                        String mesh = str.substring(8, 24);
+                        char[] chars = mesh.toCharArray();
+                        StringBuffer buffer = new StringBuffer();
+                        for (int i = 0; i < chars.length; i++) {
+                            if (i % 2 != 0) {
+                                buffer.append(chars[i]);
                             }
+                        }
+                        String meshId = buffer.toString();
+                        if (!meshId.equals("00000000")) {
                             map.put("meshId", buffer.toString());
                             saveUpdateHostMesh(map, false);
                         }
