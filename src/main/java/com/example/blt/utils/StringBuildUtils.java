@@ -25,93 +25,97 @@ public class StringBuildUtils {
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
 
     public static void buildLightInfo(String ip, String host, String msg) {
-        if (msg.indexOf("CCCC") != -1) {
-            String[] array = msg.split("CCCC");
-            if (array.length == 1) {
-                String format = array[0];
-                if (format.length() >= 42) {
-                    tempFormat(format, host);
-                }
-            }
-            for (String str : array) {
-                Map map = new HashMap();
-                map.put("ip", ip);
-                map.put("host", host);
-                map.put("status", 1);
-                if (str.indexOf("77011365") != -1 && str.length() >= 32) {
-                    ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
-                    String vaddr = str.substring(18, 26);
-                    vaddrSet.add(vaddr);
-                    ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
+       try {
+           if (msg.indexOf("CCCC") != -1) {
+               String[] array = msg.split("CCCC");
+               if (array.length == 1) {
+                   String format = array[0];
+                   if (format.length() >= 42) {
+                       tempFormat(format, host);
+                   }
+               }
+               for (String str : array) {
+                   Map map = new HashMap();
+                   map.put("ip", ip);
+                   map.put("host", host);
+                   map.put("status", 1);
+                   if (str.indexOf("77011365") != -1 && str.length() >= 32) {
+                       ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
+                       String vaddr = str.substring(18, 26);
+                       vaddrSet.add(vaddr);
+                       ConsoleUtil.saveVaddr(ConsoleKeys.VADDR.getValue(), vaddrSet, 10);
 //                ConsoleUtil.saveLight(ConsoleKeys.LINFO.getValue(), ConsoleKeys.VADDR.getValue(), ip, vaddrSet);
-                    String x = str.substring(28, 30);
-                    String y = str.substring(30, 32);
-                    if (str.contains("3232")) {
-                        map.put("status", 0);
-                    } else {
-                        map.put("status", 1);
-                    }
-                    map.put("vaddr", vaddr);
-                    map.put("x", x);
-                    map.put("y", y);
-                    saveLight(map, false);
-                } else if (str.indexOf("77011366") != -1 && str.length() >= 44) {
-                    ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
-                    ipSet.add(host);
-                    String lmac = str.substring(16, 28);
-                    String vaddr = str.substring(28, 36);
-                    String productId = str.substring(36, 44);
-                    map.put("vaddr", vaddr);
-                    map.put("product_id", productId);
-                    String mac = sortMac(lmac);
-                    map.put("lmac", mac);
-                    lmacSet.add(mac);
-                    ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
-                    ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
-                    saveLight(map, false);
-                } else if (str.indexOf("77050901") != -1 && str.length() >= 24) {
-                    String meshId = str.substring(8, 24);
-                    if (!"00000000".equals(meshId)) {
-                        char[] chars = meshId.toCharArray();
-                        StringBuffer buffer = new StringBuffer();
-                        for (int i = 0; i < chars.length; i++) {
-                            if (i % 2 != 0) {
-                                buffer.append(chars[i]);
-                            }
-                        }
-                        map.put("meshId", buffer.toString());
-                        saveUpdateHostMesh(map, false);
-                    }
-                } else if (str.indexOf("77050208") != -1 && str.length() >= 10) {
-                    String flag = str.substring(8, 10);
-                    map.put("flag", flag);
-                    saveUpdateHostMesh(map, false);
-                } else if (str.indexOf("77050506") != -1) {
-                    if (str.indexOf("C") == 0) {
-                        if (str.length() > 16) {
-                            str = str.substring(str.length() - 16);
-                        } else {
-                            str = str.substring(1) + "C";
-                        }
-                    }
-                    String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
-                    int product = Integer.parseInt(temp, 16);
-                    String version = parseHixToStr(str.substring(12));
-                    map.put("type", product);
-                    map.put("version", version);
-                    saveUpdateHostMesh(map, false);
-                } else if (str.indexOf("77050705") != -1) {
-                    while (str.length() < 20) {
-                        str += "C";
-                    }
-                    String mac = StringBuildUtils.sortMac(str.substring(8));
-                    map.put("mac", mac);
-                    saveUpdateHostMesh(map, false);
-                }
-            }
-        } else {
-            parseLocalCmd(msg, host);
-        }
+                       String x = str.substring(28, 30);
+                       String y = str.substring(30, 32);
+                       if (str.contains("3232")) {
+                           map.put("status", 0);
+                       } else {
+                           map.put("status", 1);
+                       }
+                       map.put("vaddr", vaddr);
+                       map.put("x", x);
+                       map.put("y", y);
+                       saveLight(map, false);
+                   } else if (str.indexOf("77011366") != -1 && str.length() >= 44) {
+                       ConsoleUtil.cleanSet(lmacSet, vaddrSet, ipSet);
+                       ipSet.add(host);
+                       String lmac = str.substring(16, 28);
+                       String vaddr = str.substring(28, 36);
+                       String productId = str.substring(36, 44);
+                       map.put("vaddr", vaddr);
+                       map.put("product_id", productId);
+                       String mac = sortMac(lmac);
+                       map.put("lmac", mac);
+                       lmacSet.add(mac);
+                       ConsoleUtil.saveLmac(ConsoleKeys.lMAC.getValue(), lmacSet, 10);
+                       ConsoleUtil.saveHost(ConsoleKeys.HOSTS.getValue(), ipSet, 10);
+                       saveLight(map, false);
+                   } else if (str.indexOf("77050901") != -1 && str.length() >= 24) {
+                       String meshId = str.substring(8, 24);
+                       if (!"00000000".equals(meshId)) {
+                           char[] chars = meshId.toCharArray();
+                           StringBuffer buffer = new StringBuffer();
+                           for (int i = 0; i < chars.length; i++) {
+                               if (i % 2 != 0) {
+                                   buffer.append(chars[i]);
+                               }
+                           }
+                           map.put("meshId", buffer.toString());
+                           saveUpdateHostMesh(map, false);
+                       }
+                   } else if (str.indexOf("77050208") != -1 && str.length() >= 10) {
+                       String flag = str.substring(8, 10);
+                       map.put("flag", flag);
+                       saveUpdateHostMesh(map, false);
+                   } else if (str.indexOf("77050506") != -1) {
+                       if (str.indexOf("C") == 0) {
+                           if (str.length() > 16) {
+                               str = str.substring(str.length() - 16);
+                           } else {
+                               str = str.substring(1) + "C";
+                           }
+                       }
+                       String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
+                       int product = Integer.parseInt(temp, 16);
+                       String version = parseHixToStr(str.substring(12));
+                       map.put("type", product);
+                       map.put("version", version);
+                       saveUpdateHostMesh(map, false);
+                   } else if (str.indexOf("77050705") != -1) {
+                       while (str.length() < 20) {
+                           str += "C";
+                       }
+                       String mac = StringBuildUtils.sortMac(str.substring(8));
+                       map.put("mac", mac);
+                       saveUpdateHostMesh(map, false);
+                   }
+               }
+           } else {
+               parseLocalCmd(msg, host);
+           }
+       }catch (Exception e){
+           logger.warn("params{} error{}",msg,e.getMessage());
+       }
     }
 
     public static String buildMac(String str) {
@@ -235,38 +239,42 @@ public class StringBuildUtils {
     }
 
     public static void parseLocalCmd(String str, String host) {
-        if (str.length() > 8) {
-            Map map = new ConcurrentHashMap();
-            String prefix = str.substring(0, 8);
-            if (str.contains("3232")) {
-                map.put("status", 0);
-            } else {
-                map.put("status", 1);
+        try {
+            if (str.length() > 8) {
+                Map map = new ConcurrentHashMap();
+                String prefix = str.substring(0, 8);
+                if (str.contains("3232")) {
+                    map.put("status", 0);
+                } else {
+                    map.put("status", 1);
+                }
+                map.put("host", host);
+                String cmd = str.substring(prefix.length());
+                Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
+                switch (prefix) {
+                    case "77010416":
+                        map.put("ctype", "CW");
+                        map.put("x", cmd.substring(2, 4));
+                        map.put("y", cmd.substring(4, 6));
+                        map.put("cid", cid);
+                        break;
+                    case "77010315":
+                        map.put("ctype", "C0");
+                        map.put("x", cmd.substring(0, 2));
+                        map.put("y", cmd.substring(2, 4));
+                        break;
+                    case "77010219":
+                        map.put("ctype", "42");
+                        map.put("cid", cid);
+                        break;
+                    default:
+                        break;
+                }
+                if (!map.containsKey("ctype")) return;
+                saveConsole(Topics.LOCAL_TOPIC.getTopic(), map, false);
             }
-            map.put("host", host);
-            String cmd = str.substring(prefix.length());
-            Integer cid = Integer.parseInt(cmd.substring(0, 2), 16);
-            switch (prefix) {
-                case "77010416":
-                    map.put("ctype", "CW");
-                    map.put("x", cmd.substring(2, 4));
-                    map.put("y", cmd.substring(4, 6));
-                    map.put("cid", cid);
-                    break;
-                case "77010315":
-                    map.put("ctype", "C0");
-                    map.put("x", cmd.substring(0, 2));
-                    map.put("y", cmd.substring(2, 4));
-                    break;
-                case "77010219":
-                    map.put("ctype", "42");
-                    map.put("cid", cid);
-                    break;
-                default:
-                    break;
-            }
-            if (!map.containsKey("ctype")) return;
-            saveConsole(Topics.LOCAL_TOPIC.getTopic(), map, false);
+        }catch (Exception e){
+            logger.warn("params{} error{}",str,e.getMessage());
         }
     }
 
