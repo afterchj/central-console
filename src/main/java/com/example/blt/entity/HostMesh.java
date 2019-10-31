@@ -13,7 +13,7 @@ public class HostMesh implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 32)
+    @Column(unique = true, length = 32)
     private Integer hid;
     private Integer mid;
 }
