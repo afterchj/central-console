@@ -73,6 +73,7 @@ public class TpadOfficeController {
             tpadOfficeService.send(unit,office);
         } catch (Exception e) {
             status = "error";
+            status = e.getMessage();
             logger.error("method: sendCmd;result {}",e.getMessage());
         }
         return status;

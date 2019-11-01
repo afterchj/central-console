@@ -51,6 +51,7 @@ public class ControlCenterController {
 
     /**
      * 跳转到login.html
+     *
      * @return
      */
     @RequestMapping("/login")
@@ -60,6 +61,7 @@ public class ControlCenterController {
 
     /**
      * 点击登录
+     *
      * @param request  session
      * @param username 用户名
      * @return
@@ -68,7 +70,7 @@ public class ControlCenterController {
     @ResponseBody
     public String toLogin(HttpServletRequest request, String username, String pwd) {
         String status = "success";
-        if (!"admin".equals(username) || !"admin".equals(pwd)){
+        if (!"admin".equals(username) || !"admin".equals(pwd)) {
             status = "error";
             return status;
         }
@@ -86,6 +88,7 @@ public class ControlCenterController {
 
     /**
      * 跳转到index.html
+     *
      * @return
      */
     @RequestMapping("/index")
@@ -95,6 +98,7 @@ public class ControlCenterController {
 
     /**
      * 跳转到timing.html
+     *
      * @param model
      * @return
      */
@@ -133,6 +137,7 @@ public class ControlCenterController {
 
     /**
      * 跳转到 control.html
+     *
      * @param model
      * @return
      */
@@ -150,8 +155,8 @@ public class ControlCenterController {
     public Map<String, Object> getPanels(String meshId) {
         Map<String, Object> panelMap = new HashMap<>();
         List<ControlHost> controlHosts = controlCenterService.getPanels(meshId);
-        if (controlHosts.size()>0){
-            ControlHost meshAndPOEStatus = controlCenterService.getMeshAndPOEStatus(controlHosts.get(0),meshId);
+        if (controlHosts.size() > 0) {
+            ControlHost meshAndPOEStatus = controlCenterService.getMeshAndPOEStatus(controlHosts.get(0), meshId);
             panelMap.put("meshAndPOEStatus", meshAndPOEStatus);
         }
         panelMap.put("controlHosts", controlHosts);
@@ -161,6 +166,7 @@ public class ControlCenterController {
 
     /**
      * 创建/重命名/删除组/选择组
+     *
      * @param gname 组名
      * @param type  操作类型
      * @param id    组id
@@ -168,7 +174,7 @@ public class ControlCenterController {
      */
     @RequestMapping("/group")
     @ResponseBody
-    public Map<String, Object> group(String type, Integer id,String gname) {
+    public Map<String, Object> group(String type, Integer id, String gname) {
         Map<String, Object> groupMap = new HashMap<>();
         Boolean flag = controlCenterService.groupOperation(gname, type, id);
         //组名重复 exitGroup:1
@@ -179,6 +185,7 @@ public class ControlCenterController {
 
     /**
      * 重命名/删除网络名
+     *
      * @param mname  网络名
      * @param meshId 网络id
      * @return exitMname:1 名称重复
@@ -195,6 +202,7 @@ public class ControlCenterController {
 
     /**
      * 重命名/删除面板
+     *
      * @param id
      * @param pname
      * @param type
@@ -215,6 +223,7 @@ public class ControlCenterController {
 
     /**
      * 设置主控关系
+     *
      * @param meshId 网络id
      * @return
      */
@@ -241,12 +250,12 @@ public class ControlCenterController {
 //                tpadOfficeService.send(host,cmdArr[0]);
 //                tpadOfficeService.send(host,cmdArr[1]);
 //                tpadOfficeService.send(host,cmdArr[2]);
-                send(host,cmdArr[0]);
-            logger.warn("method:[reSet] host:[all] cmd:[{}]",cmdArr[0]);
-                send(host,cmdArr[1]);
-            logger.warn("method:[reSet] host:[all] cmd:[{}]",cmdArr[1]);
-                send(host,cmdArr[2]);
-            logger.warn("method:[reSet] host:[all] cmd:[{}]",cmdArr[2]);
+            send(host, cmdArr[0]);
+            logger.warn("method:[reSet] host:[all] cmd:[{}]", cmdArr[0]);
+            send(host, cmdArr[1]);
+            logger.warn("method:[reSet] host:[all] cmd:[{}]", cmdArr[1]);
+            send(host, cmdArr[2]);
+            logger.warn("method:[reSet] host:[all] cmd:[{}]", cmdArr[2]);
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
@@ -259,7 +268,7 @@ public class ControlCenterController {
         return msg;
     }
 
-    public void send(String hostId, String cmd){
+    public void send(String hostId, String cmd) {
         Map<String, String> map = new ConcurrentHashMap<>();
         map.put("command", cmd);
         map.put("host", hostId);
@@ -267,9 +276,9 @@ public class ControlCenterController {
         ExecuteTask.sendCmd(task);
     }
 
-    private void recursiveSendCmd(String host,String...cmdArr) throws Exception {
-        for (int i=0;i<cmdArr.length;i++){
-            tpadOfficeService.send(host,cmdArr[i]);
+    private void recursiveSendCmd(String host, String... cmdArr) throws Exception {
+        for (int i = 0; i < cmdArr.length; i++) {
+            tpadOfficeService.send(host, cmdArr[i]);
         }
     }
 }
