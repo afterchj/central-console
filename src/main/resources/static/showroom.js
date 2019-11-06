@@ -18,10 +18,13 @@ $(function () {
     let socket;
     $(function () {
         let url = location.host;
+        // url = "127.0.0.1";
         if (typeof (WebSocket) == "undefined") {
             console.log("遗憾：您的浏览器不支持WebSocket");
         } else {
-            socket = new WebSocket("ws://" + url + "/central-console/ws/webSocket");
+            // socket = new WebSocket("ws://" + url + "/central-console/ws/webSocket");
+            socket = new ReconnectingWebSocket("ws://" + url + "/central-console/ws/webSocket");
+            socket.debug = true;
             //连接打开事件
             socket.onopen = function () {
                 console.log("Socket 已打开！");
@@ -61,7 +64,11 @@ $(function () {
                         }
                         console.log(onState, offState)
                 }
+            };
+            socket.onclose = function () {
+                socket.onclose();
             }
+
         }
     });
 })

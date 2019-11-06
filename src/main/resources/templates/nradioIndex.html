@@ -276,6 +276,7 @@
     $(' .color-temperature input').RangeSlider({min: 0, max: 100, step: 5, callback: change});//#snrPollInterval为input的id名
     $(' .lightness input').RangeSlider({min: 0, max: 100, step: 5, callback: change});
 </script>
+<script th:src="@{/static/reconnecting-websocket.min.js}" type="text/javascript"></script>
 <script type="text/javascript">
     let socket;
     $(function () {
@@ -284,8 +285,9 @@
         if (typeof (WebSocket) == "undefined") {
             console.log("遗憾：您的浏览器不支持WebSocket");
         } else {
-            socket = new WebSocket("ws://" + url + "/central-console/ws/webSocket");
-
+//            socket = new WebSocket("ws://" + url + "/central-console/ws/webSocket");
+            socket = new ReconnectingWebSocket("ws://" + url + "/central-console/ws/webSocket");
+            socket.debug = true;
             //连接打开事件
             socket.onopen = function () {
                 console.log("Socket 已打开！");
@@ -376,6 +378,9 @@
                             }
                         }
                 }
+            }
+            socket.onclose = function () {
+                socket.onclose();
             }
         }
     });
