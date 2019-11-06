@@ -3,7 +3,8 @@ package com.example.blt.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
-import org.mybatis.spring.SqlSessionTemplate;
+import com.example.blt.service.BLTService;
+import io.netty.handler.codec.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -28,16 +30,11 @@ import java.util.*;
 public class HomeController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-//    @Autowired
-//    private MemCachedClient memCachedClient;
-
-//    @Resource
-//    private WebSocket webSocket;
 
     @Resource
     private RedisTemplate redisTemplate;
     @Resource
-    private SqlSessionTemplate sqlSessionTemplate;
+    private BLTService blTservice;
 
     @RequestMapping("/")
     public String index() {
@@ -46,15 +43,29 @@ public class HomeController {
 
     @RequestMapping("/index")
     public String index(ModelMap modelMap) {
-        List hosts = sqlSessionTemplate.selectList("console.getHostInfo");
+        List hosts = blTservice.getHostInfo();
         modelMap.put("hosts", hosts);
         return "index";
     }
-//
-//    @RequestMapping("/newIndex")
-//    public String newIndex() {
-//        return "newMonitor/index";
-//    }
+
+    @RequestMapping("/old")
+    public String oldIndex(ModelMap modelMap) {
+        List hosts = blTservice.getHostInfo();
+        modelMap.put("hosts", hosts);
+        return "oldIndex";
+    }
+
+    @RequestMapping("/nradioIndex")
+    public String nradioIndex(ModelMap modelMap) {
+        return "nradioIndex";
+    }
+
+    @RequestMapping("/myIndex")
+    public String myIndex(ModelMap modelMap) {
+        List hosts = blTservice.getHostInfo();
+        modelMap.put("hosts", hosts);
+        return "myIndex";
+    }
 
 
     @RequestMapping("/welcome")
@@ -149,16 +160,30 @@ public class HomeController {
     }
 
     @ResponseBody
+    @RequestMapping("/refreshHosts")
+    public String refreshHosts() {
+        blTservice.refreshHost();
+        return "ok";
+    }
+
+    @ResponseBody
     @RequestMapping("/getHost")
     public List getHosts() {
-        List hosts = sqlSessionTemplate.selectList("console.getHostInfo");
+        List hosts = blTservice.getHostInfo();
+        return hosts;
+    }
+
+    @ResponseBody
+    @RequestMapping("/other")
+    public List other() {
+        List hosts = blTservice.getAll();
         return hosts;
     }
 
     @ResponseBody
     @RequestMapping(value = "/save")
     public String saveHost(ConsoleVo consoleVo) {
-        sqlSessionTemplate.update("console.saveHost", consoleVo);
+        blTservice.saveHost(consoleVo);
         return "ok";
     }
 }

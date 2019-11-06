@@ -1,5 +1,8 @@
 package com.example.blt.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +14,17 @@ import java.util.Properties;
  */
 public class PropertiesUtil {
 
+    private static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
+
     public static String getValue(String key) {
         Properties pro = new Properties();
         try {
             InputStream in = PropertiesUtil.class.getResourceAsStream("/application.properties");
-            BufferedReader bf = new BufferedReader(new InputStreamReader(in,"gbk"));
+            BufferedReader bf = new BufferedReader(new InputStreamReader(in, "gbk"));
             pro.load(bf);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
-        return pro.getProperty(key, "127.0.0.1");
+        return pro.getProperty(key, "prod");
     }
 }

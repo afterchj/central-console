@@ -2,11 +2,8 @@ package com.example.blt.netty;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.entity.dd.Topics;
-import com.example.blt.exception.NoTopicException;
-import com.example.blt.service.ProducerService;
-import com.example.blt.task.ExecuteTask;
 import com.example.blt.utils.SpringUtils;
+import com.example.blt.utils.StringBuildUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,11 +15,11 @@ import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.net.SocketAddress;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 服务器主要的业务逻辑
@@ -34,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
+    private static RedisTemplate redisTemplate = SpringUtils.getRedisTemplate();
 
     private static Logger logger = LoggerFactory.getLogger(ChatServerHandler.class);
     //保存所有活动的用户
@@ -43,64 +41,78 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext arg0, String arg1) {
         Channel channel = arg0.channel();
         String addr = channel.remoteAddress().toString();
-        String host = addr.substring(1, addr.indexOf(":"));
-        String temp = sqlSessionTemplate.selectOne("console.getHost");
-        String master = StringUtils.isEmpty(temp) ? "192.168.10.21" : temp;
+        String ip = addr.substring(1, addr.indexOf(":"));
+        String host = channel.id().toString();
+        String master = sqlSessionTemplate.selectOne("console.getMaster", host);
         List<String> hosts = null;
-        String cmd;
-        String to;
+        String type = null;
+        String cmd = arg1;
+        String to = host;
         try {
             JSONObject jsonObject = JSON.parseObject(arg1);
             cmd = jsonObject.getString("command");
-            to = jsonObject.getString("host");
+            to = StringUtils.isNotEmpty(jsonObject.getString("host")) ? jsonObject.getString("host") : "";
+            type = jsonObject.getString("type");
+            StringBuildUtils.buildLightInfo(ip, to, cmd);
         } catch (Exception e) {
-            if (arg1.indexOf("77020315") != -1) {
-                to = "all";
-                cmd = arg1.replace("02", "01");
-            } else {
-                to = host;
-                cmd = arg1;
+            StringBuildUtils.buildLightInfo(ip, host, cmd);
+            if (cmd.indexOf("7705") != -1) {
+                cmd = "77050103CCCC";
             }
             if (host.equals(master)) {
-                hosts = sqlSessionTemplate.selectList("console.getHosts");
                 to = "master";
-                cmd = arg1;
             }
         }
-//        if (arg1.indexOf("182716324621") != -1) {
-//            logger.error("ip [{}] cmd [{}]", to, cmd);
-//        }
+        if ("master".equals(to)) {
+            hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
+            if (hosts.size() == 0) {
+                hosts = sqlSessionTemplate.selectList("console.getHosts", type);
+            }
+        }
         int len = cmd.length();
         //当有用户发送消息的时候，对其他用户发送信息
-        if (len > 9 && len < 47) {
-            logger.warn("ip[{}] hosts[{}] cmd [{}]", host, hosts, cmd);
-            ExecuteTask.parseLocalCmd(cmd, to);
+        if (len > 9 && len <= 50) {
             for (Channel ch : group) {
                 SocketAddress address = ch.remoteAddress();
                 if (address != null) {
                     String str = address.toString();
-                    String ip = str.substring(1, str.indexOf(":"));
-                    if (!ip.equals("127.0.0.1")) {
-                        if (to.equals("all")) {
+                    String tem = str.substring(1, str.indexOf(":"));
+                    if (!tem.equals("127.0.0.1")) {
+                        String id = ch.id().toString();
+                        if ("all".equals(to)) {
                             ch.writeAndFlush(cmd);
-                        } else if (to.equals("master")) {
+                        } else if ("master".equals(to) && cmd.indexOf("77050103") == -1) {
                             for (String guest : hosts) {
-                                if (ip.equals(guest)) {
-                                    ch.writeAndFlush(cmd);
+                                if (!guest.equals(host)) {
+                                    if (id.equals(guest)) {
+                                        ch.writeAndFlush(cmd);
+                                    }
                                 }
                             }
-                        } else if (to.equals(ip)) {
-                            ch.writeAndFlush(cmd);
+                        } else if (id.equals(to)) {
+                            if (ip.contains("192.168") && cmd.indexOf("77050103") != -1) {
+                                ch.writeAndFlush(cmd);
+                            } else {
+                                ch.writeAndFlush(cmd);
+                            }
                         }
                     }
                 }
             }
-        } else {
-            if (arg1.indexOf("CCCC") != -1) {
-//                StrUtil.buildLightInfo(host, arg1);
-                ExecuteTask.pingInfo(host, arg1);
+            if (cmd.indexOf("77050103") != -1) {
+                //缓存心跳包
+                redisTemplate.opsForValue().set(host, cmd, 50, TimeUnit.SECONDS);
+            } else {
+                logger.warn("hostId[{}] to [{}] hosts[{}] input[{}]", host, to, hosts, cmd);
             }
         }
+
+//        if (input.indexOf("182716324621") != -1) {
+//            logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, input);
+//        }
+//        if (input.indexOf("77050107") != -1) {
+//            sendPoeInfo(arg0);
+//        }
     }
 
     @Override
@@ -118,7 +130,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        insertOrUpdateHost(ctx);
+        sendPoeInfo(ctx);
     }
 
     //退出链接
@@ -128,19 +140,18 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws InterruptedException {
+        logger.error("socketInactive error [{}]", cause.getMessage());
         ctx.close().sync();
     }
 
-    private void insertOrUpdateHost(ChannelHandlerContext ctx) {
-        Map map = new ConcurrentHashMap();
-        Channel channel = ctx.channel();
-        String addr = channel.remoteAddress().toString();
-        map.put("ip", addr.substring(1, addr.indexOf(":")));
-        map.put("status", channel.isActive());
-        try {
-            ProducerService.pushMsg(Topics.HOST_TOPIC.getTopic(), JSON.toJSONString(map));
-        } catch (NoTopicException e) {
-            sqlSessionTemplate.insert("console.insertHost", map);
+    public void sendPoeInfo(ChannelHandlerContext ctx) {
+        SocketAddress address = ctx.channel().remoteAddress();
+        String str = address.toString();
+        String ip = str.substring(1, str.indexOf(":"));
+        if (!ip.equals("127.0.0.1")) {
+            ctx.writeAndFlush("77050101CCCC");//获取mesh信息
+            ctx.writeAndFlush("77050105CCCC");//获取mac信息
+            ctx.writeAndFlush("77050106CCCC");//获取ota信息
         }
     }
 }

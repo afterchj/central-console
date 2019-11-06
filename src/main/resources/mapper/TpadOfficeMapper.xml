@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.blt.dao.TpadOfficeDao" >
+
+    <select id="getHostIdByMeshId" resultType="string">
+        SELECT
+    	    host_id AS hostId
+        FROM
+        	t_host_info
+        WHERE
+        	id = ( SELECT h.hid FROM t_mesh m, t_host_mesh h WHERE m.id = h.mid AND m.mesh_id = #{meshId} )
+    </select>
+
+    <select id="getHost" resultType="map">
+        SELECT host_id AS hostId,
+		    is_master AS master
+        FROM t_host_info
+        WHERE id in
+            (SELECT h.hid
+            FROM t_mesh m,t_host_mesh h
+            WHERE m.id=h.mid AND m.mesh_id=#{meshId})
+    </select>
+
+    <select id="getMidByHostId" resultType="integer">
+        SELECT
+	        mid
+        FROM
+	        t_host_mesh hm,
+	        t_host_info hi
+        WHERE
+	        hm.hid = hi.id
+	        AND hi.host_id = #{hostId}
+    </select>
+
+</mapper>

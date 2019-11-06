@@ -9,58 +9,55 @@
 <ul class="am-nav  leftNav-list leftNav-background p-r" th:fragment="left(list)">
     <li class="am-nav-header">
         <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/console.png}" alt="">
-        <p class="">POE控制台</p>
+        <p class="">群控中心</p>
     </li>
-    <li class="am-nav-divider"></li>
-    <li th:if="${list}=='device'" class="active">
-        <a th:href="@{/poeConsole/device}">
-            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/device.png}" alt="">
-            <p class="">我的设备</p>
-        </a>
-    </li>
-    <li th:if="${list}!='device'" >
-        <a th:href="@{/poeConsole/device}">
-            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/device.png}" alt="">
-            <p class="">我的设备</p>
-        </a>
-    </li>
-    <li th:if="${list}=='index'" class="active">
-        <a th:href="@{/poeConsole/index}">
+    <li th:if="${list}=='control'" class="active">
+        <a th:href="@{/control/netWorkGroupConsole}">
             <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/group-control.png}" alt="">
             <p class="">群控</p>
         </a>
     </li>
-    <li th:if="${list}!='index'">
-        <a th:href="@{/poeConsole/index}">
+    <li th:if="${list}!='control'">
+        <a th:href="@{/control/netWorkGroupConsole}">
             <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/group-control.png}" alt="">
             <p class="">群控</p>
         </a>
     </li>
     <li th:if="${list}=='timing'" class="active">
-        <a th:href="@{/poeConsole/timing}">
+        <a th:href="@{/control/timer}">
             <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/timing.png}" alt="">
             <p class="">定时</p>
         </a>
     </li>
     <li th:if="${list}!='timing'" >
-        <a th:href="@{/poeConsole/timing}">
-            <img class="am-vertical-align-middle" th:src="@{/static/img/poeConsole/timing.png}" alt="">
+        <a th:href="@{/control/timer}">
+            <img class="am-vertical-align-middle" th:src="@{/static/poeConsole/img/timing.png}" alt="">
             <p class="">定时</p>
         </a>
     </li>
-    <li class="to-bottom-2 p-a">
-        <a >
-            <img th:src="@{/static/poeConsole/img/user.png}" alt="">
-            <p class="">Admin</p>
-        </a>
-    </li>
-    <li class="to-bottom-1 p-a">
-        <a href="#">
-            <img th:src="@{/static/poeConsole/img/exit3.png}" alt="">
-            <p class="">退出</p>
-        </a>
+    <!--<li class="to-bottom-2 p-a">-->
+        <!--<a  href="javacript:void(0);">-->
+            <!--<img  th:src="@{/static/poeConsole/img/project.png}" alt="">-->
+            <!--<p class="">XX项目</p>-->
+        <!--</a>-->
+    <!--</li>-->
+    <li class="to-bottom-1 p-a am-dropdown am-dropdown-up down-right"  data-am-dropdown>
+        <!--<a th:href="@{/control/loginOut}">-->
+            <!--<img th:src="@{/static/poeConsole/img/set.png}" alt="">-->
+        <!--</a>-->
+        <img th:src="@{/static/poeConsole/img/set.png}" class="am-dropdown-toggle" alt="" data-am-dropdown-toggle>
+        <!-- <a th:href="@{/control/loginOut}">-->
+        <!--<ul class="am-list am-list-static am-list-border">-->
+            <!--<li>...</li>-->
+        <!--</ul>-->
+        <ul class="am-dropdown-content" style="left:95%;bottom:-20px; min-width: 8rem;background-color: #F5FAFD;">
+            <li style="border-bottom: 1px solid #eee;" data-toggle="modal" data-target="#dataReset-modal"><a href="javacript:void(0);" >恢复出厂设置</a></li>
+            <li style="border-bottom: 1px solid #eee;" data-toggle="modal" data-target="#controlInformation-modal"><a href="javacript:void(0);" >中控信息</a></li>
+            <li><a th:href="@{/control/loginOut}">退出登录</a></li>
+        </ul>
     </li>
 </ul>
+<div th:replace="poeModel/controlInformation::controlInformation"></div>
 <!--</div>-->
 </body>
 </html>

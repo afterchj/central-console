@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>删除网络</title>
+</head>
+<body>
+<div class="modal fade" role="dialog" tabindex="-9" id="deleteMesh-modal" th:fragment="deleteMesh">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">删除</h4>
+                <input type="hidden" value="删除网络">
+            </div>
+            <div class="modal-body">
+                <form action="" class="am-form">
+                    <div class="am-form-group">
+                        <p class="am-text-sm am-text-left" style="margin: 0;">您确定要删除该网络吗？</p>
+                        <p class="am-text-left am-text-sm am-text-danger" style="margin: 0;font-size: 1.2rem">
+                            (删除后，若现场该网络下的POE面板在线，网络将会在中控同步后再次恢复！)</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default reduce" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary yes" >确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

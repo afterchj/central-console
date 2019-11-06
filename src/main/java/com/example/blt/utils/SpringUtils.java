@@ -1,6 +1,5 @@
 package com.example.blt.utils;
 
-import com.example.blt.service.ProducerService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -25,9 +24,9 @@ public class SpringUtils {
         return (RedisTemplate) ctx.getBean("redisTemplate");
     }
 
-    public static ProducerService getRocketProducer() {
-        return (ProducerService) ctx.getBean("rocketMQProducer");
-    }
+//    public static ProducerService getRocketProducer() {
+//        return (ProducerService) ctx.getBean("rocketMQProducer");
+//    }
 //    public static AmqpTemplate getAmqpTemplate() {
 //        return (AmqpTemplate) ctx.getBean("amqpTemplate");
 //    }

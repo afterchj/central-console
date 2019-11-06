@@ -20,6 +20,6 @@
             <scope>provided</scope>
         </dependency>
 >1.3 修改```server.port```的端口号为实际tomcat的端口号  
->2.打包：mvn package
+>2.打包：mvn clean package -Dmaven.test.skip=true
 >3.将生成的war包文件丢到tomcat的webapp目录下启动tomcat  
 

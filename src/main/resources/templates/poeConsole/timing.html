@@ -35,7 +35,7 @@
     <!--
     <link rel="canonical" href="http://www.example.com/">
     -->
-
+    <link rel="stylesheet" th:href="@{/static/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/static/AmazeUI/css/amazeui.min.css}">
     <link rel="stylesheet" th:href="@{/static/AmazeUI/css/app.css}">
     <link rel="stylesheet" th:href="@{/static/poeConsole/css/common.css}">
@@ -44,55 +44,58 @@
 </head>
 <body>
 <div class="am-container  " id="poeConsole">
-    <div class="am-g content">
+    <div class="am-g content" style="height: auto;min-height: 100%;">
         <div class="col-sm-1 col-lg-1 no-padding leftNav">
             <div th:replace="poeCommon/left::left('timing')"></div>
         </div>
-        <div class="col-sm-2 col-lg-2 no-padding leftNav leftNav2">
+        <div class="col-sm-2 col-lg-2 col-sm-offset-1 col-lg-offset-1 no-padding leftNav leftNav2">
             <ul class="am-nav">
-                <li >
-                    <!--<a href="#">-->
-                        <!--<button type="button" class="am-btn am-btn-secondary am-btn-xs"><span class="ti-plus">+</span>创建网组-->
-                        <!--</button>-->
-                    <!--</a>-->
-                    <a class="ellipsis" href="javascript:void(0);">XXX项目中的网络</a>
+                <!--<li >-->
+                    <!--&lt;!&ndash;<a href="#">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<button type="button" class="am-btn am-btn-secondary am-btn-xs"><span class="ti-plus">+</span>创建网组&ndash;&gt;-->
+                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                    <!--<a class="ellipsis am-list-title" href="javascript:void(0);">XXX项目中的网络</a>-->
+                <!--</li>-->
+                <!--<li th:alt=""><a class="ellipsis" href="javascript:void(0);">网络列表</a></li>-->
+                <li th:each="mesh:${meshs}" th:alt="${mesh.meshId}">
+                    <a class="ellipsis" th:href="@{/control/timer(meshId=${mesh.meshId})}" th:text="${mesh.mname}">
+                    </a>
                 </li>
-                <li ><a class="ellipsis" href="javascript:void(0);">网络列表</a></li>
-                <li ><a class="ellipsis" href="javascript:void(0);">组1很长的网络名网络组1很长的网络名网络</a></li>
-                <li ><a class="ellipsis" href="javascript:void(0);">组2</a></li>
-                <li ><a class="ellipsis" href="javascript:void(0);">组3</a></li>
+                <!--<li ><a class="ellipsis" href="javascript:void(0);">组2</a></li>-->
+                <!--<li ><a class="ellipsis" href="javascript:void(0);">组3</a></li>-->
             </ul>
         </div>
         <div class="col-sm-9 col-lg-9  no-padding topNav ">
             <!--<nav th:replace="poeCommon/head::head" class=""></nav>-->
-
             <section class="am-panel am-panel-default">
                 <header class="am-panel-hd">
-                    <h3 class="am-panel-title">网络1的定时详情</h3>
+                    <h3 class="am-panel-title"><span th:text="${mname}"></span><span>的定时详情</span></h3>
                 </header>
-                <div class="am-panel-bd">
-                    <div class="am-g timing-show-list">
-                        <div class="col-sm-6 col-lg-6 left-timing-title">
-                            <ul class="am-list am-list-static am-list-border no-margin">
-                                <li>
-                                    <p>TimeLine08</p>
-                                    <p>停用，不重复，周日，周一，周二，周三，周四，周五，周六</p>
-                                </li>
-                                <li>
-                                    <p>TimeLine09</p>
-                                    <p>停用，不重复，周日，周一，周二，周三</p>
+
+                <div class="am-panel-bd no-margin no-padding p-r">
+                    <div class="am-g timing-show-list no-margin no-padding">
+                        <div class="col-sm-6 col-lg-6 left-timing-title no-margin no-padding">
+                            <div  style="text-align: center;top: 8rem;left: 70%;    width: 20rem;" class="p-a">
+                                <img th:if="${#lists.isEmpty(timeLines)}" style="width: 8rem;"  th:src="@{/static/poeConsole/img/kong.png}"
+                                    >
+                                <p style="font-size: 1.5rem;line-height: 3;" th:if="${#lists.isEmpty(timeLines)}">抱歉，暂无数据</p>
+                            </div>
+
+                            <ul class="am-list am-list-static am-list-border no-margin no-padding">
+                                <li th:each="timeLine,timeLineStat:${timeLines}"
+                                    th:class="${timeLineStat.index==0 and timeLine!=null}?'active'" >
+                                    <input type="hidden" th:value="${timeLine.id}" name="id">
+                                    <p class="first" th:text="${timeLine.tname}"></p>
+                                    <p th:text="${timeLine.week}"></p>
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-sm-5 col-lg-5 col-sm-offset-1 col-lg-offset-1 right-timing-detail">
-                            <ul class="am-list am-list-static am-list-border  no-margin ">
-                                <li class="am-g">
-                                    <div class="col-sm-6 col-lg-6">01:00</div>
-                                    <div class="col-sm-6 col-lg-6">场景1</div>
-                                </li>
-                                <li class="am-g">
-                                    <div class="col-sm-6 col-lg-6">02:00</div>
-                                    <div class="col-sm-6 col-lg-6">场景2</div>
+                        <div class="col-sm-5 col-lg-5 col-sm-offset-1 col-lg-offset-1 right-timing-detail" th:alt="${timePoints}">
+                            <ul class="am-list am-list-static am-list-border  no-margin  ">
+                                <li class="am-g no-padding" th:each="timePoint:${timePoints}" >
+                                    <div class="col-sm-4 col-lg-4 t-center right-line padding-1" th:text="${timePoint.time}"></div>
+                                    <div class="col-sm-8 col-lg-8 padding-1 " th:text="${timePoint.sname}"></div>
                                 </li>
                             </ul>
                         </div>
@@ -102,15 +105,67 @@
         </div>
     </div>
 </div>
+<div th:replace="poeModel/createMesh::createMesh"></div>
+<div th:replace="poeModel/renameMesh::renameMesh"></div>
+<div th:replace="poeModel/renameGroup::renameGroup"></div>
+<div th:replace="poeModel/deleteGroup::deleteGroup"></div>
+<div th:replace="poeModel/renamePanel::renamePanel"></div>
+<div th:replace="poeModel/deletePanel::deletePanel"></div>
+<div th:replace="poeModel/deleteMesh::deleteMesh"></div>
+<div th:replace="poeModel/controlInformation::controlInformation"></div>
+<div th:replace="poeModel/dataReset::dataReset"></div>
+<div th:replace="poeModel/spinner::spinner"></div>
 <!--   Core JS Files   -->
+<script th:src="@{/static/jquery-3.1.1.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/AmazeUI/js/zepto.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/AmazeUI/js/app.js}" type="text/javascript"></script>
 <!--<script  th:src="@{/static/AmazeUI/js/handlebars.min.js}"  type="text/javascript"></script>-->
 <!--<script th:src="@{/static/AmazeUI/js/amazeui.basic.min.js}" type="text/javascript"></script>-->
+<script th:src="@{/static/bootstrap/js/bootstrap.min.js}"  type="text/javascript"></script>
 <script th:src="@{/static/AmazeUI/js/amazeui.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/poeConsole/js/common.js}" type="text/javascript"></script>
 <script>
-
+    $(function () {
+        var meshId=getParam('meshId');
+        console.log(meshId);
+        $('.leftNav2 .am-nav li').each(function () {
+            var text=$(this).attr('alt');
+            console.log(text);
+            if(meshId==text){
+                $(this).addClass('active');
+            }else{
+                $(this).removeClass('active');
+            }
+        })
+    })
+    $(".left-timing-title li").click(function () {
+        var tsid = $(this).find('input').val();
+        $.post("/central-console/control/timePointList",{"tsid":tsid},function (data) {
+//            var timePoints = [];
+            var timePoints = data.timePoints;
+            $(".right-timing-detail").empty();
+            if (timePoints.length>0){
+//                console.log(timePoints);
+                var ul = '<ul class="am-list am-list-static am-list-border  no-margin ">';
+                $.each(timePoints,function (key,value) {
+                    ul += '<li class="am-g no-padding">' +
+                            '<div class="col-sm-4 col-lg-4 t-center right-line padding-1">'+value.time+'</div>' +
+                            '<div class="col-sm-8 col-lg-8 padding-1 ">'+value.sname+'</div>' +
+                            '</li>';
+                })
+                ul += '</ul>';
+                $(".right-timing-detail").append(ul);
+            }
+        });
+    });
+    function getParam(paramName) {
+        paramValue = "", isFound = !1;
+        if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+            arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0;
+            while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++
+        }
+        return paramValue == "" && (paramValue = null), paramValue
+    }
 </script>
 </body>
 </html>

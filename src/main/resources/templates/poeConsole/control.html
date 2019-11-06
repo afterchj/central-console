@@ -1,0 +1,240 @@
+<!doctype html >
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>群控</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="icon" type="image/png" th:href="@{/static/AmazeUI/i/favicon.png}">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="apple-touch-icon-precomposed" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" th:content="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" th:href="@{/static/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/amazeui.min.css}">
+    <link rel="stylesheet" th:href="@{/static/layer_mobile/need/layer.css}">
+    <link rel="stylesheet" th:href="@{/static/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/app.css}">
+    <link rel="stylesheet" th:href="@{/static/poeConsole/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/poeConsole/css/left.css}">
+    <link rel="stylesheet" th:href="@{/static/poeConsole/css/index.css}">
+</head>
+<body>
+<div class="am-container  " id="poeConsole">
+    <div class="am-g content">
+        <div class="col-sm-1 col-lg-1 no-padding leftNav">
+            <div th:replace="poeCommon/left::left('control')"></div>
+        </div>
+        <div class="col-sm-11 col-lg-11  no-padding topNav ">
+            <!--<nav th:replace="poeCommon/head::head" class=""></nav>-->
+            <section class="am-panel am-panel-default">
+                <header class="am-panel-hd">
+                    <h3 class="am-panel-title">网络列表</h3>
+                </header>
+                <div class="am-panel-bd no-margin no-padding">
+                    <div class="data-show-table">
+                        <p class="am-text-right am-text-xs blue-green" style=" margin: 0 0 .5rem 0;">
+                            （温馨提示：若改变隶属组，则进入新组时，角色为群众）</p>
+                        <table class="am-table am-table-bd ">
+                            <thead class="am-text-sm " style="color: #3a3a3a;">
+                            <tr>
+                                <th style="width: 15%;" >网络名称</th>
+                                <th style="width: 20%;" >网络ID</th>
+                                <th style="width: 15%;" >网络状态</th>
+                                <th style="width: 15%;" >面板数量</th>
+                                <th class="p-r updown-data " data-am-dropdown>
+                                    <!--<span class="am-dropdown-toggle" data-am-dropdown-toggle >-->
+                                    <!--隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""-->
+                                    <!--class=" p-a create-mesh-list  tool"  style=" width: 1.8rem;">-->
+                                    <!--</span>-->
+                                    隶属网组
+                                      <span class="area p-a create-mesh-list  tool">
+                                         <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""
+                                                  class=" " style=" width: 1.8rem;">
+                                    </span>
+                                    <ul class="p-a data-show">
+                                        <li>
+                                            <!--data-am-modal="{target: '#creatMesh-modal'}"-->
+                                            <button type="button" data-toggle="modal" data-target="#creatMesh-modal"
+                                                    class="am-btn  am-btn-primary am-btn-xs btn-white create-group">
+                                                <span style="margin: 0 .4rem;">+</span>创建网组
+                                            </button>
+                                        </li>
+                                        <li class="am-dropdown-header am-text-sm">
+                                            <a class="all-group">全部</a>
+                                        </li>
+                                        <li class="am-text-xs p-r list" th:each="group:${groupList}">
+                                            <input type="hidden" th:value="${group.id}">
+                                            <a th:text="${group.gname}" style="z-index: 9999;" class="one-group">
+                                            </a>
+                                            <span class="area p-a group-rename group-operation">
+                                                <i class="fa fa-caret-right   " aria-hidden="true"></i>
+                                            </span>
+                                            <div class="am-cf  rename-delete mesh1 p-a">
+                                                <div class="am-fl am-center rename-group"
+                                                     data-toggle="modal" data-target="#renameGroup-modal">
+                                                    重命名
+                                                </div>
+                                                <div class="am-fl am-center" data-toggle="modal"
+                                                     data-target="#deleteGroup-modal">
+                                                    删除
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </th>
+                                <th class="" style="width: 15%;">所在网组的主控</th>
+                            </tr>
+                            </thead>
+                            <tbody class="am-text-sm">
+                            <tr th:each="controlMaster:${controlMasters}">
+                                <td class="p-r ">
+                                    <span class="hide-mesh-model" th:text="${controlMaster.mname}"></span>
+                                    <span class="area p-a  tool am-animation-fade  mesh-rename mesh-ope">
+                                         <img th:src="@{/static/poeConsole/img/dot.png}" alt=""  style=" width: .25rem;">
+                                    </span>
+                                    <div class="am-cf  rename-delete mesh2 p-a left">
+                                        <div class="am-fl am-center rename-mesh" data-toggle="modal" data-target="#renameMesh-modal">
+                                            重命名
+                                        </div>
+                                        <div class="am-fl am-center delete-mesh" data-toggle="modal" data-target="#deleteMesh-modal">
+                                            删除
+                                        </div>
+                                    </div>
+                                </td>
+                                <td th:text="${controlMaster.meshId}"></td>
+                                <td th:text="${controlMaster.mState}"></td>
+                                <td class="p-r">
+                                    <span th:text="${controlMaster.pNum}"></span>
+                                    <span class="am-text-xs" th:if="${controlMaster.pState!=null}"
+                                          th:text="${controlMaster.pState}"></span>
+                                    <span class="am-text-xs" th:if="${controlMaster.pState==null}"></span>
+                                    <span class="area p-a tool panel-show-msg">
+                                        <img th:src="@{/static/poeConsole/img/open.png}" alt="" class="" >
+                                    </span>
+                                </td>
+                                <!--<td class="p-r">-->
+                                <!---->
+                                <!--<img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool">-->
+                                <!--</td>-->
+                                <td class="p-r am-dropdown " data-am-dropdown>
+                                    <a  href="javascript:;">
+                                        <span th:text="${controlMaster.gname==null}?' - 空 - ':${controlMaster.gname}"></span>
+                                    </a>
+                                     <span class="area p-a  tool am-dropdown-toggle group-list"  data-am-dropdown-toggle>
+                                            <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" style="    width: 1.4rem;">
+                                     </span>
+                                    <ul class="am-dropdown-content group-data">
+                                        <!--<li class="am-dropdown-header am-text-sm"> - 空 -</li>-->
+                                        <li class="am-text-xs p-r" th:each="group:${groupList}">
+                                            <input type="hidden" th:value="${controlMaster.meshId}">
+                                            <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname},meshId=${controlMaster.meshId})}"
+                                               th:text="${group.gname}" class="select-group" th:alt="${group.id}"></a>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="am-checkbox table-checkbox">
+                                        <label class="blue-green">
+                                            <input type="hidden" th:value="${controlMaster.meshId}">
+                                            <input type="checkbox" th:checked="${controlMaster.master}"
+                                                   th:disabled="${controlMaster.gname == null || controlMaster.pNum == 0}"
+                                                   th:alt="${controlMaster.gname == null}?'未选择组'"> 主控
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div th:replace="poeModel/createMesh::createMesh"></div>
+<div th:replace="poeModel/renameMesh::renameMesh"></div>
+<div th:replace="poeModel/renameGroup::renameGroup"></div>
+<div th:replace="poeModel/deleteGroup::deleteGroup"></div>
+<div th:replace="poeModel/renamePanel::renamePanel"></div>
+<div th:replace="poeModel/deletePanel::deletePanel"></div>
+<div th:replace="poeModel/deleteMesh::deleteMesh"></div>
+<div th:replace="poeModel/controlInformation::controlInformation"></div>
+<div th:replace="poeModel/dataReset::dataReset"></div>
+<div th:replace="poeModel/spinner::spinner"></div>
+
+<!--   Core JS Files   -->
+<script th:src="@{/static/jquery-3.1.1.min.js}" type="text/javascript"></script>
+<script th:src="@{/static/AmazeUI/js/zepto.min.js}" type="text/javascript"></script>
+<script th:src="@{/static/AmazeUI/js/app.js}" type="text/javascript"></script>
+<script th:src="@{/static/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{/static/layer_mobile/layer.js}" type="text/javascript"></script>
+<script th:src="@{/static/AmazeUI/js/amazeui.min.js}" type="text/javascript"></script>
+<script th:src="@{/static/poeConsole/js/common.js}" type="text/javascript"></script>
+<script th:src="@{/static/control.js}" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#spinner').hide();
+        $('.rename-delete').hide();
+        $('.panel-show-detail').hide();
+        $('.data-show').hide();
+//        $('.group-data').hide();
+        $('.data-show-table .am-dropdown-content li').click(function () {
+//            e.preventDefault();
+            $(this).addClass('active').siblings('li').removeClass('active');
+        });
+        $('.hide-mesh-model').click(function () {
+            $('.rename-delete').hide();
+        });
+        $('.group-list').click(function () {
+            $('.data-show').hide();
+        });
+        $(".am-text-sm").on('click','.first-rename',function () {
+            $('.rename-delete.mesh2').hide();
+            $('.data-show').hide();
+        });
+        $('.updown-data .create-mesh-list').click(function () {
+            $('.rename-delete').hide();
+            $('.data-show').toggle();
+        });
+        $('.group-rename').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).next('.rename-delete').toggle();
+            $(this).parent().siblings().find('.rename-delete').hide();
+        });
+        $('.data-show-table table .am-dropdown a').click(function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!doctype html >
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>群控</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="icon" type="image/png" th:href="@{/static/AmazeUI/i/favicon.png}">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="apple-touch-icon-precomposed" th:href="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" th:content="@{/static/AmazeUI/i/app-icon72x72@2x.png}">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/amazeui.min.css}">
+    <link rel="stylesheet" th:href="@{/static/AmazeUI/css/app.css}">
+    <link rel="stylesheet" th:href="@{/static/range/range.css}"/>
+    <!--<link th:href="@{/static/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>-->
+    <!--<script th:src="@{/static/jquery.js}" type="text/javascript"></script>-->
+    <script th:src="@{/static/AmazeUI/js/zepto.min.js}" type="text/javascript"></script>
+    <script th:src="@{/static/AmazeUI/js/app.js}" type="text/javascript"></script>
+    <script th:src="@{/static/AmazeUI/js/amazeui.min.js}" type="text/javascript"></script>
+    <script th:src="@{/static/range/range.js}" type="text/javascript"></script>
+</head>
+<style type="text/css">
+    h3 {
+        font-weight: bold;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+</style>
+<body>
+<header class="am-topbar am-topbar-inverse">
+    <h1 class="am-topbar-brand">
+        <a href="#">C2000演示DEMO</a>
+    </h1>
+</header>
+<div class="main am-text-sm" id="#scene1">
+    <form class="am-form">
+        <div class="am-g">
+            <div class="col-sm-12 col-lg-12">
+                <div class="am-form-group ">
+                    <label class="control-label">All control： </label>
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button id="switch" type="button" class="am-btn  total-control  am-btn-sm">ON
+                        </button>
+                        <button id="switch2" type="button" class="am-btn  total-control active am-btn-sm">OFF
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="col-sm-12 col-lg-12">-->
+            <!--<div class="am-form-group ">-->
+            <!--<label class="">OTA： </label>-->
+            <!--<div class="am-btn-group am-btn-group-xs">-->
+            <!--<button id="OTA" type="button" class="am-btn  total-control  am-btn-sm">OTA-->
+            <!--</button>-->
+            <!--&lt;!&ndash;<button id="OTA2" type="button" class="am-btn  total-control active am-btn-sm">OFF&ndash;&gt;-->
+            <!--&lt;!&ndash;</button>&ndash;&gt;-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="col-sm-12 col-lg-12 col-end">
+                <div class="am-form-group">
+                    <label class="control-label">选择场景：</label>
+                    <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-sm am-btn-group-justify">
+                            <button type="button" class="am-btn scene-select active">场景一</button>
+                            <button type="button" class="am-btn scene-select">场景二</button>
+                            <button type="button" class="am-btn scene-select">场景三</button>
+                            <button type="button" class="am-btn scene-select">场景四</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-g color-temperature am-margin-top-20">
+            <div class="col-sm-3 col-lg-3  title-max">
+                <label>色温：</label>
+            </div>
+            <div class="col-sm-9 col-lg-9 col-end title-right">
+                <div class="range p-r">
+                    <span class="show-hint">0%</span>
+                    <input type="range" value="0" touchmove="change(this)" id="color">
+                </div>
+            </div>
+        </div>
+        <div class="am-g lightness am-margin-top-20">
+            <div class="col-sm-3 col-lg-3 title-max">
+                <label>亮度：</label>
+            </div>
+            <div class="col-sm-9 col-lg-9 col-end title-right">
+                <div class="range p-r">
+                    <span class="show-hint">0%</span>
+                    <input type="range" value="0" touchmove="change(this)" id="luminance">
+                </div>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="col-sm-12 col-lg-12 am-text-right">
+                <img th:src="@{/static/img/fewer.png}" id="show" alt="">
+            </div>
+            <div class="col-sm-12 col-lg-12 am-text-right" id="show-list">
+                <div class="am-form-group ">
+                    <div class="am-btn-group-xs">
+                        <div class="col-sm-6 col-lg-6 am-text-right">
+                            <button id="accept" type="button" style="" class="dan am-btn-sm">
+                                接收ID
+                            </button>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 am-text-left">
+                            <button id="OTA" type="button" style=" " class=" dan  am-btn-sm"
+                            > OTA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    /*
+     * 1.touchstart    手指刚刚触发到屏幕的时候
+     * 2.touchmove     手指在屏幕上滑动的时候
+     * 3.touchend      手指离开屏幕的时候
+     * 4.touchcancel   ** 被迫终止滑动离开  （系统终止）
+     * */
+
+    /*怎么样去绑定这些事件*/
+    var box1 = document.querySelector('#accept');
+    var box2 = document.querySelector('#OTA');
+    /*绑定touchstart*/
+    box1.addEventListener('touchstart', function (e) {
+        console.log('touchstart');
+        console.log(e);
+        $('#accept').addClass('active');
+    });
+    box2.addEventListener('touchstart', function (e) {
+        console.log('touchstart');
+        console.log(e);
+        $('#OTA').addClass('active');
+    });
+    /*绑定touchmove*/
+    box1.addEventListener('touchmove', function (e) {
+        console.log('touchmove');
+//        console.log(e);
+        $('#accept').addClass('active');
+    });
+    box2.addEventListener('touchmove', function (e) {
+        console.log('touchmove');
+        $('#OTA').addClass('active');
+//        console.log(e);
+    });
+    /*绑定touchend*/
+    box1.addEventListener('touchend', function (e) {
+        console.log('touchend');
+        console.log(e);
+        $('#accept').removeClass('active');
+    });
+    box2.addEventListener('touchend', function (e) {
+        console.log('touchend');
+        console.log(e);
+        $('#OTA').removeClass('active');
+    });
+    $("#accept,#OTA").mousedown(function () {
+        $(this).addClass('active');
+    });
+    $("#accept,#OTA").mouseup(function () {
+        $(this).removeClass('active');
+    });
+
+    $('.am-btn-group .total-control,.am-btn-group  .scene-select').click(function () {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+    var project = "all";
+    var cmd,x='32',y='32',groupId=0,type='mesh';
+    var map = {"project": project, "groupId": groupId,"x":x,"y":y,"type":type};
+//    var host = 'all';
+    $("#switch").click(function () {//on
+//        cmd = "77010315373766";
+        map.x='37',map.y='37';
+        map.type = 'mesh';
+        $.post("sendByProject", map , function (data) {console.log(data);});
+    });
+    $("#switch2").click(function () {//off
+//        cmd = "77010315323266";
+        map.x='32',map.y='32';
+        map.type = 'mesh';
+        $.post("sendByProject", map, function (data) {console.log(data);});
+    });
+    $("#accept").click(function () {
+//        cmd = "7701010466";
+        map.type='acceptID'
+        $.post("sendByProject", map, function (data) {console.log(data);});
+    });
+    $("#OTA").click(function () {
+//        cmd = "7701010566";
+        map.type='ota';
+        $.post("sendByProject", map, function (data) {console.log(data);});
+    });
+
+    $('#show').click(function () {
+        $(this).toggleClass('over');
+        $('#show-list').toggle();
+    })
+
+    function change(val) {
+        var id = $(val).attr("id");
+        var color, luminance;
+        if (id == 'color') {
+            color = $(val).val();
+            luminance = $("#luminance").val();
+        } else {
+            luminance = $(val).val();
+            color = $("#color").val();
+        }
+        console.log(color, luminance);
+        map.x = color,map.y = luminance;
+        map.type = 'mesh';
+        $.post("sendByProject", map, function (data) {console.log(data);})
+    };
+
+    $(".scene-select").click(function () {
+        type = 'scene';
+        var sceneId;
+        var text = $(this).text();
+        switch (text) {
+            case "场景一":
+//                cmd = "7701021901";
+                sceneId = 1;
+                break;
+            case "场景二":
+//                cmd = "7701021902";
+                sceneId = 2;
+                break;
+            case "场景三":
+//                cmd = "7701021903";
+                sceneId = 3;
+                break;
+            case "场景四":
+//                cmd = "7701021904";
+                sceneId = 4;
+                break;
+        }
+        map.sceneId = sceneId;
+        map.type = 'scene';
+        $.post("sendByProject", map, function (data) {
+            console.log(data);
+        });
+    });
+
+    $(' .color-temperature input').RangeSlider({min: 0, max: 100, step: 5, callback: change});//#snrPollInterval为input的id名
+    $(' .lightness input').RangeSlider({min: 0, max: 100, step: 5, callback: change});
+</script>
+<script th:src="@{/static/reconnecting-websocket.min.js}" type="text/javascript"></script>
+<script type="text/javascript">
+    let socket;
+    $(function () {
+        let url = location.host;
+        console.log(location.href, url);
+        if (typeof (WebSocket) == "undefined") {
+            console.log("遗憾：您的浏览器不支持WebSocket");
+        } else {
+//            socket = new WebSocket("ws://" + url + "/central-console/ws/webSocket");
+            socket = new ReconnectingWebSocket("ws://" + url + "/central-console/ws/webSocket");
+            socket.debug = true;
+            //连接打开事件
+            socket.onopen = function () {
+                console.log("Socket 已打开！");
+            };
+            //收到消息事件
+            socket.onmessage = function (result) {
+                console.log("type", typeof result.data, "receive", result.data);
+                var data = JSON.parse(result.data);
+                var ctype = data.ctype;
+                var x = data.x;
+                var y = data.y;
+                var xMap = {"00": 0, "01": 5, "02": 10, "03": 15, "04": 20, "05": 25, "06": 30, "07": 35, "08": 40, "09": 45, "0A": 50, "0B": 55, "0C": 60, "0D": 65, "0E": 70, "0F": 75, "10": 80, "11": 85, "12": 90, "13": 95, "14": 100};
+                var yMap = {"13": 0, "12": 5, "11": 10, "10": 15, "0F": 20, "0E": 25, "0D": 30, "0C": 35, "0B": 40, "0A": 45, "09": 50, "08": 55, "07": 60, "06": 65, "05": 70, "04": 75, "03": 80, "02": 85, "01": 90, "00": 100};
+                var cid = data.cid;
+                switch (ctype) {
+                    case "C0":
+                        if (x == '32' && y == '32') {//全关
+                            $("#switch2").removeClass("active");
+                            $("#switch").removeClass("active");
+                            $("#switch2").addClass("active");
+                        } else if (x == '37' && y == '37') {//全开
+                            $("#switch2").removeClass("active");
+                            $("#switch").removeClass("active");
+                            $("#switch").addClass("active");
+                        } else {
+                            $("#color").val(xMap[x]);
+                            $("#color").prev().text(xMap[x] + "%")
+                            $("#color").prev().css("left", xMap[x] + "%");
+                            $("#luminance").val(yMap[y]);
+                            $("#luminance").prev().text(yMap[y] + "%")
+                            $("#luminance").prev().css("left", yMap[y] + "%");
+                        }
+                        break;
+                    case "42":
+                        $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").children().removeClass("active");
+                        if (cid == 1) {
+                            $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").find('button:first').addClass("active");
+
+                        } else if (cid == 2) {
+                            $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").find(":eq(1)").addClass("active");
+
+                        } else if (cid == 3) {
+                            $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").find(":eq(2)").addClass("active");
+
+                        } else if (cid == 4) {
+                            $(".am-btn-group.am-btn-group-sm.am-btn-group-justify").find('button:last').addClass("active");
+
+                        }
+                        break;
+                    case "52"://遥控器
+                        var colorValue = $("#color").val();
+                        var luminanceValue = $("#luminance").val();
+                        if (cid == '01') {//全开
+                            $("#switch2").removeClass("active");
+                            $("#switch").removeClass("active");
+                            $("#switch").addClass("active");
+                        } else if (cid == '02') {//全关
+                            $("#switch2").removeClass("active");
+                            $("#switch").removeClass("active");
+                            $("#switch").addClass("active");
+                        } else if (cid == '03') {//色值+
+                            if (colorValue > 0) {
+                                colorValue = colorValue - 5
+                                $("#color").val(colorValue);
+                                $("#color").prev().text(colorValue + "%")
+                                $("#color").prev().css("left", colorValue + "%");
+                            }
+                        } else if (cid == '04') {//色值-
+                            if (colorValue < 100) {
+                                colorValue = colorValue + 5;
+                                $("#color").val(colorValue);
+                                $("#color").prev().text(colorValue + "%")
+                                $("#color").prev().css("left", colorValue + "%");
+                            }
+                        } else if (cid == '05') {//冷
+                            if (luminanceValue < 100) {
+                                luminanceValue = luminanceValue + 5;
+                                $("#luminance").val(luminanceValue);
+                                $("#luminance").prev().text(luminanceValue + "%")
+                                $("#luminance").prev().css("left", luminanceValue + "%");
+                            }
+                        } else if (cid == '06') {//暖
+                            if (luminanceValue > 0) {
+                                luminanceValue = luminanceValue - 5;
+                                $("#luminance").val(luminanceValue);
+                                $("#luminance").prev().text(luminanceValue + "%")
+                                $("#luminance").prev().css("left", luminanceValue + "%");
+                            }
+                        }
+                }
+            }
+            socket.onclose = function () {
+                socket.onclose();
+            }
+        }
+    });
+</script>
+</body>
+</html>

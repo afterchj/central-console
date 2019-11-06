@@ -1,6 +1,5 @@
 package com.example.blt.netty;
 
-import com.example.blt.utils.AddrUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -20,21 +19,22 @@ public class ClientMain {
 
     private static Logger logger = LoggerFactory.getLogger(ClientMain.class);
 
-    private final static String HOST = "127.0.0.1";
+//    private final static String HOST = "127.0.0.1";
+    private final static String HOST = "192.168.10.10";
     private final static int PORT = 8001;
 
-    //        private static String host = "192.168.56.1";
+//    private static String host = "192.168.56.1";
 //        private static String host = "192.168.16.60";
 //        private static String host = "192.168.51.97";
 //        private static String host = "119.3.49.192";
 
     public static void main(String[] args) throws IOException {
-        run(AddrUtil.getIp(true), 8001);
-//        run("192.168.16.84", 8001);
+//        run(AddrUtil.getIp(false));
+        new ClientMain().run(HOST);
     }
 
-    public static void run(String host, int port) throws IOException {
-        Channel channel = getChannel(host, port);
+    public void run(String host) throws IOException {
+        Channel channel = getChannel(host);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         logger.warn("请输入指令：");
         while (true) {
@@ -48,8 +48,8 @@ public class ClientMain {
         }
     }
 
-    public static void sendCron(String str) {
-        Channel channel = getChannel(HOST, PORT);
+    public void sendCron(String str) {
+        Channel channel = getChannel(HOST);
         //向服务端发送内容
         channel.writeAndFlush(str);
         try {
@@ -59,8 +59,8 @@ public class ClientMain {
         }
     }
 
-    public static void sendCron(String... str) {
-        Channel channel = getChannel(str[0], PORT);
+    public void sendCron(String... str) {
+        Channel channel = getChannel(str[0]);
         //向服务端发送内容
         channel.writeAndFlush(str[1]);
         try {
@@ -71,7 +71,7 @@ public class ClientMain {
     }
 
 
-    private static Channel getChannel(String host, int port) {
+    private Channel getChannel(String host) {
         Channel channel = null;
         //设置一个worker线程，使用
         EventLoopGroup worker = new NioEventLoopGroup();
@@ -82,13 +82,13 @@ public class ClientMain {
         bootstrap.handler(new ClientInitialHandler());
         try {
             //使用指定的 端口设置套 接字地址
-            channel = bootstrap.connect(host, port).sync().channel();
+            channel = bootstrap.connect(host, PORT).sync().channel();
         } catch (Exception e) {
-            logger.error("InterruptedException=" + e.getMessage());
+            logger.error("Exception error{}", e.getMessage());
             try {
                 channel.closeFuture().sync();
             } catch (InterruptedException e1) {
-                e.printStackTrace();
+                logger.error("InterruptedException error{}", e1.getMessage());
             }
         }
         return channel;
