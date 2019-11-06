@@ -246,7 +246,7 @@ public class TpadOfficeService {
         switch (ctype) {
             case "C1"://组控
             case "C0"://群控
-                if (!"32".equals(x) || !"37".equals(x)) {//调光
+                if (!"32".equals(x) && !"37".equals(x)) {//调光
                     storageDimmingStatus(x, y, project);
                 }
                 id = storageUnitStatus(statusMap, unit, hostId);
@@ -314,9 +314,12 @@ public class TpadOfficeService {
      * @param y       y
      * @param project 项目名
      */
-    private void storageDimmingStatus(String x, String y, String project) {
+    private void storageDimmingStatus(String x, String y, String project) throws Exception {
         x = decimalismColors.get(x);
         y = decimalismLuminances.get(y);
+        if (StringUtils.isBlank(x) || StringUtils.isBlank(y)){
+            throw new Exception("xy值不能为空");
+        }
         tpadOfficeDao.updateXY(project, x, y);
     }
 
