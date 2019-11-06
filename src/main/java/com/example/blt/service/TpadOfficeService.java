@@ -246,14 +246,14 @@ public class TpadOfficeService {
         switch (ctype) {
             case "C1"://组控
             case "C0"://群控
-                if ("32".equals(x) || "37".equals(x)) {//开关
-                    id = storageUnitStatus(statusMap, unit, hostId);
-                } else {//调光
+                if (!"32".equals(x) || !"37".equals(x)) {//调光
                     storageDimmingStatus(x, y, project);
                 }
+                id = storageUnitStatus(statusMap, unit, hostId);
                 break;
             case "42"://场景切换
                 tpadOfficeDao.updateSceneId(cid, project);
+                id = storageUnitStatus(statusMap, unit, hostId);
                 break;
             case "52"://遥控器
                 break;
