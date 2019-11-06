@@ -26,7 +26,7 @@ public interface TpadOfficeDao {
 //    @Select("")
 //    String getUnitName(String project);
 
-    @Select("select id,ifnull(mesh_name,mesh_id) as name, status from t_mesh")
+    @Select("select id,ifnull(mesh_name,mesh_id) as name, status from t_mesh where other is null or other='0'")
     List<Map<String,Object>> getMeshs();
 
     @Select("select id,place_name as name, status from t_eplace")
