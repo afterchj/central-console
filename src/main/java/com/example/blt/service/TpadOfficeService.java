@@ -54,7 +54,7 @@ public class TpadOfficeService {
         String hostId = "";
         List<Map<String, Object>> hosts = tpadOfficeDao.getHost(meshId);
         if (hosts.size()<=0){
-            throw new Exception(new StringBuffer().append("poe不在线, meshId:").append(meshId).toString());
+            throw new Exception(new StringBuffer().append("poe不存在, meshId:").append(meshId).toString());
         }else {
             if (hosts.size() == 1){
                 hostId = (String) hosts.get(0).get("hostId");
@@ -62,6 +62,7 @@ public class TpadOfficeService {
                 for (Map<String, Object> host : hosts) {
                     if ((Boolean) host.get("master")) {//主控poe
                         hostId = (String) host.get("hostId");
+                        break;
                     }
                 }
                 if (StringUtils.isBlank(hostId)){
@@ -253,14 +254,14 @@ public class TpadOfficeService {
                 break;
             case "42"://场景切换
                 tpadOfficeDao.updateSceneId(cid, project);
-                id = storageUnitStatus(statusMap, unit, hostId);
+                id = storageUnitStatus(statusMap, unit, hostId);//返回场景对应的单元
                 break;
             case "52"://遥控器
                 break;
         }
         Integer status = statusMap.get("status");
         statusMap = new ConcurrentHashMap<>();
-        statusMap.put("id", id);
+        statusMap.put("id", id);//id=0 ->所有单元;id>0 ->一个单元
         statusMap.put("status", status);
         return statusMap;
     }

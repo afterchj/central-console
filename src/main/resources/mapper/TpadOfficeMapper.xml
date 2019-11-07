@@ -18,7 +18,7 @@
         WHERE id in
             (SELECT h.hid
             FROM t_mesh m,t_host_mesh h
-            WHERE m.id=h.mid AND m.mesh_id=#{meshId})
+            WHERE m.id=h.mid AND m.mesh_id=#{meshId}) and status=1
     </select>
 
     <select id="getMidByHostId" resultType="integer">

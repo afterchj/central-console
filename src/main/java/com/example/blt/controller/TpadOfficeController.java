@@ -83,11 +83,15 @@ public class TpadOfficeController {
     public Map<String,Integer> analysisWs(@RequestBody OfficeWS officeWS){
         String project = officeWS.getProject();
         Map<String, Integer> map = new HashMap<>();
+        Integer statue = 0;
         try {
             Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
             map = tpadOfficeService.analysisWsAndStorageStatus(parameterSetting,officeWS);
+            map.put("success",statue);
         } catch (Exception e) {
             logger.error("method: analysisWs;result {}",e.getMessage());
+            statue = 1;
+            map.put("success",statue);
         }
         return map;
     }
