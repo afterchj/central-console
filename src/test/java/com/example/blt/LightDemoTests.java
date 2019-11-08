@@ -257,4 +257,11 @@ public class LightDemoTests {
             System.out.println(e.getMessage());
         }
     }
+
+    @Test
+    public void test16(){
+        int[] unitArray = {1,2,3,4,9};
+        int[] midsBySids = tpadOfficeDao.getMidsBySids(unitArray);
+        Arrays.stream(midsBySids).forEach(System.out::println);
+    }
 }

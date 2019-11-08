@@ -28,5 +28,6 @@ public class MeshInfo implements Serializable {
     @ColumnDefault("0")
     private Integer status;
     private Integer sid;//空间id
-
+    @ColumnDefault("1")
+    private Integer sequence;//序列，顺序
 }

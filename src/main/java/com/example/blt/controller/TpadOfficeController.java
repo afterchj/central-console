@@ -37,10 +37,7 @@ public class TpadOfficeController {
         this.tpadOfficeService = tpadOfficeService;
     }
 
-//    @RequestMapping("/index")
-//    public String index(){
-//        return "redirect:../dist/index.html";
-//    }
+
 
     @PostMapping("/get")
     public Map<String, Object> get(@Valid @RequestBody OfficePa office) {
@@ -49,7 +46,9 @@ public class TpadOfficeController {
         Map<String,Object> parameterSetting;
         Map<String,Object> parameterSettings = new HashMap<>();
         try {
+            //获取基础配置(基础单元类型，场景个数，当前场景，x，y)
             parameterSetting = tpadOfficeService.getParameterSetting(project);
+            //返回初始化数据
             parameterSettings = tpadOfficeService.getUnits(parameterSetting);
         } catch (Exception e) {
             Object[] errorArr = {this.getClass().getSimpleName(),Thread.currentThread().getStackTrace()[1].getMethodName(),e.getMessage()};
@@ -68,6 +67,7 @@ public class TpadOfficeController {
         String project = office.getProject();
         String status = "success";
         try {
+            //获取基础配置(基础单元类型，场景个数，当前场景，x，y)
             Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
             String unit = (String) parameterSetting.get("unit");
             tpadOfficeService.send(unit,office);
@@ -79,12 +79,18 @@ public class TpadOfficeController {
         return status;
     }
 
+    /**
+     * 解析websocket
+     * @param officeWS
+     * @return
+     */
     @PostMapping("/analysisWs")
     public Map<String,Integer> analysisWs(@RequestBody OfficeWS officeWS){
         String project = officeWS.getProject();
         Map<String, Integer> map = new HashMap<>();
         Integer statue = 0;
         try {
+            //获取基础配置(基础单元类型，场景个数，当前场景，x，y)
             Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
             map = tpadOfficeService.analysisWsAndStorageStatus(parameterSetting,officeWS);
             map.put("success",statue);
