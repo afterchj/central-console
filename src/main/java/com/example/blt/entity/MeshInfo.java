@@ -27,5 +27,6 @@ public class MeshInfo implements Serializable {
     private Date log_date = new Date();
     @ColumnDefault("0")
     private Integer status;
+    private Integer sid;//空间id
 
 }
