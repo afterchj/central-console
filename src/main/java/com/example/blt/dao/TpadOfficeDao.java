@@ -23,17 +23,17 @@ public interface TpadOfficeDao {
 
     List<Map<String,Object>> getHost(String meshId);
 
-//    @Select("")
-//    String getUnitName(String project);
-
-    @Select("select id,ifnull(mesh_name,mesh_id) as name, status from t_mesh where other is null or other='0'")
+    @Select("select id,ifnull(mesh_name,mesh_id) as name, status from t_mesh where other is null or other='0' order by sequence")
     List<Map<String,Object>> getMeshs();
 
-    @Select("select id,place_name as name, status from t_eplace")
+    @Select("select id,place_name as name, status from t_eplace order by sequence")
     List<Map<String,Object>> getPlaces();
 
-    @Select("select id,gname as name, status from t_egroup")
+    @Select("select id,gname as name, status from t_egroup order by sequence")
     List<Map<String,Object>> getGroups();
+
+    @Select("select id,name,status from t_space order by sequence")
+    List<Map<String,Object>> getSpace();
 
     @Select("select mesh_id as meshId from t_mesh where id=(select mid from t_egroup where id=#{id})")
     String getMeshIdByGid(int id);
@@ -61,10 +61,6 @@ public interface TpadOfficeDao {
     @Update("update t_parameter_setting set scene_id=#{sceneId} where project=#{project}")
     void updateSceneId(@Param("sceneId") Integer cid,@Param("project") String project);
 
-    @Update("update t_egroup set status=#{status} where mid=#{mid} and group_id=#{cid}")
-    @SelectKey(statement="select (select id from t_egroup where mid=#{mid} and group_id=#{cid})id from DUAL",before=true,keyProperty="id",resultType=Integer.class,keyColumn="id")
-    void updateEGroupStatus(Map<String,Integer> map);
-
     @Update("update t_parameter_setting set status=#{status} where project=#{project}")
     void updateStatus(@Param("project") String project, @Param("status") Integer status);
 
@@ -83,6 +79,21 @@ public interface TpadOfficeDao {
     @Update("update t_egroup set status=#{status}")
     void updateAllEGroupStatus(Integer status);
 
+    @Update("update t_egroup set status=#{status} where mid=#{mid} and group_id=#{cid}")
+    @SelectKey(statement="select (select id from t_egroup where mid=#{mid} and group_id=#{cid})id from DUAL",before=true,keyProperty="id",resultType=Integer.class,keyColumn="id")
+    void updateEGroupStatus(Map<String,Integer> map);
+
     @Update("update t_eplace set status=#{status}")
     void updateAllEPlaceStatus(Integer status);
+
+    @Update("update t_space set status=#{status} where id=(select sid from t_mesh where id=#{mid})")
+    @SelectKey(statement="select (select id from t_space where id=(select sid from t_mesh where id=#{mid}))id from DUAL",before=true,keyProperty="id",resultType=Integer.class,keyColumn="id")
+    void updateSpaceStatus(Map<String, Integer> statusMap);
+
+    @Update("update t_space set status=#{status}")
+    void updateAllSpaceStatus(Integer status);
+
+    int[] getMidsBySids(@Param("spaceArray") int[] unitArray);
+
+
 }

@@ -18,7 +18,8 @@
         WHERE id in
             (SELECT h.hid
             FROM t_mesh m,t_host_mesh h
-            WHERE m.id=h.mid AND m.mesh_id=#{meshId}) and status=1
+            WHERE m.id=h.mid AND m.mesh_id=#{meshId})
+            and status=1
     </select>
 
     <select id="getMidByHostId" resultType="integer">
@@ -30,6 +31,15 @@
         WHERE
 	        hm.hid = hi.id
 	        AND hi.host_id = #{hostId}
+    </select>
+
+    <select id="getMidsBySids" resultType="int">
+        select id from t_mesh
+        where sid in
+        <foreach collection="spaceArray" item="sid" index="index"
+                 open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
     </select>
 
 </mapper>

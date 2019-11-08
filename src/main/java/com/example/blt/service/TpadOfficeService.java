@@ -53,19 +53,19 @@ public class TpadOfficeService {
     public String getHostId(String meshId) throws Exception {
         String hostId = "";
         List<Map<String, Object>> hosts = tpadOfficeDao.getHost(meshId);
-        if (hosts.size()<=0){
+        if (hosts.size() <= 0) {
             throw new Exception(new StringBuffer().append("poe不存在, meshId:").append(meshId).toString());
-        }else {
-            if (hosts.size() == 1){
+        } else {
+            if (hosts.size() == 1) {
                 hostId = (String) hosts.get(0).get("hostId");
-            }else {
+            } else {
                 for (Map<String, Object> host : hosts) {
                     if ((Boolean) host.get("master")) {//主控poe
                         hostId = (String) host.get("hostId");
                         break;
                     }
                 }
-                if (StringUtils.isBlank(hostId)){
+                if (StringUtils.isBlank(hostId)) {
                     hostId = (String) hosts.get(0).get("hostId");
                 }
             }
@@ -82,7 +82,6 @@ public class TpadOfficeService {
             scenes.add(i);
         }
         map.put("scenes", scenes);
-//        map.put("sceneCount", sceneCount);
         List<Map<String, Object>> units = new ArrayList<>();
         TypeOperation type = TypeOperation.getType(unit);
         switch (type) {
@@ -95,6 +94,9 @@ public class TpadOfficeService {
             case MESH:
                 units = tpadOfficeDao.getMeshs();
                 break;
+            case SPACE:
+                units = tpadOfficeDao.getSpace();
+                break;
         }
         map.put("units", units);
         map.putAll(parameterSetting);
@@ -102,7 +104,7 @@ public class TpadOfficeService {
     }
 
     public Map<String, Object> getParameterSetting(String project) throws Exception {
-        if (StringUtils.isBlank(project)){
+        if (StringUtils.isBlank(project)) {
             throw new Exception("project is null");
         }
         return tpadOfficeDao.getParameterSetting(project);
@@ -113,6 +115,12 @@ public class TpadOfficeService {
         String x = office.getX();
         String y = office.getY();
         int[] unitArray = office.getUnitArray();
+        if ("space".equals(unit) ) {
+            if (unitArray != null && unitArray.length!=0){
+                unitArray = tpadOfficeDao.getMidsBySids(unitArray);
+            }
+            unit = "mesh";
+        }
         TypeOperation opeEnum = TypeOperation.getType(operation);
         Integer sceneId = office.getSceneId();
         if (ON_OFF.getKey().equals(operation) || DIMMING.getKey().equals(operation)) {
@@ -216,7 +224,7 @@ public class TpadOfficeService {
         Map<String, String> map = new ConcurrentHashMap<>();
         map.put("command", cmd);
         map.put("host", hostId);
-        ControlTask task = new ControlTask(CLIENT_MAIN,JSON.toJSONString(map));
+        ControlTask task = new ControlTask(CLIENT_MAIN, JSON.toJSONString(map));
         String code = ExecuteTask.sendCmd(task);
         if ("fail".equals(code)) {
             StringBuffer sb = new StringBuffer();
@@ -227,7 +235,7 @@ public class TpadOfficeService {
     }
 
     /**
-     * 解析websocket，存储参数状态,只需要处理id>0的值
+     * 解析websocket;id=0 ->所有单元;id>0 ->一个单元
      *
      * @param parameterSetting 配置信息
      * @param officeWS         websocket返回值
@@ -276,11 +284,12 @@ public class TpadOfficeService {
      */
     private Integer storageUnitStatus(Map<String, Integer> statusMap, String unit, String hostId) {
         Integer id = 0;
+        Integer status = statusMap.get("status");
         TypeOperation unitEnum = TypeOperation.getType(unit);
         switch (unitEnum) {//选择何种存储单元
             case GROUP:
                 if ("all".equals(hostId)) {
-                    tpadOfficeDao.updateAllEGroupStatus(statusMap.get("status"));
+                    tpadOfficeDao.updateAllEGroupStatus(status);
                 } else {
                     tpadOfficeDao.updateEGroupStatus(statusMap);
                     id = statusMap.get("id");
@@ -288,20 +297,27 @@ public class TpadOfficeService {
                 break;
             case PLACE:
                 if ("all".equals(hostId)) {
-                    tpadOfficeDao.updateAllEPlaceStatus(statusMap.get("status"));
+                    tpadOfficeDao.updateAllEPlaceStatus(status);
                 } else {
                     id = tpadOfficeDao.getEPid(statusMap);
                     statusMap.put("pid", id);
                     tpadOfficeDao.updateEPlaceStatus(statusMap);
                 }
-
                 break;
             case MESH:
                 if ("all".equals(hostId)) {
-                    tpadOfficeDao.updateAllMeshStatus(statusMap.get("status"));
+                    tpadOfficeDao.updateAllMeshStatus(status);
                 } else {
                     id = statusMap.get("mid");
                     tpadOfficeDao.updateMeshStatus(statusMap);
+                }
+                break;
+            case SPACE:
+                if ("all".equals(hostId)){
+                    tpadOfficeDao.updateAllSpaceStatus(status);
+                }else {
+                    tpadOfficeDao.updateSpaceStatus(statusMap);
+                    id = statusMap.get("id");
                 }
                 break;
         }
@@ -318,7 +334,7 @@ public class TpadOfficeService {
     private void storageDimmingStatus(String x, String y, String project) throws Exception {
         x = decimalismColors.get(x);
         y = decimalismLuminances.get(y);
-        if (StringUtils.isBlank(x) || StringUtils.isBlank(y)){
+        if (StringUtils.isBlank(x) || StringUtils.isBlank(y)) {
             throw new Exception("xy值不能为空");
         }
         tpadOfficeDao.updateXY(project, x, y);
