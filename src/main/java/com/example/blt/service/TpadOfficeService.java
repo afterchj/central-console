@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.example.blt.entity.office.TypeOperation.DIMMING;
 import static com.example.blt.entity.office.TypeOperation.ON_OFF;
 
+
 /**
  * @program: central-console
  * @description:
@@ -115,6 +116,7 @@ public class TpadOfficeService {
         String x = office.getX();
         String y = office.getY();
         int[] unitArray = office.getUnitArray();
+        //空间单元转换为mesh单元
         if ("space".equals(unit) ) {
             if (unitArray != null && unitArray.length!=0){
                 unitArray = tpadOfficeDao.getMidsBySids(unitArray);
@@ -159,7 +161,7 @@ public class TpadOfficeService {
         String oldMeshId = null;
         String type = null;
         List<Integer> groupIds = new ArrayList<>();
-        if (unitArray == null || unitArray.length == 0) {
+        if (unitArray == null || unitArray.length == 0) {//全控
             hostId = "all";
             if (sceneId != null) {
                 type = "scene";
@@ -169,9 +171,8 @@ public class TpadOfficeService {
             cmd = JoinCmdUtil.joinNewCmd(type, x, y, null, sceneId);
             send(hostId, cmd);
             logger.warn("method：sendCmd; result success; hostId:{},cmd:{}", hostId, cmd);
-        } else {
-            for (int i = 0; i < unitArray.length; i++) {
-                int id = unitArray[i];
+        } else {//
+            for (int id : unitArray) {
                 TypeOperation typeEnum = TypeOperation.getType(unit);
                 switch (typeEnum) {
                     case MESH:

@@ -14,7 +14,7 @@
             JOIN t_mesh_group mg ON g.id = mg.gid
             right JOIN t_mesh m ON mg.mid = m.id
             <where>
-                <if test="gid!=null and meshId==null">
+                <if test="(gid!=null) and (meshId==null or meshId=='')">
                     g.id=#{gid}
                 </if>
             </where>
