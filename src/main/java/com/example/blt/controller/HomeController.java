@@ -89,8 +89,22 @@ public class HomeController {
     }
 
     @RequestMapping("/poeConsole/index")
-    public String poeConsole() {
+    public String poeConsoleIndex() {
         return "poeConsole/index";
+    }
+
+    @RequestMapping("/poeConsole/login")
+    public String poeConsoleLogin() {
+        return "poeConsole/login";
+    }
+    @RequestMapping("/poeConsole/device")
+    public String poeConsoleDevice() {
+        return "poeConsole/device";
+    }
+
+    @RequestMapping("/poeConsole/timing")
+    public String poeConsoleTiming() {
+        return "poeConsole/timing";
     }
 
     @RequestMapping("/newIndex/noEnergy")
