@@ -16,6 +16,7 @@ public class LightDemo {
     private String status;
     private Integer groupId;
     private String y;
+    private String meshId;
     private String other;
     private int count;
     private int onNum;
@@ -109,6 +110,14 @@ public class LightDemo {
         this.y = y;
     }
 
+    public String getMeshId() {
+        return meshId;
+    }
+
+    public void setMeshId(String meshId) {
+        this.meshId = meshId;
+    }
+
     public String getOther() {
         return other;
     }
@@ -128,6 +137,7 @@ public class LightDemo {
                 ", status='" + status + '\'' +
                 ", groupId=" + groupId +
                 ", y=" + y +
+                ", meshId=" + meshId +
                 ", other=" + other +
                 '}';
     }

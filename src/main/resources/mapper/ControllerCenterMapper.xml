@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.blt.dao.ControlCenterDao" >
+
+    <select id="getControlGroups" resultType="com.example.blt.entity.control.ControlMaster">
+        SELECT
+            g.gname as gname,
+            g.id as gid,
+            m.mesh_id as meshId,
+            ifnull(m.mesh_name,m.mesh_id) as mname,
+            flag
+        FROM
+            t_group g
+            JOIN t_mesh_group mg ON g.id = mg.gid
+            right JOIN t_mesh m ON mg.mid = m.id
+            <where>
+                <if test="(gid!=null) and (meshId==null or meshId=='')">
+                    g.id=#{gid}
+                </if>
+            </where>
+    </select>
+
+    <select id="getPanels" resultType="com.example.blt.entity.control.ControlHost">
+        SELECT
+            id,
+            CASE
+            WHEN STATUS = '1' THEN '在线'
+            WHEN STATUS = '0' THEN '离线'
+            END AS state,
+            if( name is null or name='', mac ,name) AS pname,
+            mac,
+            product_type as productType,
+            ota_version as otaVersion,
+            #{meshId} as meshId
+        FROM
+            t_host_info
+        WHERE
+            id IN
+            (SELECT hm.hid FROM t_host_mesh hm,t_mesh m WHERE m.id = hm.mid AND m.mesh_id = #{meshId})
+    </select>
+
+    <select id="getPOEState" resultType="map">
+        SELECT
+            hi.is_master as master,
+            hi.status
+        FROM
+            t_host_mesh hm
+            right JOIN t_host_info hi ON hm.hid = hi.id
+        WHERE
+            hm.mid = ( SELECT id FROM t_mesh WHERE mesh_id = #{meshId} )
+    </select>
+
+    <select id="getTimeLinesByMeshId" resultType="TimeLine">
+        SELECT
+            id,
+            tname,
+            tid,
+            mesh_id AS meshId,
+            IF( repetition = '0', '不重复', '重复' ) repetition,
+            dayObj,
+            IF( item_set = '1', '启用', '停用' ) itemSet,
+            WEEK
+        FROM
+            f_time_line
+        WHERE
+            mesh_id = #{meshId} order by tid
+    </select>
+
+    <select id="getTimePointByTsid" resultType="TimePoint">
+        SELECT
+            tsid,
+            concat(IF( LENGTH( HOUR ) = 1, CONCAT( '0', HOUR ), HOUR ),
+                   ':',IF( LENGTH( MINUTE ) = 1, concat( '0', MINUTE ), MINUTE )
+            ) AS time,
+            scene_id
+        FROM
+            f_time_point
+        WHERE
+            tsid = #{tsid} order by time
+    </select>
+
+</mapper>

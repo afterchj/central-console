@@ -1,0 +1,58 @@
+.am-g.timing-show-list{
+    width: 95%;
+    /* margin-left: 5%; */
+    /* margin-top: 1rem; */
+    margin: 1rem;
+}
+/*.left-timing-title li.active:after{*/
+    /*content: '';*/
+    /*display: inline-block;*/
+    /*width: 0;*/
+    /*height: 0;*/
+    /*position: absolute;*/
+    /*border-top: .5rem solid transparent;*/
+    /*border-bottom: .5rem solid transparent;*/
+    /*border-left: .8rem solid #3BB4F2;*/
+    /*right: -.8rem;*/
+    /*top: 45%;*/
+/*}*/
+.timing-show-list p{
+    margin: 0;
+    font-size: 1.2rem;
+    color: #999;
+}
+.timing-show-list p.first{
+    color: #474747;
+    font-size: 1.4rem;
+    /*margin: .4rem 0;*/
+}
+.left-timing-title li.active,.right-timing-detail.active{
+    background-color: #dee4e8;
+    z-index: 999;
+    border: 1px solid #dee4e8;
+}
+.left-timing-title li.active{
+    border-color: #dee4e8;
+}
+.right-timing-detail.active{
+    border-color: #fff;
+}
+.left-timing-title li{
+    border-color: #dee4e8;
+    /*border-right-width: 2px;*/
+    padding-left: 1.8rem !important;
+}
+/*.left-timing-title li.active p,.right-timing-detail.active{*/
+    /*color: #3BB4F2;*/
+/*}*/
+.topNav section.am-panel-default{
+    /*width: 99%;*/
+    /*margin-left: 1%;*/
+}
+.right-timing-detail{
+    /*border:1px solid  #dee4e8;*/
+    margin: 3rem 0;
+}
+.right-line{
+    border-right: 1px solid #dee4e8;
+}

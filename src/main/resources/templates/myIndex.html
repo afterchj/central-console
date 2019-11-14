@@ -1,0 +1,173 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/static/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+    <script th:src="@{/static/jquery.js}" type="text/javascript"></script>
+</head>
+<style type="text/css">
+    .host {
+        height: 20px;
+        width: 20px
+    }
+
+    .main td {
+        /*height: 30px;*/
+        width: 80px;
+        border: #CCCCCC 1px solid;
+    }
+
+    .slave {
+        border: 0;
+    }
+
+    .box {
+        margin: 10px 10px;
+        text-align: center;
+    }
+
+    .slave td {
+        /*height: 30px;*/
+        text-align: center;
+        border: #CCCCCC 1px solid;
+    }
+</style>
+<script type="text/javascript">
+    let socket;
+    $(function () {
+        let url = location.host + "/central-console";
+        console.log(location.href, url);
+        $.getJSON("getHost", function (data) {
+            $.each(data, function (i, val) {
+                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+                $(".master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+            });
+        });
+        if (typeof (WebSocket) == "undefined") {
+            console.log("遗憾：您的浏览器不支持WebSocket");
+        } else {
+            socket = new WebSocket("ws://" + url + "/ws/webSocket");
+            //连接打开事件
+            socket.onopen = function () {
+                console.log("Socket 已打开！");
+            };
+            //收到消息事件
+            socket.onmessage = function (result) {
+                console.log("type", typeof result, "receive", result.data);
+            }
+        }
+        $("#test").click(function () {
+            let cmd = $("#txt").val();
+            let host = $("#hosts").val();
+            $.get("test", {"command": cmd, "host": host}, function (result) {
+                console.log("cmd", cmd, "host", host, "result", result);
+            });
+            socket.send(cmd);
+        });
+
+        $(".host").click(function () {
+            let mesh_id = $.trim($(this).val());
+            let flag = $(this).is(':checked');
+            $.get("save", {"host": mesh_id, "is_control": flag}, function (result) {
+                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+            });
+        })
+        $(".master").click(function () {
+            let mesh_id = $.trim($(this).val());
+            let flag = $(this).is(':checked');
+            $.get("save", {"host": mesh_id, "is_master": flag}, function (result) {
+                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+                // if (result == "ok") {
+                //     $("#master").val(mesh_id);
+                // }
+            });
+        })
+        // $("#master").click(function () {
+        //     let mesh_id = $.trim($(this).val());
+        //     console.log("mesh_id", mesh_id);
+        // })
+    });
+
+    function sendCmd(id, flag) {
+        console.log("id", id);
+        let status = $("#" + id).text();
+        console.log("value", status);
+        if (status == '开') {
+            $("#" + id).val("77010315373766");
+            $("#" + id).text("关")
+        } else if (status == '关') {
+            $("#" + id).val("77010315323266");
+            $("#" + id).text("开")
+        }
+        $.get("switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
+            console.log("result", result);
+        })
+    }
+</script>
+<body>
+<h1>Welcome to Spring Boot world!</h1>
+<p id="show">
+    主控：77011465FFFFFFFF2000000000C1323200000000000001CCCC<br>
+    场景：77011465FFFFFFFF20000000004200000000000003CCCC <br>
+    全控：77011465FFFFFFFF2A00000000C000373700000000CCCC <br>
+</p>
+<p>
+    <label for="btn1">一键控制：</label>
+    <button id="btn1" value="77010315373766" onclick="sendCmd(this.id,'all')">开</button>
+    <label for="btn2">群控：</label>
+    <button id="btn2" value="77010315373766" onclick="sendCmd(this.id,'master')">开</button>
+    <!--    <label for="master">群控mesh_id：</label>-->
+    <!--    <input type="text" id="master" value="88888888">-->
+    <!--    <select id="master">-->
+    <!--    </select>-->
+</p>
+<div style="width: 30%;margin: 20px 20px">
+    <table class="main" style="text-align: center;border-collapse: collapse;width: 60%;">
+        <th>
+            <tr>
+                <td>楼层</td>
+                <!--                <td>meshId</td>-->
+                <td>主控网络</td>
+                <td>meshId/是否被控</td>
+            </tr>
+        </th>
+        <tbody>
+        <tr th:each="host:${hosts}">
+            <td th:text="${host.mname}"></td>
+            <!--            <td th:text="${host.mesh_id}"></td>-->
+            <td>
+                <select class="master"></select>
+            </td>
+            <td>
+                <div class="box">
+                    <table class="slave">
+                        <tr th:each="slave:${hosts}">
+                            <td th:text="${slave.mesh_id}"></td>
+                            <td th:switch="${slave.is_control}">
+                            <span th:case="true">
+                                <input class="host" type="checkbox" checked th:value="${slave.mesh_id}">
+                             </span>
+                                <span th:case="*">
+                                 <input class="host" type="checkbox" th:value="${slave.mesh_id}">
+                            </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>
+    <label for="test">获取灯信息：</label>
+    <input style="width: 200px" type="text" id="txt" placeholder="默认ping指令7701011B66" value="7701011B66"/>
+    <select id="hosts" name="host" style="height: 30px">
+        <option value="all" selected>all</option>
+    </select>
+    <input type="button" id="test" value="测试"/>
+</p>
+</body>
+</html>

@@ -2,9 +2,7 @@ package com.example.blt.dao;
 
 import com.example.blt.entity.CommandLight;
 import com.example.blt.entity.LightDemo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -62,9 +60,31 @@ public interface Monitor4Dao {
     List<Integer> getStatusOfFloor(@Param("mname") String mname,@Param("Place") int place,@Param("groupId") int groupId);
 
 
+    @Insert("insert into f_time_line (tname,tid,mesh_id,repetition,week,dayObj,ischoose,item_desc,item_set,item_tag,create_date,update_date) values (#{tname},#{tid},#{meshId},#{repetition},#{week},#{dayObj},#{ischoose},#{item_desc},#{item_set},#{item_tag},NOW(),NOW())")
+    @SelectKey(statement="select last_insert_id()",before=false,keyProperty="id",resultType=Integer.class,keyColumn="id")
+    void insertTimeLine(Map<String, Object> map);
 
 
+    @Insert("insert into f_time_point (tsid,scene_id,hour,minute,light_status,create_date,update_date) values (#{id},#{sceneId}, #{hour},#{minute},#{lightStatus},NOW(),NOW())")
+    void insertTimePoint(Map<String, Object> map);
 
+    @Select("select count(*) from f_time_line where mesh_id=#{meshId} and tid=#{tid}")
+    int findTimeLine(Map<String, Object> map);
 
+    @Select("select count(*) from t_mesh where mesh_id=#{meshId}")
+    int findTMesh(@Param("meshId") String meshId);
+
+    @Insert("insert into t_mesh (mesh_id,mesh_name,log_date) values (#{meshId},#{mname},NOW())")
+    void insertTMesh(@Param("meshId") String meshId,@Param("mname") String mname);
+
+    @Update("update t_mesh set mesh_name= #{mname},log_date=NOW() where mesh_id=#{meshId}")
+    void updateTMesh(@Param("meshId")String meshId,@Param("mname")String mname);
+
+//    @Update("update t_host_info set mesh_name = #{mname},log_date = NOW() where mesh_id = #{meshId}")
+//    void updateHostInfo(@Param("meshId")String meshId, @Param("mname")String mname);
+
+    @Select("select host_id from t_host_info where id in(select hm.hid from t_host_mesh hm,t_mesh m where hm.mid=m.id and m.mesh_id=(select mesh_id from t_mesh_setting  where project=#{project})) and status=1")
+//    @Select("select host_id from t_host_info where id in(select hm.hid from t_host_mesh hm,t_mesh m where hm.mid=m.id and m.mesh_id=(select mesh_id from t_mesh_setting  where project=#{project}))")
+    String getHostId(@Param("project") String host);
 
 }

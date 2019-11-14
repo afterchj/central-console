@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>删除面板</title>
+</head>
+<body>
+<div  class="modal fade"   role="dialog" tabindex="-3" id="deletePanel-modal" th:fragment="deletePanel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >删除</h4>
+                <input type="hidden" value="删除面板">
+            </div>
+            <div class="modal-body">
+                <form action="" class="am-form">
+                    <div class="am-form-group">
+                        <p class="am-text-sm am-text-left" style="margin: 0;">您确定要删除该面板吗？</p>
+                        <p class="am-text-left am-text-sm am-text-danger" style="margin: 0;font-size: 1.2rem">(删除后，若现场还存在该面板，将会在中控同步后再次恢复！)</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default reduce" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary yes">确定</button>
+            </div>
+        </div>
+    </div>
+    <!--<div class="am-modal-dialog">-->
+        <!--<div class="am-modal-hd">删除-->
+            <!--<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>-->
+        <!--</div>-->
+        <!--<div class="am-modal-bd">-->
+            <!--<form action="" class="am-form">-->
+                <!--<div class="am-form-group">-->
+                    <!--<p class="am-text-default am-text-left" style="margin: 0;">您确定要删除该面板吗？</p>-->
+                    <!--<p class="am-text-left am-text-sm am-text-danger" style="margin: 0;">删除后，若现场还存在该面板，将会在中控同步后再次恢复！</p>-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+        <!--<div class="am-modal-footer">-->
+            <!--<span class="am-modal-btn" data-am-modal-cancel>取消</span>-->
+            <!--<span class="am-modal-btn" data-am-modal-confirm>确定</span>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+</body>
+</html>

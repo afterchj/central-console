@@ -27,9 +27,21 @@
         <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
     </parameterMap>
 
-    <delete id="deleteHost">
-       delete from t_host_info where ip is null
-    </delete>
+    <parameterMap id="hostMapper" type="map">
+        <parameter property="ip" mode="IN"/>
+        <parameter property="meshId" mode="IN"/>
+        <parameter property="host" mode="IN"/>
+        <parameter property="mac" mode="IN"/>
+        <parameter property="type" mode="IN"/>
+        <parameter property="version" mode="IN"/>
+        <parameter property="flag" mode="IN"/>
+        <parameter property="status" mode="IN"/>
+        <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
+    </parameterMap>
+
+    <select id="refreshHost" statementType="CALLABLE">
+        CALL refreshHost()
+    </select>
     <select id="saveLight" parameterMap="lightMapper" resultType="map" statementType="CALLABLE">
         CALL save_light(?,?,?,?,?,?,?,?,?,?)
     </select>
@@ -43,19 +55,83 @@
     </select>
 
     <select id="getHostInfo" resultType="map">
-        SELECT mname,d.ip,h.is_control flag FROM f_light_demo d INNER JOIN t_host_info h ON h.ip=d.ip WHERE d.other='intelligence' AND h.status=1 GROUP BY ip
+        SELECT
+            IFNULL(mesh_name,'') mname,
+            host_id,
+            m.mesh_id,
+            h.is_master,
+            h.is_control
+        FROM
+            t_host_info h
+        INNER JOIN t_host_mesh s ON s.hid = h.id
+        INNER JOIN t_mesh m ON m.id = s.mid
+        WHERE
+            h.ip != '127.0.0.1'
+        AND h. STATUS = 1
+        ORDER BY host_id
     </select>
 
     <update id="saveHost" parameterType="ConsoleVo">
-         UPDATE t_host_info SET is_control=#{status} WHERE ip=#{host}
+        UPDATE t_host_info h
+        INNER JOIN t_host_mesh s ON h.id = s.hid
+        INNER JOIN t_mesh m ON m.id = s.mid
+        <set>
+            <if test="is_control != null">
+                is_control=#{is_control},
+            </if>
+            <if test="is_master != null">
+                is_master=#{is_master},
+            </if>
+            h.log_date=now()
+        </set>
+        <if test="host!=null and host!=''">
+            WHERE m.mesh_id=#{host}
+        </if>
     </update>
+    <select id="getHosts" resultType="string" parameterType="string">
+        SELECT host_id FROM t_host_info WHERE status=1
+        <if test="_parameter!=null and _parameter!=''">
+            AND is_control=1
+        </if>
+    </select>
 
-    <select id="getHosts" resultType="string">
-        SELECT ip FROM t_host_info WHERE is_control=1 AND status=1
+    <select id="getHostsByGid" resultType="string">
+        SELECT DISTINCT host_id FROM t_host_info h
+        INNER JOIN t_host_mesh s ON s.hid=h.id
+        INNER JOIN t_mesh m ON m.id=s.mid
+        INNER JOIN t_mesh_group r ON r.mid=m.id
+        INNER JOIN t_group g ON g.id=r.gid
+        WHERE h.is_control=1
+        AND h.status=1
+        AND g.id in (
+        SELECT g.id FROM t_host_info h
+        INNER JOIN t_host_mesh s ON s.hid=h.id
+        INNER JOIN t_mesh m ON m.id=s.mid
+        INNER JOIN t_mesh_group r ON r.mid=m.id
+        INNER JOIN t_group g ON g.id=r.gid
+        WHERE h.host_id=#{host}
+        )
     </select>
-    <select id="getHost" resultType="string">
-        SELECT ip FROM t_host_info WHERE is_master=1 LIMIT 1
+
+    <select id="getMaster" resultType="string">
+        SELECT host_id FROM t_host_info WHERE is_master=1 AND host_id = #{host} LIMIT 1
     </select>
+
+    <select id="getAll" resultType="string">
+        SELECT host_id FROM t_host_info WHERE host_id IS NOT NULL
+    </select>
+
+    <select id="getCron" resultType="CronVo">
+        SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,command,repetition,cron FROM t_cron
+    </select>
+
+    <select id="getHostId" resultType="string" parameterType="string">
+        SELECT host_id FROM t_host_info h
+        INNER JOIN t_host_mesh s ON h.id=s.hid
+        INNER JOIN t_mesh m ON m.id = s.mid
+        WHERE h.host_id=#{host} OR h.ip=#{host} OR m.mesh_id=#{host} LIMIT 1
+    </select>
+
     <select id="getVaddr" resultType="string">
         SELECT vaddr FROM t_light_info
     </select>
@@ -67,17 +143,62 @@
     <select id="getLight" resultType="string" parameterType="string">
         SELECT vaddr FROM t_light_info WHERE host=#{ip}
     </select>
+
     <select id="getTotal" resultType="int">
         SELECT COUNT(0) lmacn FROM f_light_demo
     </select>
+
+    <insert id="insertCron" parameterType="list">
+        TRUNCATE TABLE t_cron;
+        INSERT IGNORE INTO t_cron(cron_name,mesh_id,scene_id,item_set,repetition,cron,command,create_date,update_date)
+        VALUES
+        <foreach collection="list" item="v" index="index" separator=",">
+            (
+            #{v.cronName},#{v.meshId},#{v.sceneId},#{v.itemSet},#{v.repetition},#{v.cron},#{v.command},now(),now()
+            )
+        </foreach>
+    </insert>
 
     <insert id="insertLog" parameterType="string">
         INSERT INTO f_light_console(ip,msg,log_date) VALUE (#{ip},#{msg},now())
     </insert>
 
     <insert id="insertHost" parameterType="map">
-        INSERT IGNORE INTO t_host_info(ip,log_date) VALUE (#{ip},now())
+        REPLACE INTO t_host_info(ip,host_id,log_date) VALUE (#{ip},#{hostId},now())
     </insert>
+
+    <select id="saveUpdateHosts" parameterMap="hostMapper" resultType="map" statementType="CALLABLE">
+        CALL saveUpdateHost(?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <update id="updateHostsFlag" parameterType="map">
+        UPDATE t_host_info
+        <set>
+            <if test="flag != null">
+                flag=#{flag},
+            </if>
+            log_date=now()
+        </set>
+        WHERE host_id=#{host}
+    </update>
+
+    <update id="updateHostsStatus" parameterType="list">
+        UPDATE t_host_info SET status=0,log_date=now() WHERE host_id NOT IN
+        <foreach collection="list" index="index" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="flushHostsStatus" parameterType="list">
+        UPDATE t_host_info SET status=1,log_date=now() WHERE host_id IN
+        <foreach collection="list" index="index" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="saveHostsStatus">
+        UPDATE t_host_info SET status=0,log_date=now()
+    </update>
 
     <select id="selectIn" parameterType="map" resultType="int">
         SELECT COUNT(0) lumn FROM t_light_info WHERE host=#{ip} AND vaddr IN
@@ -115,4 +236,11 @@
             )
         </foreach>
     </insert>
+
+    <delete id="deleteTimerData" parameterType="map">
+            DELETE FROM f_time_point WHERE tsid IN (SELECT l.id from (SELECT id FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid}) AS l);
+             DELETE FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid};
+    </delete>
+
+
 </mapper>
