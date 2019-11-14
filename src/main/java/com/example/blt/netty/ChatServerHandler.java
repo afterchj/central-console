@@ -66,7 +66,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if ("master".equals(to)) {
             hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
             if (hosts.size() == 0) {
-                hosts = sqlSessionTemplate.selectList("console.getPlaceHost");
+                hosts = sqlSessionTemplate.selectList("console.getPlaceHost",host);
                 if (hosts.size() == 0) {
                     hosts = sqlSessionTemplate.selectList("console.getHosts", type);
                 }

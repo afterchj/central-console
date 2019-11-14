@@ -88,6 +88,7 @@
             WHERE m.mesh_id=#{host}
         </if>
     </update>
+
     <select id="getHosts" resultType="string" parameterType="string">
         SELECT host_id FROM t_host_info WHERE status=1
         <if test="_parameter!=null and _parameter!=''">
@@ -95,7 +96,7 @@
         </if>
     </select>
 
-    <select id="getHostsByGid" resultType="string">
+    <select id="getHostsByGid" resultType="string" parameterType="string">
         SELECT host_id FROM t_host_info h
         INNER JOIN t_host_mesh s ON s.hid=h.id
         INNER JOIN t_mesh m ON m.id=s.mid
@@ -112,20 +113,44 @@
         )
     </select>
 
-    <select id="getPlaceHost" resultType="string">
+    <select id="getPlaceHost" resultType="string" parameterType="string">
         SELECT
-           host_id
+            h.host_id
         FROM
             t_host_info h
         INNER JOIN t_host_mesh mh ON mh.hid = h.id
         INNER JOIN t_mesh m ON m.id=mh.mid
         INNER JOIN t_mesh_group mg ON mg.mid = mh.mid
-        INNER JOIN t_group g ON g.id = mg.gid
+        INNER JOIN t_mgroup g ON g.id = mg.gid
         INNER JOIN t_place_group pg ON pg.gid=g.id
         INNER JOIN t_mplace p ON p.id=pg.pid
+        WHERE pg.pid=(
+        SELECT
+            pid
+        FROM
+            t_place_group
+        WHERE
+            gid = (
+                SELECT
+                    gid
+                FROM
+                    t_host_info h
+                INNER JOIN t_host_mesh mh ON mh.hid = h.id
+                INNER JOIN t_mesh_group mg ON mg.mid = mh.mid
+                WHERE
+                    mh.hid = (
+                        SELECT
+                            id
+                        FROM
+                            t_host_info
+                        WHERE
+                            host_id = #{host}
+                    )
+            )
+        )
     </select>
 
-    <select id="getGroupHosts" resultType="string">
+    <select id="getGroupHosts" resultType="string" parameterType="string">
         SELECT
             host_id
         FROM
@@ -160,7 +185,7 @@
         )
     </select>
 
-    <select id="getMaster" resultType="string">
+    <select id="getMaster" resultType="string" parameterType="string">
         SELECT host_id FROM t_host_info WHERE is_master=1 AND host_id = #{host} LIMIT 1
     </select>
 

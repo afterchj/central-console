@@ -14,5 +14,6 @@ public class placeGroup implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Integer pid;
+    @Column(unique = true)
     private Integer gid;
 }
