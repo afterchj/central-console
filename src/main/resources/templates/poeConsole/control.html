@@ -48,6 +48,7 @@
 <form name="groupOpe" method="post" action="/central-console/control/netWorkGroupConsole">
     <input type="hidden" name="gid">
     <input type="hidden" name="meshId">
+    <input type="hidden" name="pid">
 </form>
 <div class="am-container  " id="poeConsole">
     <div class="am-g content">
@@ -165,23 +166,21 @@
                                     </ul>
                                 </td>
                                 <td class="p-r" data-am-dropdown>
-                                    <a href="javascript:;" style="color: #4a4a4a;text-decoration: none">
-                                        <span th:text="${controlMaster.pname==null}?' - 空 - ':${controlMaster.pname}"></span>
-                                    </a>
-                                    <span class="area p-a  tool am-dropdown-toggle place-list" data-am-dropdown-toggle>
-                                            <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" style="width: 1.4rem;" class="place-img">
-                                     </span>
-                                    <ul class="am-dropdown-content group-data" th:if="${controlMaster.gname!=null}">
-                                        <input type="hidden" th:value="${controlMaster.meshId}">
-                                        <li class="am-text-xs p-r" th:each="place:${placeList}">
-                                            <a th:text="${place.pname}" class="select-place" th:alt="${place.id}"></a>
-                                        </li>
-                                        <li class="am-text-xs p-r" th:if="${controlMaster.pname!=null}">
-                                            <a class="select-place" th:alt="0"> - 空 - </a>
-                                        </li>
-                                    </ul>
-                                    <!--<ul class="am-dropdown-content" th:if="${controlMaster.gname==null}">-->
-
+                                    <!--<a href="javascript:;" style="color: #4a4a4a;text-decoration: none">-->
+                                        <!--<span th:text="${controlMaster.pname==null}?' - 空 - ':${controlMaster.pname}"></span>-->
+                                    <!--</a>-->
+                                    <span>二楼</span>
+                                    <!--<span class="area p-a  tool am-dropdown-toggle place-list" data-am-dropdown-toggle>-->
+                                            <!--<img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" style="width: 1.4rem;" class="place-img">-->
+                                     <!--</span>-->
+                                    <!--<ul class="am-dropdown-content group-data" th:if="${controlMaster.gname!=null}">-->
+                                        <!--<input type="hidden" th:value="${controlMaster.meshId}">-->
+                                        <!--<li class="am-text-xs p-r" th:each="place:${placeList}">-->
+                                            <!--<a th:text="${place.pname}" class="select-place" th:alt="${place.id}"></a>-->
+                                        <!--</li>-->
+                                        <!--<li class="am-text-xs p-r" th:if="${controlMaster.pname!=null}">-->
+                                            <!--<a class="select-place" th:alt="0"> - 空 - </a>-->
+                                        <!--</li>-->
                                     <!--</ul>-->
                                 </td>
                                 <td>

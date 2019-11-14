@@ -14121,3 +14121,7 @@ tbody.am-collapse.am-in {
 .am-titlebar-one .am-titlebar-nav a {
     color: #999
 }
+
+.am-table > thead > tr > td.am-active, .am-table > tbody > tr > td.am-active, .am-table > tfoot > tr > td.am-active, .am-table > thead > tr > th.am-active, .am-table > tbody > tr > th.am-active, .am-table > tfoot > tr > th.am-active, .am-table > thead > tr.am-active > td, .am-table > tbody > tr.am-active > td, .am-table > tfoot > tr.am-active > td, .am-table > thead > tr.am-active > th, .am-table > tbody > tr.am-active > th, .am-table > tfoot > tr.am-active > th {
+    background-color: transparent;
+}

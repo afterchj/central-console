@@ -192,13 +192,18 @@ $(function () {
         setAndSubmitForm(gid, meshId);
     });
     //选择区域前置操作
-    $(".place-list").click(function () {
-        var groupName = $(this).parent().prev().find("a>span").text();
-        if (groupName == '- 空 -'){
+    // $(".place-list").click(function () {
+    //     var groupName = $(this).parent().prev().find("a>span").text();
+    //     if (groupName == '- 空 -'){
+    //
+    //     }
+    // });
 
-        }
-        console.log($(this).parent().prev().find("a>span").text());
-    });
+    // $(".select-place").click(function () {
+    //     var meshId = $(this).parent().siblings("input").val();
+    //     var pid = $(this).attr('alt');
+    //     setAndSubmitForm(null, meshId,pid);
+    // });
 
     //查看面板
     $('.panel-show-msg').click(function (e) {
@@ -271,10 +276,11 @@ function isEmpty(value) {
     }
 }
 
-function setAndSubmitForm(gid, meshId) {
+function setAndSubmitForm(gid, meshId,pid) {
     var thisForm = $("form[name='groupOpe");
     $(thisForm)[0].reset();
     $(thisForm).find('[name="gid"]').val(gid);
     $(thisForm).find('[name="meshId"]').val(meshId);
+    // $(thisForm).find('[name="pid"]').val(pid);
     $(thisForm).submit();
 }
