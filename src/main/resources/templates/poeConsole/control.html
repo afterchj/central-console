@@ -45,6 +45,10 @@
     <link rel="stylesheet" th:href="@{/static/poeConsole/css/index.css}">
 </head>
 <body>
+<form name="groupOpe" method="post" action="/central-console/control/netWorkGroupConsole">
+    <input type="hidden" name="gid">
+    <input type="hidden" name="meshId">
+</form>
 <div class="am-container  " id="poeConsole">
     <div class="am-g content">
         <div class="col-sm-1 col-lg-1 no-padding leftNav">
@@ -63,19 +67,19 @@
                         <table class="am-table am-table-bd ">
                             <thead class="am-text-sm " style="color: #3a3a3a;">
                             <tr>
-                                <th style="width: 15%;" >网络名称</th>
-                                <th style="width: 20%;" >网络ID</th>
-                                <th style="width: 15%;" >网络状态</th>
-                                <th style="width: 15%;" >面板数量</th>
+                                <th style="width: 15%;">网络名称</th>
+                                <th style="width: 20%;">网络ID</th>
+                                <th style="width: 15%;">网络状态</th>
+                                <th style="width: 15%;">面板数量</th>
                                 <th class="p-r updown-data " data-am-dropdown>
                                     <!--<span class="am-dropdown-toggle" data-am-dropdown-toggle >-->
                                     <!--隶属网组 <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""-->
                                     <!--class=" p-a create-mesh-list  tool"  style=" width: 1.8rem;">-->
                                     <!--</span>-->
                                     隶属网组
-                                      <span class="area p-a create-mesh-list  tool">
+                                    <span class="area p-a create-mesh-list  tool">
                                          <img th:src="@{/static/poeConsole/img/subjection.png}" alt=""
-                                                  class=" " style=" width: 1.8rem;">
+                                              class=" " style=" width: 1.8rem;">
                                     </span>
                                     <ul class="p-a data-show">
                                         <li>
@@ -116,7 +120,7 @@
                                 <td class="p-r ">
                                     <span class="hide-mesh-model" th:text="${controlMaster.mname}"></span>
                                     <span class="area p-a  tool am-animation-fade  mesh-rename mesh-ope">
-                                         <img th:src="@{/static/poeConsole/img/dot.png}" alt=""  style=" width: .25rem;">
+                                         <img th:src="@{/static/poeConsole/img/dot.png}" alt="" style=" width: .25rem;">
                                     </span>
                                     <div class="am-cf  rename-delete mesh2 p-a left">
                                         <div class="am-fl am-center rename-mesh" data-toggle="modal" data-target="#renameMesh-modal">
@@ -135,7 +139,7 @@
                                           th:text="${controlMaster.pState}"></span>
                                     <span class="am-text-xs" th:if="${controlMaster.pState==null}"></span>
                                     <span class="area p-a tool panel-show-msg">
-                                        <img th:src="@{/static/poeConsole/img/open.png}" alt="" class="" >
+                                        <img th:src="@{/static/poeConsole/img/open.png}" alt="" class="">
                                     </span>
                                 </td>
                                 <!--<td class="p-r">-->
@@ -143,18 +147,19 @@
                                 <!--<img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" class=" p-a  tool">-->
                                 <!--</td>-->
                                 <td class="p-r am-dropdown " data-am-dropdown>
-                                    <a  href="javascript:;">
+                                    <a href="javascript:;">
                                         <span th:text="${controlMaster.gname==null}?' - 空 - ':${controlMaster.gname}"></span>
                                     </a>
-                                     <span class="area p-a  tool am-dropdown-toggle group-list"  data-am-dropdown-toggle>
+                                    <span class="area p-a  tool am-dropdown-toggle group-list" data-am-dropdown-toggle>
                                             <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" style="    width: 1.4rem;">
                                      </span>
                                     <ul class="am-dropdown-content group-data">
-                                        <!--<li class="am-dropdown-header am-text-sm"> - 空 -</li>-->
+                                        <input type="hidden" th:value="${controlMaster.meshId}">
                                         <li class="am-text-xs p-r" th:each="group:${groupList}">
-                                            <input type="hidden" th:value="${controlMaster.meshId}">
-                                            <a th:href="@{/control/netWorkGroupConsole(gname=${group.gname},meshId=${controlMaster.meshId})}"
-                                               th:text="${group.gname}" class="select-group" th:alt="${group.id}"></a>
+                                            <a th:text="${group.gname}" class="select-group" th:alt="${group.id}"></a>
+                                        </li>
+                                        <li class="am-text-xs p-r" th:if="${controlMaster.gname!=null}">
+                                            <a class="select-group" th:alt="0"> - 空 - </a>
                                         </li>
                                     </ul>
                                 </td>
@@ -215,7 +220,7 @@
         $('.group-list').click(function () {
             $('.data-show').hide();
         });
-        $(".am-text-sm").on('click','.first-rename',function () {
+        $(".am-text-sm").on('click', '.first-rename', function () {
             $('.rename-delete.mesh2').hide();
             $('.data-show').hide();
         });

@@ -40,62 +40,55 @@ $(function () {
         // $('.rename-delete.mesh-ope').toggle();
         // $('.panel-show-detail').hide();
         $('.data-show').hide();
-     /*   $('.group-data').hide();*/
+        /*   $('.group-data').hide();*/
         $(this).next('.rename-delete').toggle();
         $(this).parent().parent().siblings().find('.rename-delete').hide();
         meshId = $(this).parent().next().text();
         meshState = $(this).parent().next().next().text();
         pNum = $(this).parent().next().next().next().find(":eq(0)").text();
         pState = $(this).parent().next().next().next().find(":eq(1)").text();
-        pState = pState.indexOf("离线")==-1?true:false;
-        console.log('pNum:',pNum,' pState:',pState)
-        if (meshState == '网络在线' ||(pNum>0 && pState)){
-            $(this).next().find(".delete-mesh").attr('data-target','#');
+        pState = pState.indexOf("离线") == -1 ? true : false;
+        console.log('pNum:', pNum, ' pState:', pState)
+        if (meshState == '网络在线' || (pNum > 0 && pState)) {
+            $(this).next().find(".delete-mesh").attr('data-target', '#');
         }
     });
     $(".delete-mesh").click(function () {
-        if (meshState == '网络在线' ||(pNum>0 && pState)){
+        if (meshState == '网络在线' || (pNum > 0 && pState)) {
             layer.open({
                 content: '不可删除'
-                ,skin: 'msg'
-                ,time: 3 //3秒后自动关闭
+                , skin: 'msg'
+                , time: 3 //3秒后自动关闭
             });
         }
     });
     //点击删除面板
     $(".am-text-sm").on('click', 'div.delete-panel', function () {
-        if (panelState == '在线'){
+        if (panelState == '在线') {
             layer.open({
                 content: '不可删除'
-                ,skin: 'msg'
-                ,time: 3 //3秒后自动关闭
+                , skin: 'msg'
+                , time: 3 //3秒后自动关闭
             });
         }
     });
     //点击重命名
-    $(".am-text-sm").on('click','div.rename-mesh,div.rename-group,div.rename-panel,button.create-group',function () {
+    $(".am-text-sm").on('click', 'div.rename-mesh,div.rename-group,div.rename-panel,button.create-group', function () {
         $('label.am-form-label.am-text-danger.am-text-left').text('');
         $('input.am-form-field').val('');
     });
-    // $('body').click(function (e) {
-    //     if (!$(e.target).closest(".rename-delete,.mesh-ope,.first-rename").length) {
-    //         $(".rename-delete").hide();
-    //     }
-    //
-    // });
-
     $(".btn.btn-primary.yes").click(function () {
         var val = $(this).parent().prev().find('input[id="mesh-name"]').val();
         var title = $(this).parent().prev().prev().find('h4').text();
         var buttonThis = $(this);
         var hiddenTitle = $(this).parent().prev().prev().find('input').val();
         var valEmpty = isEmpty(val);
-        if (valEmpty && hiddenTitle.indexOf("删除")==-1){//输入框不为空&&不是删除操作
+        if (valEmpty && hiddenTitle.indexOf("删除") == -1) {//输入框不为空&&不是删除操作
             $(buttonThis).parent().prev().find('label').text(text);
         }
         var hint = $(buttonThis).parent().prev().find('label').text();
         var hintEmpty = isEmpty(hint);
-        if (hintEmpty ){//没有提示
+        if (hintEmpty) {//没有提示
             if (title == '创建网组') {//创建组
                 $.post('/central-console/control/group', {'gname': val, 'type': 'create'}, function (data) {
                     var exitGroup = data.exitGroup;
@@ -119,8 +112,8 @@ $(function () {
                     }
                     console.log($(buttonThis))
                 });
-            }else if (hiddenTitle == '重命名网络'){
-                $.post('/central-console/control/renameMesh',{"mname":val,"meshId":meshId},function (data) {
+            } else if (hiddenTitle == '重命名网络') {
+                $.post('/central-console/control/renameMesh', {"mname": val, "meshId": meshId}, function (data) {
                     var exitMname = data.exitMname;
                     if (exitMname == 1) {//网络名重复
                         $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
@@ -129,12 +122,12 @@ $(function () {
                         $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
                     }
                 });
-            }else if (hiddenTitle == '重命名面板'){
-                $.post('/central-console/control/panelOperations',{"pname":val,"id":panelId,"type":"rename"},function (data) {
+            } else if (hiddenTitle == '重命名面板') {
+                $.post('/central-console/control/panelOperations', {"pname": val, "id": panelId, "type": "rename"}, function (data) {
                     var exitPname = data.exitPname;
-                    if (exitPname == 1){//面板名称重复
+                    if (exitPname == 1) {//面板名称重复
                         $(buttonThis).parent().prev().find('label').text('已存在，请重新输入');
-                    }else {
+                    } else {
                         // window.location.href = "/central-console/control/netWorkGroupConsole";
                         $(buttonThis).parent().prev().find('input[id="mesh-name"]').val("");
                         $("#renamePanel-modal").modal('hide');
@@ -152,17 +145,17 @@ $(function () {
                     window.location.href = "/central-console/control/netWorkGroupConsole";
                 }
             });
-        }else if (hiddenTitle == '删除面板'){
-                $.post('/central-console/control/panelOperations',{"id":panelId,"type":"delete"},function (data) {
-                    var exitPname = data.exitPname;
-                    if (exitPname == 0){//面板名称重复
-                        window.location.href = "/central-console/control/netWorkGroupConsole";
-                    }
-                });
-        }else if (hiddenTitle == '删除网络'){
-            $.post('/central-console/control/renameMesh',{"meshId":meshId},function (data) {
+        } else if (hiddenTitle == '删除面板') {
+            $.post('/central-console/control/panelOperations', {"id": panelId, "type": "delete"}, function (data) {
+                var exitPname = data.exitPname;
+                if (exitPname == 0) {//面板名称重复
+                    window.location.href = "/central-console/control/netWorkGroupConsole";
+                }
+            });
+        } else if (hiddenTitle == '删除网络') {
+            $.post('/central-console/control/renameMesh', {"meshId": meshId}, function (data) {
                 var exitMname = data.exitMname;
-                if (exitMname == 0){
+                if (exitMname == 0) {
                     window.location.href = "/central-console/control/netWorkGroupConsole";
                 }
             });
@@ -185,15 +178,18 @@ $(function () {
     });
     //点击创建组中的全部
     $(".all-group").click(function () {
-        window.location.href = "/central-console/control/netWorkGroupConsole";
+        setAndSubmitForm(null, null);
     });
     //点击创建组中的单个组
     $(".one-group").click(function () {
-        window.location.href = "/central-console/control/netWorkGroupConsole?gid=" + $(this).prev().val();
+        var gid = $(this).prev().val();
+        setAndSubmitForm(gid, null);
     });
     //选择组
     $(".select-group").click(function () {
-        window.location.href = "/central-console/control/netWorkGroupConsole?gid=" + $(this).attr('alt') + "&meshId=" + $(this).prev().val();
+        var gid = $(this).attr('alt');
+        var meshId = $(this).parent().siblings("input").val();
+        setAndSubmitForm(gid, meshId);
     });
 
     //查看面板
@@ -220,7 +216,7 @@ $(function () {
                     // console.log("meshId",data.meshAndPOEStatus.meshId);
                     $(thisMesh).prev().text(data.meshAndPOEStatus.pState);//面板数量状态实时更新
                     $(thisMesh).parent().prev().text(data.meshAndPOEStatus.mState);//网络状态实时更新
-                    console.log($(thisMesh).prev().prev().text(),data.meshAndPOEStatus.pCount);
+                    console.log($(thisMesh).prev().prev().text(), data.meshAndPOEStatus.pCount);
                     $(thisMesh).prev().prev().text(data.meshAndPOEStatus.pCount);
 
                     var rows = controlHosts.length + 1;
@@ -229,13 +225,13 @@ $(function () {
                     $.each(controlHosts, function (key, value) {
                         meshId = data.meshId;
                         var deletePanel;
-                        if (value.state == '在线'){
+                        if (value.state == '在线') {
                             deletePanel = ' ';
-                        }else {
+                        } else {
                             deletePanel = '#deletePanel-modal';
                         }
-                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span alt="'+value.id+'">' + value.pname + '</span ><span class=" p-a  tool first-rename area"><img src="/central-console/static/poeConsole/img/dot.png" alt=""  style="width:.25rem;"></span><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel" data-toggle="modal" data-target="'+deletePanel+'">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">'+value.productType+'</td><td' +
-                        ' class="d-panel-msg ">' + value.state + '</td></tr>';
+                        tr += '<tr class="am-text-xs panel-show-detail"><td class="d-panel-msg p-r "><span alt="' + value.id + '">' + value.pname + '</span ><span class=" p-a  tool first-rename area"><img src="/central-console/static/poeConsole/img/dot.png" alt=""  style="width:.25rem;"></span><div class="am-cf  rename-delete p-a left panel-ope"> <div class="am-fl am-center rename-panel" style="border-right: 1px solid #ccc;"data-toggle="modal" data-target="#renamePanel-modal">重命名</div><div class="am-fl am-center delete-panel" data-toggle="modal" data-target="' + deletePanel + '">删除</div></div></td><td class="d-panel-msg ">' + value.mac + '</td><td class="d-panel-msg ">' + value.productType + '</td><td' +
+                            ' class="d-panel-msg ">' + value.state + '</td></tr>';
                     });
                     $(thisMesh).parent().parent().after(tr);
                 }
@@ -247,7 +243,7 @@ $(function () {
             $(".panel-show-detail").remove();
             $(this).find('img').attr('src', status);
         }
-        $(this).parent().parent().siblings().find('.panel-show-msg').find('img').attr('src','/central-console/static/poeConsole/img/open.png');
+        $(this).parent().parent().siblings().find('.panel-show-msg').find('img').attr('src', '/central-console/static/poeConsole/img/open.png');
 //            $(this).parent().parent().siblings('.panel-show-detail').toggle();
     });
 
@@ -265,4 +261,12 @@ function isEmpty(value) {
         }
         return false;
     }
+}
+
+function setAndSubmitForm(gid, meshId) {
+    var thisForm = $("form[name='groupOpe");
+    $(thisForm)[0].reset();
+    $(thisForm).find('[name="gid"]').val(gid);
+    $(thisForm).find('[name="meshId"]').val(meshId);
+    $(thisForm).submit();
 }

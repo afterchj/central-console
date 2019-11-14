@@ -88,7 +88,11 @@ public class ControlCenterService {
 
     public List<ControlMaster> getControlGroups(Integer gid, String meshId) {
         if (StringUtils.isNotBlank(meshId)) {//网络设置组
-            controlCenterDao.selectGroup(gid, meshId);
+            if (gid == 0){//设置成空组
+                controlCenterDao.deleteMeshGroup(meshId);
+            }else {//设置组
+                controlCenterDao.selectGroup(gid, meshId);
+            }
             controlCenterDao.updateHostInfo(meshId, 0);//取消主控设置
         }
         List<ControlMaster> controlMeshs = controlCenterDao.getControlGroups(gid, meshId);
