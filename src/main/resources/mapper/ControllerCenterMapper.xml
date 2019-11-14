@@ -10,7 +10,7 @@
             ifnull(m.mesh_name,m.mesh_id) as mname,
             flag
         FROM
-            t_group g
+            t_mgroup g
             JOIN t_mesh_group mg ON g.id = mg.gid
             right JOIN t_mesh m ON mg.mid = m.id
             <where>

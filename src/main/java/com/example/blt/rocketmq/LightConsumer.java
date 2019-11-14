@@ -19,7 +19,7 @@
 // */
 //
 //@Service
-//@RocketMQMessageListener(topic = "blt_light_topic", consumerGroup = "blt_cloud_consumer_light_group")
+//@RocketMQMessageListener(topic = "blt_light_topic", consumerGroup = "blt_cloud_consumer_light_mgroup")
 //public class LightConsumer implements RocketMQListener<String> {
 //
 //    @Resource

@@ -9,14 +9,14 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name = "t_mgroup")
-public class GroupInfo implements Serializable {
+@Table(name = "t_mplace")
+public class PlaceInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(length = 32)
-    private String gname;
-    private Integer groupId;
+    private String pname;
+    private Integer placeId;
     private String other;
     private Date createDate = new Date();
     private Date updateDate = new Date();

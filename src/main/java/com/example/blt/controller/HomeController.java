@@ -1,10 +1,11 @@
 package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
-import io.netty.handler.codec.http.HttpResponse;
+import com.example.blt.service.ControlCenterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -30,7 +30,8 @@ import java.util.*;
 public class HomeController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    @Resource
+    private ControlCenterService controlCenterService;
     @Resource
     private RedisTemplate redisTemplate;
     @Resource
@@ -67,6 +68,12 @@ public class HomeController {
         return "myIndex";
     }
 
+    @RequestMapping("/main")
+    public String main(ModelMap modelMap) {
+        List hosts = blTservice.getHostInfo();
+        modelMap.put("hosts", hosts);
+        return "main";
+    }
 
     @RequestMapping("/welcome")
     public String welcome() {
@@ -152,6 +159,13 @@ public class HomeController {
     public List getHosts() {
         List hosts = blTservice.getHostInfo();
         return hosts;
+    }
+
+    @ResponseBody
+    @RequestMapping("/getGroups")
+    public List getGroups() {
+        List<GroupList> groupList = controlCenterService.getGroups();
+        return groupList;
     }
 
     @ResponseBody

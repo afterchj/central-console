@@ -96,20 +96,67 @@
     </select>
 
     <select id="getHostsByGid" resultType="string">
-        SELECT DISTINCT host_id FROM t_host_info h
+        SELECT host_id FROM t_host_info h
         INNER JOIN t_host_mesh s ON s.hid=h.id
         INNER JOIN t_mesh m ON m.id=s.mid
         INNER JOIN t_mesh_group r ON r.mid=m.id
-        INNER JOIN t_group g ON g.id=r.gid
-        WHERE h.is_control=1
-        AND h.status=1
+        INNER JOIN t_mgroup g ON g.id=r.gid
+        WHERE h.status=1
         AND g.id in (
         SELECT g.id FROM t_host_info h
         INNER JOIN t_host_mesh s ON s.hid=h.id
         INNER JOIN t_mesh m ON m.id=s.mid
         INNER JOIN t_mesh_group r ON r.mid=m.id
-        INNER JOIN t_group g ON g.id=r.gid
+        INNER JOIN t_mgroup g ON g.id=r.gid
         WHERE h.host_id=#{host}
+        )
+    </select>
+
+    <select id="getPlaceHost" resultType="string">
+        SELECT
+           host_id
+        FROM
+            t_host_info h
+        INNER JOIN t_host_mesh mh ON mh.hid = h.id
+        INNER JOIN t_mesh m ON m.id=mh.mid
+        INNER JOIN t_mesh_group mg ON mg.mid = mh.mid
+        INNER JOIN t_group g ON g.id = mg.gid
+        INNER JOIN t_place_group pg ON pg.gid=g.id
+        INNER JOIN t_mplace p ON p.id=pg.pid
+    </select>
+
+    <select id="getGroupHosts" resultType="string">
+        SELECT
+            host_id
+        FROM
+            t_host_info h
+        INNER JOIN t_host_mesh s ON s.hid = h.id
+        INNER JOIN t_mesh m ON m.id = s.mid
+        INNER JOIN t_mesh_group r ON r.mid = m.id
+        INNER JOIN t_mgroup g ON g.id = r.gid
+        WHERE h. STATUS = 1
+        AND g.id IN (
+            SELECT
+                gid
+            FROM
+                t_mesh_group
+            WHERE
+                master_id IN (
+                    SELECT
+                        h.id
+                    FROM
+                        t_host_info h
+                    INNER JOIN t_master_group s ON s.child_id = h.id
+                    WHERE
+                        s.hid = (
+                            SELECT
+                                id
+                            FROM
+                                t_host_info
+                            WHERE
+                                host_id = #{host}
+                        )
+                )
         )
     </select>
 
@@ -239,7 +286,7 @@
 
     <delete id="deleteTimerData" parameterType="map">
             DELETE FROM f_time_point WHERE tsid IN (SELECT l.id from (SELECT id FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid}) AS l);
-             DELETE FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid};
+            DELETE FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid};
     </delete>
 
 
