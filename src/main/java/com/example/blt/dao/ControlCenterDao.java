@@ -1,6 +1,6 @@
 package com.example.blt.dao;
 
-import com.example.blt.entity.PlaceInfo;
+import com.example.blt.entity.MPlace;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.ControlHost;
@@ -119,5 +119,5 @@ public interface ControlCenterDao {
     String getMeshState(String meshId);
 
     @Select("select id,place_id as placeId,pname from  t_mplace")
-    List<PlaceInfo> getPlaces();
+    List<MPlace> getPlaces();
 }

@@ -2,7 +2,7 @@ package com.example.blt.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.ControlCenterDao;
-import com.example.blt.entity.PlaceInfo;
+import com.example.blt.entity.MPlace;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.*;
@@ -290,7 +290,7 @@ public class ControlCenterService {
         return controlHost;
     }
 
-    public List<PlaceInfo> getPlaces() {
+    public List<MPlace> getPlaces() {
         return controlCenterDao.getPlaces();
     }
 }

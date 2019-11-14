@@ -191,6 +191,14 @@ $(function () {
         var meshId = $(this).parent().siblings("input").val();
         setAndSubmitForm(gid, meshId);
     });
+    //选择区域前置操作
+    $(".place-list").click(function () {
+        var groupName = $(this).parent().prev().find("a>span").text();
+        if (groupName == '- 空 -'){
+
+        }
+        console.log($(this).parent().prev().find("a>span").text());
+    });
 
     //查看面板
     $('.panel-show-msg').click(function (e) {
