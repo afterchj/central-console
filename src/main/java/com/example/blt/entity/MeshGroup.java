@@ -15,6 +15,7 @@ public class MeshGroup implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Integer gid;
+    @Column(unique = true)
     private Integer mid;
     private Integer masterId;
 }
