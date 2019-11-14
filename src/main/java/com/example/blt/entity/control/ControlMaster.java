@@ -21,6 +21,24 @@ public class ControlMaster {
     private String pState;//网络下面板总状态
     private Integer pNum;//面板个数
     private String flag;
+    private Integer placeId;
+    private String pname;
+
+    public Integer getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(Integer placeId) {
+        this.placeId = placeId;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
 
     public String getFlag() {
         return flag;

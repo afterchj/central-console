@@ -1,6 +1,7 @@
 package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.blt.entity.PlaceInfo;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.ControlHost;
@@ -145,8 +146,10 @@ public class ControlCenterController {
     public String netWorkGroupConsole(Model model, Integer gid, String meshId) {
         List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gid, meshId);
         List<GroupList> groupList = controlCenterService.getGroups();
+        List<PlaceInfo> placeList = controlCenterService.getPlaces();
         model.addAttribute("groupList", groupList);//组列表
         model.addAttribute("controlMasters", controlMasters);//网络列表
+        model.addAttribute("placeList", placeList);//网络列表
         return "poeConsole/control";
     }
 

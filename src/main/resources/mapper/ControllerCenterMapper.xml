@@ -4,14 +4,18 @@
 
     <select id="getControlGroups" resultType="com.example.blt.entity.control.ControlMaster">
         SELECT
-            g.gname as gname,
-            g.id as gid,
-            m.mesh_id as meshId,
-            ifnull(m.mesh_name,m.mesh_id) as mname,
+            p.place_id as placeId,
+            p.pname as pname,
+            g.gname AS gname,
+            g.id AS gid,
+            m.mesh_id AS meshId,
+            ifnull( m.mesh_name, m.mesh_id ) AS mname,
             flag
         FROM
-            t_mgroup g
-            JOIN t_mesh_group mg ON g.id = mg.gid
+            t_mplace p
+            JOIN t_place_group pg ON p.id = pg.pid
+            right join t_mgroup g ON pg.gid = g.id
+            right JOIN t_mesh_group mg ON g.id = mg.gid
             right JOIN t_mesh m ON mg.mid = m.id
             <where>
                 <if test="(gid!=null) and (meshId==null or meshId=='')">

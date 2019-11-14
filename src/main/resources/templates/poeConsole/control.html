@@ -112,6 +112,7 @@
                                         </li>
                                     </ul>
                                 </th>
+                                <th style="width: 9%;">隶属区域</th>
                                 <th class="" style="width: 15%;">所在网组的主控</th>
                             </tr>
                             </thead>
@@ -159,6 +160,23 @@
                                             <a th:text="${group.gname}" class="select-group" th:alt="${group.id}"></a>
                                         </li>
                                         <li class="am-text-xs p-r" th:if="${controlMaster.gname!=null}">
+                                            <a class="select-group" th:alt="0"> - 空 - </a>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td class="p-r" data-am-dropdown>
+                                    <a href="javascript:;">
+                                        <span th:text="${controlMaster.pname==null}?' - 空 - ':${controlMaster.pname}"></span>
+                                    </a>
+                                    <span class="area p-a  tool am-dropdown-toggle group-list" data-am-dropdown-toggle>
+                                            <img th:src="@{/static/poeConsole/img/list-bottom.png}" alt="" style="    width: 1.4rem;">
+                                     </span>
+                                    <ul class="am-dropdown-content group-data">
+                                        <input type="hidden" th:value="${controlMaster.meshId}">
+                                        <li class="am-text-xs p-r" th:each="place:${placeList}">
+                                            <a th:text="${place.pname}" class="select-place" th:alt="${place.id}"></a>
+                                        </li>
+                                        <li class="am-text-xs p-r" th:if="${controlMaster.pname!=null}">
                                             <a class="select-group" th:alt="0"> - 空 - </a>
                                         </li>
                                     </ul>
