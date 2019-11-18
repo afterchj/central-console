@@ -66,7 +66,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         if ("master".equals(to)) {
             hosts = sqlSessionTemplate.selectList("console.getHostsByGid", host);
             if (hosts.size() == 0) {
-                hosts = sqlSessionTemplate.selectList("console.getPlaceHost",host);
+                hosts = sqlSessionTemplate.selectList("console.getPlaceHost", host);
                 if (hosts.size() == 0) {
                     hosts = sqlSessionTemplate.selectList("console.getHosts", type);
                 }
@@ -84,10 +84,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                         String id = ch.id().toString();
                         if ("all".equals(to)) {
                             ch.writeAndFlush(cmd);
-                        } else if ("master".equals(to) && cmd.indexOf("77050103") == -1) {
+                        } else if ("master".equals(to)) {
                             for (String guest : hosts) {
-                                if (!guest.equals(host)) {
+                                if (!guest.equals(host) && cmd.indexOf("77050103") == -1) {
                                     if (id.equals(guest)) {
+                                        ch.writeAndFlush(cmd);
+                                    }
+                                } else {
+                                    if (id.equals(host)) {
                                         ch.writeAndFlush(cmd);
                                     }
                                 }
