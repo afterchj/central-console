@@ -308,8 +308,8 @@
     </insert>
 
     <delete id="deleteTimerData" parameterType="map">
-            DELETE FROM f_time_point WHERE tsid IN (SELECT l.id from (SELECT id FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid}) AS l);
-            DELETE FROM f_time_line WHERE mesh_id=#{meshId} AND tid = #{tid};
+            DELETE FROM f_time_point WHERE tsid IN (SELECT l.id from (SELECT id FROM f_time_line WHERE mesh_id=#{meshId}) AS l);
+            DELETE FROM f_time_line WHERE mesh_id=#{meshId};
     </delete>
 
 
