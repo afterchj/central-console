@@ -195,6 +195,7 @@ public class MainController {
     @RequestMapping(value = "/sendByProject", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, String> sendByProject(String project, Integer groupId, String x, String y, String type, Integer sceneId) {
+//        long start = System.currentTimeMillis();
         Map<String, String> map = new HashMap<>();
         Map<String, String> onOffMap;
         String host;
@@ -223,6 +224,8 @@ public class MainController {
             success = e.getMessage();
         }
         map.put("success", success);
+//        long end = System.currentTimeMillis();
+//        logger.warn("send time:{}",end-start);
         logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
         return map;
     }
