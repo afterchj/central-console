@@ -367,63 +367,66 @@ public class MainController {
                 if (count != 0) {
                     sqlSessionTemplate.delete("console.deleteTimerData", map2);
                 }
-                for (int j = 0; j < timerListList.size(); j++) {
-                    Integer tid = timerListList.get(j).getTimerLine().getTid();
-                    map2.put("tid", tid);
-                    map2.put("ischoose", timerListList.get(j).getTimerLine().getIschoose());
-                    map2.put("item_set", timerListList.get(j).getTimerLine().getItem_set());
-                    map2.put("item_desc", timerListList.get(j).getTimerLine().getItem_desc());
-                    map2.put("week", timerListList.get(j).getTimerLine().getWeek());
-                    map2.put("dayObj", JSON.toJSONString(timerListList.get(j).getTimerLine().getDayObj()));
-                    map2.put("tname", timerListList.get(j).getTimerLine().getTname());
-                    map2.put("repetition", timerListList.get(j).getTimerLine().getRepetition());
-                    map2.put("item_tag", timerListList.get(j).getTimerLine().getItem_tag());
-                    monitor4Dao.insertTimeLine(map2);
-                    List<TimePointParams> timePointList = timerListList.get(j).getTimerLine().getTimePointList();
-                    for (int k = 0; k < timePointList.size(); k++) {
-                        if (timePointList.get(k).getDetailvalueList() == null) {
-                            Map cron = new HashMap();
-                            Integer sceneId = timePointList.get(k).getSence_index();
-                            map2.put("hour", timePointList.get(k).getHour());
-                            map2.put("minute", timePointList.get(k).getMinute());
-                            map2.put("sceneId", sceneId);
-                            map2.put("lightStatus", timePointList.get(k).getLight_status());
-                            if (timerListList.get(j).getTimerLine().getItem_set() == 1) {
-//                                logger.warn("meshId {} sceneId {}", meshId, sceneId);
-                                cron.putAll(map2);
-                                cronList.add(cron);
-//                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
-//                                redisService.pushMsg(jsonObject);
-                            }
-                            monitor4Dao.insertTimePoint(map2);
-                        } else {
-                            List<TimePointParams> detailvalueList = timePointList.get(k).getDetailvalueList();
-                            for (TimePointParams timePointParams : detailvalueList) {
+                if (timerListList.size()!=0){
+                    for (int j = 0; j < timerListList.size(); j++) {
+                        Integer tid = timerListList.get(j).getTimerLine().getTid();
+                        map2.put("tid", tid);
+                        map2.put("ischoose", timerListList.get(j).getTimerLine().getIschoose());
+                        map2.put("item_set", timerListList.get(j).getTimerLine().getItem_set());
+                        map2.put("item_desc", timerListList.get(j).getTimerLine().getItem_desc());
+                        map2.put("week", timerListList.get(j).getTimerLine().getWeek());
+                        map2.put("dayObj", JSON.toJSONString(timerListList.get(j).getTimerLine().getDayObj()));
+                        map2.put("tname", timerListList.get(j).getTimerLine().getTname());
+                        map2.put("repetition", timerListList.get(j).getTimerLine().getRepetition());
+                        map2.put("item_tag", timerListList.get(j).getTimerLine().getItem_tag());
+                        monitor4Dao.insertTimeLine(map2);
+                        List<TimePointParams> timePointList = timerListList.get(j).getTimerLine().getTimePointList();
+                        for (int k = 0; k < timePointList.size(); k++) {
+                            if (timePointList.get(k).getDetailvalueList() == null) {
                                 Map cron = new HashMap();
-                                Integer sceneId = timePointParams.getSence_index();
-                                map2.put("hour", timePointParams.getHour());
-                                map2.put("minute", timePointParams.getMinute());
+                                Integer sceneId = timePointList.get(k).getSence_index();
+                                map2.put("hour", timePointList.get(k).getHour());
+                                map2.put("minute", timePointList.get(k).getMinute());
                                 map2.put("sceneId", sceneId);
-                                map2.put("lightStatus", timePointParams.getLight_status());
+                                map2.put("lightStatus", timePointList.get(k).getLight_status());
                                 if (timerListList.get(j).getTimerLine().getItem_set() == 1) {
-//                                    logger.warn("meshId {} sceneId {}", meshId, sceneId);
+//                                logger.warn("meshId {} sceneId {}", meshId, sceneId);
                                     cron.putAll(map2);
                                     cronList.add(cron);
-//                                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
-//                                    redisService.pushMsg(jsonObject);
+//                                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+//                                redisService.pushMsg(jsonObject);
                                 }
                                 monitor4Dao.insertTimePoint(map2);
+                            } else {
+                                List<TimePointParams> detailvalueList = timePointList.get(k).getDetailvalueList();
+                                for (TimePointParams timePointParams : detailvalueList) {
+                                    Map cron = new HashMap();
+                                    Integer sceneId = timePointParams.getSence_index();
+                                    map2.put("hour", timePointParams.getHour());
+                                    map2.put("minute", timePointParams.getMinute());
+                                    map2.put("sceneId", sceneId);
+                                    map2.put("lightStatus", timePointParams.getLight_status());
+                                    if (timerListList.get(j).getTimerLine().getItem_set() == 1) {
+//                                    logger.warn("meshId {} sceneId {}", meshId, sceneId);
+                                        cron.putAll(map2);
+                                        cronList.add(cron);
+//                                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(map2));
+//                                    redisService.pushMsg(jsonObject);
+                                    }
+                                    monitor4Dao.insertTimePoint(map2);
+                                }
                             }
                         }
                     }
+            }else if(timerListList.size()==0){
+                    Map cron = new HashMap();
+                    cron.putAll(map2);
+                    cronList.add(cron);
                 }
             }
             Map<String, String> cronMap = new HashMap<>();
             if (cronList.size() != 0) {
                 cronMap.put("cron", JSONObject.toJSONString(cronList));
-                redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
-            } else {
-                cronMap.put("flag", "0");
                 redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
             }
             map.put("result", "000");
