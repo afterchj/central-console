@@ -360,17 +360,13 @@ public class MainController {
                 } else {
                     monitor4Dao.updateTMesh(String.valueOf(map2.get("meshId")), projectDataList.get(i).getMname());
                 }
+                int count = monitor4Dao.findTimeLine(map2);
+                if (count != 0) {
+                    sqlSessionTemplate.delete("console.deleteTimerData", map2);
+                }
                 for (int j = 0; j < timerListList.size(); j++) {
                     Integer tid = timerListList.get(j).getTimerLine().getTid();
                     map2.put("tid", tid);
-                    int count = monitor4Dao.findTimeLine(map2);
-                    if (count != 0) {
-                        Map<String, Object> map3 = new ConcurrentHashMap<>();
-                        map3.put("meshId", map2.get("meshId"));
-                        map3.put("tid", tid);
-                        sqlSessionTemplate.delete("console.deleteTimerData", map3);
-                    }
-
                     map2.put("ischoose", timerListList.get(j).getTimerLine().getIschoose());
                     map2.put("item_set", timerListList.get(j).getTimerLine().getItem_set());
                     map2.put("item_desc", timerListList.get(j).getTimerLine().getItem_desc());
