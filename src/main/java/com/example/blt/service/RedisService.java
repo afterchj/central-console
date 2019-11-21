@@ -1,6 +1,5 @@
 package com.example.blt.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.CommandDict;
@@ -40,9 +39,17 @@ public class RedisService {
     }
 
     public void consumeMsg(String msg) {
+        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+        ScheduledFuture future;
         JSONObject jsonObject = JSONObject.parseObject(msg);
         List<CronVo> voList = new ArrayList<>();
         try {
+            for (CronVo cron : cronVos) {
+                future = dynamicScheduledTask.futures.get(cron.getCronName());
+                if (future != null) {
+                    future.cancel(true);
+                }
+            }
             JSONArray cronArr = jsonObject.getJSONArray("cron");
             for (int i = 0; i < cronArr.size(); i++) {
                 CronVo cronVo = new CronVo();
@@ -66,10 +73,7 @@ public class RedisService {
                 dynamicScheduledTask.configureTasks(cronVo);
             }
         } catch (Exception e) {
-            logger.error("error {}",msg);
-        } finally {
-            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
-            ScheduledFuture future;
+            logger.error("error {}", jsonObject.get("flag"));
             for (CronVo cron : cronVos) {
                 future = dynamicScheduledTask.futures.get(cron.getCronName());
                 if (future != null) {
