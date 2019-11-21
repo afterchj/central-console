@@ -67,10 +67,13 @@ public class TpadOfficeController {
         String project = office.getProject();
         String status = "success";
         try {
+//            long start = System.currentTimeMillis();
             //获取基础配置(基础单元类型，场景个数，当前场景，x，y)
             Map<String,Object> parameterSetting = tpadOfficeService.getParameterSetting(project);
             String unit = (String) parameterSetting.get("unit");
             tpadOfficeService.send(unit,office);
+//            long end = System.currentTimeMillis();
+//            logger.warn("send time:{}",end-start);
         } catch (Exception e) {
             status = "error";
             status = e.getMessage();

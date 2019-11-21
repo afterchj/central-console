@@ -16,8 +16,6 @@ public class ParameterSettingInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @Enumerated(EnumType.STRING)
-    @Column()
     private String unit;
     @ColumnDefault("10")
     private Integer sceneCount;
