@@ -68,7 +68,6 @@ public class RedisService {
         } catch (Exception e) {
             logger.error("error {}",msg);
         } finally {
-//            logger.warn("finally block code...");
             List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
             ScheduledFuture future;
             for (CronVo cron : cronVos) {
