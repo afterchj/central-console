@@ -415,9 +415,12 @@ public class MainController {
                     }
                 }
             }
-            if(cronList.size()!=0) {
-                Map<String, String> cronMap = new HashMap<>();
+            Map<String, String> cronMap = new HashMap<>();
+            if (cronList.size() != 0) {
                 cronMap.put("cron", JSONObject.toJSONString(cronList));
+                redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
+            } else {
+                cronMap.put("flag", "0");
                 redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
             }
             map.put("result", "000");
@@ -429,65 +432,64 @@ public class MainController {
     }
 
 
-
-    @RequestMapping(value = "/uploadDataFromAlink2", method = RequestMethod.POST)
-    public Map<String, String> uploadDataFromAlink2(HttpServletRequest request) {
-        Map<String, String> map = new HashMap<>();
-        try {
-            List cronList = new ArrayList();
-            Map<String, Object> map2 = new ConcurrentHashMap<>();
-            map2.put("meshId", "38628386");
-            int countTmesh = monitor4Dao.findTMesh("38628386");
-            if (countTmesh == 0) {
-                monitor4Dao.insertTMesh("38628386", "38628386");
-            }
-            map2.put("tid", 1);
-            int count = monitor4Dao.findTimeLine(map2);
-            if (count != 0) {
-                Map<String, Object> map3 = new ConcurrentHashMap<>();
-                map3.put("meshId", map2.get("meshId"));
-                map3.put("tid", 1);
-                sqlSessionTemplate.delete("console.deleteTimerData", map3);
-            }
-            map2.put("ischoose", 0);
-            map2.put("item_set", 1);
-            map2.put("item_desc", "重复,周日,周一,周二,周三,周四,周五,周六");
-            map2.put("week", "重复,周日,周一,周二,周三,周四,周五,周六");
-            map2.put("dayObj", "{\"tus\": 0,\"loop\": 1,\"sat\": 0,\"wed\": 0,\"fri\": 0,\"mon\": 1,\"sun\": 0,\"thr\": 0}");
-            map2.put("tname", "Timeline_00");
-            map2.put("repetition", "1");
-            map2.put("item_tag", 0);
-            monitor4Dao.insertTimeLine(map2);
-            for (int i = 0; i < 24; i++) {
-                for (int j = 0; j < 60; j++) {
-                    Map cron = new HashMap();
-                    Integer sceneId;
-                    if (j % 2 == 0) {
-                        sceneId = 21;
-                    } else {
-                        sceneId = 22;
-                    }
-                    map2.put("hour", i);
-                    map2.put("minute", j);
-                    map2.put("sceneId", sceneId);
-                    map2.put("lightStatus", 0);
-                    cron.putAll(map2);
-                    cronList.add(cron);
-                    monitor4Dao.insertTimePoint(map2);
-                }
-            }
-            if(cronList.size()!=0) {
-                Map<String, String> cronMap = new HashMap<>();
-                cronMap.put("cron", JSONObject.toJSONString(cronList));
-                redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
-            }
-            map.put("result", "000");
-        }catch (Exception e) {
-            map.put("result", "200");
-            logger.warn("error********************" + e);
-        }
-        return map;
-    }
+//    @RequestMapping(value = "/uploadDataFromAlink2", method = RequestMethod.POST)
+//    public Map<String, String> uploadDataFromAlink2(HttpServletRequest request) {
+//        Map<String, String> map = new HashMap<>();
+//        try {
+//            List cronList = new ArrayList();
+//            Map<String, Object> map2 = new ConcurrentHashMap<>();
+//            map2.put("meshId", "38628386");
+//            int countTmesh = monitor4Dao.findTMesh("38628386");
+//            if (countTmesh == 0) {
+//                monitor4Dao.insertTMesh("38628386", "38628386");
+//            }
+//            map2.put("tid", 1);
+//            int count = monitor4Dao.findTimeLine(map2);
+//            if (count != 0) {
+//                Map<String, Object> map3 = new ConcurrentHashMap<>();
+//                map3.put("meshId", map2.get("meshId"));
+//                map3.put("tid", 1);
+//                sqlSessionTemplate.delete("console.deleteTimerData", map3);
+//            }
+//            map2.put("ischoose", 0);
+//            map2.put("item_set", 1);
+//            map2.put("item_desc", "重复,周日,周一,周二,周三,周四,周五,周六");
+//            map2.put("week", "重复,周日,周一,周二,周三,周四,周五,周六");
+//            map2.put("dayObj", "{\"tus\": 0,\"loop\": 1,\"sat\": 0,\"wed\": 0,\"fri\": 0,\"mon\": 1,\"sun\": 0,\"thr\": 0}");
+//            map2.put("tname", "Timeline_00");
+//            map2.put("repetition", "1");
+//            map2.put("item_tag", 0);
+//            monitor4Dao.insertTimeLine(map2);
+//            for (int i = 0; i < 24; i++) {
+//                for (int j = 0; j < 60; j++) {
+//                    Map cron = new HashMap();
+//                    Integer sceneId;
+//                    if (j % 2 == 0) {
+//                        sceneId = 21;
+//                    } else {
+//                        sceneId = 22;
+//                    }
+//                    map2.put("hour", i);
+//                    map2.put("minute", j);
+//                    map2.put("sceneId", sceneId);
+//                    map2.put("lightStatus", 0);
+//                    cron.putAll(map2);
+//                    cronList.add(cron);
+//                    monitor4Dao.insertTimePoint(map2);
+//                }
+//            }
+//            if(cronList.size()!=0) {
+//                Map<String, String> cronMap = new HashMap<>();
+//                cronMap.put("cron", JSONObject.toJSONString(cronList));
+//                redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
+//            }
+//            map.put("result", "000");
+//        }catch (Exception e) {
+//            map.put("result", "200");
+//            logger.warn("error********************" + e);
+//        }
+//        return map;
+//    }
 
 
 }

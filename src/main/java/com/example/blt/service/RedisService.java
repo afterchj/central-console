@@ -1,5 +1,6 @@
 package com.example.blt.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.CommandDict;
@@ -40,17 +41,9 @@ public class RedisService {
 
     public void consumeMsg(String msg) {
         JSONObject jsonObject = JSONObject.parseObject(msg);
-        JSONArray cronArr = jsonObject.getJSONArray("cron");
         List<CronVo> voList = new ArrayList<>();
         try {
-            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
-            ScheduledFuture future;
-            for (CronVo cron : cronVos) {
-                future = dynamicScheduledTask.futures.get(cron.getCronName());
-                if (future != null) {
-                    future.cancel(true);
-                }
-            }
+            JSONArray cronArr = jsonObject.getJSONArray("cron");
             for (int i = 0; i < cronArr.size(); i++) {
                 CronVo cronVo = new CronVo();
                 JSONObject object = cronArr.getJSONObject(i);
@@ -72,10 +65,20 @@ public class RedisService {
 //                logger.warn("cronName {}", cronVo.getCronName());
                 dynamicScheduledTask.configureTasks(cronVo);
             }
-            sqlSessionTemplate.insert("console.insertCron", voList);
         } catch (Exception e) {
-            logger.error("error {} cronArr {}", e.getMessage(), cronArr);
+            logger.error("error {}",msg);
+        } finally {
+//            logger.warn("finally block code...");
+            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+            ScheduledFuture future;
+            for (CronVo cron : cronVos) {
+                future = dynamicScheduledTask.futures.get(cron.getCronName());
+                if (future != null) {
+                    future.cancel(true);
+                }
+            }
         }
+        sqlSessionTemplate.insert("console.insertCron", voList);
     }
 
     public String getWeek(String str) {
