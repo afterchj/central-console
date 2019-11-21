@@ -351,6 +351,7 @@ public class MainController {
         String project_data = JSON.toJSONString(jsonObjectParams.get("project_data"));
         try {
             List cronList = new ArrayList();
+            List<String> emptyMeshList = new ArrayList<>();
             List<ProjectData> projectDataList = JSONArray.parseArray(project_data, ProjectData.class);
             for (int i = 0; i < projectDataList.size(); i++) {
                 String meshId = projectDataList.get(i).getMeshId();
@@ -419,14 +420,17 @@ public class MainController {
                         }
                     }
             }else if(timerListList.size()==0){
-                    Map cron = new HashMap();
-                    cron.putAll(map2);
-                    cronList.add(cron);
+                    emptyMeshList.add(String.valueOf(map2.get("meshId")));
                 }
             }
             Map<String, String> cronMap = new HashMap<>();
-            if (cronList.size() != 0) {
-                cronMap.put("cron", JSONObject.toJSONString(cronList));
+            if (cronList.size() != 0 || emptyMeshList.size()!=0) {
+                if(cronList.size() != 0) {
+                    cronMap.put("cron", JSONObject.toJSONString(cronList));
+                }
+                if(emptyMeshList.size()!=0){
+                    cronMap.put("emptyMeshList", JSONObject.toJSONString(emptyMeshList));
+                }
                 redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
             }
             map.put("result", "000");
