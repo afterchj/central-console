@@ -90,11 +90,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                                     if (id.equals(guest)) {
                                         ch.writeAndFlush(cmd);
                                     }
-                                } else {
-                                    if (id.equals(host)) {
-                                        ch.writeAndFlush(cmd);
-                                    }
                                 }
+                            }
+                            if (id.equals(host) && cmd.indexOf("77050103") != -1) {
+                                ch.writeAndFlush(cmd);
                             }
                         } else if (id.equals(to)) {
                             if (cmd.indexOf("77050103") != -1) {
