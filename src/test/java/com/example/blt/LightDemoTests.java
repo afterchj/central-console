@@ -251,11 +251,8 @@ public class LightDemoTests {
 
     @Test
     public void test15(){
-        try {
-            get(0);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        String hexStr = String.format("%02x",19).toUpperCase();
+        System.out.println(hexStr);
     }
 
     @Test

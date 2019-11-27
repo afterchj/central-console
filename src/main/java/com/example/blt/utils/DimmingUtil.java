@@ -32,10 +32,10 @@ public class DimmingUtil {
         int count = "colors".equals(name)?0:19;
         String hexStr;
         for (int i = 0; i <= 100; i = i + 5) {
-            hexStr = String.format("%02x",count).toUpperCase();
-            if ("luminances".equals(name) && i == 100){
-                hexStr = "00";
+            if ("luminances".equals(name) && i==0){
+                i += 5;
             }
+            hexStr = String.format("%02x",count).toUpperCase();
             map.put(String.valueOf(i),hexStr);
             count = "colors".equals(name)?count + 1:count - 1;
         }
@@ -46,7 +46,7 @@ public class DimmingUtil {
         String[] xKeyArr = {"00", "01", "02", "03","04","05","06","07","08","09","0A","0B","0C","0D","0E","0F","10","11","12","13","14"};
         String[] xValueArr = { "0","5","10","15","20","25","30","35","40","45","50","55","60","65","70","75","80","85","90","95","100"};
         String[] yKeyArr = {"00", "01", "02", "03","04","05","06","07","08","09","0A","0B","0C","0D","0E","0F","10","11","12","13"};
-        String[] yValueArr = { "0","5","10","15","20","25","30","35","40","45","50","55","60","65","70","75","80","85","90","100"};
+        String[] yValueArr = { "5","10","15","20","25","30","35","40","45","50","55","60","65","70","75","80","85","90","95","100"};
         String[] keyArr = "colors".equals(name)?xKeyArr:yKeyArr;
         String[] valueArr = "colors".equals(name)?xValueArr:yValueArr;
         Map<String,String> map = new TreeMap<>();
