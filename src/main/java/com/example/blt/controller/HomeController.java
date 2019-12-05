@@ -1,6 +1,7 @@
 package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
@@ -37,6 +38,9 @@ public class HomeController {
     @Resource
     private BLTService blTservice;
 
+    @Resource
+    private Monitor4Dao monitor4Dao;
+
     @RequestMapping("/")
     public String index() {
         return "redirect:/index";
@@ -59,6 +63,29 @@ public class HomeController {
     @RequestMapping("/nradioIndex")
     public String nradioIndex(ModelMap modelMap) {
         return "nradioIndex";
+    }
+
+    @RequestMapping("/nradio1")
+    public String nradioIndex1(ModelMap modelMap) {
+        String project = "nradio1";
+        String host = monitor4Dao.getHostId(project);
+        if(host == null){
+            host = "0";
+        }
+        modelMap.put("hostId",host);
+        return "nradioIndex1";
+    }
+
+    @RequestMapping("/nradio2")
+    public String nradioIndex2(ModelMap modelMap) {
+
+        String project = "nradio2";
+        String host = monitor4Dao.getHostId(project);
+        if(host == null){
+            host = "0";
+        }
+        modelMap.put("hostId",host);
+        return "nradioIndex2";
     }
 
     @RequestMapping("/myIndex")
