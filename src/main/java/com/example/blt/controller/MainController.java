@@ -275,6 +275,55 @@ public class MainController {
         return map;
     }
 
+    @RequestMapping(value = "/sendByProject2", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, String> sendByProjectFor2( String x) {
+//        long start = System.currentTimeMillis();
+        Map<String, String> map = new HashMap<>();
+        Map<String, String> onOffMap;
+        String host;
+        String command = null;
+        String success = "success";
+        Integer groupId = 0;
+        String project = "all";
+        String type = "mesh";
+        if ("all".equals(project)) {//全控
+            host = "all";
+        } else {
+            host = monitor4Dao.getHostId(project);
+            if (host == null) {
+                success = "poe不在线";
+                logger.error("method:sendByProject;can not find hostId; project:{}", project);
+                map.put("success", success);
+                return map;
+            }
+        }
+        try {
+//            if (StringUtils.isNotBlank(x)) {
+//                onOffMap = tpadOfficeService.changeXY(x, y);
+//                x = onOffMap.get("x");
+//                y = onOffMap.get("y");
+//            }
+            String y;
+            if(x.equals("1")){
+                x = "32";
+                y = "32";
+            }else {
+                x = "37";
+                y = "37";
+            }
+            command = JoinCmdUtil.joinNewCmd(type, x, y, groupId, null);
+            tpadOfficeService.send(host, command);
+        } catch (Exception e) {
+            success = e.getMessage();
+        }
+        map.put("success", success);
+//        long end = System.currentTimeMillis();
+//        logger.warn("send time:{}",end-start);
+        logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
+        return map;
+    }
+
 
     @RequestMapping(value = "/sendScenseByMeshId", method = RequestMethod.POST)
     @ResponseBody

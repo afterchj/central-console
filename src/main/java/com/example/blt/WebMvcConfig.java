@@ -40,7 +40,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //        String[] url = {"/central-console/control/index", "/central-console/control/timer", "/central-console/control/netWorkGroupConsole"};
         String[] url = {"/control/index", "/control/timer", "/control/netWorkGroupConsole"};
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns(url);
+//        registry.addInterceptor(protectSameCommitInterceptor()).addPathPatterns("/office/sendCmd");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
+
+    //提前注入bean，否则拦截器中注解无效
+//    @Bean
+//    public ProtectSameCommitInterceptor protectSameCommitInterceptor(){
+//        return new ProtectSameCommitInterceptor();
+//    }
 
 }
