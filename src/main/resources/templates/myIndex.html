@@ -41,7 +41,7 @@
         console.log(location.href, url);
         $.getJSON("getHost", function (data) {
             $.each(data, function (i, val) {
-                // $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
                 $(".master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
                 // $(".group").append("<option value='" + val.id + "'>" + val.gname + "</option>");
             });
@@ -62,7 +62,7 @@
         $("#test").click(function () {
             let cmd = $("#txt").val();
             let host = $("#hosts").val();
-            $.get("test", {"command": cmd, "host": host}, function (result) {
+            $.get("/central-console/test", {"command": cmd, "host": host}, function (result) {
                 console.log("cmd", cmd, "host", host, "result", result);
             });
             socket.send(cmd);
@@ -124,6 +124,7 @@
     主控：77011465FFFFFFFF2000000000C1323200000000000001CCCC<br>
     场景：77011465FFFFFFFF20000000004200000000000003CCCC <br>
     全控：77011465FFFFFFFF2A00000000C000373700000000CCCC <br>
+    Ping 灯指令77010A65FFFFFFFFFE00000000CCCC<br>
 </p>
 <p>
     <label for="btn1">一键控制：</label>

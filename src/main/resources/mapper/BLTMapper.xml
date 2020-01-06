@@ -65,7 +65,6 @@
         INNER JOIN t_host_mesh s ON s.hid = h.id
         INNER JOIN t_mesh m ON m.id = s.mid
         WHERE h.ip != '127.0.0.1'
-        AND h.STATUS = 1
         ORDER BY host_id
     </select>
 

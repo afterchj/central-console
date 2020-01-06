@@ -4,6 +4,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -24,9 +25,11 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
         //字符串编解码器
         pipeline.addLast(new StringEncoder());
         //修改了这里
+//        pipeline.addLast("dec",new StringDecoder());
+        //解析16进制数据
         pipeline.addLast("decoder", new MyDecoder());
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 4, 4, -8, 0));
-//        pipeline.addLast("byteArrayEncoder", new ByteArrayEncoder());
+        pipeline.addLast("byteArrayEncoder", new ByteArrayEncoder());
 
         //自定义Handler
         pipeline.addLast("serverChannelHandler", new ChatServerHandler());
