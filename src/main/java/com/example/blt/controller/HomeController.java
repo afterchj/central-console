@@ -64,7 +64,9 @@ public class HomeController {
     @RequestMapping("/myIndex")
     public String myIndex(ModelMap modelMap) {
         List hosts = blTservice.getHostInfo();
+        List lights = blTservice.getLightInfo();
         modelMap.put("hosts", hosts);
+        modelMap.put("lights", lights);
         return "myIndex";
     }
 

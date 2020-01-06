@@ -34,6 +34,10 @@ public class BLTService {
         return sqlSessionTemplate.selectList("console.getHostInfo");
     }
 
+    public List getLightInfo() {
+        return sqlSessionTemplate.selectList("console.getLightInfo");
+    }
+
     public List getHost() {
         return sqlSessionTemplate.selectList("console.getHostInfo");
     }

@@ -68,13 +68,30 @@
             socket.send(cmd);
         });
 
-        $(".host").click(function () {
-            let mesh_id = $.trim($(this).val());
-            let flag = $(this).is(':checked');
-            $.get("save", {"host": mesh_id, "is_control": flag}, function (result) {
-                console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+        $(".light").click(function () {
+            console.log("single console...");
+            let status = $(this).text();
+            let value = $(this).val();
+            if (status == '开') {
+                let cmd = value.replace("3232", "3737");
+                $(this).val(cmd);
+                $(this).text("关")
+            } else if (status == '关') {
+                let cmd = value.replace("3737", "3232");
+                $(this).val(cmd);
+                $(this).text("开")
+            }
+            $.get("switch", {"command": $(this).val(), "host": "all"}, function (result) {
+                console.log("result", result);
             });
-        })
+        });
+        // $(".host").click(function () {
+        //     let mesh_id = $.trim($(this).val());
+        //     let flag = $(this).is(':checked');
+        //     $.get("save", {"host": mesh_id, "is_control": flag}, function (result) {
+        //         console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+        //     });
+        // });
         $(".master").click(function () {
             let mesh_id = $.trim($(this).val());
             let flag = $(this).is(':checked');
@@ -95,7 +112,7 @@
             //     //     $("#master").val(mesh_id);
             //     // }
             // });
-        })
+        });
         // $("#master").click(function () {
         //     let mesh_id = $.trim($(this).val());
         //     console.log("mesh_id", mesh_id);
@@ -105,12 +122,14 @@
     function sendCmd(id, flag) {
         console.log("id", id);
         let status = $("#" + id).text();
-        console.log("value", status);
+        let value = $("#" + id).val();
         if (status == '开') {
-            $("#" + id).val("77010315373766");
+            let cmd = value.replace("3232", "3737");
+            $("#" + id).val(cmd);
             $("#" + id).text("关")
         } else if (status == '关') {
-            $("#" + id).val("77010315323266");
+            let cmd = value.replace("3737", "3232");
+            $("#" + id).val(cmd);
             $("#" + id).text("开")
         }
         $.get("switch", {"command": $("#" + id).val(), "host": flag}, function (result) {
@@ -128,9 +147,10 @@
 </p>
 <p>
     <label for="btn1">一键控制：</label>
-    <button id="btn1" value="77010315373766" onclick="sendCmd(this.id,'all')">开</button>
+    <button id="btn1" value="77011465FFFFFFFF2A00000000C000373700000000CCCC" onclick="sendCmd(this.id,'all')">开</button>
     <label for="btn2">群控：</label>
-    <button id="btn2" value="77010315373766" onclick="sendCmd(this.id,'master')">开</button>
+    <button id="btn2" value="77011465FFFFFFFF2A00000000C000373700000000CCCC" onclick="sendCmd(this.id,'master')">开
+    </button>
     <!--    <label for="master">群控mesh_id：</label>-->
     <!--    <input type="text" id="master" value="88888888">-->
     <!--    <select id="master">-->
@@ -140,18 +160,16 @@
     <table class="main" style="text-align: center;border-collapse: collapse;width: 60%;">
         <th>
             <tr>
-                <td>组名</td>
+                <td>灯的虚拟地址</td>
                 <!--                <td>meshId</td>-->
-                <td>组id</td>
-                <td>设置主控</td>
+                <td>单灯控制</td>
             </tr>
         </th>
         <tbody>
-        <tr th:each="host:${hosts}">
-            <td th:text="${host.mname}"></td>
-            <td th:text="${host.mesh_id}"></td>
+        <tr th:each="light:${lights}">
+            <td th:text="${light.vaddr}"></td>
             <td>
-                <select class="master"></select>
+                <button class="light" th:value="${light.cmd}">开</button>
             </td>
             <!--            <td>-->
             <!--                <div class="box">-->
