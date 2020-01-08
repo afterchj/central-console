@@ -2,6 +2,7 @@ package com.example.blt.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.dao.ControlCenterDao;
+import com.example.blt.entity.MPlace;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.*;
@@ -90,9 +91,15 @@ public class ControlCenterService {
         if (StringUtils.isNotBlank(meshId)) {//网络设置组
             if (gid == 0){//设置成空组
                 controlCenterDao.deleteMeshGroup(meshId);
-            }else {//设置组
+            }else if (gid > 0){//设置组
                 controlCenterDao.selectGroup(gid, meshId);
             }
+//            if (pid == 0){//设置成空区域
+//                gid = controlCenterDao.getGid(meshId);
+//                controlCenterDao.deletePlaceGroup(gid);
+//            }else if (pid > 0){//设置区域
+//                controlCenterDao.selectPlace(pid)
+//            }
             controlCenterDao.updateHostInfo(meshId, 0);//取消主控设置
         }
         List<ControlMaster> controlMeshs = controlCenterDao.getControlGroups(gid, meshId);
@@ -287,5 +294,9 @@ public class ControlCenterService {
             controlHost.setmState("网络离线");
         }
         return controlHost;
+    }
+
+    public List<MPlace> getPlaces() {
+        return controlCenterDao.getPlaces();
     }
 }

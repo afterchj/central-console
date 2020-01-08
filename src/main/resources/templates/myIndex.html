@@ -41,8 +41,9 @@
         console.log(location.href, url);
         $.getJSON("getHost", function (data) {
             $.each(data, function (i, val) {
-                $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+                // $("#hosts").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
                 $(".master").append("<option value='" + val.host_id + "'>" + val.mesh_id + "</option>");
+                // $(".group").append("<option value='" + val.id + "'>" + val.gname + "</option>");
             });
         });
         if (typeof (WebSocket) == "undefined") {
@@ -83,6 +84,17 @@
                 //     $("#master").val(mesh_id);
                 // }
             });
+        });
+        $(".group").click(function () {
+            // $(this).attr("selected",true);
+            let gid = $.trim($(this).val());
+            console.log("gid=", gid);
+            // $.get("save", {"host": mesh_id, "is_master": flag}, function (result) {
+            //     console.log("mesh_id", mesh_id, "flag", flag, "result", result);
+            //     // if (result == "ok") {
+            //     //     $("#master").val(mesh_id);
+            //     // }
+            // });
         })
         // $("#master").click(function () {
         //     let mesh_id = $.trim($(this).val());
@@ -127,36 +139,36 @@
     <table class="main" style="text-align: center;border-collapse: collapse;width: 60%;">
         <th>
             <tr>
-                <td>楼层</td>
+                <td>组名</td>
                 <!--                <td>meshId</td>-->
-                <td>主控网络</td>
-                <td>meshId/是否被控</td>
+                <td>组id</td>
+                <td>设置主控</td>
             </tr>
         </th>
         <tbody>
         <tr th:each="host:${hosts}">
             <td th:text="${host.mname}"></td>
-            <!--            <td th:text="${host.mesh_id}"></td>-->
+            <td th:text="${host.mesh_id}"></td>
             <td>
                 <select class="master"></select>
             </td>
-            <td>
-                <div class="box">
-                    <table class="slave">
-                        <tr th:each="slave:${hosts}">
-                            <td th:text="${slave.mesh_id}"></td>
-                            <td th:switch="${slave.is_control}">
-                            <span th:case="true">
-                                <input class="host" type="checkbox" checked th:value="${slave.mesh_id}">
-                             </span>
-                                <span th:case="*">
-                                 <input class="host" type="checkbox" th:value="${slave.mesh_id}">
-                            </span>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
+            <!--            <td>-->
+            <!--                <div class="box">-->
+            <!--                    <table class="slave">-->
+            <!--                        <tr th:each="slave:${hosts}">-->
+            <!--                            <td th:text="${slave.mesh_id}"></td>-->
+            <!--                            <td th:switch="${slave.is_control}">-->
+            <!--                            <span th:case="true">-->
+            <!--                                <input class="host" type="checkbox" checked th:value="${slave.mesh_id}">-->
+            <!--                             </span>-->
+            <!--                                <span th:case="*">-->
+            <!--                                 <input class="host" type="checkbox" th:value="${slave.mesh_id}">-->
+            <!--                            </span>-->
+            <!--                            </td>-->
+            <!--                        </tr>-->
+            <!--                    </table>-->
+            <!--                </div>-->
+            <!--            </td>-->
         </tr>
         </tbody>
     </table>

@@ -1,5 +1,6 @@
 package com.example.blt.dao;
 
+import com.example.blt.entity.MPlace;
 import com.example.blt.entity.TimeLine;
 import com.example.blt.entity.TimePoint;
 import com.example.blt.entity.control.ControlHost;
@@ -26,16 +27,16 @@ public interface ControlCenterDao {
 
     List<ControlMaster> getControlGroups(@Param("gid") Integer gid,@Param("meshId") String meshId);
 
-    @Insert("INSERT INTO t_group(gname,create_date,update_date) VALUES(#{gname},now(),now())")
+    @Insert("INSERT INTO t_mgroup(gname,create_date,update_date) VALUES(#{gname},now(),now())")
     void createGroup(@Param("gname") String gname);
 
-    @Select("select count(*) from t_group where gname=#{gname}")
+    @Select("select count(*) from t_mgroup where gname=#{gname}")
     Integer getGname(String gname);
 
-    @Update("update t_group set gname=#{gname} where id=#{id}")
+    @Update("update t_mgroup set gname=#{gname} where id=#{id}")
     void renameGroup(@Param("gname") String gname, @Param("id") Integer id);
 
-    @Select("select id,gname,group_id as groupId from t_group")
+    @Select("select id,gname,group_id as groupId from t_mgroup")
     List<GroupList> getGroups();
 
     @Select("select count(*) from t_mesh where mesh_name=#{mname}")
@@ -53,7 +54,7 @@ public interface ControlCenterDao {
     @Delete("DELETE FROM t_host_info where id=#{id}")
     void deleteHost(@Param("id") int id);
 
-    @Delete("DELETE FROM t_group where id=#{id}")
+    @Delete("DELETE FROM t_mgroup where id=#{id}")
     void deleteGroup(@Param("id") Integer id);
 
     @Update("update t_host_info set is_master=#{type} where id in(select hm.hid from t_host_mesh hm,t_mesh m where m.id=hm.mid and m.mesh_id=#{meshId})")
@@ -76,7 +77,7 @@ public interface ControlCenterDao {
     @Delete("TRUNCATE TABLE f_time_point")
     void reSetTimePoint();
 
-    @Delete("TRUNCATE TABLE t_group")
+    @Delete("TRUNCATE TABLE t_mgroup")
     void reSetGroup();
 
     @Delete("TRUNCATE TABLE t_host_info")
@@ -111,9 +112,12 @@ public interface ControlCenterDao {
     @Delete("DELETE FROM t_host_mesh where mid=(select id from t_mesh where mesh_id=#{meshId})")
     void deleteHostMeshByMeshId(String meshId);
 
-    @Select("select count(*) from t_group")
+    @Select("select count(*) from t_mgroup")
     Integer getGroupCount();
 
     @Select("select flag from t_mesh where mesh_id=#{meshId}")
     String getMeshState(String meshId);
+
+    @Select("select id,place_id as placeId,pname from  t_mplace")
+    List<MPlace> getPlaces();
 }

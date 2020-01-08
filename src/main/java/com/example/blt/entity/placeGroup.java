@@ -8,12 +8,12 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name = "t_host_mesh")
-public class HostMesh implements Serializable {
+@Table(name = "t_place_group")
+public class placeGroup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private Integer pid;
     @Column(unique = true)
-    private Integer hid;
-    private Integer mid;
+    private Integer gid;
 }

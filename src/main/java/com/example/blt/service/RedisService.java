@@ -1,5 +1,6 @@
 package com.example.blt.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.CommandDict;
@@ -39,42 +40,49 @@ public class RedisService {
     }
 
     public void consumeMsg(String msg) {
+        ScheduledFuture future;
         JSONObject jsonObject = JSONObject.parseObject(msg);
-        JSONArray cronArr = jsonObject.getJSONArray("cron");
         List<CronVo> voList = new ArrayList<>();
         try {
-            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
-            ScheduledFuture future;
+            JSONArray cronArr = jsonObject.getJSONArray("cron");
+            JSONArray meshArr = jsonObject.getJSONArray("emptyMeshList");
+//            logger.warn("emptyMeshList {}", JSON.toJSONString(meshArr));
+            List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron", meshArr);
             for (CronVo cron : cronVos) {
                 future = dynamicScheduledTask.futures.get(cron.getCronName());
                 if (future != null) {
                     future.cancel(true);
                 }
             }
-            for (int i = 0; i < cronArr.size(); i++) {
-                CronVo cronVo = new CronVo();
-                JSONObject object = cronArr.getJSONObject(i);
-                String meshId = object.getString("meshId");
-                Integer sceneId = object.getInteger("sceneId");
-                Integer item_set = object.getInteger("item_set");
-                Integer repetition = object.getInteger("repetition");
-                Integer minute = object.getInteger("minute");
-                Integer hour = object.getInteger("hour");
-                String week = getWeek(object.getString("week"));
-                cronVo.setMeshId(meshId);
-                cronVo.setSceneId(sceneId);
-                cronVo.setItemSet(item_set);
-                cronVo.setRepetition(repetition);
-                cronVo.setCron(minute, hour, week);
-                cronVo.setCommand(getCmd(sceneId));
-                cronVo.setCronName(minute, hour);
-                voList.add(cronVo);
+            if (cronArr != null) {
+                for (int i = 0; i < cronArr.size(); i++) {
+                    CronVo cronVo = new CronVo();
+                    JSONObject object = cronArr.getJSONObject(i);
+                    String meshId = object.getString("meshId");
+                    Integer sceneId = object.getInteger("sceneId");
+                    Integer item_set = object.getInteger("item_set");
+                    Integer repetition = object.getInteger("repetition");
+                    Integer minute = object.getInteger("minute");
+                    Integer hour = object.getInteger("hour");
+                    String week = getWeek(object.getString("week"));
+                    cronVo.setMeshId(meshId);
+                    cronVo.setSceneId(sceneId);
+                    cronVo.setItemSet(item_set);
+                    cronVo.setRepetition(repetition);
+                    cronVo.setCron(minute, hour, week);
+                    cronVo.setCommand(getCmd(sceneId));
+                    cronVo.setCronName(minute, hour);
+                    voList.add(cronVo);
 //                logger.warn("cronName {}", cronVo.getCronName());
-                dynamicScheduledTask.configureTasks(cronVo);
+                    dynamicScheduledTask.configureTasks(cronVo);
+                }
             }
-            sqlSessionTemplate.insert("console.insertCron", voList);
+            sqlSessionTemplate.delete("console.deleteCron", meshArr);
+            if (voList.size() > 0) {
+                sqlSessionTemplate.insert("console.insertCron", voList);
+            }
         } catch (Exception e) {
-            logger.error("error {} cronArr {}", e.getMessage(), cronArr);
+            logger.error("error {}; voList {}",e.getMessage(),voList );
         }
     }
 

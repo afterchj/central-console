@@ -1,5 +1,6 @@
 package com.example.blt;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
@@ -127,9 +128,12 @@ public class MainTest {
 //        String hostId = sqlSessionTemplate.selectOne("console.getHostId","81444189");
 //        System.out.println(Integer.parseInt("0A", 16));
 //        List hosts = sqlSessionTemplate.selectList("console.getHosts");
-        String host = "03d167ab";
-        String host_id = sqlSessionTemplate.selectOne("console.getHost", "00d7ab1f");
+        String host = "7a3cfdf1";
+        String host_id = sqlSessionTemplate.selectOne("console.getMaster", host);
+        List list = sqlSessionTemplate.selectList("console.getPlaceHost", host);
         logger.warn("host_id=" + host_id);
+        logger.warn("list=" + JSON.toJSONString(list));
+
 //        hosts.remove("e1753bd4");
 //        List<String> list = sqlSessionTemplate.selectList("console.getAll");
 //        ValueOperations valueOperations = redisTemplate.opsForValue();
@@ -410,6 +414,6 @@ public class MainTest {
                 buffer.append(chars[i]);
             }
         }
-        System.out.println("770509010909050901020304".indexOf("77050901")+"\t"+buffer.toString());
+        System.out.println("770509010909050901020304".indexOf("77050901") + "\t" + buffer.toString());
     }
 }

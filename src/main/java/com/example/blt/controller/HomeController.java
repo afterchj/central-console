@@ -1,25 +1,25 @@
 package com.example.blt.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.blt.dao.Monitor4Dao;
+import com.example.blt.entity.control.GroupList;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
-import io.netty.handler.codec.http.HttpResponse;
+import com.example.blt.service.ControlCenterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -30,11 +30,15 @@ import java.util.*;
 public class HomeController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    @Resource
+    private ControlCenterService controlCenterService;
     @Resource
     private RedisTemplate redisTemplate;
     @Resource
     private BLTService blTservice;
+
+    @Resource
+    private Monitor4Dao monitor4Dao;
 
     @RequestMapping("/")
     public String index() {
@@ -60,6 +64,29 @@ public class HomeController {
         return "nradioIndex";
     }
 
+    @RequestMapping("/nradio1")
+    public String nradioIndex1(ModelMap modelMap) {
+        String project = "nradio1";
+        String host = monitor4Dao.getHostId(project);
+        if(host == null){
+            host = "0";
+        }
+        modelMap.put("hostId",host);
+        return "nradioIndex1";
+    }
+
+    @RequestMapping("/nradio2")
+    public String nradioIndex2(ModelMap modelMap) {
+
+        String project = "nradio2";
+        String host = monitor4Dao.getHostId(project);
+        if(host == null){
+            host = "0";
+        }
+        modelMap.put("hostId",host);
+        return "nradioIndex2";
+    }
+
     @RequestMapping("/myIndex")
     public String myIndex(ModelMap modelMap) {
         List hosts = blTservice.getHostInfo();
@@ -67,6 +94,12 @@ public class HomeController {
         return "myIndex";
     }
 
+    @RequestMapping("/main")
+    public String main(ModelMap modelMap) {
+        List hosts = blTservice.getHostInfo();
+        modelMap.put("hosts", hosts);
+        return "main";
+    }
 
     @RequestMapping("/welcome")
     public String welcome() {
@@ -174,6 +207,13 @@ public class HomeController {
     }
 
     @ResponseBody
+    @RequestMapping("/getGroups")
+    public List getGroups() {
+        List<GroupList> groupList = controlCenterService.getGroups();
+        return groupList;
+    }
+
+    @ResponseBody
     @RequestMapping("/other")
     public List other() {
         List hosts = blTservice.getAll();
@@ -186,4 +226,9 @@ public class HomeController {
         blTservice.saveHost(consoleVo);
         return "ok";
     }
+    @GetMapping("/hello")
+    ResponseEntity<String> hello() {
+        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
+    }
+
 }

@@ -18,7 +18,7 @@
 // * @date 2019/6/25 16:26
 // */
 //@Service
-//@RocketMQMessageListener(topic = "blt_host_topic", consumerGroup = "blt_cloud_consumer_host_group")
+//@RocketMQMessageListener(topic = "blt_host_topic", consumerGroup = "blt_cloud_consumer_host_mgroup")
 //public class HostConsumer implements RocketMQListener<String> {
 //
 //    @Resource

@@ -15,7 +15,7 @@ public class CronInfo {
     private int id;
     @Column(unique = true,length = 32)
     private String cronName;
-    @Column(length = 32)
+    @Column(length = 128)
     private String command;
     private Integer itemSet;
     private Integer repetition;

@@ -145,8 +145,10 @@ public class ControlCenterController {
     public String netWorkGroupConsole(Model model, Integer gid, String meshId) {
         List<ControlMaster> controlMasters = controlCenterService.getControlGroups(gid, meshId);
         List<GroupList> groupList = controlCenterService.getGroups();
+//        List<MPlace> placeList = controlCenterService.getPlaces();
         model.addAttribute("groupList", groupList);//组列表
         model.addAttribute("controlMasters", controlMasters);//网络列表
+//        model.addAttribute("placeList", placeList);//区域列表
         return "poeConsole/control";
     }
 

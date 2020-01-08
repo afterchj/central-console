@@ -2,7 +2,6 @@ package com.example.blt.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by hongjian.chen on 2019/5/31.
@@ -15,6 +14,7 @@ public class MeshGroup implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Integer gid;
+    @Column(unique = true)
     private Integer mid;
     private Integer masterId;
 }

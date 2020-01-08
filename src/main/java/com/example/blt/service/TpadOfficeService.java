@@ -135,10 +135,15 @@ public class TpadOfficeService {
                 sendCmd(x, y, unitArray, null, unit);
                 break;
             case DIMMING:
+                String oldX = x;
+                String oldY = y;
                 x = hexColors.get(x);
                 y = hexLuminances.get(y);
+                StringBuffer sb;
                 if (x == null || y == null) {
-                    throw new Exception("未知的冷暖色");
+                    sb = new StringBuffer();
+                    String msg = sb.append("未知的冷暖色").append("x: ").append(oldX).append(";y: ").append(oldY).toString();
+                    throw new Exception(msg);
                 }
                 sendCmd(x, y, unitArray, null, unit);
                 break;
