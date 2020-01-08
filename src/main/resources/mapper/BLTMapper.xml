@@ -55,7 +55,7 @@
     </select>
 
     <select id="getLightInfo" resultType="map">
-       SELECT vaddr,CONCAT_WS('','77011465',vaddr,'2A00000000C000373700000000CCCC') cmd FROM t_light_info ORDER BY x DESC LIMIT 5
+       SELECT vaddr,CONCAT_WS('','77011465',vaddr,'2A00000000C000373700000000CCCC') cmd FROM t_light_info ORDER BY log_date DESC LIMIT 5
     </select>
 
     <select id="getHostInfo" resultType="map">
