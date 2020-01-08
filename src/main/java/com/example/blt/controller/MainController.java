@@ -7,6 +7,7 @@ import com.example.blt.dao.Monitor4Dao;
 import com.example.blt.entity.ProjectData;
 import com.example.blt.entity.TimePointParams;
 import com.example.blt.entity.TimerList;
+import com.example.blt.entity.office.SmallRoutine;
 import com.example.blt.entity.vo.ConsoleVo;
 import com.example.blt.service.BLTService;
 import com.example.blt.service.RedisService;
@@ -219,6 +220,99 @@ public class MainController {
                 y = onOffMap.get("y");
             }
             command = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
+            tpadOfficeService.send(host, command);
+        } catch (Exception e) {
+            success = e.getMessage();
+        }
+        map.put("success", success);
+//        long end = System.currentTimeMillis();
+//        logger.warn("send time:{}",end-start);
+        logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
+        return map;
+    }
+
+    @RequestMapping(value = "/sendByProjectForSmallRoutine", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> sendByProjectForSmallRoutine(@RequestBody SmallRoutine smallRoutine) {
+//        long start = System.currentTimeMillis();
+        Map<String, String> map = new HashMap<>();
+        Map<String, String> onOffMap;
+        String host;
+        String command = null;
+        String success = "success";
+        String project = smallRoutine.getProject();
+        Integer groupId = smallRoutine.getGroupId();
+        String x = smallRoutine.getX();
+        String y = smallRoutine.getY();
+        String type = smallRoutine.getType();
+        Integer sceneId = smallRoutine.getSceneId();
+        if ("all".equals(project)) {//全控
+            host = "all";
+        } else {
+            host = monitor4Dao.getHostId(project);
+            if (host == null) {
+                success = "poe不在线";
+                logger.error("method:sendByProject;can not find hostId; project:{}", project);
+                map.put("success", success);
+                return map;
+            }
+        }
+        try {
+            if (StringUtils.isNotBlank(x)) {
+                onOffMap = tpadOfficeService.changeXY(x, y);
+                x = onOffMap.get("x");
+                y = onOffMap.get("y");
+            }
+            command = JoinCmdUtil.joinNewCmd(type, x, y, groupId, sceneId);
+            tpadOfficeService.send(host, command);
+        } catch (Exception e) {
+            success = e.getMessage();
+        }
+        map.put("success", success);
+//        long end = System.currentTimeMillis();
+//        logger.warn("send time:{}",end-start);
+        logger.warn("method:sendByMeshId; result: {};host: {};command: {}", success, host, command);
+        return map;
+    }
+
+    @RequestMapping(value = "/sendByProject2", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, String> sendByProjectFor2( String x) {
+//        long start = System.currentTimeMillis();
+        Map<String, String> map = new HashMap<>();
+        Map<String, String> onOffMap;
+        String host;
+        String command = null;
+        String success = "success";
+        Integer groupId = 0;
+        String project = "all";
+        String type = "mesh";
+        if ("all".equals(project)) {//全控
+            host = "all";
+        } else {
+            host = monitor4Dao.getHostId(project);
+            if (host == null) {
+                success = "poe不在线";
+                logger.error("method:sendByProject;can not find hostId; project:{}", project);
+                map.put("success", success);
+                return map;
+            }
+        }
+        try {
+//            if (StringUtils.isNotBlank(x)) {
+//                onOffMap = tpadOfficeService.changeXY(x, y);
+//                x = onOffMap.get("x");
+//                y = onOffMap.get("y");
+//            }
+            String y;
+            if(x.equals("1")){
+                x = "32";
+                y = "32";
+            }else {
+                x = "37";
+                y = "37";
+            }
+            command = JoinCmdUtil.joinNewCmd(type, x, y, groupId, null);
             tpadOfficeService.send(host, command);
         } catch (Exception e) {
             success = e.getMessage();

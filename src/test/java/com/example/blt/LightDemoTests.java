@@ -5,9 +5,11 @@ import com.example.blt.entity.LightDemo;
 import com.example.blt.service.ControlCenterService;
 import com.example.blt.service.NewMonitorService;
 import com.example.blt.service.TpadOfficeService;
+import com.example.blt.utils.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -251,11 +253,8 @@ public class LightDemoTests {
 
     @Test
     public void test15(){
-        try {
-            get(0);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        String hexStr = String.format("%02x",19).toUpperCase();
+        System.out.println(hexStr);
     }
 
     @Test
@@ -263,5 +262,35 @@ public class LightDemoTests {
         int[] unitArray = {1,2,3,4,9};
         int[] midsBySids = tpadOfficeDao.getMidsBySids(unitArray);
         Arrays.stream(midsBySids).forEach(System.out::println);
+    }
+    @Resource
+    private RedisUtil redisUtil;
+
+    @Test
+    public void test17(){
+        Map<String, Object> map = new HashMap();
+        String[] keyArr = {"0001user0001","0002user0002"};
+        map.put("name","小李");
+        map.put("age","19");
+        map.put("sex","man");
+        redisUtil.hmset(keyArr[0],map);
+        Map<Object, Object> user = redisUtil.hmget(keyArr[0]);
+        System.out.println(user.toString());
+        redisUtil.hmset(keyArr[1],map);
+        Map<Object, Object> hmget = redisUtil.hmget(keyArr[1]);
+        System.out.println(hmget.toString());
+    }
+
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    @Test
+    public void test18(){
+        for (int i=0;i<10000;i++){
+            redisTemplate.opsForSet().add("user"+i,"user"+i);
+            //redisTemplate.opsForHyperLogLog().add("UV2","usr"+i);
+        }
+        //Long count =  redisTemplate.opsForHyperLogLog().size("UV1","UV2");
+        //System.out.println("UVCount="+count);
     }
 }
