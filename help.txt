@@ -1,0 +1,1149 @@
+
+1、新模组（Tigerkin）设计的第一版Dongle，版本号定义为1.0
+
+2、在mouselet模组制作的Dongle 2.7版本的基础上做了如下修改：
+
+        a、舍弃掉模拟遥控器的功能：
+
+                    舍弃case 0x3D/*十进制61*/://模拟遥控器给灯配网和分组//77 01 02 3D groupid 66
+
+                    舍弃case 0x51/*十进制81*/://模拟遥控器控灯(开灯、关灯、自然光、暖光、冷光、调亮一点、调暖一点。。。)//77 01 03 51 groupid operation 66
+
+                    舍弃函数void GY_send_gy_mac(void);//发送模拟遥控器时使用的mac地址（dongle 或者 遥控器的 mac）
+
+                    舍弃case 0x65/*十进制101*/://当上位机点击切换模拟遥控器的mac时，发送切换之后的mac数据到上位机
+
+           case 0x66/*十进制102*/://MFC上位机串口上传dongle的相关信息  中去掉函数
+
+                    GY_send_gy_mac();//发送模拟遥控器时使用的mac地址（dongle 或者 遥控器的 mac）
+
+        b、添加蓝牙无线透传功能：
+            case 0x65/*十进制102*/://将接收到的串口数据通过无线蓝牙透传出去
+            {//77 01 data_len 65 *data(长度为data_len-1。数据包含：通道（1B）+广播使用的虚拟地址（4B）+透传数据长度（1B）+需要透传的数据(data_len-7)) 66
+                UINT8 Type = cmd->parameter[0];
+                UINT32 a =cmd->parameter[1];
+                UINT32 b =cmd->parameter[2];
+                UINT32 c=cmd->parameter[3];
+                UINT32 d=cmd->parameter[4];
+                UINT8 data_len = cmd->parameter[5];
+                UINT8* data = &cmd->parameter[6];
+                mRC_API_SendData(((a<<0)&0x000000ff)|((b<<8)&0x0000ff00)|((c<<16)&0x00ff0000)|((d<<24)&0xff000000), Type,data,data_len);
+                break;
+            }
+
+                    开灯（全开）指令透传事例：
+           77 01 13 65 2A FF FF FF FF 0C 00 00 00 00 C0 00 37 37 00 00 00 00 66
+
+        c、重新布局case相关命令：（此次变更完全兼容mouselet dongle 2.7版本）
+
+            case 0x01~0x14（1   ~  20）:dongle基本功能（配网、收发ID、OTA、检测232芯片）
+            case 0x15~0x3C（21  ~  60）:dongle灯控（包括控灯、给灯配置、获取灯信息）
+            case 0x3D~0x50（61  ~  80）:保留
+            case 0x51~0x64（81  ~ 100）:demo演示使用
+            case 0x65~0x78（101 ~ 120）:其他操作（包括上位机、透传等功能）
+
+                    具体的case如下：
+                    case 0x01://dongle给灯配网//77 01 01 01 66 //77 01 02 01 timer 66（新增配网时间设定）
+                    case 0x02://给dongle配网//77 01 09 02 char8 char8 char8 char8 char8 char8 char8 char8 66
+                    case 0x03://发送ID，给遥控器配网//77 01 01 03 CC CC//77 01 02 03 timer CC CC
+                    case 0x04://接收ID（接收从另一个dongle或遥控器发送过来的ID）//77 01 01 04 CC CC//77 01 02 04 timer CC CC
+                    case 0x05://进入OTA//77 01 01 05 66
+                    case 0x06://检测232芯片是否异常（每隔一秒检测一次）//77 01 01 06 66
+                    case 0x07://将gy_pc_set_get_light_status_flag变量设置为0， 灯操作5秒之后不再主动获取灯信息
+                    （新）case 0x08://mesh网络中给灯升级固件（OTA）
+
+                    case 0x15/*十进制21*/://对全部灯进行调节（开关、亮暗、冷暖）//77 01 03 15 x y 66（全关：32 32  全开：37 37）
+                    case 0x16/*十进制22*/://对单组灯进行调节（开关、亮暗、冷暖）//77 01 04 16 groupid x y 66
+                    case 0x17/*十进制23*/://对灯全部调节（RGB）（暂未添加）
+                    case 0x18/*十进制24*/://对单组灯调节（RGB）//77 01 04 18 groupid  x y 66
+                    case 0x19/*十进制25*/://对全部灯进行场景控制//77 01 02 19 sence_index 66
+                    case 0x1A/*十进制26*/://接收某一个灯的状态//77 01 05 1A xx xx xx xx 00
+                    case 0x1B/*十进制27*/://主动ping灯，获取灯的信息//77 01 01 1B 66
+                    case 0x1C/*十进制28*/://对单个灯调节（亮暗冷暖）//77 01 07 1C vir_1 vir_2 vir_3 vir_4 x y 66
+                    case 0x1D/*十进制29*/://将一个灯加入分组//77 01 06 1D vir_1 vir_2 vir_3 vir_4 groupid 66
+                    case 0x1E/*十进制30*/://将一个灯移出分组//77 01 06 1E vir_1 vir_2 vir_3 vir_4 groupid 66
+                    case 0x1F/*十进制31*/://将一个组所有的灯全部移出该组//77 01 02 1F groupid 66
+                    case 0x20/*十进制32*/://对网络中全部灯配置场景（最多可以配置20个场景:1~20）//77 01 02 20 scene_id 66
+                    case 0x21/*十进制33*/://对网络中单个灯配置场景（最多可以配置20个场景）//77 01 06 21 vir_1 vir_2 vir_3 vir_4 scene_id 66
+                    case 0x22/*十进制34*/://删除网络中所有灯配置的一个场景（场景值为：1~20）//77 01 02 22 scene_id 66
+                    case 0x23/*十进制35*/://删除某个灯配置的一个场景（场景值：1~20）//77 01 06 23 vir_1 vir_2 vir_3 vir_4 scene_id 66
+                    case 0x24/*十进制36*/://对单灯进行场景控制（场景值：1~20）//77 01 06 24 vir_1 vir_2 vir_3 vir_4 scene_id 66
+                    case 0x25/*十进制37*/://获取网络中所有灯虚拟地址对应的groupid//77 01 01 25 66
+                    case 0x26/*十进制38*/://获取某个灯的groupid//77 01 05 26 vir_1 vir_2 vir_3 vir_4 66
+                    case 0x27/*十进制39*/://获取所有灯的状态信息//77 01 01 27 66
+                    case 0x28/*十进制40*/://将某一个灯从网络里删除//77 01 05 28 vir_1 vir_2 vir_3 vir_4 66
+                    case 0x29/*十进制41*/://将所有灯从网络中删除//77 01 01 29 66
+                    case 0x2A/*十进制42*/://获取某个灯的RSSI值//77 01 05 2A vir_1 vir_2 vir_3 vir_4 66
+                    case 0x2B/*十进制43*/://获取所有灯的RSSI值//77 01 01 2B 66
+                    case 0x2C/*十进制44*/://给某个灯设置RSSI//77 01 06 2C vir_1 vir_2 vir_3 vir_4 RSSI 66
+                    case 0x2D/*十进制45*/://给所有灯设置RSSI//77 01 02 2D RSSI 66
+                    case 0x2E/*十进制46*/://对单组灯进行调节（RGB）//77 01 05 2E groupid x1 x2 y 66
+                    case 0x2F/*十进制47*/://对单个灯进行调节（RGB）//77 01 08 2F vir_1 vir_2 vir_3 vir_4 x1 x2 y 66
+                    case 0x30/*十进制48*/://对全部灯进行调节（RGB）//77 01 04 30 x1 x2 y 66
+                    case 0x31/*十进制49*/://获取所有灯的产品ID（product_id）//77 01 01 31 66
+                    case 0x32/*十进制50*/://获取某个灯的产品ID（product_id）//77 01 05 32 vir_1 vir_2 vir_3 vir_4 66
+
+                    //77 01 len 65 parameter[0]~parameter[3](receiver_vaddr) parameter[4](send_channal) parameter[5]~parameter[8](sender_vaddr)
+                    //parameter[9](massageid) parameter[10]~parameter[len-2](massagedata) CC CC
+                    case 0x65/*十进制102*/://将接收到的串口数据通过无线蓝牙透传出去
+                    case 0x66/*十进制102*/://MFC上位机串口上传dongle的相关信息//77 01 01 66 00
+
+            增加77 05开头的case指令：
+                    case 0x01://服务器询问灯mesh id 和 密钥//77 05 01 01 CC CC
+                    case 0x02://服务器控制 POE 面板的 LED 灯状态//77 05 03 02 ctl_led led_flag CC CC
+                    case 0x03://服务器应答POE的询问，收到该信息表示POE和服务器连接正常
+                    case 0x04://服务器向POE询问mesh网络当前节点数量//77 05 01 03 CC CC
+                    case 0x05://服务器查询POE的MAC地址//77 05 01 05 CC CC
+                    case 0x06://服务器查询POE的固件版本信息//77 05 01 06 CC CC
+                    case 0x09://POE进入到 OTA 状态//77 05 01 09 CC CC//77 05 02 09 timer CC CC
+                    case 0x0A://扫描周边已有的mesh网络//77 05 01 0A CC CC //77 05 02 0A time CC CC
+
+3、OTA注意事项：当OTA模式结束时，Tigerkin并不会和mouselet一样重新启动程序，它会调用回调函数 void buffalo_ota_cb(UINT8 result);如果Dongle周围没有对应的meshID网络加入，则Dongle不会执行
+
+        回调函数app_state_changed，所以gy_main.gy_state_old 和 gy_main.app_main_state 的值就会一直处于OTA对应的值，无法上传新的状态到上位机，导致上位机无法刷新。可在buffalo_ota_cb添加如下代码：
+
+        void buffalo_ota_cb(UINT8 result)
+        {
+            //OTA模式结束时，app_main_state 和 gy_state_old 的值均为MESH_STATE_OTA，新的状态数据无法刷新，只能手动设置app_main_state为MESH_STATE_IDLE，app_main_state 和 gy_state_old 的值不同则可以刷新并且上传数据
+            gy_main.app_main_state = MESH_STATE_IDLE;//判断dongle的mesh网络状态，以确定灯控是否有效，以及判断是否进入其他功能
+        }
+
+4、添加检测mesh网络中节点数量机制，当mesh网络中的节点数量发生改变，则调用回调函数，主动ping灯
+
+        void mesh_app_init(void)//入口函数
+        {
+            ......
+            mRC_API_register_net_num_cb(app_net_num_notify);//当网络中节点数量发生改变时，回调函数会被调用
+            ......
+        }
+
+        void app_net_num_notify(UINT16 num)//当网络中节点数量发生改变时，该函数会被调用，在mesh_app_init函数中注册
+        {
+        //    WICED_BT_TRACE("%d device in the mesh\n", num);
+            UINT32 virtual_addr = mesh_get_Local_VirtualAddr();
+            mRC_API_SendData(0xffffffff, 0xFE,(UINT8 *) &virtual_addr, 4);
+        }
+
+5、接收ID的回调函数中，Dongle自己的mesh网络会更改为接收到的meshid网络，并且发送此时dongle新的mesh网络给上位机，使其刷新
+
+        void buffalo_receive_HomeID_cb(UINT8 result, UINT32 HomeID, UINT8 *password)//接收ID的回调函数
+        {
+
+            //UINT8 SEND[10];
+            //memcpy(SEND, &HomeID, 4);
+            //memcpy(&SEND[4], password, 4);
+            //buffola_UART_Send_Data(0X04,0X02,SEND,8);
+            if (result == SEND_HOMEID_SUCCESS) {
+                tmeshinfo info;
+                info.id = HomeID;
+                memcpy(info.password, password, 4);
+                mRC_API_set_meshinfo(info.id,info.password,0);
+
+                GY_send_recv_meshid((UINT8 *)&info);//发送接收的id给上位机
+                GY_send_mesh_id();//上位机刷新dongle的meshID
+                Bleapp_UART_Send_Data(0x04,0x02,(UINT8 *)&info,9);//从串口中发送数据
+
+            } else if (result == SEND_HOMEID_TIMEOUT)
+            {
+
+            }
+        //        ble_trace0("receive homeID timeout");
+            //checkErr[0]=0xaa,checkErr[1]=0xbb,checkErr[2]=0xcc,checkErr[3]=0xdd;
+            //buffola_UART_Send_Data(UART_PACKET_TYPE_RESPONSE, 0x88, checkErr,4);
+        }
+
+6、增加RSSI相关功能：（必须配合相应的库文件使用：mRC_lib_v1.1.a）
+        case 0x2A/*十进制42*/://获取某个灯的RSSI值//77 01 05 2A vir_1 vir_2 vir_3 vir_4 66
+        case 0x2B/*十进制43*/://获取所有灯的RSSI值//77 01 01 2B 66
+        case 0x2C/*十进制44*/://给某个灯设置RSSI//77 01 06 2A vir_1 vir_2 vir_3 vir_4 RSSI 66
+        case 0x2D/*十进制45*/://给所有灯设置RSSI//77 01 02 2D RSSI 66
+
+7、针对PC端添加如下
+
+        a、添加全局变量gy_main.gy_pc_set_get_light_status_flag， 配合变量gy_get_light_status_flag使用，当该值等于1时，gy_get_light_status_flag对应的功能生效
+
+                   （5秒钟之内没有对灯做任何操作，则获取灯状态）当该值等于0时，gy_get_light_status_flag对应的功能不生效（5秒钟之内没有对灯做任何操作，也不获取灯状态）
+
+                     该值初始化为1，gy_get_light_status_flag对应的功能正常使用，如果dongle放在pc端使用，则发送相关case指令，关闭该功能，便于pc端调试
+
+            typedef struct{
+                 ......
+                 UINT8 gy_get_light_status_flag;//获取灯状态的标志位（5秒钟之内没有对灯做任何操作，则获取灯状态）
+                 //配合变量gy_get_light_status_flag使用，当该值等于1时，gy_get_light_status_flag对应的功能生效（5秒钟之内没有对灯做任何操作，则获取灯状态）
+                 //当该值等于0时，gy_get_light_status_flag对应的功能不生效（5秒钟之内没有对灯做任何操作，也不获取灯状态）
+                 //该值初始化为1，gy_get_light_status_flag对应的功能正常使用，如果dongle放在pc端使用，则发送相关case指令，关闭该功能，便于pc端调试
+                 UINT8 gy_pc_set_get_light_status_flag;
+            }GY_MAIN;
+
+        b、添加case 0x07://将gy_pc_set_get_light_status_flag变量设置为0， 灯操作5秒之后不再主动获取灯信息
+
+        c、app_NormalTimer函数中，发送获取灯状态指令时，将gy_main.gy_pc_set_get_light_status_flag变量也添加到判断条件中
+
+8、在1.2.0版本基础上修复BUG： case 0x28/*十进制40*/://将某一个灯从网络里删除 和 case 0x29/*十进制41*/://将所有灯从网络中删除 里面将灯从网络中移出命令无效，
+
+        分析原因：mRC_API_get_meshinfo()函数调用有误，导致发送指令时填写的password错误，现已采用正确的方式调用该函数，可以正常将灯移除网络
+
+
+9、gy_main.gy_pc_set_get_light_status_flag初始化设置为0，灯操作5秒之后不再主动获取灯信息，该功能永久性关闭
+
+10、添加一个按键（#define BUTTON_ONOFF_RCV_MESHID WICED_P07），短按开关灯，长按接收ID，具体见GY_POE_Dongle_Interrupt.h和GY_POE_Dongle_Interrupt.c文件内容
+
+        大概思路：定义两个变量button_onoff_count和button_rcv_meshid_count，初始值均赋值为-1，只有检测到按键被按下时（产生一个下降沿），才将其置位为0，开始计时。
+
+              然后分别在app_NormalTimer函数和app_FineTimer函数中实现接收ID功能和开关灯功能。
+
+11、修改网络状态的初始值和OTA对应的网络状态值，主要是防止dongle上电时和在ota结束时红绿灯交替闪烁的情况发生，因为按下按键接收ID时，红绿灯会交替闪烁，如果本来
+
+        红绿灯也是交替闪烁的，那么就无法判别按下按键之后接收ID的功能是否执行。具体修改如下位置：
+
+              初始化函数gy_main_init中修改网络状态初始值：
+
+            gy_main.gy_state_old = MESH_STATE_JIONING/*MESH_STATE_IDLE*/;//gy_state_old用于判断buffalo_main_state值是否改变，如果值改变，则发送状态信息至上位机
+            gy_main.app_main_state = MESH_STATE_JIONING/*MESH_STATE_IDLE*/;//判断dongle的mesh网络状态，以确定灯控是否有效，以及判断是否进入其他功能
+
+        OTA回调函数buffalo_ota_cb中修改app_main_state的值：
+
+            gy_main.app_main_state = MESH_STATE_JIONING/*MESH_STATE_IDLE*/;//判断dongle的mesh网络状态，以确定灯控是否有效，以及判断是否进入其他功能
+
+12、修改产品ID和版本信息：6667.1.0.1
+
+            gy_main.App_ID = 6667;//POE_Dongle专用
+            gy_main.Version_Major = 1;
+            gy_main.Version_Minor = 0;
+
+13、添加stringtohex.h和stringtohex.c文件，用于接收服务器发送过来的字符串进行控灯
+
+        void uart_rx_cb(void *nosue)//接收串口数据，在gy_uart_init函数中注册调用
+        {
+            uint8_t read;
+
+            while(wiced_hal_puart_read(&read))
+            {
+                Bleapp_Uart_RX_irq(read);
+
+                //如果接收到的是字符串，则先将字符串转换为16进制，然后再执行相应的操作，在uart_rx_cb函数中执行
+                gy_handle_uart_data(read);//************该位置添加函数：根据服务器发送过来的字符串进行控灯
+            }
+
+            wiced_hal_puart_reset_puart_interrupt();
+        }
+
+14、修改产品ID和版本信息：6667.1.1.0
+
+            gy_main.App_ID = 6667;
+            gy_main.Version_Major = 1;
+            gy_main.Version_Minor = 1;
+
+15、新增加RGB功能
+
+                    新增case 0x2E/*十进制46*/:// 对单组灯进行调节（RGB）//77 01 05 2E groupid x1 x2 y 66
+                    新增case 0x2F/*十进制47*/://对单个灯进行调节（RGB）//77 01 08 2F vir_1 vir_2 vir_3 vir_4 x1 x2 y 66
+                    新增case 0x30/*十进制48*/://对全部灯进行调节（RGB）//77 01 04 30 x1 x2 y 66
+
+16、修改产品ID和版本信息：6667.1.2
+
+            gy_main.App_ID = 6667;
+            gy_main.Version_Major = 1;
+            gy_main.Version_Minor = 2;
+
+17、新添加获取产品ID（product_id）的功能
+
+                新增case 0x31/*十进制49*/://获取所有灯的产品ID（product_id）//77 01 01 31 66
+                新增case 0x32/*十进制50*/://获取某个灯的产品ID（product_id）//77 01 05 32 vir_1 vir_2 vir_3 vir_4 66
+
+18、修改给灯配网指令，添加配网时间自定义设定功能（单位：秒）
+
+               修改case 0x01://dongle给灯配网//77 01 01 01 66 //77 01 02 01 timer 66（新增配网时间设定）
+
+19、修改产品ID和版本信息，并设定产品ID：6667.1.3
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 3;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+20、修改网络中节点数量发生改变时调用的回调函数app_net_num_notify，当侦测到网络中节点数量发生改变时，
+
+                使用串口上传此时侦测到的节点数量，数据具体格式如下：
+
+         0x18 0x27 0x16 0x32 0x46 0x21 local_addr[5] local_addr[4] local_addr[3] local_addr[2] local_addr[1]
+            local_addr[0] num1 num2 0xCC 0xCC
+                前6个字节固定：18 27 16 32 46 21，可用于判断接收到的数据是否为网络中节点数量改变时发送的数据
+                接着的6个字节（local_addr[5]~local_addr[0]）为POE_Dongle本身的mac地址
+                再后面的2个字节（num1 num2）为此时侦测到的节点数量
+
+                注：之前版本中，当侦测到网络中节点数量发生改变时，重新ping灯
+
+21、修改产品ID和版本信息，并设定产品ID：6667.1.4
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 4;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+22、修改按键引脚：#define BUTTON_ONOFF_RCV_MESHID WICED_P06 （原引脚为WICED_P07，与check232引脚冲突）***********************引脚修改
+
+23、修改产品ID和版本信息，并设定产品ID：6667.1.5
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 5;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+24、添加POE透传功能：当遥控器和pad发送控灯指令时，同网络中的POE会将接收到的控灯指令
+                处理之后上传至服务器，服务器加工处理之后将数据传给其他网络中的POE，使其控灯 ，
+                具体操作步骤如下：
+                修改GY_USB_Dongle_Uart.c文件修改函数Bleapp_UART_CMD_handle：
+
+        void Bleapp_UART_CMD_handle(tcmdBuffer *cmd)////处理一条完整的Uart指令，在Bleapp_Uart_RX_irq函数中调用
+        {
+            uint8_t parameter_len = cmd->len - 1;
+            if(cmd->type == UART_PACKET_TYPE_CMD)//*******************此处有修改
+            {
+                switch(cmd->opcode)
+                {
+                    ......//正常的串口控灯指令
+                }
+            }
+            else if(cmd->type == 0x04)
+            {
+                switch(cmd->opcode)
+                {
+                    case 0x02://表示POE上传接收的蓝牙数据被服务器回传
+                    {//77 04 len 02 CHANAL BT_DATA[n] CC CC  (len = n + 2)
+                        if(cmd->parameter[5] == 0x52)
+                        {
+                            memcpy(&cmd->parameter[6],mesh_get_local_address(),6);
+                        }
+                        mRC_API_SendData(0XFFFFFFFF, cmd->parameter[0],&cmd->parameter[1],parameter_len-1);
+                    }
+                }
+            }
+        }
+
+            修改stringtohex.c文件中gy_handle_uart_data函数：（使服务器回传的字符指令也生效）
+            void gy_handle_uart_data(UINT8 uart_data)
+            {
+                ......
+                if( flag == 2)
+                {
+                    if(uart_data == '0')
+                    {
+                        uart_str[0] = uart_data;//************************添加位置1
+                        flag++;
+                    }
+                    else
+                    {
+                        flag = 0;
+                        i = 0;
+                    }
+                    return;
+                }
+                if(flag == 3)
+                {
+                    if(uart_data == '1' || uart_data == '4')//**************修改的位置2：uart_data='4'表示POE上传接收的蓝牙数据被服务器回传
+                    {
+                        uart_str[1] = uart_data;
+                        gy_str_to_hex_send_data.type = two_char_to_BYTE(uart_str);//***********添加位置3
+                        flag++;
+                    }
+                    else
+                    {
+                        flag = 0;
+                        i = 0;
+                    }
+                    return;
+                }
+                ......
+                if(flag == 5)
+                {
+                    uart_str[1] = uart_data;
+                    count = 2*two_char_to_BYTE(uart_str);
+                    //gy_str_to_hex_send_data.type = 0x01;//*******************注释掉的位置4
+                    gy_str_to_hex_send_data.len = count/2;
+                    flag++;
+                    return;
+                }
+            }
+
+25、修改产品ID和版本信息，并设定产品ID：6667.1.6
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 6;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+26、添加宏定义，专门用来接收服务器获取POE自产生的相关数据
+
+    #define GY_UART_PACKET_TYPE_LOCAL_RESPONSE  0x05//POE自己产生的数据上传至服务器，或者服务器询问POE自产生的数据
+
+        在GY_USB_Dongle_Uart.c文件的Bleapp_UART_CMD_handle函数中添加相关判断和执行语句：
+
+        ......
+        else if(cmd->type == GY_UART_PACKET_TYPE_LOCAL_RESPONSE)//服务器询问POE自产生的数据
+        {
+            switch(cmd->opcode)
+            {
+                case 0x01://服务器询问灯mesh id 和 密钥
+                {
+                    tmeshinfo info;
+                    mRC_API_get_meshinfo(&info);
+                    UINT8 id_1 = (info.id)/1000;
+                    UINT8 id_2 = (info.id%1000)/100;
+                    UINT8 id_3 = ((info.id%1000)%100)/10;
+                    UINT8 id_4 = (((info.id%1000)%100)%10)/1;
+
+                    UINT8 gy_uart_data[] = {0x77,0x05,0x09,0x01,id_1,id_2,id_3,id_4,
+                                      info.password[0]%16,info.password[1]%16,info.password[2]%16,
+                                      info.password[3]%16,0xCC,0xCC};
+                    wiced_hal_puart_synchronous_write(gy_uart_data, sizeof(gy_uart_data));
+                }
+            }
+        }
+        ......
+
+        在stringtohex.c文件的gy_handle_uart_data函数中修改如下判断语句：
+
+        ......
+        if(flag == 3)
+        {
+            if(uart_data == '1' || uart_data == '4' || uart_data == '5')//**************添加 uart_data == '5'，用于接收相关字符串指令
+            {
+                uart_str[1] = uart_data;
+                gy_str_to_hex_send_data.type = two_char_to_BYTE(uart_str);
+                flag++;
+            }
+            else
+            {
+                flag = 0;
+                i = 0;
+            }
+            return;
+        }
+
+27、修改产品ID和版本信息，并设定产品ID：6667.1.7
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 7;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+28、添加POE面板的四个功能图标的LED灯
+        a.internet功能图标（黄灯 和 白灯）：连接上服务器亮白灯，其他情况亮黄灯
+        b.蓝牙功能图标（黄灯 和 白灯）：亮灯方式与之前的红绿灯相同
+        c.定时器功能图标（一个灯）：有定时功能亮灯，无定时功能不亮灯（该灯由服务器下发指令控制）
+        d.集控图标（一个灯）：有集控功能亮灯，无集控功能不亮灯（该灯由服务器下发指令控制）
+
+        针对新添加功能做如下工作：
+        1、GY_USB_Dongle_LED.h文件中添加宏定义和枚举变量：
+            #define GY_LED_INTERNET_YELLOW     WICED_P28//internet黄色指示灯
+            #define GY_LED_INTERNET_WHITE      WICED_P29//internet白色指示灯
+            //#define GY_LED_BT_YELLOW           GY_LED_GREEN//蓝牙黄色指示灯
+            //#define GY_LED_BT_WHITE            GY_LED_RED//蓝牙白色指示灯
+            #define GY_LED_TIMER               WICED_P01//定时器指示灯
+            #define GY_LED_CENTER_CTL          WICED_P00//集控指示灯
+
+            enum{//void GY_led_ctl_to_uart(UINT8 ctl_led, UINT8 led_flag);函数中第一个参数的取值
+                gy_internet_uart = 1,
+                gy_bluetooth_uart,
+                gy_timer_uart,
+                gy_center_ctl_uart,
+            };
+
+        2、GY_USB_Dongle_LED.c文件中的GY_led_init初始化函数中添加对指示灯引脚的配置：
+            //internet初始化亮黄灯
+            wiced_hal_gpio_configure_pin(GY_LED_INTERNET_YELLOW, GPIO_OUTPUT_ENABLE, GPIO_PIN_OUTPUT_HIGH);
+            wiced_hal_gpio_configure_pin(GY_LED_INTERNET_WIGHT, GPIO_OUTPUT_ENABLE, GPIO_PIN_OUTPUT_LOW);
+            wiced_hal_gpio_configure_pin(GY_LED_TIMER, GPIO_OUTPUT_ENABLE, GPIO_PIN_OUTPUT_LOW);
+            wiced_hal_gpio_configure_pin(GY_LED_CENTER_CTL, GPIO_OUTPUT_ENABLE, GPIO_PIN_OUTPUT_LOW);
+
+        3、GY_USB_Dongle_LED.c文件中添加控灯的相关函数：
+            void GY_open_internet_yellow_led(void);//打开internet的黄色指示灯，关闭白色指示灯
+            void GY_open_internet_white_led(void);//打开internet的白色指示灯，关闭黄色指示灯
+            void GY_open_timer_led(void);//打开定时器的led指示灯
+            void GY_close_timer_led(void);//关闭定时器的led指示灯
+            void GY_open_center_ctl_led(void);//打开集控显示的led指示灯
+            void GY_close_center_ctl_led(void);//关闭集控显示的led指示灯
+            void GY_led_ctl_to_uart(UINT8 ctl_led, UINT8 led_flag);//通过串口对POE面板状态指示灯进行控制
+
+        4、GY_USB_Dongle_Uart.c文件中的Bleapp_UART_CMD_handle函数中添加如下内容：
+            ......
+            else if(cmd->type == GY_UART_PACKET_TYPE_LOCAL_RESPONSE)//服务器询问POE自产生的数据
+            {
+                ......
+                case 0x01://服务器询问灯mesh id 和 密钥
+                {
+                    ......
+                    //如果收到服务器查询信息，则表示已经连接服务器成功
+                    GY_open_internet_white_led();//打开internet的白色指示灯，关闭黄色指示灯
+                    break;
+                }
+                case 0x02://服务器控制 POE 面板的 LED 灯状态
+                {//77 05 03 02 ctl_led led_flag CC CC
+                    GY_led_ctl_to_uart(cmd->parameter[0], cmd->parameter[1]);//通过串口对POE面板状态指示灯进行控制
+                    break;
+                }
+             }
+             ......
+
+29、修改GY_USB_Dongle_Uart.c文件中的buffalo_receive_HomeID_cb函数：接收到新的mesh id后，将其按照一定格式上传至服务器
+            void buffalo_receive_HomeID_cb(UINT8 result, UINT32 HomeID, UINT8 *password)//接收ID的回调函数
+            {
+                ......
+                //        GY_send_recv_meshid((UINT8 *)&info);//发送接收的id给上位机*******注释掉
+                //        GY_send_mesh_id();//上位机刷新dongle的meshID*********************注释掉
+                //        Bleapp_UART_Send_Data(0x04,0x02,(UINT8 *)&info,9);//从串口中发送数据***********注释掉
+                GY_send_meshid_to_uart();//通过串口发送POE本身的mesh id 和 密钥 至服务器
+                ......
+            }
+
+30、修改串口透传功能（case 0x65）：
+
+        case 0x65/*十进制102*/://将接收到的串口数据通过无线蓝牙透传出去
+        {//77 01 len 65 parameter[0]~parameter[3](receiver_vaddr) parameter[4](send_channal) parameter[5]~parameter[8](sender_vaddr)
+            //parameter[9](massageid) parameter[10]~parameter[len-2](massagedata) CC CC
+            UINT32 a =cmd->parameter[0];
+            UINT32 b =cmd->parameter[1];
+            UINT32 c=cmd->parameter[2];
+            UINT32 d=cmd->parameter[3];
+            UINT8 send_channal = cmd->parameter[4];
+            UINT32 virtual_addr = mesh_get_Local_VirtualAddr();
+            memcpy(&cmd->parameter[5],(UINT8 *)&virtual_addr,4);//将虚拟地址更改为模组自己的虚拟地址
+            UINT8 *massagedata = &cmd->parameter[5];
+
+            mRC_API_SendData(((a<<0)&0x000000ff)|((b<<8)&0x0000ff00)|((c<<16)&0x00ff0000)|((d<<24)&0xff000000),
+                    send_channal,massagedata,parameter_len-5);
+            break;
+        }
+
+31、修改BT数据通过串口发送给上位机调用的函数：数据包中多添加4个字节的0xFF,作为发送方的虚拟地址发送到服务器（初步修改）
+
+        void Bleapp_UART_Send_Data(uint8_t type,uint8_t opcode,uint8_t *parameter,uint32_t parameter_len)//从串口中发送数据
+        {//Bleapp_UART_Send_Data(0X01,0X65,txBuffer,len+1);//上传和下发统一使用同一种协议指令
+            int i;
+            uint8_t checksum =0;
+            uint32_t total_len = parameter_len + 6 + 4/*另外添加4个字节的0xFF,作为发送方的虚拟地址发送到服务器*/;//******修改位置1
+
+            gy_main.output[0] = UART_PACKET_HEAD;
+            gy_main.output[1] = type;
+            gy_main.output[2] = parameter_len+1+4/*另外添加4个字节的0xFF,作为发送方的虚拟地址发送到服务器*/;//***********修改位置2
+            gy_main.output[3] = opcode;
+            memset(&gy_main.output[4],0xFF,4);//这个地方添加四个字节的虚拟地址 FF FF FF FF*******************************修改位置3
+            if(parameter_len>0)
+                memcpy(&gy_main.output[8],parameter,parameter_len);
+
+        //    for(i=0;i<(parameter_len+4);i++)
+        //        checksum = checksum^gy_main.output[i];
+        //    gy_main.output[i] = checksum;
+
+            gy_main.output[total_len-2] = 0xCC;//将最后校验位更改为0xCC,hilink上面做处理时，直接将该位替换为回车符('\n')，便于区分一条数据
+            gy_main.output[total_len-1] = 0xCC;//将最后校验位更改为0xCC,hilink上面做处理时，直接将该位替换为回车符('\n')，便于区分一条数据
+
+            while(!P_UART_TX_FIFO_IS_EMPTY());
+
+            wiced_hal_puart_synchronous_write(gy_main.output,total_len);
+        }
+
+32、ping灯获取的信息使用77 01 len 66开头的数据上传，灯返回的其他数据信息使用77 01 len 65开头的数据上传：
+        GY_USB_Dongle_Air.c文件中的app_data_event_callback函数中做如下修改：
+        ......
+        if(type == MESH_DATA_TYPE_PING_RESPONSE)
+        {
+            Bleapp_UART_Send_Data(0X01,0X66,data,len);
+        }
+        ......
+            Bleapp_UART_Send_Data(0X01,0X65,txBuffer,len+1);
+        ......
+
+33、增加POE发送询问和服务器应答功能：POE需要每隔一段时间（比如说30秒）询问一次服务器，如果服务器有应答，
+                则表示POE和服务器连接正常，如果服务器没有应答，则表示POE和服务器连接断开，以此为依据对指示灯做出相应的状态调整
+                具体操作如下：
+            a.添加宏定义：
+                #define GY_PING_COUNT_MAX  30 //每隔30秒钟询问一次
+                #define GY_PONG_COUNT_MAX  35 //接收服务器应答不能超过(GY_PONG_COUNT_MAX-GY_PING_COUNT_MAX)秒钟
+
+            b.GY_USB_Dongle_Uart.c文件中添加发送询问的函数：
+                void GY_send_ping_data_to_server(void);//POE向服务器发送询问,在秒函数中使用//77 05 01 03 CC CC
+
+            c.GY_USB_Dongle_main.c文件中的app_NormalTimer函数中添加b中的函数：
+                void app_NormalTimer(UINT32 count)
+                {
+                    GY_send_ping_data_to_server();//POE向服务器发送询问，在秒函数中使用//77 05 01 03 CC CC
+                    ......
+                }
+
+            d.77 05 开头的case中添加：case 0x03://服务器应答POE的询问，收到该信息表示POE和服务器连接正常
+                ......
+                case 0x03://服务器应答POE的询问，收到该信息表示POE和服务器连接正常
+                {//77 05 01 03 CC CC
+                    GY_open_internet_white_led();//打开internet的白色指示灯，关闭黄色指示灯
+                    gy_ping_count = GY_PING_COUNT_MAX;
+                    gy_pong_count = GY_PONG_COUNT_MAX;
+                    break;
+                }
+                ......
+
+34、修复case 0x65，增加massageid为0x11时的特殊情况：
+          ......
+          if(send_channal == 0x11)
+          {
+               memcpy(&cmd->parameter[10],(UINT8 *)&virtual_addr,4);//将虚拟地址更改为模组自己的虚拟地址
+               UINT8 *massagedata = &cmd->parameter[9];
+               mRC_API_SendData(((a<<0)&0x000000ff)|((b<<8)&0x0000ff00)|((c<<16)&0x00ff0000)|((d<<24)&0xff000000),
+                       send_channal,massagedata,parameter_len-5-4);
+          }
+          else
+          ......
+
+35、当mesh网络中节点数量发生改变时，将当前节点数量通过 77 05 开的数据上传//77 05 03 04 node_num1 node_num2 CC CC
+        void app_net_num_notify(UINT16 num)//当网络中节点数量发生改变时，该函数会被调用，在mesh_app_init函数中注册
+        {
+            gy_main.gy_node_num = num;
+            UINT8 gy_uart_data[] = {0x77,0x05,0x03,0x04,(UINT8)(gy_main.gy_node_num),(UINT8)(gy_main.gy_node_num>>8),0xCC,0xCC};
+            wiced_hal_puart_synchronous_write(gy_uart_data, sizeof(gy_uart_data));
+        }
+
+36、77 05开头的串口指令中添加case 0x04 和 case 0x05，分别用来上传当前节点数量和上传自己的MAC地址
+            ......
+            case 0x04://服务器向POE询问mesh网络当前节点数量
+            {//77 05 01 03 CC CC
+                UINT8 gy_uart_data[] = {0x77,0x05,0x03,0x04,(UINT8)(gy_main.gy_node_num),(UINT8)(gy_main.gy_node_num>>8),0xCC,0xCC};
+                wiced_hal_puart_synchronous_write(gy_uart_data, sizeof(gy_uart_data));
+                break;
+            }
+            case 0x05://服务器查询POE的MAC地址
+            {//77 05 01 05 CC CC
+                UINT8 local_addr[6];
+                wiced_bt_dev_read_local_addr (local_addr);
+                UINT8 gy_uart_data[] = {0x77,0x05,0x07,0x05,local_addr[5],local_addr[4],local_addr[3],local_addr[2],local_addr[1],
+                       local_addr[0],0xCC,0xCC};
+                break;
+            }
+            ......
+
+37、修改产品ID和版本信息，并设定产品ID：6667.1.8
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 8;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+38、77 05开头的串口指令数据添加发送Dongle本身的固件版本信息：
+            ......
+            case 0x06://服务器查询POE的固件版本信息
+            {//77 05 01 06 CC CC
+                UINT8 gy_uart_data[] = {0x77,0x05,0x05,0x06,(UINT8)gy_main.App_ID,(UINT8)(gy_main.App_ID>>8),gy_main.Version_Major,gy_main.Version_Minor,
+                       0xCC,0xCC};
+                wiced_hal_puart_synchronous_write(gy_uart_data, sizeof(gy_uart_data));
+                break;
+            }
+            ......
+
+39、更新库文件：$(NAME)_COMPONENTS += mRC_lib_v1.3.a（之前使用mRC_lib_v1.1.a），增加数字签名功能
+
+40、添加功能：POE重新上电或者OTA升级结束之后重新启动时，主动发送一条指令（77 05 01 07 CC CC）给服务器，表示POE重新运行
+
+                  在GY_USB_Dongle_main.c文件的mesh_app_init函数中添加如下代码：
+
+            void mesh_app_init(void)//入口函数
+            {
+                ......
+                UINT8 gy_uart_data[] = {0x77,0x05,0x01,0x07,0xCC,0xCC};//*********************新添加
+                wiced_hal_puart_synchronous_write(gy_uart_data, sizeof(gy_uart_data));//*******************新添加
+            }
+
+41、添加功能：当蓝牙模组状态发生改变时，主动上传信息给服务器：
+
+            修改GY_USB_Dongle_main.c文件app_FineTimer函数中的GY_send_net_state函数：
+
+            void GY_send_net_state(void)//获取dongle网络状态
+            {
+                UINT8 gy_uart_data[] = {0x77,0x05,0x02,0x08,gy_main.app_main_state,0xCC,0xCC};//*********新添加
+            //    UINT8 gy_uart_data[] = {1,8,2,7,1,6,3,2,4,6,2,'s',gy_main.app_main_state,0xCC,0xCC};//*****注释掉
+                wiced_hal_puart_synchronous_write(gy_uart_data, sizeof(gy_uart_data));
+            }
+
+		app_main_state取值如下：
+		0x01：空闲状态（MESH_STATE_IDLE）
+		0x02：正在尝试加入mesh网络（MESH_STATE_JIONING）
+		0x03：已经加入mesh网络（只有在该状态下，发送控灯指令有效）（MESH_STATE_JIONED）
+		0x04：正在给灯配网（MESH_STATE_ADDING）
+		0x06：OTA模式（MESH_STATE_OTA）
+		0x07：正在发送ID（MESH_STATE_SHARING_SEND）
+		0x08：正在接受ID（MESH_STATE_SHARING_RECEIVE）
+		其他值：暂不考虑
+
+42、添加遥控器群控功能：（新增  GY_POE_Dongle_nv.h 和  GY_POE_Dongle_nv.c 文件）
+
+                            添加gy_main.gy_rc_mac[6]数组变量，记录给灯配网的遥控器的mac地址（GY_USB_Dongle_main.h）
+
+                            在gy_main_init函数中添加nv初始化函数：
+             void gy_main_init(void)//主函数初始化，在mesh_app_init函数中调用
+             {
+                ......
+                gy_init_nv();//初始化，在gy_main_init函数中调用*********************新添加
+             }
+
+        GY_USB_Dongle_Air.c文件app_data_event_callback函数中添加判别遥控器指令的相关功能
+            void app_data_event_callback(UINT8 type,UINT8 *data,UINT8 len)//接收到蓝牙数据时的回调函数，在mesh_app_init函数中注册
+            {
+                ......
+                if(type == 0x21)//***********************新添加
+                {
+                    if(data[4] == 0x52)//**********************新添加
+                    {
+                        //档接收到遥控器相关指令时，对比当前存储的遥控器mac地址是否与指令中携带的mac地址一致，如果不一致，则更新指定nv中存储的数据及gy_main.gy_rc_mac的值
+                        gy_write_rc_mac_to_nv(&data[5]);//********************************新添加
+                    }
+                }
+                ......
+            }
+
+        GY_USB_Dongle_Uart.c文件Bleapp_UART_CMD_handle函数中添加判别遥控器指令的相关
+            void Bleapp_UART_CMD_handle(tcmdBuffer *cmd)////处理一条完整的Uart指令，在Bleapp_Uart_RX_irq函数中调用
+            {
+                ......
+                case 0x65/*十进制102*/://将接收到的串口数据通过无线蓝牙透传出去
+                {
+                    ......
+                        if(cmd->parameter[9] == 0x52)//如果是遥控器指令，则将该指令中的mac修改为gy_rc_mac记录的mac*********************新添加
+                        {
+                            memcpy(&cmd->parameter[10],gy_main.gy_rc_mac,GY_RC_MAC_LEN);**********************新添加
+                        }
+                    ......
+                }
+                case 0x01://dongle给灯配网
+                {
+                    ......
+                    //如果使用POE给灯配网，则将gy_rc_mac[6]数组变量赋值Dongle本身的mac
+                    gy_write_rc_mac_to_nv(gy_main.gy_dongle_mac);//将dongle本身的mac写入到指定nv
+                    ......
+                }
+                ......
+            }
+
+43、默认mesh修改为：11223344
+
+        void mesh_info_init(void)//初始化dongle的mesh网络ID和password，在gy_main_init函数中调用
+        {
+            ......
+            meshinfo.id = /*6666*/1122;//**************修改
+    //        UINT8 i = 0;//***********注释掉
+    //        for(;i<4;i++)//***********注释掉
+    //        {
+    //            meshinfo.password[i] = 0x36;//***********注释掉
+    //        }
+            meshinfo.password[0] = 0x33;//*********添加
+            meshinfo.password[1] = 0x33;//*********添加
+            meshinfo.password[2] = 0x34;//*********添加
+            meshinfo.password[3] = 0x34;//*********添加
+            ......
+        }
+
+44、修改功能：上电时如果加入mesh网络成功，则不再发送ping灯指令主动获取灯的mac地址、虚拟地址 和 固件版本
+
+        GY_USB_Dongle_main.c文件app_state_changed函数中注释掉如下信息：
+
+        void app_state_changed(UINT8 new_state)//网络状态改变的回调函数，在mesh_app_init函数中注册
+        {
+            WICED_BT_TRACE("app_state_changed: %d\n", new_state);
+            gy_main.app_main_state = new_state;
+            if(new_state==MESH_STATE_JIONING)
+            {
+        //        UINT32 virtual_addr = mesh_get_Local_VirtualAddr();//*****************注释掉
+        //                mRC_API_SendData(0xffffffff, 0xFE,//*****************注释掉
+        //                    (UINT8 *) &virtual_addr, 4);//*****************注释掉
+            }
+
+            if (new_state == MESH_STATE_JIONED) {
+        //        UINT32 virtual_addr = mesh_get_Local_VirtualAddr();//*****************注释掉
+        //        mRC_API_SendData(0xffffffff, 0xFE,(UINT8 *) &virtual_addr, 4);//*****************注释掉
+            }
+
+            //Bleapp_UART_Send_Data(UART_PACKET_TYPE_EVENT,EVENT_STATE_CHANGED,&app_main_state,1);
+        }
+
+45、修改产品ID和版本信息，并设定产品ID：6667.1.9
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 9;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+46、修改USB Dongle PC端部分指令协议，使其与POE Dongle指令协议兼容：（全部更换为 77 05 开头的协议指令）
+
+        a.修改位置：GY_USB_Dongle_Computer.h
+                    新修改如下函数声明：（其他函数弃用，此处将弃用的函数注释掉）
+                void GY_send_mesh_id_to_uart(void);//通过串口发送mesh网络id和密钥**********修改之后的函数声明
+                void GY_send_mesh_node_count_to_uart(void);//通过串口发送mesh网络当前节点数量**********修改之后的函数声明
+                void GY_send_MAC_to_uart(void);//通过串口发送MAC地址**********修改之后的函数声明
+                void GY_send_version_to_uart(void);//通过串口发送软件版本号**********修改之后的函数声明
+                void GY_send_net_state_to_uart(void);//通过串口发送dongle网络状态**********修改之后的函数声明
+                //连接internet网络通知，在 mesh_app_init 和 Bleapp_UART_CMD_handle 函数中调用
+                //当POE的蓝牙模组重新运行程序或者internet重新连接成功时（Internet的led灯由黄色变成白色表示重新连接成功）
+                void GY_send_connection_notification_to_uart(void); //**********增加函数声明
+
+        b.修改位置：GY_USB_Dongle_Computer.c
+                    将函数中所有串口发送的数据都修改为 77 05 开头的指令数据，使其与现有POE Dongle协议保持一致
+
+        c.在相关函数中调用GY_USB_Dongle_Computer.h文件中声明的函数：
+
+            GY_USB_Dongle_Uart.c文件中的Bleapp_UART_CMD_handle函数中：
+
+            void Bleapp_UART_CMD_handle(tcmdBuffer *cmd)////处理一条完整的Uart指令，在Bleapp_Uart_RX_irq函数中调用
+            {
+                ......
+                if(cmd->type == UART_PACKET_TYPE_CMD)
+                {
+                    ......
+                    switch(cmd->opcode)
+                    {
+                        ......
+                        case 0x66/*十进制102*/://MFC上位机串口上传dongle的相关信息
+                        {
+                            GY_send_MAC_to_uart();//通过串口发送MAC地址********新修改
+                            GY_send_version_to_uart();//通过串口发送软件版本号********新修改
+                            GY_send_mesh_id_to_uart();//通过串口发送mesh网络id和密钥********新修改
+                            GY_send_net_state_to_uart();//通过串口发送dongle网络状态********新修改
+                            break;
+                        }
+                    }
+                }
+                ......
+                else if(cmd->type == GY_UART_PACKET_TYPE_LOCAL_RESPONSE)//服务器询问POE自产生的数据
+                {
+                    switch(cmd->opcode)
+                    {
+                        case 0x01://服务器询问灯mesh id 和 密钥
+                        {
+                            //****************************新修改
+                            GY_send_mesh_id_to_uart();//发送mesh网络id和密钥//通过串口发送POE本身的mesh id 和 密钥 至服务器
+                            ......
+                            break;
+                        }
+                        ......
+                        case 0x03://服务器应答POE的询问，收到该信息表示POE和服务器连接正常
+                        {//77 05 01 03 CC CC
+                            if(GY_open_internet_white_led())//打开internet的白色指示灯，关闭黄色指示灯
+                            {//如果led灯之前本身亮黄灯（表示之前网络不正常，现在网络连接正常），则发送相应连接通知指令
+                                //连接internet网络通知，在 mesh_app_init 和 Bleapp_UART_CMD_handle 函数中调用
+                                GY_send_connection_notification_to_uart();//****************************新添加
+                            }
+                            ......
+                            break;
+                        }
+                        case 0x04://服务器向POE询问mesh网络当前节点数量
+                        {
+                            GY_send_mesh_node_count_to_uart();//通过串口发送mesh网络当前节点数量********新修改
+                            break;
+                        }
+                        case 0x05://服务器查询POE的MAC地址
+                        {//77 05 01 05 CC CC
+                            GY_send_MAC_to_uart();//通过串口发送MAC地址********新修改
+                            break;
+                        }
+                        case 0x06://服务器查询POE的固件版本信息********新修改
+                        {//77 05 01 06 CC CC
+                            GY_send_version_to_uart();//通过串口发送软件版本号
+                            break;
+                        }
+                    }
+                }
+            }
+
+            GY_USB_Dongle_main.c文件app_FineTimer函数中：
+
+            void app_FineTimer(UINT32 count)
+            {
+                //获取模组状态改变标志位，如果状态改变，标志位置module_state_is_change
+                if(GY_get_module_state_flag())
+                {
+                    GY_send_net_state_to_uart();//如果模组状态改变则发送最新的状态信息到上位机********新修改
+                    gy_main.gy_state_old = gy_main.app_main_state;
+                }
+                ......
+            }
+
+            GY_USB_Dongle_main.c文件mesh_app_init函数中：
+
+            void mesh_app_init(void)//入口函数
+            {
+                ......
+                GY_send_version_to_uart();//通过串口发送软件版本号//代码升级完成之后发送软件版本号********新修改
+                ......
+                //当POE的蓝牙模组重新运行程序时主动向服务器发送该指令
+                //当POE的蓝牙模组重新运行程序或者internet重新连接成功时（Internet的led灯由黄色变成白色表示重新连接成功）
+                GY_send_connection_notification_to_uart();//********新修改
+                ......
+            }
+
+            GY_USB_Dongle_Uart.c文件buffalo_receive_HomeID_cb函数中：
+
+            void buffalo_receive_HomeID_cb(UINT8 result, UINT32 HomeID, UINT8 *password)//接收ID的回调函数
+            {
+                ......
+                if (result == SEND_HOMEID_SUCCESS)
+                {
+                    ......
+                    GY_send_mesh_id_to_uart();//通过串口发送POE本身的mesh id 和 密钥 至服务器********新修改
+                }
+                ......
+            }
+
+47、修改使用POE开关灯时通过串口发送的数据，使其与现有协议保持一致：
+                    修改GY_POE_Dongle_Interrupt.c文件gy_open_and_close_light函数：
+            void gy_open_and_close_light(void)
+            {
+                static UINT8 onoff_flag = 0;
+                UINT32 virtual_addr = mesh_get_Local_VirtualAddr();
+                UINT8* addrPtr = (UINT8*)&virtual_addr;
+
+                if(onoff_flag)
+                {
+                    UINT8 dataOn[] = {0x2a,*(addrPtr),*(addrPtr+1),*(addrPtr+2),*(addrPtr+3),0xc0,0x00,0x37,0x37,0x00,0x00,0x00,0x00};
+                    Bleapp_UART_Send_Data(0X01,0X65,dataOn,sizeof(dataOn));
+                    mRC_API_SendData(0XFFFFFFFF, 0X2A,&dataOn[1],sizeof(dataOn)-1);
+                }
+                else
+                {
+                    UINT8 dataOn[] = {0x2a,*(addrPtr),*(addrPtr+1),*(addrPtr+2),*(addrPtr+3),0xc0,0x00,0x32,0x32,0x00,0x00,0x00,0x00};
+                    Bleapp_UART_Send_Data(0X01,0X65,dataOn,sizeof(dataOn));
+                    mRC_API_SendData(0XFFFFFFFF, 0X2A,&dataOn[1],sizeof(dataOn)-1);
+                }
+                onoff_flag = !onoff_flag;
+                return;
+            }
+
+48、77 05开头的协议中添加进入OTA功能：当需要POE进入到 OTA 状态时，服务器下发指令：77 05 01 09 CC CC
+                ......
+                case 0x09://POE进入到 OTA 状态
+                {//77 05 01 09 CC CC
+                    if(parameter_len == 0)
+                    {
+                        mRC_API_enter_ota_mode(200, buffalo_ota_cb);
+                    }
+                    else if(parameter_len == 1)
+                    {
+                        mRC_API_enter_ota_mode(cmd->parameter[0], buffalo_ota_cb);
+                    }
+                    break;
+                }
+
+49、修改产品ID和版本信息，并设定产品ID：6667.1.10
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 10;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+50、新增扫描周边网络的接口，在mRC_API.h文件中添加接口函数：
+
+        ///////////////////////////////////////////////////////////////////////////////
+        ///  try to search mesh net nearby
+        ///
+        /// \param duration - time to search(s)
+        ///        cb - callbcak to be called per second to report found ids
+        ///
+        /// \return none.
+        ///////////////////////////////////////////////////////////////////////////////
+        void mRC_API_search_net(UINT8 duration,NET_SEARCH_CB cb);
+
+              使用方法：
+
+           a.更改库文件：$(NAME)_COMPONENTS += mRC_lib_v1.4.a#新增扫描周边网络的接口（之前使用mRC_lib_v1.3.a）
+
+           b. GY_USB_Dongle_Computer.c文件中添加通过串口发送扫描到的mesh网络ID函数：
+                void GY_send_search_id_to_uart(UINT32 array[], UINT8 num)
+                {//77 05 05 0A meshid_1 meshid_2 meshid_3 meshid_4 CC CC
+                    UINT8 i = 0;
+                    UINT8 gy_uart_data[] = {0x77,0x05,0x05,0x0A,0x00,0x00,0x00,0x00,0xCC,0xCC};
+                    for(;i<num;i++)
+                    {
+                        gy_uart_data[4] = array[i]/1000;
+                        gy_uart_data[5] = (array[i]%1000)/100;
+                        gy_uart_data[6] = ((array[i]%1000)%100)/10;;
+                        gy_uart_data[7] = (((array[i]%1000)%100)%10)/1;
+                        wiced_hal_puart_synchronous_write(gy_uart_data, sizeof(gy_uart_data));
+                    }
+                    return;
+                }
+
+           c.GY_USB_Dongle_Uart.c文件中添加扫描周围已经存在的 mesh 网络 ID的回调函数：
+                void search_id_cb(UINT32 array[], UINT8 num)
+                {
+                    //通过串口发送扫描到的mesh网络ID
+                    GY_send_search_id_to_uart(array, num);
+                    return;
+                }
+
+           d.77 05开头的协议中添加进入扫描周围已经存在的 mesh 网络 ID的功能：
+                ......
+                case 0x0A://扫描周边已有的mesh网络
+                {//77 05 01 0A CC CC //77 05 02 0A time CC CC
+                    if(parameter_len == 0)
+                    {
+                        mRC_API_search_net(10, search_id_cb);
+                    }
+                    else if(parameter_len == 1)
+                    {
+                        mRC_API_search_net(cmd->parameter[0], search_id_cb);
+                    }
+                    break;
+                }
+                ......
+
+51、修改产品ID和版本信息，并设定产品ID：6667.1.11
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 11;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+（新）52、添加面板增量调光的集控功能：vir_1 vir_2 vir_3 vir_4 52 00 00 00 00 00 00 group_id control_type 00
+              修改位置：
+          a.GY_POE_Dongle_nv.c文件中添加判断是否接收的为面板增量调光指令，如果是，则直接跳出函数，不做任何处理
+            UINT8 gy_write_rc_mac_to_nv(UINT8 *rc_mac)//档接收到遥控器相关指令时，对比当前存储的遥控器mac地址是否与指令中携带的mac地址一致，如果不一致，则更新指定nv中存储的数据及gy_main.gy_rc_mac的值
+            {
+                UINT8 gy_bt_mac[6] = {0,0,0,0,0,0};//**************新添加
+                //如果接收到的是面板增量控灯指令，则不做任何处理，此时接收的mac地址为00 00 00 00 00 00
+                if(memcmp(rc_mac, gy_bt_mac, 6) == 0)//*************新添加
+                {
+                    return gy_yes;//********************************新添加
+                }
+                ......
+            }
+
+          b.GY_USB_Dongle_Uart.c文件中case 0x65位置添加判断：
+            void Bleapp_UART_CMD_handle(tcmdBuffer *cmd)////处理一条完整的Uart指令，在Bleapp_Uart_RX_irq函数中调用
+            {
+                ......
+                case 0x65/*十进制102*/://将接收到的串口数据通过无线蓝牙透传出去
+                {
+                    ......
+                    if(cmd->parameter[9] == 0x52)//如果是遥控器指令，则将该指令中的mac修改为gy_rc_mac记录的mac
+                    {
+                        UINT8 gy_bt_mac[6] = {0,0,0,0,0,0};//*********************新添加
+                        //如果接收到的是面板增量控灯指令，则不做任何处理，此时接收的mac地址为00 00 00 00 00 00
+                        //否则将指令中的mac地址更换为已经记录的mac地址
+                        if(memcmp(&cmd->parameter[10], gy_bt_mac, 6))//*******************新增加的判断语句
+                        {
+                            memcpy(&cmd->parameter[10],gy_main.gy_rc_mac,GY_RC_MAC_LEN);
+                        }
+                    }
+                }
+            }
+
+53、修改77 01 开头的case 0x03（发送ID）和case 0x04（接收ID）协议，增加自定义时间功能：
+            ......
+            case 0x03://发送ID，给遥控器配网
+            {//77 01 01 03 CC CC //77 01 02 03 timer CC CC
+                if(parameter_len == 0)//******************新添加判断
+                {
+                    mRC_API_send_HomeID(30000,buffalo_send_HomeID_cb);
+                }
+                else if(parameter_len == 1)//******************新添加判断
+                {
+                    mRC_API_send_HomeID(cmd->parameter[0]*1000,buffalo_send_HomeID_cb);
+                }
+                break;
+            }
+
+            case 0x04://接收ID（接收从另一个dongle或遥控器发送过来的ID）
+            {//77 01 01 04 CC CC //77 01 02 04 timer CC CC
+                if(parameter_len == 0)//******************新添加判断
+                {
+                    mRC_API_receive_HomeID(30000,buffalo_receive_HomeID_cb);
+                }
+                else if(parameter_len == 1)//******************新添加判断
+                {
+                    mRC_API_receive_HomeID(cmd->parameter[0]*1000,buffalo_receive_HomeID_cb);
+                }
+                break;
+            }
+            ......
+
+54、修改产品ID和版本信息，并设定产品ID：6667.1.12
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 12;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);
+
+（新）55、添加网内OTA功能（说明：Dongle网内升级支持全网升级和单灯升级，并且只会对指定固件ID的灯（指定的一种灯）升级）
+        修改位置：
+        a.添加GY_USB_Dongle_OTA.h 和 GY_USB_Dongle_OTA.c文件
+        b.在GY_USB_Dongle_main.c文件gy_main_init函数中添加如下函数：
+            void gy_main_init(void)//主函数初始化，在mesh_app_init函数中调用
+            {
+                ......
+                gy_ota_for_light_init();//给灯升级的初始化函数，在gy_main_init函数中调用**********新添加
+            }
+        c.GY_USB_Dongle_Uart.c文件Bleapp_UART_CMD_handle函数cmd->type=UART_PACKET_TYPE_CMD中添加case 8：
+            case 0x08://mesh网络中给灯升级固件（OTA）
+            {//**************
+                gy_ota_for_light(&cmd->parameter[0], parameter_len);//向灯发送升级用的相关数据*********新添加
+                break;
+            }
+                说明：
+            77 01 06 08 data0 data1 data2 data3 data4 66 //需要升级的是哪一个灯，0xFFFFFFFF表示全网升级
+                data0 取值 gy_ota_for_light_vir_addr
+                data1~data4：虚拟地址
+
+            77 01 07 08 data0 data1 data2 data3 data4 data5 66 //比较灯现有的固件版本，只有指定固件ID和版本的灯才可以升级
+                data0 取值 gy_ota_for_light_prepare_vs //比较灯现有的固件版本，只有指定固件ID和版本的灯才可以升级
+                data1 取值 WICED_OTA_UPGRADE_COMMAND_PREPARE_DOWNLOAD
+                data2~data3：固件ID
+                data4：主版本
+                data5：次版本
+
+           77 01 07 08 data0 data1 data2 data3 data4 data5 66 //发送升级文件的大小
+                data0 取值 gy_ota_for_light_fw_length //发送升级文件的大小
+                data1 取值 WICED_OTA_UPGRADE_COMMAND_DOWNLOAD
+                data2~data5：ws_upgrade_total_len（固件长度）
+
+           77 01 xx 08 data0 data1 data2 data3 data4 ... dataX 66//发送ota升级用的固件，如果X=52，发送50个字节的固件数据，
+                                                            //如果X<52，发送的是固件最末尾的数据
+                xx值表示有效数据长度，由后面的数据长度来确定
+                data0 取值 gy_ota_for_light_ota_data //发送ota升级用的固件
+                data1~data2：发送的是第几个固件数据包
+                data3~dataX：具体的固件数据
+
+           77 01 06 08 data0 data1 data2 data3 data4 data5 66 //发送校验
+                data0 取值 gy_ota_for_light_crc
+                data1 取值 WICED_OTA_UPGRADE_COMMAND_VERIFY
+                data2~data5：校验值
+
+           77 01 02 08 data 66 //ota for light over
+                data 取值 gy_ota_for_light_idle
+
+（新）56、禁用数字签名功能：$(NAME)_COMPONENTS += mRC_lib_v1.6s.a#禁用数字签名功能***********更新库文件
+
+（新）57、修改产品ID和版本信息，并设定产品ID：6667.1.13
+
+        #define COMPANY_ID      0x4F43
+        gy_main.App_ID = 6667;
+        gy_main.Version_Major = 1;
+        gy_main.Version_Minor = 13;
+        mRC_API_set_IDs(COMPANY_ID,gy_main.App_ID);//设置公司ID和产品ID
+        mRC_API_set_Versions(gy_main.App_ID,gy_main.Version_Major,gy_main.Version_Minor);    
+            
