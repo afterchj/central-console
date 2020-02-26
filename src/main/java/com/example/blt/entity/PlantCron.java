@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "t_plant_cron")
-public class PlantTiming {
+public class PlantCron {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

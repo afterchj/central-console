@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.vo.CronVo;
+import com.example.blt.entity.vo.PlantVo;
 import com.example.blt.utils.CalendarUtil;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
@@ -103,20 +104,27 @@ public class MainTest {
     @Test
     public void testStr() {
         Map map = new HashMap();
-        map.put("host", "127.0.0.1");
-        map.put("ctype", "C0");
-        map.put("x", "32");
-        map.put("y", "32");
-        map.put("other", "77010315323266");
-        sqlSessionTemplate.selectOne("console.saveConsole", map);
-        System.out.println("result=" + map.get("result"));
-        String str = "77040F0227E9010000713232000000000000CC";
-        String str1 = "77040F0227";
-        int index = str1.length();
-        String vaddr = str.substring(index, index + 8);
-        String x = str.substring(index + 10, index + 12);
-        String y = str.substring(index + 12, index + 14);
-        System.out.println("vaddr=" + vaddr + ",x=" + x + ",y=" + y);
+        map.put("tname", "test2");
+        map.put("itemDetail", "{\"item_set\":1,\"itemDetail\":[{\"sceneId\":22,\"days\":8,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-1\"},{\"sceneId\":22,\"days\":8,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-9\"},{\"sceneId\":22,\"days\":10,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-19\"}],\"meshId\":\"70348331\"}");
+        map.put("startDate", "2020-2-9");
+        map.put("itemSet", 1);
+        map.put("itemCount", 3);
+        map.put("detailName", "test02");
+        map.put("days", 24);
+        map.put("lightSet", 1);
+        map.put("startTime", "6:00");
+        map.put("endTime", "18:00");
+        sqlSessionTemplate.selectOne("plant.savePlantTiming", map);
+        System.out.println(map.get("result"));
+//        sqlSessionTemplate.selectOne("plant.savePlantTiming", map);
+//        System.out.println("result=" + map.get("result"));
+//        String str = "77040F0227E9010000713232000000000000CC";
+//        String str1 = "77040F0227";
+//        int index = str1.length();
+//        String vaddr = str.substring(index, index + 8);
+//        String x = str.substring(index + 10, index + 12);
+//        String y = str.substring(index + 12, index + 14);
+//        System.out.println("vaddr=" + vaddr + ",x=" + x + ",y=" + y);
     }
 
     @Test
@@ -382,32 +390,42 @@ public class MainTest {
     @Test
     public void testPlant() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-M-d");
+        String startDate = "2020-2-26";
         JSONObject object = new JSONObject();
         JSONArray array;
         object.put("meshId", "70348331");
-        object.put("item_set",1);
-
+        object.put("itemSet", 1);
+        object.put("itemCount", 3);
+        object.put("tname", "Plant Project Timing Test");
+        object.put("startDate", startDate);
+        object.put("days", 26);
+//        object.put("startTime", "6:00");
+//        object.put("endTime", "18:00");
         List<Map> list = new ArrayList<>();
-
-        String startDate = "2020-2-1";
         for (int i = 0; i < 3; i++) {
             Map map = new HashMap();
             if (i == 0) {
+                map.put("detailName", "Plant Project Test" + i);
                 map.put("days", 8);
                 map.put("sceneId", 22);
+                map.put("lightSet", 1);
                 map.put("startDate", startDate);
                 map.put("startTime", "6:00");
                 map.put("endTime", "18:00");
             } else if (i == 1) {
+                map.put("detailName", "Plant Project Test" + i);
                 map.put("days", 8);
                 map.put("sceneId", 22);
+                map.put("lightSet", 1);
                 startDate = CalendarUtil.getNextDate(startDate, 8);
                 map.put("startDate", startDate);
                 map.put("startTime", "6:00");
                 map.put("endTime", "18:00");
             } else {
+                map.put("detailName", "Plant Project Test" + i);
                 map.put("days", 10);
                 map.put("sceneId", 22);
+                map.put("lightSet", 1);
                 startDate = CalendarUtil.getNextDate(startDate, 10);
                 map.put("startDate", startDate);
                 map.put("startTime", "6:00");
@@ -419,12 +437,24 @@ public class MainTest {
 //        list.add(CalendarUtil.getNextDate(startDate, 8));
 //        list.add(CalendarUtil.getNextDate(startDate, 16));
         object.put("itemDetail", list);
+        PlantVo plantVo = JSON.parseObject(object.toJSONString(), PlantVo.class);
+        sqlSessionTemplate.insert("plant.insertPlantTiming", plantVo);
+        System.out.println("id=" + plantVo.getId());
         array = object.getJSONArray("itemDetail");
-        for (int i = 0; i < array.size(); i++) {
-
+//        System.out.println(JSON.toJSONString(object) + "\n\n" + array.toJSONString());
+        List<PlantVo> plantVoList = JSON.parseArray(array.toJSONString(), PlantVo.class);
+        List<PlantVo> list1 = new ArrayList<>();
+        for (PlantVo plantVo1 : plantVoList) {
+            PlantVo copyPlant = plantVo1.clone();
+            copyPlant.setId(plantVo.getId());
+            list1.add(copyPlant);
         }
-        System.out.println(JSON.toJSONString(object) + "\n\n" + array.toJSONString());
+        sqlSessionTemplate.insert("plant.insertPlantTimingDetail", list1);
+
+//        System.out.println(JSON.toJSONString(list1));
+
     }
+
 
     @Test
     public void testSaveType() {

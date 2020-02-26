@@ -9,6 +9,7 @@ import com.example.blt.entity.TimePointParams;
 import com.example.blt.entity.TimerList;
 import com.example.blt.entity.office.SmallRoutine;
 import com.example.blt.entity.vo.ConsoleVo;
+import com.example.blt.exception.ConsumerMsgException;
 import com.example.blt.service.BLTService;
 import com.example.blt.service.RedisService;
 import com.example.blt.service.TpadOfficeService;
@@ -467,7 +468,7 @@ public class MainController {
                         Integer tid = timerListList.get(j).getTimerLine().getTid();
                         map2.put("tid", tid);
                         map2.put("ischoose", timerListList.get(j).getTimerLine().getIschoose());
-                        map2.put("item_set", timerListList.get(j).getTimerLine().getItem_set());
+                        map2.put("itemSet", timerListList.get(j).getTimerLine().getItem_set());
                         map2.put("item_desc", timerListList.get(j).getTimerLine().getItem_desc());
                         map2.put("week", timerListList.get(j).getTimerLine().getWeek());
                         map2.put("dayObj", JSON.toJSONString(timerListList.get(j).getTimerLine().getDayObj()));
@@ -535,13 +536,21 @@ public class MainController {
         return map;
     }
 
+
     @RequestMapping(value = "/uploadDataFromPlant", method = RequestMethod.POST)
-    public Map<String, String> uploadDataFromPlant(HttpServletRequest request) {
-        String params = request.getParameter("params");
+    public Map<String, String> uploadDataFromPlant(@RequestBody String params) {
+//        String params = request.getParameter("params");
 //        logger.warn("params [{}]", params);
         Map<String, String> map = new HashMap<>();
         map.put("result", "000");
-        redisService.receiverMessage(params);
+        map.put("msg", "成功");
+        try {
+            redisService.receiverMessage(params);
+            redisService.savePlantTiming(params);
+        } catch (ConsumerMsgException e) {
+            map.put("result", "200");
+            map.put("msg", "系统错误");
+        }
         return map;
     }
 //    @RequestMapping(value = "/uploadDataFromAlink2", method = RequestMethod.POST)

@@ -9,16 +9,16 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name = "t_plant_cron_detail")
+@Table(name = "t_plant_timing_detail")
 public class PlantTimingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int plantId;
-    @Column(unique = true, length = 32)
+    private int tid;
+    @Column(length = 128)
     private String detailName;
     private int days;//阶段天数
-    private int LightSet;
-    private Date startTime;
-    private Date endTime;
+    private int lightSet;
+    private String startTime;
+    private String endTime;
 }

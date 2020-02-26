@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.vo.CronVo;
+import com.example.blt.entity.vo.PlantVo;
+import com.example.blt.exception.ConsumerMsgException;
 import com.example.blt.task.DynamicScheduledTask;
 import com.example.blt.utils.BuildCronUtil;
 import com.example.blt.utils.CalendarUtil;
@@ -58,7 +60,7 @@ public class RedisService {
                     JSONObject object = cronArr.getJSONObject(i);
                     String meshId = object.getString("meshId");
                     Integer sceneId = object.getInteger("sceneId");
-                    Integer item_set = object.getInteger("item_set");
+                    Integer item_set = object.getInteger("itemSet");
                     Integer repetition = object.getInteger("repetition");
                     Integer minute = object.getInteger("minute");
                     Integer hour = object.getInteger("hour");
@@ -84,10 +86,10 @@ public class RedisService {
         }
     }
 
-    public void receiverMessage(String msg) {
+    public void receiverMessage(String msg) throws ConsumerMsgException {
         JSONObject jsonObject = JSONObject.parseObject(msg);
         String meshId = jsonObject.getString("meshId");
-        Integer item_set = jsonObject.getInteger("item_set");
+        Integer item_set = jsonObject.getInteger("itemSet");
 //        logger.warn("jsonObject msg [{}]", jsonObject);
         List<CronVo> voList = new ArrayList<>();
         try {
@@ -135,7 +137,7 @@ public class RedisService {
                     dynamicScheduledTask.configureTasks(cronVo);
                 }
             }
-            logger.warn("size=" + voList.size() + ",voList=" + JSON.toJSONString(voList));
+//            logger.warn("size=" + voList.size() + ",voList=" + JSON.toJSONString(voList));
 //            sqlSessionTemplate.delete("plant.deleteCron");
             if (voList.size() > 0) {
                 sqlSessionTemplate.insert("plant.insertCron", voList);
@@ -143,6 +145,7 @@ public class RedisService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("voList {}" + voList);
+            throw new ConsumerMsgException("消息消费失败！");
         }
     }
 
@@ -155,6 +158,24 @@ public class RedisService {
             }
         }
     }
+
+    public void savePlantTiming(String params) {
+        JSONObject object = JSON.parseObject(params);
+        PlantVo plantVo = JSON.parseObject(params, PlantVo.class);
+        sqlSessionTemplate.insert("plant.insertPlantTiming", plantVo);
+        System.out.println("id=" + plantVo.getId());
+        JSONArray array = object.getJSONArray("itemDetail");
+//        System.out.println(JSON.toJSONString(object) + "\n\n" + array.toJSONString());
+        List<PlantVo> plantVoList = JSON.parseArray(array.toJSONString(), PlantVo.class);
+        List<PlantVo> list1 = new ArrayList<>();
+        for (PlantVo plantVo1 : plantVoList) {
+            PlantVo copyPlant = plantVo1.clone();
+            copyPlant.setId(plantVo.getId());
+            list1.add(copyPlant);
+        }
+        sqlSessionTemplate.insert("plant.insertPlantTimingDetail", list1);
+    }
+
 
 //    public static void main(String[] args) {
 //        String msg = "{\"item_set\":1,\"itemDetail\":[{\"sceneId\":22,\"days\":8,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-1\"},{\"sceneId\":22,\"days\":8,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-9\"},{\"sceneId\":22,\"days\":10,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-19\"}],\"meshId\":\"70348331\"}";
