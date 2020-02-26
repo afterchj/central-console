@@ -28,9 +28,13 @@ public class DynamicScheduledTask {
 
     public void configureTasks(CronVo cronVo) {
         int itemSet = cronVo.getItemSet();
-        if (itemSet == 1) {
-            future = threadPoolTaskScheduler.schedule(new DetailTask(cronVo), new CronTrigger(cronVo.getCron()));
-            futures.put(cronVo.getCronName(), future);
+        try {
+            if (itemSet == 1) {
+                future = threadPoolTaskScheduler.schedule(new DetailTask(cronVo), new CronTrigger(cronVo.getCron()));
+                futures.put(cronVo.getCronName(), future);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
     }
 }

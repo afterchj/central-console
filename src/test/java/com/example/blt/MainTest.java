@@ -1,10 +1,12 @@
 package com.example.blt;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.vo.CronVo;
+import com.example.blt.utils.CalendarUtil;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
@@ -14,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -350,15 +353,19 @@ public class MainTest {
                     cronVo.setCommand("770103153737CCCC");
                     cronVo.setSceneId(22);
                 }
-                cronVo.setCron(j, i, "SUN,MON,TUE,WED,THU,FRI,SAT");
+//                cronVo.setCron(j, i, "SUN,MON,TUE,WED,THU,FRI,SAT",null,null);
+                cronVo.setCron(j, i, null, "9-22 2");
                 cronVo.setMeshId("38628386");
                 cronVo.setRepetition(1);
                 cronVo.setItemSet(1);
-                cronVo.setCronName(i, j);
+                cronVo.setCronName(i, j, "");
+                CronVo cp = cronVo.clone();
+                cp.setCron(j, i, null, "20-22 3");
                 list.add(cronVo);
+                System.out.println(JSON.toJSONString(cronVo) + "\n" + JSON.toJSONString(cp));
             }
         }
-        sqlSessionTemplate.insert("console.insertCron", list);
+//        sqlSessionTemplate.insert("console.insertCron", list);
 //        sqlSessionTemplate.update("console.saveHostsStatus");
 //        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
 //        System.out.println(JSON.toJSONString(cronVos) + "\t" + cronVos.size());
@@ -370,6 +377,53 @@ public class MainTest {
 //        object.put("host", "master");
 //        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
 //        ClientMain.sendCron(object.toJSONString());
+    }
+
+    @Test
+    public void testPlant() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-M-d");
+        JSONObject object = new JSONObject();
+        JSONArray array;
+        object.put("meshId", "70348331");
+        object.put("item_set",1);
+
+        List<Map> list = new ArrayList<>();
+
+        String startDate = "2020-2-1";
+        for (int i = 0; i < 3; i++) {
+            Map map = new HashMap();
+            if (i == 0) {
+                map.put("days", 8);
+                map.put("sceneId", 22);
+                map.put("startDate", startDate);
+                map.put("startTime", "6:00");
+                map.put("endTime", "18:00");
+            } else if (i == 1) {
+                map.put("days", 8);
+                map.put("sceneId", 22);
+                startDate = CalendarUtil.getNextDate(startDate, 8);
+                map.put("startDate", startDate);
+                map.put("startTime", "6:00");
+                map.put("endTime", "18:00");
+            } else {
+                map.put("days", 10);
+                map.put("sceneId", 22);
+                startDate = CalendarUtil.getNextDate(startDate, 10);
+                map.put("startDate", startDate);
+                map.put("startTime", "6:00");
+                map.put("endTime", "18:00");
+            }
+            list.add(map);
+        }
+//        list.add(startDate);
+//        list.add(CalendarUtil.getNextDate(startDate, 8));
+//        list.add(CalendarUtil.getNextDate(startDate, 16));
+        object.put("itemDetail", list);
+        array = object.getJSONArray("itemDetail");
+        for (int i = 0; i < array.size(); i++) {
+
+        }
+        System.out.println(JSON.toJSONString(object) + "\n\n" + array.toJSONString());
     }
 
     @Test

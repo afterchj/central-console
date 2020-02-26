@@ -277,7 +277,7 @@ public class MainController {
 
     @RequestMapping(value = "/sendByProject2", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, String> sendByProjectFor2( String x) {
+    public Map<String, String> sendByProjectFor2(String x) {
 //        long start = System.currentTimeMillis();
         Map<String, String> map = new HashMap<>();
         Map<String, String> onOffMap;
@@ -305,10 +305,10 @@ public class MainController {
 //                y = onOffMap.get("y");
 //            }
             String y;
-            if(x.equals("1")){
+            if (x.equals("1")) {
                 x = "32";
                 y = "32";
-            }else {
+            } else {
                 x = "37";
                 y = "37";
             }
@@ -462,7 +462,7 @@ public class MainController {
                 if (count != 0) {
                     sqlSessionTemplate.delete("console.deleteTimerData", map2);
                 }
-                if (timerListList.size()!=0){
+                if (timerListList.size() != 0) {
                     for (int j = 0; j < timerListList.size(); j++) {
                         Integer tid = timerListList.get(j).getTimerLine().getTid();
                         map2.put("tid", tid);
@@ -513,16 +513,16 @@ public class MainController {
                             }
                         }
                     }
-            }else if(timerListList.size()==0){
+                } else if (timerListList.size() == 0) {
                     emptyMeshList.add(String.valueOf(map2.get("meshId")));
                 }
             }
             Map<String, String> cronMap = new HashMap<>();
-            if (cronList.size() != 0 || emptyMeshList.size()!=0) {
-                if(cronList.size() != 0) {
+            if (cronList.size() != 0 || emptyMeshList.size() != 0) {
+                if (cronList.size() != 0) {
                     cronMap.put("cron", JSONObject.toJSONString(cronList));
                 }
-                if(emptyMeshList.size()!=0){
+                if (emptyMeshList.size() != 0) {
                     cronMap.put("emptyMeshList", JSONObject.toJSONString(emptyMeshList));
                 }
                 redisService.pushMsg(JSONObject.parseObject(JSON.toJSONString(cronMap)));
@@ -535,7 +535,15 @@ public class MainController {
         return map;
     }
 
-
+    @RequestMapping(value = "/uploadDataFromPlant", method = RequestMethod.POST)
+    public Map<String, String> uploadDataFromPlant(HttpServletRequest request) {
+        String params = request.getParameter("params");
+//        logger.warn("params [{}]", params);
+        Map<String, String> map = new HashMap<>();
+        map.put("result", "000");
+        redisService.receiverMessage(params);
+        return map;
+    }
 //    @RequestMapping(value = "/uploadDataFromAlink2", method = RequestMethod.POST)
 //    public Map<String, String> uploadDataFromAlink2(HttpServletRequest request) {
 //        Map<String, String> map = new HashMap<>();

@@ -138,7 +138,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        logger.warn("hostId[{}]", ctx.channel().id());
+        logger.warn("channelActive hostId[{}]", ctx.channel().id());
         sendPoeInfo(ctx);
     }
 
