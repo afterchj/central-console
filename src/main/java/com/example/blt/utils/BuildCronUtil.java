@@ -53,8 +53,8 @@ public class BuildCronUtil {
     public static List<String> getDayAndMonth(String str1, String str2) {
         List<String> list = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
-        String[] array1 = str1.split("-");
-        String[] array2 = str2.split("-");
+        String[] array1 = str1.split("/");
+        String[] array2 = str2.split("/");
 
         String month1 = array1[1];
         String day1 = array1[2];
@@ -103,8 +103,8 @@ public class BuildCronUtil {
     }
 
     public static void main(String[] args) {
-        String str1 = "2020-2-26";
-        String str2 = "2020-3-5";
+        String str1 = "2020/2/26";
+        String str2 = "2020/3/5";
         List<String> list=getDayAndMonth(str1,str2);
         for (String str:list){
             System.out.println(str);

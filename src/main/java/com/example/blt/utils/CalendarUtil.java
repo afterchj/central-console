@@ -12,7 +12,7 @@ import java.util.Date;
 public class CalendarUtil {
 
     public static String getNextDate(String dateStr, int offset) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d");
         Date date;
         try {
             date = sdf.parse(dateStr);
@@ -26,7 +26,7 @@ public class CalendarUtil {
     }
 
     public static int dayByMonth(String str) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d");
         Date date;
         try {
             date = sdf.parse(str);
@@ -66,6 +66,6 @@ public class CalendarUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(getNextDate("2020-2-25", 10) + ":" + dayByMonth("2020-3-24"));
+        System.out.println(getNextDate("2020/2/25", 10) + ":" + dayByMonth("2020/3/24"));
     }
 }
