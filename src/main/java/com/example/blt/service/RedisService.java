@@ -91,7 +91,6 @@ public class RedisService {
         String meshId = jsonObject.getString("meshId");
         Integer item_set = jsonObject.getInteger("itemSet");
 //        logger.warn("jsonObject msg [{}]", jsonObject);
-        List<CronVo> voList = new ArrayList<>();
         try {
             JSONArray cronArr = jsonObject.getJSONArray("itemDetail");
             List<CronVo> cronVos = sqlSessionTemplate.selectList("plant.getCron", meshId);
@@ -119,32 +118,28 @@ public class RedisService {
                     cronVo.setMeshId(meshId);
                     cronVo.setMeshId(meshId);
                     cronVo.setItemSet(item_set);
-                    for (int k = 0; k < list.size(); k++) {
-                        CronVo copyCronVo = cronVo.clone();
+                    for (String dayAndMonth : list) {
+                        List<CronVo> voList = new ArrayList<>();
                         int off = 21;
-                        String dayAndMonth = list.get(k);
                         cronVo.setCron(minute, hour, null, dayAndMonth);
                         cronVo.setCommand(BuildCronUtil.getCmd(on));
                         cronVo.setCronName(minute, hour, dayAndMonth);
-                        cronVo.setSceneId(off);
+                        cronVo.setSceneId(on);
+                        voList.add(cronVo);
+                        CronVo copyCronVo = cronVo.clone();
                         copyCronVo.setCron(eminute, ehour, null, dayAndMonth);
                         copyCronVo.setCommand(BuildCronUtil.getCmd(off));
                         copyCronVo.setCronName(eminute, ehour, dayAndMonth);
-                        copyCronVo.setSceneId(on);
+                        copyCronVo.setSceneId(off);
                         voList.add(copyCronVo);
-                        voList.add(cronVo);
                         dynamicScheduledTask.configureTasks(cronVo);
+                        dynamicScheduledTask.configureTasks(copyCronVo);
+                        sqlSessionTemplate.insert("plant.insertCron", voList);
                     }
                 }
             }
-//            logger.warn("size=" + voList.size() + ",voList=" + JSON.toJSONString(voList));
-//            sqlSessionTemplate.delete("plant.deleteCron");
-            if (voList.size() > 0) {
-                sqlSessionTemplate.insert("plant.insertCron", voList);
-            }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("voList {}" + voList);
             throw new ConsumerMsgException("消息消费失败！");
         }
     }
