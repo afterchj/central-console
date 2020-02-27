@@ -133,8 +133,8 @@ public class RedisService {
                         copyCronVo.setSceneId(on);
                         voList.add(copyCronVo);
                         voList.add(cronVo);
+                        dynamicScheduledTask.configureTasks(cronVo);
                     }
-                    dynamicScheduledTask.configureTasks(cronVo);
                 }
             }
 //            logger.warn("size=" + voList.size() + ",voList=" + JSON.toJSONString(voList));

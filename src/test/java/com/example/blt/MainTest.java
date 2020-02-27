@@ -389,8 +389,8 @@ public class MainTest {
 
     @Test
     public void testPlant() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-M-d");
-        String startDate = "2020-2-26";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/M/d");
+        String startDate = "2020/2/26";
         JSONObject object = new JSONObject();
         JSONArray array;
         object.put("meshId", "70348331");
@@ -402,7 +402,7 @@ public class MainTest {
 //        object.put("startTime", "6:00");
 //        object.put("endTime", "18:00");
         List<Map> list = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             Map map = new HashMap();
             if (i == 0) {
                 map.put("detailName", "Plant Project Test" + i);
@@ -410,46 +410,48 @@ public class MainTest {
                 map.put("sceneId", 22);
                 map.put("lightSet", 1);
                 map.put("startDate", startDate);
-                map.put("startTime", "6:00");
-                map.put("endTime", "18:00");
-            } else if (i == 1) {
-                map.put("detailName", "Plant Project Test" + i);
-                map.put("days", 8);
-                map.put("sceneId", 22);
-                map.put("lightSet", 1);
-                startDate = CalendarUtil.getNextDate(startDate, 8);
-                map.put("startDate", startDate);
-                map.put("startTime", "6:00");
-                map.put("endTime", "18:00");
-            } else {
-                map.put("detailName", "Plant Project Test" + i);
-                map.put("days", 10);
-                map.put("sceneId", 22);
-                map.put("lightSet", 1);
-                startDate = CalendarUtil.getNextDate(startDate, 10);
-                map.put("startDate", startDate);
-                map.put("startTime", "6:00");
-                map.put("endTime", "18:00");
+                map.put("startTime", "11:30");
+                map.put("endTime", "11:31");
             }
+//            else if (i == 1) {
+//                map.put("detailName", "Plant Project Test" + i);
+//                map.put("days", 8);
+//                map.put("sceneId", 22);
+//                map.put("lightSet", 1);
+//                startDate = CalendarUtil.getNextDate(startDate, 8);
+//                map.put("startDate", startDate);
+//                map.put("startTime", "6:00");
+//                map.put("endTime", "18:00");
+//            } else {
+//                map.put("detailName", "Plant Project Test" + i);
+//                map.put("days", 10);
+//                map.put("sceneId", 22);
+//                map.put("lightSet", 1);
+//                startDate = CalendarUtil.getNextDate(startDate, 10);
+//                map.put("startDate", startDate);
+//                map.put("startTime", "6:00");
+//                map.put("endTime", "18:00");
+//            }
             list.add(map);
         }
 //        list.add(startDate);
 //        list.add(CalendarUtil.getNextDate(startDate, 8));
 //        list.add(CalendarUtil.getNextDate(startDate, 16));
         object.put("itemDetail", list);
-        PlantVo plantVo = JSON.parseObject(object.toJSONString(), PlantVo.class);
-        sqlSessionTemplate.insert("plant.insertPlantTiming", plantVo);
-        System.out.println("id=" + plantVo.getId());
-        array = object.getJSONArray("itemDetail");
-//        System.out.println(JSON.toJSONString(object) + "\n\n" + array.toJSONString());
-        List<PlantVo> plantVoList = JSON.parseArray(array.toJSONString(), PlantVo.class);
-        List<PlantVo> list1 = new ArrayList<>();
-        for (PlantVo plantVo1 : plantVoList) {
-            PlantVo copyPlant = plantVo1.clone();
-            copyPlant.setId(plantVo.getId());
-            list1.add(copyPlant);
-        }
-        sqlSessionTemplate.insert("plant.insertPlantTimingDetail", list1);
+        System.out.println(JSON.toJSONString(object));
+
+//        PlantVo plantVo = JSON.parseObject(object.toJSONString(), PlantVo.class);
+//        sqlSessionTemplate.insert("plant.insertPlantTiming", plantVo);
+//        System.out.println("id=" + plantVo.getId());
+//        array = object.getJSONArray("itemDetail");
+//        List<PlantVo> plantVoList = JSON.parseArray(array.toJSONString(), PlantVo.class);
+//        List<PlantVo> list1 = new ArrayList<>();
+//        for (PlantVo plantVo1 : plantVoList) {
+//            PlantVo copyPlant = plantVo1.clone();
+//            copyPlant.setId(plantVo.getId());
+//            list1.add(copyPlant);
+//        }
+//        sqlSessionTemplate.insert("plant.insertPlantTimingDetail", list1);
 
 //        System.out.println(JSON.toJSONString(list1));
 

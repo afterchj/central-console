@@ -79,10 +79,10 @@
 
     <insert id="insertCron" parameterType="list">
         REPLACE INTO
-        t_plant_cron(cron_name,mesh_id,scene_id,item_set,item_count,cron,command,create_time,update_time) VALUES
+        t_plant_cron(cron_name,mesh_id,scene_id,item_set,cron,command,create_time,update_time) VALUES
         <foreach collection="list" item="v" index="index" separator=",">
             (
-            #{v.cronName},#{v.meshId},#{v.sceneId},#{v.itemSet},#{v.itemCount},#{v.cron},#{v.command},now(),now()
+            #{v.cronName},#{v.meshId},#{v.sceneId},#{v.itemSet},#{v.cron},#{v.command},now(),now()
             )
         </foreach>
     </insert>
