@@ -16,11 +16,11 @@
             <list>
                 <value>classpath:application.properties</value>
                 <!--本地-->
-                <value>classpath:application-dev.properties</value>
+<!--                <value>classpath:application-dev.properties</value>-->
                 <!--云服务器内网-->
 <!--                <value>classpath:application-prod.properties</value>-->
                 <!--云服务器外网-->
-<!--                <value>classpath:application-test.properties</value>-->
+                <value>classpath:application-test.properties</value>
             </list>
         </property>
         <property name="fileEncoding" value="UTF-8"/>
