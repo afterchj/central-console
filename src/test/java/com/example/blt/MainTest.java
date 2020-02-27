@@ -396,7 +396,7 @@ public class MainTest {
         object.put("meshId", "70348331");
         object.put("itemSet", 1);
         object.put("itemCount", 3);
-        object.put("tname", "Plant Project Timing Test");
+        object.put("proName", "Plant Project Timing Test");
         object.put("startDate", startDate);
         object.put("days", 26);
 //        object.put("startTime", "6:00");

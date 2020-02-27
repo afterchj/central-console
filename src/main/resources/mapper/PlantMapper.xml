@@ -3,7 +3,7 @@
 <mapper namespace="plant">
 
     <parameterMap id="commandMapper" type="map">
-        <parameter property="tname" mode="IN"/>
+        <parameter property="proName" mode="IN"/>
         <parameter property="itemDetail" mode="IN"/>
         <parameter property="startDate" mode="IN"/>
         <parameter property="itemSet" mode="IN"/>
@@ -39,7 +39,7 @@
 
     <insert id="insertPlantTiming" useGeneratedKeys="true" keyProperty="id" parameterType="PlantVo">
         INSERT INTO t_plant_timing (
-            tname,
+            pro_name,
             item_detail,
             start_date,
             days,
@@ -49,7 +49,7 @@
             update_time
         )
         VALUES (
-        #{tname},
+        #{proName},
         #{itemDetail},
         #{startDate},
         #{days},

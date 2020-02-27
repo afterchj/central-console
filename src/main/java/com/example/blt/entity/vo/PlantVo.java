@@ -7,7 +7,7 @@ package com.example.blt.entity.vo;
  */
 public class PlantVo implements Cloneable  {
     private int id;
-    private String tname;
+    private String proName;
     private String itemDetail;
     private String detailName;
     private String startDate;
@@ -28,12 +28,12 @@ public class PlantVo implements Cloneable  {
         this.id = id;
     }
 
-    public String getTname() {
-        return tname;
+    public String getProName() {
+        return proName;
     }
 
-    public void setTname(String tname) {
-        this.tname = tname;
+    public void setProName(String proName) {
+        this.proName = proName;
     }
 
     public String getItemDetail() {

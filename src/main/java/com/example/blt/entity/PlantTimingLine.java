@@ -14,7 +14,7 @@ public class PlantTimingLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String tname;
+    private String proName;
     @Column(length = 1024)
     private String itemDetail;//阶段设置详情
     private int days;//周期总天数
