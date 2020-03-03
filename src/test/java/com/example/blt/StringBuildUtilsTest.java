@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author hongjian.chen
@@ -23,6 +22,7 @@ public class StringBuildUtilsTest {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private static SqlSessionTemplate sqlSessionTemplate = SpringUtils.getSqlSession();
     private static final ClientMain CLIENT_MAIN = new ClientMain();
+
     @Test
     public void test() {
 //        System.out.println("77 05 07 05 22 00 FF 7F C5 EC CC CC".replace(" ","").length());
@@ -33,14 +33,14 @@ public class StringBuildUtilsTest {
         }
         String strHex = Integer.toHexString(45408);
         String str = "C770505060B1A010";
-        if (str.indexOf("C")==0) {
+        if (str.indexOf("C") == 0) {
             if (str.length() > 16) {
                 str = str.substring(str.length() - 16);
-            }else {
-                str=str.substring(1)+"C";
+            } else {
+                str = str.substring(1) + "C";
             }
         }
-        System.out.println("format="+str);
+        System.out.println("format=" + str);
 //        String mac=StringBuildUtils.buildMac("90e3");
 //        mac=StringBuildUtils.sortMac(mac).replace(":", "");
         String temp = StringBuildUtils.sortMac(str.substring(8, 12)).replace(":", "");
@@ -222,10 +222,20 @@ public class StringBuildUtilsTest {
 
     @Test
     public void testMap() {
-        Map map = new ConcurrentHashMap();
-        map.put("host", "1270.0.01");
-        map.put("status", 0);
-        System.out.println(map.containsKey("ctype"));
-
+//        Map map = new ConcurrentHashMap();
+//        map.put("host", "1270.0.01");
+//        map.put("status", 0);
+//        System.out.println(map.containsKey("ctype"));
+        int i = 0;
+        int j = 0;
+        while (i < 10) {
+            System.out.println("while do: " + i);
+            i++;
+        }
+        System.out.println("--------------------------- ");
+        do {
+            System.out.println("do while: " + j);
+            j++;
+        } while (j < 10);
     }
 }

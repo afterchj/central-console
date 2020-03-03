@@ -80,39 +80,41 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
                 if (address != null) {
                     String str = address.toString();
                     String tem = str.substring(1, str.indexOf(":"));
-                    if (!tem.equals("127.0.0.1")) {
-                        String id = ch.id().toString();
-                        if ("all".equals(to)) {
-                            ch.writeAndFlush(cmd);
-                        } else if ("master".equals(to)) {
-                            for (String guest : hosts) {
-                                if (!guest.equals(host) && cmd.indexOf("77050103") == -1) {
-                                    if (id.equals(guest)) {
-                                        ch.writeAndFlush(cmd);
-                                    }
+//                    if (!tem.equals("127.0.0.1")) {
+                    String id = ch.id().toString();
+                    if ("all".equals(to)) {
+                        ch.writeAndFlush(cmd);
+                    } else if ("master".equals(to)) {
+                        for (String guest : hosts) {
+                            if (!guest.equals(host) && cmd.indexOf("77050103") == -1) {
+                                if (id.equals(guest)) {
+                                    ch.writeAndFlush(cmd);
                                 }
                             }
-                            if (id.equals(host) && cmd.indexOf("77050103") != -1) {
-                                ch.writeAndFlush(cmd);
-                            }
-                        } else if (id.equals(to)) {
-                            if (cmd.indexOf("77050103") != -1) {
-                                ch.writeAndFlush(cmd);
-                            } else if (!ip.contains("192.168")) {
-                                ch.writeAndFlush(cmd);
-                            }
                         }
+                        if (id.equals(host) && cmd.indexOf("77050103") != -1) {
+                            ch.writeAndFlush(cmd);
+                        }
+                    } else if (id.equals(to)) {
+                        ch.writeAndFlush(cmd);
+//                            if (cmd.indexOf("77050103") != -1) {
+//                                ch.writeAndFlush(cmd);
+//                            } else if (!ip.contains("192.168")) {
+//                                ch.writeAndFlush(cmd);
+//                            }
                     }
+//                    }
+                    logger.warn("ip [{}] hostId[{}] to [{}] input[{}]", ip, id, to, cmd);
                 }
             }
             if (cmd.indexOf("77050103") != -1) {
                 //缓存心跳包
                 redisTemplate.opsForValue().set(host, cmd, 50, TimeUnit.SECONDS);
-            } else {
-                logger.warn("hostId[{}] to [{}] hosts[{}] input[{}]", host, to, hosts, cmd);
             }
+//            else {
+//                logger.warn("hostId[{}] to [{}] hosts[{}] input[{}]", host, to, hosts, cmd);
+//            }
         }
-
 //        if (input.indexOf("182716324621") != -1) {
 //            logger.warn("flag [{}] hostId[{}] to [{}] hosts[{}] cmd [{}]", StringUtils.isNotEmpty(host_id), host, to, hosts, input);
 //        }
@@ -136,6 +138,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     //在建立链接时发送信息
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
+        logger.warn("channelActive hostId[{}]", ctx.channel().id());
         sendPoeInfo(ctx);
     }
 

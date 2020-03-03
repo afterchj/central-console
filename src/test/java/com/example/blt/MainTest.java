@@ -1,10 +1,13 @@
 package com.example.blt;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.blt.entity.dd.ConsoleKeys;
 import com.example.blt.entity.dd.Groups;
 import com.example.blt.entity.vo.CronVo;
+import com.example.blt.entity.vo.PlantVo;
+import com.example.blt.utils.CalendarUtil;
 import com.example.blt.utils.ConsoleUtil;
 import com.example.blt.utils.SpringUtils;
 import com.example.blt.utils.StringBuildUtils;
@@ -14,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -100,20 +104,27 @@ public class MainTest {
     @Test
     public void testStr() {
         Map map = new HashMap();
-        map.put("host", "127.0.0.1");
-        map.put("ctype", "C0");
-        map.put("x", "32");
-        map.put("y", "32");
-        map.put("other", "77010315323266");
-        sqlSessionTemplate.selectOne("console.saveConsole", map);
-        System.out.println("result=" + map.get("result"));
-        String str = "77040F0227E9010000713232000000000000CC";
-        String str1 = "77040F0227";
-        int index = str1.length();
-        String vaddr = str.substring(index, index + 8);
-        String x = str.substring(index + 10, index + 12);
-        String y = str.substring(index + 12, index + 14);
-        System.out.println("vaddr=" + vaddr + ",x=" + x + ",y=" + y);
+        map.put("tname", "test2");
+        map.put("itemDetail", "{\"item_set\":1,\"itemDetail\":[{\"sceneId\":22,\"days\":8,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-1\"},{\"sceneId\":22,\"days\":8,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-9\"},{\"sceneId\":22,\"days\":10,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-19\"}],\"meshId\":\"70348331\"}");
+        map.put("startDate", "2020-2-9");
+        map.put("itemSet", 1);
+        map.put("itemCount", 3);
+        map.put("detailName", "test02");
+        map.put("days", 24);
+        map.put("lightSet", 1);
+        map.put("startTime", "6:00");
+        map.put("endTime", "18:00");
+        sqlSessionTemplate.selectOne("plant.savePlantTiming", map);
+        System.out.println(map.get("result"));
+//        sqlSessionTemplate.selectOne("plant.savePlantTiming", map);
+//        System.out.println("result=" + map.get("result"));
+//        String str = "77040F0227E9010000713232000000000000CC";
+//        String str1 = "77040F0227";
+//        int index = str1.length();
+//        String vaddr = str.substring(index, index + 8);
+//        String x = str.substring(index + 10, index + 12);
+//        String y = str.substring(index + 12, index + 14);
+//        System.out.println("vaddr=" + vaddr + ",x=" + x + ",y=" + y);
     }
 
     @Test
@@ -350,15 +361,19 @@ public class MainTest {
                     cronVo.setCommand("770103153737CCCC");
                     cronVo.setSceneId(22);
                 }
-                cronVo.setCron(j, i, "SUN,MON,TUE,WED,THU,FRI,SAT");
+//                cronVo.setCron(j, i, "SUN,MON,TUE,WED,THU,FRI,SAT",null,null);
+                cronVo.setCron(j, i, null, "9-22 2");
                 cronVo.setMeshId("38628386");
                 cronVo.setRepetition(1);
                 cronVo.setItemSet(1);
-                cronVo.setCronName(i, j);
+                cronVo.setCronName(i, j, "");
+                CronVo cp = cronVo.clone();
+                cp.setCron(j, i, null, "20-22 3");
                 list.add(cronVo);
+                System.out.println(JSON.toJSONString(cronVo) + "\n" + JSON.toJSONString(cp));
             }
         }
-        sqlSessionTemplate.insert("console.insertCron", list);
+//        sqlSessionTemplate.insert("console.insertCron", list);
 //        sqlSessionTemplate.update("console.saveHostsStatus");
 //        List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
 //        System.out.println(JSON.toJSONString(cronVos) + "\t" + cronVos.size());
@@ -371,6 +386,77 @@ public class MainTest {
 //        object.put("command", "77011365FFFFFFFF210D000000521FEA62D7ACF00101CCCC");
 //        ClientMain.sendCron(object.toJSONString());
     }
+
+    @Test
+    public void testPlant() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/M/d");
+        String startDate = "2020/2/26";
+        JSONObject object = new JSONObject();
+        JSONArray array;
+        object.put("meshId", "70348331");
+        object.put("itemSet", 1);
+        object.put("itemCount", 3);
+        object.put("proName", "Plant Project Timing Test");
+        object.put("startDate", startDate);
+        object.put("days", 26);
+//        object.put("startTime", "6:00");
+//        object.put("endTime", "18:00");
+        List<Map> list = new ArrayList<>();
+        for (int i = 0; i < 1; i++) {
+            Map map = new HashMap();
+            if (i == 0) {
+                map.put("detailName", "Plant Project Test" + i);
+                map.put("days", 8);
+                map.put("sceneId", 22);
+                map.put("lightSet", 1);
+                map.put("startDate", startDate);
+                map.put("startTime", "11:30");
+                map.put("endTime", "11:31");
+            }
+//            else if (i == 1) {
+//                map.put("detailName", "Plant Project Test" + i);
+//                map.put("days", 8);
+//                map.put("sceneId", 22);
+//                map.put("lightSet", 1);
+//                startDate = CalendarUtil.getNextDate(startDate, 8);
+//                map.put("startDate", startDate);
+//                map.put("startTime", "6:00");
+//                map.put("endTime", "18:00");
+//            } else {
+//                map.put("detailName", "Plant Project Test" + i);
+//                map.put("days", 10);
+//                map.put("sceneId", 22);
+//                map.put("lightSet", 1);
+//                startDate = CalendarUtil.getNextDate(startDate, 10);
+//                map.put("startDate", startDate);
+//                map.put("startTime", "6:00");
+//                map.put("endTime", "18:00");
+//            }
+            list.add(map);
+        }
+//        list.add(startDate);
+//        list.add(CalendarUtil.getNextDate(startDate, 8));
+//        list.add(CalendarUtil.getNextDate(startDate, 16));
+        object.put("itemDetail", list);
+        System.out.println(JSON.toJSONString(object));
+
+//        PlantVo plantVo = JSON.parseObject(object.toJSONString(), PlantVo.class);
+//        sqlSessionTemplate.insert("plant.insertPlantTiming", plantVo);
+//        System.out.println("id=" + plantVo.getId());
+//        array = object.getJSONArray("itemDetail");
+//        List<PlantVo> plantVoList = JSON.parseArray(array.toJSONString(), PlantVo.class);
+//        List<PlantVo> list1 = new ArrayList<>();
+//        for (PlantVo plantVo1 : plantVoList) {
+//            PlantVo copyPlant = plantVo1.clone();
+//            copyPlant.setId(plantVo.getId());
+//            list1.add(copyPlant);
+//        }
+//        sqlSessionTemplate.insert("plant.insertPlantTimingDetail", list1);
+
+//        System.out.println(JSON.toJSONString(list1));
+
+    }
+
 
     @Test
     public void testSaveType() {
@@ -401,19 +487,21 @@ public class MainTest {
 
     @Test
     public void testArray() {
-        String msg = "770507051900FF7FC5ECCCCC770509010909050901020304CCCC770505060B1A010CCCCC";
-        String[] array = msg.split("CCCC");
-        for (String str : array) {
-            logger.warn("str=" + str);
-        }
-        String mesh = "C770509010909050901020304".substring(9, 25);
-        char[] chars = mesh.toCharArray();
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < chars.length; i++) {
-            if (i % 2 != 0) {
-                buffer.append(chars[i]);
-            }
-        }
-        System.out.println("770509010909050901020304".indexOf("77050901") + "\t" + buffer.toString());
+        String line = "77050103CCCCFFFF270DF00DA1446DFFCCCC77050103CCCC77050103CCCC77050103CCCC77050103CCCC77050103CCCC77050103CCCC";
+        System.out.println("len=" + line.length());
+//        String msg = "770507051900FF7FC5ECCCCC770509010909050901020304CCCC770505060B1A010CCCCC";
+//        String[] array = msg.split("CCCC");
+//        for (String str : array) {
+//            logger.warn("str=" + str);
+//        }
+//        String mesh = "C770509010909050901020304".substring(9, 25);
+//        char[] chars = mesh.toCharArray();
+//        StringBuffer buffer = new StringBuffer();
+//        for (int i = 0; i < chars.length; i++) {
+//            if (i % 2 != 0) {
+//                buffer.append(chars[i]);
+//            }
+//        }
+//        System.out.println("770509010909050901020304".indexOf("77050901") + "\t" + buffer.toString());
     }
 }

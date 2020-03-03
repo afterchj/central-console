@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="plant">
+
+    <parameterMap id="commandMapper" type="map">
+        <parameter property="proName" mode="IN"/>
+        <parameter property="itemDetail" mode="IN"/>
+        <parameter property="startDate" mode="IN"/>
+        <parameter property="itemSet" mode="IN"/>
+        <parameter property="itemCount" mode="IN"/>
+        <parameter property="detailName" mode="IN"/>
+        <parameter property="days" mode="IN"/>
+        <parameter property="lightSet" mode="IN"/>
+        <parameter property="startTime" mode="IN"/>
+        <parameter property="endTime" mode="IN"/>
+        <parameter property="result" mode="OUT" jdbcType="INTEGER"/>
+    </parameterMap>
+
+    <select id="savePlantTiming" parameterMap="commandMapper" resultType="map" statementType="CALLABLE">
+        CALL save_plant_timing(?,?,?,?,?,?,?,?,?,?,?)
+    </select>
+
+    <select id="getCron" resultType="CronVo" parameterType="string">
+        SELECT cron_name cronName,mesh_id meshId,scene_id sceneId,item_set itemSet,command,cron FROM t_plant_cron
+        WHERE 1=1
+        <if test="_parameter!=null and _parameter!=''">
+            AND mesh_id=#{_parameter}
+        </if>
+    </select>
+
+    <delete id="deleteCron" parameterType="list">
+        <if test="list != null and list.size()>0">
+            DELETE FROM t_cron WHERE mesh_id IN
+            <foreach collection="list" index="index" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
+    <insert id="insertPlantTiming" useGeneratedKeys="true" keyProperty="id" parameterType="PlantVo">
+        INSERT INTO t_plant_timing (
+            pro_name,
+            item_detail,
+            start_date,
+            days,
+            item_set,
+            item_count,
+            create_time,
+            update_time
+        )
+        VALUES (
+        #{proName},
+        #{itemDetail},
+        #{startDate},
+        #{days},
+        #{itemSet},
+        #{itemCount},
+        NOW(),
+        NOW()
+        )
+    </insert>
+
+    <insert id="insertPlantTimingDetail"  parameterType="list">
+        INSERT INTO t_plant_timing_detail (
+            tid,
+            detail_name,
+            days,
+            light_set,
+            start_time,
+            end_time
+        )
+        VALUES
+        <foreach collection="list" item="v" index="index" separator=",">
+            (
+            #{v.id},#{v.detailName},#{v.days},#{v.lightSet},#{v.startTime},#{v.endTime}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insertCron" parameterType="list">
+        REPLACE INTO
+        t_plant_cron(cron_name,mesh_id,scene_id,item_set,cron,command,create_time,update_time) VALUES
+        <foreach collection="list" item="v" index="index" separator=",">
+            (
+            #{v.cronName},#{v.meshId},#{v.sceneId},#{v.itemSet},#{v.cron},#{v.command},now(),now()
+            )
+        </foreach>
+    </insert>
+
+</mapper>

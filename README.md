@@ -1,3 +1,7 @@
+# window系统添加开机启动方法
+1. win+r输入gpedit.msc->选择window设置...
+2. win+r输入shell:startup->把脚本命令文件拖到该目录  
+# 启动方式
 1 jar形式
 >1.1 修改pom.xml打包方式：  ```<packaging>jar</packaging>```  
 >1.2 注释tomcat依赖  

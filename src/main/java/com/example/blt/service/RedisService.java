@@ -3,10 +3,12 @@ package com.example.blt.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blt.entity.dd.CommandDict;
 import com.example.blt.entity.vo.CronVo;
+import com.example.blt.entity.vo.PlantVo;
+import com.example.blt.exception.ConsumerMsgException;
 import com.example.blt.task.DynamicScheduledTask;
-import org.apache.commons.lang.StringUtils;
+import com.example.blt.utils.BuildCronUtil;
+import com.example.blt.utils.CalendarUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,14 +35,17 @@ public class RedisService {
 
     @Resource
     private SqlSessionTemplate sqlSessionTemplate;
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    static Logger logger = LoggerFactory.getLogger(RedisService.class);
 
     public void pushMsg(JSONObject msg) {
         redisTemplate.convertAndSend("channel_cron", msg);
     }
 
+    public void pushMsg1(JSONObject msg) {
+        redisTemplate.convertAndSend("channel_cron1", msg);
+    }
+
     public void consumeMsg(String msg) {
-        ScheduledFuture future;
         JSONObject jsonObject = JSONObject.parseObject(msg);
         List<CronVo> voList = new ArrayList<>();
         try {
@@ -48,30 +53,25 @@ public class RedisService {
             JSONArray meshArr = jsonObject.getJSONArray("emptyMeshList");
 //            logger.warn("emptyMeshList {}", JSON.toJSONString(meshArr));
             List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron", meshArr);
-            for (CronVo cron : cronVos) {
-                future = dynamicScheduledTask.futures.get(cron.getCronName());
-                if (future != null) {
-                    future.cancel(true);
-                }
-            }
+            cancelScheduledTask(cronVos);
             if (cronArr != null) {
                 for (int i = 0; i < cronArr.size(); i++) {
                     CronVo cronVo = new CronVo();
                     JSONObject object = cronArr.getJSONObject(i);
                     String meshId = object.getString("meshId");
                     Integer sceneId = object.getInteger("sceneId");
-                    Integer item_set = object.getInteger("item_set");
+                    Integer item_set = object.getInteger("itemSet");
                     Integer repetition = object.getInteger("repetition");
                     Integer minute = object.getInteger("minute");
                     Integer hour = object.getInteger("hour");
-                    String week = getWeek(object.getString("week"));
+                    String week = BuildCronUtil.getWeek(object.getString("week"));
                     cronVo.setMeshId(meshId);
                     cronVo.setSceneId(sceneId);
                     cronVo.setItemSet(item_set);
                     cronVo.setRepetition(repetition);
-                    cronVo.setCron(minute, hour, week);
-                    cronVo.setCommand(getCmd(sceneId));
-                    cronVo.setCronName(minute, hour);
+                    cronVo.setCron(minute, hour, week, null);
+                    cronVo.setCommand(BuildCronUtil.getCmd(sceneId));
+                    cronVo.setCronName(minute, hour, "");
                     voList.add(cronVo);
 //                logger.warn("cronName {}", cronVo.getCronName());
                     dynamicScheduledTask.configureTasks(cronVo);
@@ -82,68 +82,98 @@ public class RedisService {
                 sqlSessionTemplate.insert("console.insertCron", voList);
             }
         } catch (Exception e) {
-            logger.error("error {}; voList {}",e.getMessage(),voList );
+            logger.error("error {}; voList {}", e.getMessage(), voList);
         }
     }
 
-    public String getWeek(String str) {
-        if (StringUtils.isEmpty(str)) return null;
-        String[] weeks = str.split(",");
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 1; i < weeks.length; i++) {
-            switch (weeks[i]) {
-                case "周日":
-                    weeks[i] = "SUN";
-                    break;
-                case "周一":
-                    weeks[i] = "MON";
-                    break;
-                case "周二":
-                    weeks[i] = "TUE";
-                    break;
-                case "周三":
-                    weeks[i] = "WED";
-                    break;
-                case "周四":
-                    weeks[i] = "THU";
-                    break;
-                case "周五":
-                    weeks[i] = "FRI";
-                    break;
-                case "周六":
-                    weeks[i] = "SAT";
-                    break;
-            }
-            if (i == weeks.length - 1) {
-                stringBuilder.append(weeks[i]);
-            } else {
-                stringBuilder.append(weeks[i] + ",");
-            }
-        }
-        return stringBuilder.toString();
-    }
-
-    public String getCmd(int sceneId) {
-        String command;
-        switch (sceneId) {
-            case 21:
-                command = CommandDict.MESH_OFF.getCmd();
-                break;
-            case 22:
-                command = CommandDict.MESH_ON.getCmd();
-                break;
-            default:
-                StringBuilder cmd = new StringBuilder(CommandDict.SCENE.getCmd());
-                String strHex = Integer.toHexString(sceneId).toUpperCase();
-                if (strHex.length() == 1) {
-                    cmd.append("0" + sceneId);
-                } else {
-                    cmd.append(sceneId);
+    public void receiverMessage(String msg) throws ConsumerMsgException {
+        JSONObject jsonObject = JSONObject.parseObject(msg);
+        String meshId = jsonObject.getString("meshId");
+        Integer item_set = jsonObject.getInteger("itemSet");
+//        logger.warn("jsonObject msg [{}]", jsonObject);
+        try {
+            JSONArray cronArr = jsonObject.getJSONArray("itemDetail");
+            List<CronVo> cronVos = sqlSessionTemplate.selectList("plant.getCron", meshId);
+            cancelScheduledTask(cronVos);
+            if (cronArr != null) {
+                int itemCount = cronArr.size();
+                for (int i = 0; i < cronArr.size(); i++) {
+                    CronVo cronVo = new CronVo();
+                    JSONObject object = cronArr.getJSONObject(i);
+                    int on = 22;
+                    int days = object.getInteger("days");
+                    String startDate = object.getString("startDate");
+                    String endDate = CalendarUtil.getNextDate(startDate, days);
+                    String startTime = object.getString("startTime");
+                    String endTime = object.getString("endTime");
+                    List<String> list = BuildCronUtil.getDayAndMonth(startDate, endDate);
+//                    logger.warn("size=" + list.size() + ",list=" + JSON.toJSONString(list));
+                    String[] array = startTime.split(":");
+                    String[] array1 = endTime.split(":");
+                    int hour = Integer.parseInt(array[0]);
+                    int minute = Integer.parseInt(array[1]);
+                    int ehour = Integer.parseInt(array1[0]);
+                    int eminute = Integer.parseInt(array1[1]);
+                    cronVo.setItemCount(itemCount);
+                    cronVo.setMeshId(meshId);
+                    cronVo.setMeshId(meshId);
+                    cronVo.setItemSet(item_set);
+                    for (String dayAndMonth : list) {
+                        List<CronVo> voList = new ArrayList<>();
+                        int off = 21;
+                        cronVo.setCron(minute, hour, null, dayAndMonth);
+                        cronVo.setCommand(BuildCronUtil.getCmd(on));
+                        cronVo.setCronName(minute, hour, dayAndMonth);
+                        cronVo.setSceneId(on);
+                        voList.add(cronVo);
+                        CronVo copyCronVo = cronVo.clone();
+                        copyCronVo.setCron(eminute, ehour, null, dayAndMonth);
+                        copyCronVo.setCommand(BuildCronUtil.getCmd(off));
+                        copyCronVo.setCronName(eminute, ehour, dayAndMonth);
+                        copyCronVo.setSceneId(off);
+                        voList.add(copyCronVo);
+                        dynamicScheduledTask.configureTasks(cronVo);
+                        dynamicScheduledTask.configureTasks(copyCronVo);
+                        sqlSessionTemplate.insert("plant.insertCron", voList);
+                    }
                 }
-                cmd.append("CCCC");
-                command = cmd.toString();
-                break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ConsumerMsgException("消息消费失败！");
         }
-        return command;
     }
+
+    public void cancelScheduledTask(List<CronVo> cronVos) {
+        ScheduledFuture future;
+        for (CronVo cron : cronVos) {
+            future = dynamicScheduledTask.futures.get(cron.getCronName());
+            if (future != null) {
+                future.cancel(true);
+            }
+        }
+    }
+
+    public void savePlantTiming(String params) {
+        JSONObject object = JSON.parseObject(params);
+        PlantVo plantVo = JSON.parseObject(params, PlantVo.class);
+        sqlSessionTemplate.insert("plant.insertPlantTiming", plantVo);
+        System.out.println("id=" + plantVo.getId());
+        JSONArray array = object.getJSONArray("itemDetail");
+//        System.out.println(JSON.toJSONString(object) + "\n\n" + array.toJSONString());
+        List<PlantVo> plantVoList = JSON.parseArray(array.toJSONString(), PlantVo.class);
+        List<PlantVo> list1 = new ArrayList<>();
+        for (PlantVo plantVo1 : plantVoList) {
+            PlantVo copyPlant = plantVo1.clone();
+            copyPlant.setId(plantVo.getId());
+            list1.add(copyPlant);
+        }
+        sqlSessionTemplate.insert("plant.insertPlantTimingDetail", list1);
+    }
+
+
+//    public static void main(String[] args) {
+//        String msg = "{\"item_set\":1,\"itemDetail\":[{\"sceneId\":22,\"days\":8,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-1\"},{\"sceneId\":22,\"days\":8,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-9\"},{\"sceneId\":22,\"days\":10,\"startTime\":\"6:00\",\"endTime\":\"18:00\",\"startDate\":\"2020-2-19\"}],\"meshId\":\"70348331\"}";
+//        receiverMessage(msg);
+//    }
 }

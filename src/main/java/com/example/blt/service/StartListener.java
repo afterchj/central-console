@@ -144,7 +144,14 @@ public class StartListener implements ApplicationListener<ContextRefreshedEvent>
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         logger.warn("springBoot started.");
         List<CronVo> cronVos = sqlSessionTemplate.selectList("console.getCron");
+        List<CronVo> cronVos1 = sqlSessionTemplate.selectList("plant.getCron");
+//        logger.warn("cronVos1.size [{}]", cronVos1.size());
         for (CronVo cronVo : cronVos) {
+            if (cronVo.getItemSet() == 1) {
+                dynamicScheduledTask.configureTasks(cronVo);
+            }
+        }
+        for (CronVo cronVo : cronVos1) {
             if (cronVo.getItemSet() == 1) {
                 dynamicScheduledTask.configureTasks(cronVo);
             }

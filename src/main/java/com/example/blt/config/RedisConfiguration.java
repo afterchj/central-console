@@ -66,17 +66,33 @@ public class RedisConfiguration implements CachingConfigurer {
         return stringRedisTemplate;
     }
 
+//    @Bean
+//    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter recvAdapter1, MessageListenerAdapter recvAdapter2) {
+//        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+//        container.setConnectionFactory(connectionFactory);
+//        container.addMessageListener(recvAdapter1, new PatternTopic("channel_cron"));//将订阅者1与channel1频道绑定
+//        container.addMessageListener(recvAdapter2, new PatternTopic("channel_cron1"));//将订阅者2与channel1频道绑定
+//        return container;
+//    }
+
     @Bean
-    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter recvAdapter) {
+    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter1, MessageListenerAdapter listenerAdapter2) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(recvAdapter, new PatternTopic("channel_cron"));//将订阅者1与channel1频道绑定
+        //订阅了一个叫chat的通道
+        container.addMessageListener(listenerAdapter1, new PatternTopic("channel_cron"));
+        container.addMessageListener(listenerAdapter2, new PatternTopic("channel_cron1"));
         return container;
     }
 
     @Bean
-    MessageListenerAdapter recvAdapter(RedisService receiver) {
+    MessageListenerAdapter listenerAdapter1(RedisService receiver) {
         //与channel1绑定的适配器,收到消息时执行RedisConsumer类中的consumeMsg方法
         return new MessageListenerAdapter(receiver, "consumeMsg");
+    }
+
+    @Bean
+    MessageListenerAdapter listenerAdapter2(RedisService receiver) {
+        return new MessageListenerAdapter(receiver, "receiverMessage");
     }
 }
