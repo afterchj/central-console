@@ -116,7 +116,6 @@ public class RedisService {
                     int eminute = Integer.parseInt(array1[1]);
                     cronVo.setItemCount(itemCount);
                     cronVo.setMeshId(meshId);
-                    cronVo.setMeshId(meshId);
                     cronVo.setItemSet(item_set);
                     for (String dayAndMonth : list) {
                         List<CronVo> voList = new ArrayList<>();
